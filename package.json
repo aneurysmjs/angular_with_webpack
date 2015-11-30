@@ -1,0 +1,35 @@
+{
+  "name": "angular_with_webpack",
+  "version": "1.0.0",
+  "description": "using webpack with angular to create more modular applications",
+  "main": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node node_modules/.bin/webpack-dev-server --context-base app"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/blackendstudios/angular_with_webpack.git"
+  },
+  "keywords": [
+    "angularjs",
+    "angular",
+    "webpack",
+    "webpack-dev-server"
+  ],
+  "author": "blackend",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/blackendstudios/angular_with_webpack/issues"
+  },
+  "homepage": "https://github.com/blackendstudios/angular_with_webpack#readme",
+  "devDependencies": {
+    "webpack": "^1.12.9",
+    "webpack-dev-server": "^1.14.0"
+  },
+  "dependencies": {
+    "angular": "^1.4.8",
+    "angular-mocks": "^1.4.8",
+    "angular-ui-router": "^0.2.15"
+  }
+}
