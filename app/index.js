@@ -1,4 +1,4 @@
-var angular = require('angular'),
-    ngModule = angular.module('app', []);
+const angular = require('angular'),
+      ngModule = angular.module('app', []);
 
 require('./components')(ngModule);

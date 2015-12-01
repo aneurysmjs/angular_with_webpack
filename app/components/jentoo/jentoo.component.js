@@ -1,6 +1,6 @@
-module.exports = function (ngModule) {
+export default ngModule => {
 
-   ngModule.directive('jentoo', function () {
+   ngModule.directive('jentoo', () => {
       return {
          restrict: 'E',
          scope: {},
@@ -9,7 +9,7 @@ module.exports = function (ngModule) {
             self.title = 'Jentoo';
          },
          controllerAs: 'jentooCtrl',
-         templateUrl: 'components/jentoo.html'
+         templateUrl: 'components/jentoo/jentoo.html'
       }
    });
 

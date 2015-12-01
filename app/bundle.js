@@ -44,6 +44,8 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
+	'use strict';
+
 	var angular = __webpack_require__(1),
 	    ngModule = angular.module('app', []);
 
@@ -29084,38 +29086,45 @@
 /* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
-	// this is going to represent the folder, and so this folder can be required because we have an index.js.
-	module.exports = function (ngModule) {
-	   /*
-	   * this is a very modular approach, because we're not using the 'angular.module' getter all over the place.
-	   * We're passing the module where it needs to go so that things can be registered on it.
-	   * That makes things a lot more modular in the sense that you can move things around,
-	   * have them be registered on totally different modules, and you don't need to worry about changing
-	   * the module name that something is being registered on it, just has an API that accepts the module.
-	   */
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	   value: true
+	});
+
+	exports['default'] = function (ngModule) {
 	   __webpack_require__(4)(ngModule);
 	};
+
+	module.exports = exports['default'];
 
 /***/ },
 /* 4 */
 /***/ function(module, exports) {
 
-	module.exports = function (ngModule) {
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	   value: true
+	});
+
+	exports['default'] = function (ngModule) {
 
 	   ngModule.directive('jentoo', function () {
 	      return {
 	         restrict: 'E',
 	         scope: {},
-	         controller: function () {
+	         controller: function controller() {
 	            var self = this;
 	            self.title = 'Jentoo';
 	         },
 	         controllerAs: 'jentooCtrl',
-	         templateUrl: 'components/jentoo.html'
-	      }
+	         templateUrl: 'components/jentoo/jentoo.html'
+	      };
 	   });
-
 	};
+
+	module.exports = exports['default'];
 
 /***/ }
 /******/ ]);
