@@ -5327,12 +5327,6 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	/*
-	const angular = require('angular'),
-	      ngModule = angular.module('app', []);
-
-	require('./components')(ngModule);*/
-
 	var ngModule = _angular2.default.module('app', []);
 
 	(0, _index2.default)(ngModule);
@@ -34385,9 +34379,8 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	exports.default = function (ngModule) {
-	   //require('./jentoo/jentoo.component')(ngModule);
 	   (0, _jentoo2.default)(ngModule);
-	}; //require('./devTools)(store); to import devTools from './devTools'; devTools(store);
+	};
 
 /***/ },
 /* 195 */
@@ -34403,12 +34396,13 @@
 
 	var _jentoo2 = _interopRequireDefault(_jentoo);
 
-	__webpack_require__(197);
+	var _jentoo3 = __webpack_require__(197);
+
+	var _jentoo4 = _interopRequireDefault(_jentoo3);
+
+	__webpack_require__(198);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	//require('./jentoo.styl');
-	//require('./jentoo.html');
 
 	exports.default = function (ngModule) {
 
@@ -34417,10 +34411,7 @@
 	      return {
 	         restrict: 'E',
 	         scope: {},
-	         controller: function controller() {
-	            var self = this;
-	            self.title = 'Jentoo';
-	         },
+	         controller: _jentoo4.default,
 	         controllerAs: 'jentooCtrl',
 	         template: _jentoo2.default
 	      };
@@ -34435,15 +34426,31 @@
 
 /***/ },
 /* 197 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	   value: true
+	});
+	function JentooController() {
+	   var self = this;
+	   self.title = 'Jentoo';
+	}
+
+	exports.default = JentooController;
+
+/***/ },
+/* 198 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(198);
+	var content = __webpack_require__(199);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(200)(content, {});
+	var update = __webpack_require__(201)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -34460,10 +34467,10 @@
 	}
 
 /***/ },
-/* 198 */
+/* 199 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(199)();
+	exports = module.exports = __webpack_require__(200)();
 	// imports
 
 
@@ -34474,7 +34481,7 @@
 
 
 /***/ },
-/* 199 */
+/* 200 */
 /***/ function(module, exports) {
 
 	/*
@@ -34530,7 +34537,7 @@
 
 
 /***/ },
-/* 200 */
+/* 201 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*

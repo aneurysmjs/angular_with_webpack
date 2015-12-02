@@ -1,6 +1,5 @@
-//require('./jentoo.styl');
-//require('./jentoo.html');
 import template from './jentoo.html';
+import controller from './jentoo.controller';
 import './jentoo.styl';
 
 export default ngModule => {
@@ -10,10 +9,7 @@ export default ngModule => {
       return {
          restrict: 'E',
          scope: {},
-         controller: function () {
-            var self = this;
-            self.title = 'Jentoo';
-         },
+         controller,
          controllerAs: 'jentooCtrl',
          template
       }
