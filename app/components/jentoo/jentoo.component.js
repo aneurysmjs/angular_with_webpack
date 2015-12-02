@@ -1,7 +1,12 @@
+//require('./jentoo.styl');
+//require('./jentoo.html');
+import template from './jentoo.html';
+import './jentoo.styl';
+
 export default ngModule => {
 
    ngModule.directive('jentoo', () => {
-      require('./jentoo.styl');
+
       return {
          restrict: 'E',
          scope: {},
@@ -10,8 +15,9 @@ export default ngModule => {
             self.title = 'Jentoo';
          },
          controllerAs: 'jentooCtrl',
-         template: require('./jentoo.html')
+         template
       }
+
    });
 
 };
