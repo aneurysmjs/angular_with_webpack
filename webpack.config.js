@@ -2,7 +2,6 @@ var path = require('path');
 
 module.exports = {
    context: __dirname + '/app',
-   //entry: './index.js',
    entry:
       [
          'babel-polyfill',
@@ -14,19 +13,13 @@ module.exports = {
    },
    module: {
       loaders: [
-         //{test: /\.js$/, loader: 'babel', exclude: /node_modules/},
          {
+            test: /\.js$/,
             loader: "babel-loader",
 
-            // Skip any files outside of your project's `app` directory
-            include: [
-               path.resolve(__dirname, "app")
-            ],
             exclude: [
                path.resolve(__dirname, "node_modules")
             ],
-            // Only run `.js` and `.jsx` files through Babel
-            test: /\.jsx?$/,
 
             // Options to configure babel with
             query: {
