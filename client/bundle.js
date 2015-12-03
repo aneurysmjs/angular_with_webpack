@@ -5321,13 +5321,13 @@
 
 	var _angular2 = _interopRequireDefault(_angular);
 
-	var _components = __webpack_require__(194);
+	var _app_component = __webpack_require__(194);
 
-	var _components2 = _interopRequireDefault(_components);
+	var _app_component2 = _interopRequireDefault(_app_component);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	_angular2.default.module('app', []);
+	_angular2.default.module('app', []).directive('app', _app_component2.default);
 
 /***/ },
 /* 192 */
@@ -34370,92 +34370,47 @@
 	   value: true
 	});
 
-	var _jentooComponent = __webpack_require__(195);
+	var _app = __webpack_require__(195);
 
-	var _jentooComponent2 = _interopRequireDefault(_jentooComponent);
+	var _app2 = _interopRequireDefault(_app);
+
+	__webpack_require__(196);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	exports.default = function (ngModule) {
-	   (0, _jentooComponent2.default)(ngModule);
+	var appComponent = function appComponent() {
+	   return {
+	      template: _app2.default,
+	      restrict: 'E'
+	   };
 	};
+
+	exports.default = appComponent;
 
 /***/ },
 /* 195 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	   value: true
-	});
-
-	var _jentoo = __webpack_require__(196);
-
-	var _jentoo2 = _interopRequireDefault(_jentoo);
-
-	var _jentooController = __webpack_require__(197);
-
-	var _jentooController2 = _interopRequireDefault(_jentooController);
-
-	__webpack_require__(198);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	exports.default = function (ngModule) {
-
-	   ngModule.directive('jentoo', function () {
-
-	      return {
-	         restrict: 'E',
-	         scope: {},
-	         controller: _jentooController2.default,
-	         controllerAs: 'jentooCtrl',
-	         template: _jentoo2.default
-	      };
-	   });
-	};
+	module.exports = "<div class=\"app\">\n   <h1>I'm a fucking ES2015 app</h1>\n</div>"
 
 /***/ },
 /* 196 */
-/***/ function(module, exports) {
-
-	module.exports = "<div class=\"jentoo\">\n   {{jentooCtrl.title}}\n</div>"
-
-/***/ },
-/* 197 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	   value: true
-	});
-	function JentooController() {
-	   var self = this;
-	   self.title = 'Jentoo';
-	}
-
-	exports.default = JentooController;
-
-/***/ },
-/* 198 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(199);
+	var content = __webpack_require__(197);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(201)(content, {});
+	var update = __webpack_require__(199)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../../../node_modules/css-loader/index.js!./../../../../node_modules/stylus-loader/index.js!./jentoo.styl", function() {
-				var newContent = require("!!./../../../../node_modules/css-loader/index.js!./../../../../node_modules/stylus-loader/index.js!./jentoo.styl");
+			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/stylus-loader/index.js!./app.styl", function() {
+				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/stylus-loader/index.js!./app.styl");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -34465,21 +34420,21 @@
 	}
 
 /***/ },
-/* 199 */
+/* 197 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(200)();
+	exports = module.exports = __webpack_require__(198)();
 	// imports
 
 
 	// module
-	exports.push([module.id, ".jentoo {\n  color: #222;\n}\n", ""]);
+	exports.push([module.id, ".app {\n  height: 100%;\n  background-color: #eee;\n  color: #2e2e2e;\n}\n", ""]);
 
 	// exports
 
 
 /***/ },
-/* 200 */
+/* 198 */
 /***/ function(module, exports) {
 
 	/*
@@ -34535,7 +34490,7 @@
 
 
 /***/ },
-/* 201 */
+/* 199 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
