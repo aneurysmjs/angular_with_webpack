@@ -5,7 +5,7 @@
   "main": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node node_modules/.bin/webpack-dev-server --context-base app"
+    "start": "node node_modules/.bin/webpack-dev-server --context-base /client/app"
   },
   "repository": {
     "type": "git",

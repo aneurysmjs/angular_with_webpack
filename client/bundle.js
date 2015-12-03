@@ -5321,15 +5321,13 @@
 
 	var _angular2 = _interopRequireDefault(_angular);
 
-	var _index = __webpack_require__(194);
+	var _components = __webpack_require__(194);
 
-	var _index2 = _interopRequireDefault(_index);
+	var _components2 = _interopRequireDefault(_components);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var ngModule = _angular2.default.module('app', []);
-
-	(0, _index2.default)(ngModule);
+	_angular2.default.module('app', []);
 
 /***/ },
 /* 192 */
@@ -34372,14 +34370,14 @@
 	   value: true
 	});
 
-	var _jentoo = __webpack_require__(195);
+	var _jentooComponent = __webpack_require__(195);
 
-	var _jentoo2 = _interopRequireDefault(_jentoo);
+	var _jentooComponent2 = _interopRequireDefault(_jentooComponent);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	exports.default = function (ngModule) {
-	   (0, _jentoo2.default)(ngModule);
+	   (0, _jentooComponent2.default)(ngModule);
 	};
 
 /***/ },
@@ -34396,9 +34394,9 @@
 
 	var _jentoo2 = _interopRequireDefault(_jentoo);
 
-	var _jentoo3 = __webpack_require__(197);
+	var _jentooController = __webpack_require__(197);
 
-	var _jentoo4 = _interopRequireDefault(_jentoo3);
+	var _jentooController2 = _interopRequireDefault(_jentooController);
 
 	__webpack_require__(198);
 
@@ -34411,7 +34409,7 @@
 	      return {
 	         restrict: 'E',
 	         scope: {},
-	         controller: _jentoo4.default,
+	         controller: _jentooController2.default,
 	         controllerAs: 'jentooCtrl',
 	         template: _jentoo2.default
 	      };
@@ -34456,8 +34454,8 @@
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/stylus-loader/index.js!./jentoo.styl", function() {
-				var newContent = require("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/stylus-loader/index.js!./jentoo.styl");
+			module.hot.accept("!!./../../../../node_modules/css-loader/index.js!./../../../../node_modules/stylus-loader/index.js!./jentoo.styl", function() {
+				var newContent = require("!!./../../../../node_modules/css-loader/index.js!./../../../../node_modules/stylus-loader/index.js!./jentoo.styl");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});

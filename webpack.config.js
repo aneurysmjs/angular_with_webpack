@@ -1,14 +1,14 @@
 var path = require('path');
 
 module.exports = {
-   context: __dirname + '/app',
+   //context: __dirname + '/client/app/app.js',
    entry:
       [
          'babel-polyfill',
-         './index.js'
+         './client/app/app.js'
       ],
    output: {
-      path: __dirname + '/app',
+      //path: __dirname + '/app',
       filename: 'bundle.js'
    },
    module: {

@@ -1,5 +1,5 @@
 import template from './jentoo.html';
-import controller from './jentoo.controller';
+import controller from './jentoo.controller.js';
 import './jentoo.styl';
 
 export default ngModule => {
