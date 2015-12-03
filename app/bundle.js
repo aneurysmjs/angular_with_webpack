@@ -34475,7 +34475,7 @@
 
 
 	// module
-	exports.push([module.id, ".jentoo {\n  color: #f00;\n}\n", ""]);
+	exports.push([module.id, ".jentoo {\n  color: #222;\n}\n", ""]);
 
 	// exports
 
