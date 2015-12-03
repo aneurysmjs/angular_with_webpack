@@ -20,7 +20,6 @@ module.exports = {
             exclude: [
                path.resolve(__dirname, "node_modules")
             ],
-
             // Options to configure babel with
             query: {
                plugins: ['transform-runtime'],

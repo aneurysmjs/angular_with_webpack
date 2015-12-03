@@ -7,6 +7,8 @@ var ctrl;
 // of the controller
 beforeEach(inject(function ($controller) {
    ctrl = $controller('JentooController');
+   console.log('--- ctrl ---');
+   console.log(ctrl);
 }));
 
 /*

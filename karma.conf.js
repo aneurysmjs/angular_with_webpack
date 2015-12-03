@@ -39,11 +39,7 @@ module.exports = function (config) {
                   exclude: [
                      path.resolve(__dirname, "node_modules")
                   ],
-                  test: /\.jsx?$/,
-                  query: {
-                     plugins: ['transform-runtime'],
-                     presets: ['es2015', 'stage-0']
-                  }
+                  test: /\.jsx?$/
                },
                {test: /\.html$/, loader: 'raw', exclude: /node_modules/},
                {test: /\.css$/, loader: 'style!css', exclude: /node_modules/},
