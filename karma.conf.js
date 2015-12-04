@@ -20,7 +20,7 @@ module.exports = function (config) {
       // preprocess matching files before serving them to the browser
       // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
       preprocessors: {
-         'spec.bundle.js': ['webpack']
+         'spec.bundle.js': ['webpack', 'sourcemap']
       },
 
       webpack: {
@@ -30,12 +30,11 @@ module.exports = function (config) {
 
          // webpack configuration
          module: {
+            devtool: 'inline-source-map',
             loaders: [
                {
-                  loader: "babel-loader",
-                  include: [
-                     path.resolve(__dirname, "app")
-                  ],
+                  loader: "babel",
+
                   exclude: [
                      path.resolve(__dirname, "node_modules")
                   ],
@@ -56,6 +55,7 @@ module.exports = function (config) {
       plugins: [
          require('karma-jasmine'),
          require('karma-chrome-launcher'),
+         require('karma-sourcemap-loader'),
          require('karma-webpack')
       ],
 
