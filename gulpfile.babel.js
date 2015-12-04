@@ -8,6 +8,8 @@ import serve    from 'browser-sync';
 import rename   from 'gulp-rename';
 import template from 'gulp-template';
 import fs       from 'fs';
+import yargs    from 'yargs';
+import lodash   from 'lodash';
 
 let reload = () => serve.reload();
 let root = 'client';
@@ -54,6 +56,25 @@ gulp.task('serve', () => {
 gulp.task('watch', () => {
    let allPaths = [].concat([paths.js], paths.html, [paths.styl]);
    gulp.watch(allPaths, ['webpack', reload]);
+});
+
+gulp.task('component', () => {
+   let cap = (val) => {
+      return val.charAt(0).toUpperCase() + val.slice(1);
+   };
+   let name = yargs.argv.name;
+   let parentPath = yargs.argv.parent || '';
+   let destPath = path.join(resolveToComponents(), parentPath, name);
+
+   return gulp.src(paths.blankTemplates)
+      .pipe(template({
+         name: name,
+         upCaseName: cap(name)
+      }))
+      .pipe(rename((path) => {
+         path.basename = path.basename.replace('temp', name);
+      }))
+      .pipe(gulp.dest(destPath));
 });
 
 gulp.task('default', (done) => {
