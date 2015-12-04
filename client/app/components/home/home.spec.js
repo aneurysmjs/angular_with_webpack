@@ -52,4 +52,5 @@ describe('Home', () => {
         expect(component.controller).to.equal(HomeController);
       });
   });
+
 });
