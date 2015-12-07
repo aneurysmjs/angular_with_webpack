@@ -8,7 +8,7 @@ let jentooComponent = function () {
     scope: {},
     template,
     controller,
-    controllerAs: 'vm',
+    controllerAs: 'jentooCtrl',
     bindToController: true
   };
 };
