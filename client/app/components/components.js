@@ -1,5 +1,8 @@
-import jentooComponent from './jentoo/jentoo.component.js';
+import angular from 'angular';
+import Home from './jentoo/jentoo';
 
-export default ngModule => {
-   jentooComponent(ngModule);
-};
+let componentModule = angular.module('app.components', [
+   Jentoo.name
+]);
+
+export default componentModule;

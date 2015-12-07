@@ -1,6 +1,7 @@
-function JentooController() {
-   var self = this;
-   self.title = 'Jentoo';
+class JentooController {
+  constructor() {
+    this.name = 'jentoo';
+  }
 }
 
 export default JentooController;

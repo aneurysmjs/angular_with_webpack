@@ -1,19 +1,16 @@
 import template from './jentoo.html';
-import controller from './jentoo.controller.js';
+import controller from './jentoo.controller';
 import './jentoo.styl';
 
-export default ngModule => {
-
-   ngModule.directive('jentoo', () => {
-
-      return {
-         restrict: 'E',
-         scope: {},
-         controller,
-         controllerAs: 'jentooCtrl',
-         template
-      }
-
-   });
-
+let jentooComponent = function () {
+  return {
+    restrict: 'E',
+    scope: {},
+    template,
+    controller,
+    controllerAs: 'vm',
+    bindToController: true
+  };
 };
+
+export default jentooComponent;
