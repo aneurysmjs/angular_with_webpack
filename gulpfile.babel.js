@@ -13,6 +13,7 @@ import lodash   from 'lodash';
 
 let reload = () => serve.reload();
 let root = 'client';
+let dist = 'client/dist'
 
 // helper method for resolving paths
 let resolveToApp = (glob) => {
@@ -42,7 +43,7 @@ let paths = {
 gulp.task('webpack', () => {
    return gulp.src(paths.entry)
       .pipe(webpack(require('./webpack.config')))
-      .pipe(gulp.dest(paths.output));
+      .pipe(gulp.dest(dist));
 });
 
 gulp.task('serve', () => {
