@@ -12,7 +12,7 @@ module.exports = {
       ],
    resolve: {
      alias: {
-        //'angular': pathToAngular
+        'angular': pathToAngular
      }
    },
    output: {
@@ -34,6 +34,6 @@ module.exports = {
          {test: /\.styl$/, loader: 'style!css!stylus', exclude: /node_modules/},
          {test: /\.(jpe?g|png|gif|svg)$/i, loader:'url'}
       ],
-     // norParse: [pathToAngular]
+      norParse: [pathToAngular]
    }
 };
