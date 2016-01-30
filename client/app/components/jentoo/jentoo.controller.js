@@ -1,7 +1,5 @@
-class JentooController {
-  constructor() {
-    this.name = 'jentoo';
-  }
+function JentooController() {
+   this.name = 'Jentoo';
 }
 
-export default JentooController;
+module.exports = JentooController;

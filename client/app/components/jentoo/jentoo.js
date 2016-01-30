@@ -1,20 +1,18 @@
-import angular from 'angular';
-import uiRouter from 'angular-ui-router';
-import jentooComponent from './jentoo.component';
+var angular = require('angular');
+var jentooComponent = require('./jentoo.component');
 
-let jentooModule = angular.module('jentoo', [
-  uiRouter
-])
+var jentooModule = angular.module('jentoo', [])
+   .config(function ($stateProvider, $urlRouterProvider) {
 
-.config(($stateProvider) => {
-   "ngInject";
-   $stateProvider
-      .state('jentoo', {
-         url: '/jentoo',
-         template: '<jentoo></jentoo>'
-      });
-})
+      //$urlRouterProvider.otherwise('/');
+
+      $stateProvider
+         .state('jentoo', {
+            url: '/jentoo',
+            template: '<jentoo></jentoo>'
+         });
+   })
 
 .directive('jentoo', jentooComponent);
 
-export default jentooModule;
+module.exports = jentooModule;

@@ -1,57 +1,57 @@
 'use strict';
 
-import JentooModule from './jentoo'
-import JentooController from './jentoo.controller';
-import JentooComponent from './jentoo.component';
-import JentooTemplate from './jentoo.html';
+var JentooModule = require('./jentoo');
+var JentooController = require('./jentoo.controller');
+var JentooComponent = require('./jentoo.component');
+var JentooTemplate = require('./jentoo.html');
 
-describe('Jentoo', () => {
-  let $rootScope, makeController;
+describe('Jentoo', function () {
+  var $rootScope, makeController;
 
   beforeEach(window.module(JentooModule.name));
 
-  beforeEach(inject((_$rootScope_) => {
+  beforeEach(inject(function (_$rootScope_) {
     $rootScope = _$rootScope_;
-    makeController = () => {
+    makeController = function () {
       return new JentooController();
     };
   }));
 
-  describe('Module', () => {
+  describe('Module', function () {
     // top-level specs: i.e., routes, injection, naming
   });
 
-  describe('Controller', () => {
+  describe('Controller', function () {
     // controller specs
-    it('has a name property [REMOVE]', () => { // erase if removing this.name from the controller
-      let controller = makeController();
+    it('has a name property', function () { // erase if removing this.name from the controller
+      var controller = makeController();
        expect(controller.name).toBeDefined();
     });
 
   });
 
-  describe('Template', () => {
+  describe('Template', function () {
     // template specs
     // tip: use regex to ensure correct bindings are used e.g., {{  }}
-    it('has name in template [REMOVE]', () => {
+    it('has name in template', function () {
       expect(JentooTemplate).toMatch(/{{\s?jentooCtrl\.name\s?}}/g);
     });
 
   });
 
-  describe('Component', () => {
+  describe('Component', function () {
       // component/directive specs
-      let component = JentooComponent();
+      var component = JentooComponent();
 
-      it('includes the intended template',() => {
+      it('includes the intended template',function () {
         expect(component.template).toEqual(JentooTemplate);
       });
 
-      it('uses `controllerAs` syntax', () => {
+      it('uses `controllerAs` syntax', function () {
          expect(component.controllerAs).toBeDefined();
       });
 
-      it('invokes the right controller', () => {
+      it('invokes the right controller', function () {
         expect(component.controller).toEqual(JentooController);
       });
 

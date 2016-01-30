@@ -1,8 +1,8 @@
-import angular from 'angular';
-import Jentoo from './jentoo/jentoo';
+var angular = require('angular');
+var Jentoo = require('./jentoo/jentoo');
 
-let componentModule = angular.module('app.components', [
+var componentModule = angular.module('app.components', [
    Jentoo.name
 ]);
 
-export default componentModule;
+module.exports = componentModule;

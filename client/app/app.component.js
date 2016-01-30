@@ -1,11 +1,11 @@
-import template from './app.html';
-import './app.styl';
+var template = require('./app.html');
+require('./app.styl');
 
-let appComponent = () => {
+var appComponent = function() {
    return {
-      template,
+      template: template,
       restrict: 'E'
    };
 };
 
-export default appComponent;
+module.exports = appComponent;
