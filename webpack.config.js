@@ -1,19 +1,22 @@
 'use strict';
 
-var path = require('path');
-
-var webpack = require('webpack');
+var path = require('path'),
+    webpack = require('webpack'),
+    node_modules = path.resolve(__dirname, 'node_modules'),
+    pathToAngular = path.resolve(node_modules, 'angular/angular.min.js');
 
 module.exports = {
-   //context: __dirname + '/client/app/app.js',
-   entry:
-      [
-         'babel-polyfill',
+   context: __dirname,
+   entry: [
          './client/app/app.js'
       ],
+   resolve: {
+     alias: {
+        'angular': pathToAngular
+     }
+   },
    output: {
-      //path: __dirname + '/app/dist',
-      //publicPath: '/',
+      path: __dirname + '/build',
       publicPath: 'http://localhost:3000/assets/[hash]',
       filename: 'bundle.js'
    },
@@ -47,7 +50,8 @@ module.exports = {
          //{test: /\.(jpe?g|png|gif|svg)$/i, loader:'url?limit=25000'}
          //{test: /\.(jpe?g|png|gif|svg)$/i, loader:'url?name=assets/img/img-[hash:6].[ext]'}
          {test: /\.(jpe?g|png|gif|svg)$/i, loader:'url'}
-      ]
+      ],
+      norParse: [pathToAngular]
    },
    plugins: [
       //new webpack.optimize.CommonsChunkPlugin('common.js')
