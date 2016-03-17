@@ -1,4 +1,4 @@
-
+require('babel-core/register');
 
 var path = require('path');
 module.exports = function (config) {

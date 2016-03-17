@@ -34,7 +34,7 @@
 /******/ 	__webpack_require__.c = installedModules;
 
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "http://localhost:3000/assets/48ad9a2f21b18d7d80f0";
+/******/ 	__webpack_require__.p = "http://localhost:3000/assets/83374392ea59c8723715";
 
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
@@ -5329,7 +5329,7 @@
 
 	var _components2 = _interopRequireDefault(_components);
 
-	var _app = __webpack_require__(213);
+	var _app = __webpack_require__(206);
 
 	var _app2 = _interopRequireDefault(_app);
 
@@ -40171,13 +40171,9 @@
 
 	var _jentoo2 = _interopRequireDefault(_jentoo);
 
-	var _sisa = __webpack_require__(206);
-
-	var _sisa2 = _interopRequireDefault(_sisa);
-
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var componentModule = _angular2.default.module('app.components', [_jentoo2.default.name, _sisa2.default.name]);
+	var componentModule = _angular2.default.module('app.components', [_jentoo2.default.name]);
 
 	exports.default = componentModule;
 
@@ -40653,155 +40649,11 @@
 	   value: true
 	});
 
-	var _angular = __webpack_require__(192);
-
-	var _angular2 = _interopRequireDefault(_angular);
-
-	var _sisa = __webpack_require__(207);
-
-	var _sisa2 = _interopRequireDefault(_sisa);
-
-	var _sisa3 = __webpack_require__(208);
-
-	var _sisa4 = _interopRequireDefault(_sisa3);
-
-	var _sisa5 = __webpack_require__(212);
-
-	var _sisa6 = _interopRequireDefault(_sisa5);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var sisaModule = _angular2.default.module('sisa', []).config(_sisa2.default).component('sisa', _sisa4.default).controller('SisaController', _sisa6.default);
-
-	exports.default = sisaModule;
-
-/***/ },
-/* 207 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	   value: true
-	});
-	sisaRoutes.$inject = ['$stateProvider'];
-
-	function sisaRoutes($stateProvider) {
-
-	   $stateProvider.state('sisa', {
-	      url: '/sisa',
-	      template: '<sisa></sisa>'
-	   });
-	}
-
-	exports.default = sisaRoutes;
-
-/***/ },
-/* 208 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	   value: true
-	});
-
-	var _sisa = __webpack_require__(209);
-
-	var _sisa2 = _interopRequireDefault(_sisa);
-
-	__webpack_require__(210);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var sisaComponent = {
-	   template: _sisa2.default,
-	   controller: 'SisaController',
-	   controllerAs: 'sisaCtrl',
-	   bindings: {}
-	};
-
-	exports.default = sisaComponent;
-
-/***/ },
-/* 209 */
-/***/ function(module, exports) {
-
-	module.exports = "<div>\n  <h1>{{ sisaCtrl.name }}</h1>\n</div>\n";
-
-/***/ },
-/* 210 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-
-	// load the styles
-	var content = __webpack_require__(211);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(204)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../../../../node_modules/css-loader/index.js!./../../../../node_modules/stylus-loader/index.js!./sisa.styl", function() {
-				var newContent = require("!!./../../../../node_modules/css-loader/index.js!./../../../../node_modules/stylus-loader/index.js!./sisa.styl");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 211 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(203)();
-	// imports
-
-
-	// module
-	exports.push([module.id, ".sisa {\n  color: #f00;\n}\n", ""]);
-
-	// exports
-
-
-/***/ },
-/* 212 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	   value: true
-	});
-	function SisaController() {
-	   'use strict';
-
-	   var self = this;
-	   self.name = 'sisa';
-	}
-
-	exports.default = SisaController;
-
-/***/ },
-/* 213 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	   value: true
-	});
-
-	var _app = __webpack_require__(214);
+	var _app = __webpack_require__(207);
 
 	var _app2 = _interopRequireDefault(_app);
 
-	__webpack_require__(215);
+	__webpack_require__(208);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -40812,19 +40664,19 @@
 	exports.default = appComponent;
 
 /***/ },
-/* 214 */
+/* 207 */
 /***/ function(module, exports) {
 
 	module.exports = "<div class=\"site-wrapper\">\n\n   <div class=\"site-wrapper-inner\">\n\n      <div class=\"cover-container\">\n\n         <div class=\"masthead clearfix\">\n            <div class=\"inner\">\n               <h3 class=\"masthead-brand\">Coco's</h3>\n               <nav>\n                  <ul class=\"nav masthead-nav\">\n                     <li class=\"active\"><a href=\"#\">Home</a></li>\n                     <li><a ui-sref=\"jentoo\">Jentoo</a></li>\n                     <li><a href=\"#\">Contact</a></li>\n                  </ul>\n               </nav>\n            </div>\n         </div>\n\n         <div class=\"inner cover\">\n            <h1 class=\"cover-heading\">Welcome</h1>\n            <ui-view></ui-view>\n         </div>\n\n         <div class=\"mastfoot\">\n            <div class=\"inner\">\n               <p><a href=\"http://cocointeractivo.co\">Coco Interactivo</a></p>\n            </div>\n         </div>\n\n      </div>\n\n   </div>\n\n</div>";
 
 /***/ },
-/* 215 */
+/* 208 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(216);
+	var content = __webpack_require__(209);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(204)(content, {});
@@ -40844,7 +40696,7 @@
 	}
 
 /***/ },
-/* 216 */
+/* 209 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(203)();
