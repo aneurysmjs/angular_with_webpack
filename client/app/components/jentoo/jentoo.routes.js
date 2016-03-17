@@ -2,7 +2,6 @@ jentooRoutes.$inject = ['$stateProvider', '$urlRouterProvider'];
 
 function jentooRoutes($stateProvider, $urlRouterProvider) {
 
-   $urlRouterProvider.when("/", "/jentoo");
    $urlRouterProvider.otherwise('/jentoo');
 
    $stateProvider

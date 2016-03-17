@@ -1,12 +1,10 @@
 import angular from 'angular';
 import uiRouter from 'angular-ui-router';
-import Components from './components/components';
-import AppComponent from './app.component';
-//import 'normalize.css';
+import components from './components/components';
+import appComponent from './app.component';
 
 angular.module('app', [
-   uiRouter,
-   Components.name
-])
-
-.directive('app', AppComponent);
+      uiRouter,
+      components.name
+   ])
+   .component('app', appComponent);
