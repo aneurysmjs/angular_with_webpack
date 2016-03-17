@@ -1,7 +1,7 @@
 import angular from 'angular';
+import jentooRoutes from './jentoo.routes';
 import jentooComponent from './jentoo.component';
 import JentooController from './jentoo.controller';
-import jentooRoutes from './jentoo.routes';
 
 let jentooModule = angular.module('jentoo', [])
    .config(jentooRoutes)

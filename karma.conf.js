@@ -1,5 +1,5 @@
-// Karma configuration
-// Generated on Wed Dec 02 2015 20:40:17 GMT-0500 (COT)
+
+
 var path = require('path');
 module.exports = function (config) {
    config.set({

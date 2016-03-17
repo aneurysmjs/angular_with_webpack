@@ -1,8 +1,8 @@
 import angular from 'angular';
-import Jentoo from './jentoo/jentoo';
+import jentoo from './jentoo/jentoo';
 
 let componentModule = angular.module('app.components', [
-   Jentoo.name
-]);
+      jentoo.name
+   ]);
 
 export default componentModule;

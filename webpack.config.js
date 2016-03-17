@@ -10,8 +10,8 @@ module.exports = {
       './client/app/app.js'
    ],
    output: {
-      //path: __dirname + '/app/dist',
       //publicPath: '/',
+      path: path.resolve(__dirname, './client/dist'),
       publicPath: 'http://localhost:3000/assets/[hash]',
       filename: 'bundle.js'
    },
