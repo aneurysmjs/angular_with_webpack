@@ -1,35 +1,14 @@
 <div class="site-wrapper">
 
-   <div class="site-wrapper-inner">
+   <nav>
+      <ul class="nav masthead-nav">
+         <!--<li class="active"><a href="#">Home</a></li>-->
+         <li><a ui-sref="jentoo">Form</a></li>
+         <!--<li><a href="#">Contact</a></li>-->
+      </ul>
+   </nav>
 
-      <div class="cover-container">
+   <ui-view></ui-view>
 
-         <div class="masthead clearfix">
-            <div class="inner">
-               <h3 class="masthead-brand">Coco's</h3>
-               <nav>
-                  <ul class="nav masthead-nav">
-                     <li class="active"><a href="#">Home</a></li>
-                     <li><a ui-sref="jentoo">Jentoo</a></li>
-                     <li><a href="#">Contact</a></li>
-                  </ul>
-               </nav>
-            </div>
-         </div>
-
-         <div class="inner cover">
-            <h1 class="cover-heading">Welcome</h1>
-            <ui-view></ui-view>
-         </div>
-
-         <div class="mastfoot">
-            <div class="inner">
-               <p><a href="http://cocointeractivo.co">Coco Interactivo</a></p>
-            </div>
-         </div>
-
-      </div>
-
-   </div>
 
 </div>

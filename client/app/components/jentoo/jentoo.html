@@ -1,4 +1,71 @@
-<div id="jero">
-  <h1>{{ jentooCtrl.name }}</h1>
-   <img src="../../assets/img/blackend.jpeg" alt="blackend">
-</div>
+<form name="poleForm">
+
+   <div class="row">
+      <div class="col-md-3">
+         <label class="" for="name">Nombre</label>
+         <input id="name"
+                type="text"
+                class="form-control"
+                name="name"
+                ng-model="$ctrl.student.name"
+                placeholder="">
+      </div>
+      <div class="col-md-3">
+         <label class=""
+                for="lastName">Apellidos</label>
+         <input id="lastName"
+                type="text"
+                class="form-control"
+                name="lastName"
+                ng-model="$ctrl.student.lastName"
+                placeholder="">
+      </div>
+      <div class="col-md-6">
+
+         <div style="display:inline-block; min-height:290px;">
+            <label class=""
+                   for="lastName">Fecha de Inscripción</label>
+            <uib-datepicker ng-model="$ctrl.student.inscriptionDate"
+                            class="well well-sm"
+                            datepicker-options="inlineOptions">
+            </uib-datepicker>
+         </div>
+         <!--<label class="sr-only"
+                for="inscriptionDate">Fecha de Matrícula</label>
+         <p class="input-group">
+            <input id="inscriptionDate"
+                   type="text"
+                   name="inscriptionDate"
+                   class="form-control"
+                   uib-datepicker-popup="{{$ctrl.format}}"
+                   ng-model="$ctrl.student.inscriptionDate"
+                   is-open="$ctrl.popup.opened"
+                   datepicker-options="$ctrl.dateOptions"
+                   close-text="Cerrar"
+                   alt-input-formats="$ctrl.altInputFormats" />
+            <span class="input-group-btn">
+               <button type="button"
+                       class="btn btn-default"
+                       ng-click="$ctrl.openCalendar()">
+                  <i class="glyphicon glyphicon-calendar"></i>
+               </button>
+            </span>
+         </p>-->
+      </div>
+      <div class="col-md-3">
+         <label class=""
+                for="documentType">Tipo de Documento</label>
+         <input id="documentType"
+                type="text"
+                class="form-control"
+                name="documentType"
+                ng-model="$ctrl.student.documentType"
+                placeholder="">
+      </div>
+     <!-- <pre>{{$ctrl.olgah | json}}</pre>-->
+   </div>
+   <div class="row">
+
+   </div>
+
+</form>

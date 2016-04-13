@@ -34,7 +34,7 @@
 /******/ 	__webpack_require__.c = installedModules;
 
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "http://localhost:3000/assets/09486ab25358b141fd98";
+/******/ 	__webpack_require__.p = "http://localhost:3000/assets/8ae8d2bd3a7071250932";
 
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
@@ -5325,11 +5325,11 @@
 
 	var _app2 = _interopRequireDefault(_app);
 
-	var _components = __webpack_require__(197);
+	var _components = __webpack_require__(201);
 
 	var _components2 = _interopRequireDefault(_components);
 
-	var _app3 = __webpack_require__(208);
+	var _app3 = __webpack_require__(211);
 
 	var _app4 = _interopRequireDefault(_app3);
 
@@ -35796,16 +35796,21 @@
 
 	var _angularUiRouter2 = _interopRequireDefault(_angularUiRouter);
 
-	var _dragular = __webpack_require__(196);
+	var _angularUiBootstrap = __webpack_require__(196);
+
+	var _angularUiBootstrap2 = _interopRequireDefault(_angularUiBootstrap);
+
+	var _dragular = __webpack_require__(198);
 
 	var _dragular2 = _interopRequireDefault(_dragular);
 
+	var _angularfire = __webpack_require__(199);
+
+	var _angularfire2 = _interopRequireDefault(_angularfire);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	console.log('dragular');
-	console.log(_dragular2.default);
-
-	var appLibraries = _angular2.default.module('app.libraries', [_angularUiRouter2.default]);
+	var appLibraries = _angular2.default.module('app.libraries', [_angularUiRouter2.default, _angularUiBootstrap2.default, _angularfire2.default]);
 
 	exports.default = appLibraries;
 
@@ -40186,6 +40191,7348 @@
 
 /***/ },
 /* 196 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(197);
+
+	module.exports = 'ui.bootstrap';
+
+
+/***/ },
+/* 197 */
+/***/ function(module, exports) {
+
+	/*
+	 * angular-ui-bootstrap
+	 * http://angular-ui.github.io/bootstrap/
+
+	 * Version: 1.3.1 - 2016-04-05
+	 * License: MIT
+	 */angular.module("ui.bootstrap", ["ui.bootstrap.tpls", "ui.bootstrap.collapse","ui.bootstrap.accordion","ui.bootstrap.alert","ui.bootstrap.buttons","ui.bootstrap.carousel","ui.bootstrap.dateparser","ui.bootstrap.isClass","ui.bootstrap.datepicker","ui.bootstrap.position","ui.bootstrap.datepickerPopup","ui.bootstrap.debounce","ui.bootstrap.dropdown","ui.bootstrap.stackedMap","ui.bootstrap.modal","ui.bootstrap.paging","ui.bootstrap.pager","ui.bootstrap.pagination","ui.bootstrap.tooltip","ui.bootstrap.popover","ui.bootstrap.progressbar","ui.bootstrap.rating","ui.bootstrap.tabs","ui.bootstrap.timepicker","ui.bootstrap.typeahead"]);
+	angular.module("ui.bootstrap.tpls", ["uib/template/accordion/accordion-group.html","uib/template/accordion/accordion.html","uib/template/alert/alert.html","uib/template/carousel/carousel.html","uib/template/carousel/slide.html","uib/template/datepicker/datepicker.html","uib/template/datepicker/day.html","uib/template/datepicker/month.html","uib/template/datepicker/year.html","uib/template/datepickerPopup/popup.html","uib/template/modal/backdrop.html","uib/template/modal/window.html","uib/template/pager/pager.html","uib/template/pagination/pagination.html","uib/template/tooltip/tooltip-html-popup.html","uib/template/tooltip/tooltip-popup.html","uib/template/tooltip/tooltip-template-popup.html","uib/template/popover/popover-html.html","uib/template/popover/popover-template.html","uib/template/popover/popover.html","uib/template/progressbar/bar.html","uib/template/progressbar/progress.html","uib/template/progressbar/progressbar.html","uib/template/rating/rating.html","uib/template/tabs/tab.html","uib/template/tabs/tabset.html","uib/template/timepicker/timepicker.html","uib/template/typeahead/typeahead-match.html","uib/template/typeahead/typeahead-popup.html"]);
+	angular.module('ui.bootstrap.collapse', [])
+
+	  .directive('uibCollapse', ['$animate', '$q', '$parse', '$injector', function($animate, $q, $parse, $injector) {
+	    var $animateCss = $injector.has('$animateCss') ? $injector.get('$animateCss') : null;
+	    return {
+	      link: function(scope, element, attrs) {
+	        var expandingExpr = $parse(attrs.expanding),
+	            expandedExpr = $parse(attrs.expanded),
+	            collapsingExpr = $parse(attrs.collapsing),
+	            collapsedExpr = $parse(attrs.collapsed);
+
+	        if (!scope.$eval(attrs.uibCollapse)) {
+	          element.addClass('in')
+	            .addClass('collapse')
+	            .attr('aria-expanded', true)
+	            .attr('aria-hidden', false)
+	            .css({height: 'auto'});
+	        }
+
+	        function expand() {
+	          if (element.hasClass('collapse') && element.hasClass('in')) {
+	            return;
+	          }
+
+	          $q.resolve(expandingExpr(scope))
+	            .then(function() {
+	              element.removeClass('collapse')
+	                .addClass('collapsing')
+	                .attr('aria-expanded', true)
+	                .attr('aria-hidden', false);
+
+	              if ($animateCss) {
+	                $animateCss(element, {
+	                  addClass: 'in',
+	                  easing: 'ease',
+	                  to: { height: element[0].scrollHeight + 'px' }
+	                }).start()['finally'](expandDone);
+	              } else {
+	                $animate.addClass(element, 'in', {
+	                  to: { height: element[0].scrollHeight + 'px' }
+	                }).then(expandDone);
+	              }
+	            });
+	        }
+
+	        function expandDone() {
+	          element.removeClass('collapsing')
+	            .addClass('collapse')
+	            .css({height: 'auto'});
+	          expandedExpr(scope);
+	        }
+
+	        function collapse() {
+	          if (!element.hasClass('collapse') && !element.hasClass('in')) {
+	            return collapseDone();
+	          }
+
+	          $q.resolve(collapsingExpr(scope))
+	            .then(function() {
+	              element
+	                // IMPORTANT: The height must be set before adding "collapsing" class.
+	                // Otherwise, the browser attempts to animate from height 0 (in
+	                // collapsing class) to the given height here.
+	                .css({height: element[0].scrollHeight + 'px'})
+	                // initially all panel collapse have the collapse class, this removal
+	                // prevents the animation from jumping to collapsed state
+	                .removeClass('collapse')
+	                .addClass('collapsing')
+	                .attr('aria-expanded', false)
+	                .attr('aria-hidden', true);
+
+	              if ($animateCss) {
+	                $animateCss(element, {
+	                  removeClass: 'in',
+	                  to: {height: '0'}
+	                }).start()['finally'](collapseDone);
+	              } else {
+	                $animate.removeClass(element, 'in', {
+	                  to: {height: '0'}
+	                }).then(collapseDone);
+	              }
+	            });
+	        }
+
+	        function collapseDone() {
+	          element.css({height: '0'}); // Required so that collapse works when animation is disabled
+	          element.removeClass('collapsing')
+	            .addClass('collapse');
+	          collapsedExpr(scope);
+	        }
+
+	        scope.$watch(attrs.uibCollapse, function(shouldCollapse) {
+	          if (shouldCollapse) {
+	            collapse();
+	          } else {
+	            expand();
+	          }
+	        });
+	      }
+	    };
+	  }]);
+
+	angular.module('ui.bootstrap.accordion', ['ui.bootstrap.collapse'])
+
+	.constant('uibAccordionConfig', {
+	  closeOthers: true
+	})
+
+	.controller('UibAccordionController', ['$scope', '$attrs', 'uibAccordionConfig', function($scope, $attrs, accordionConfig) {
+	  // This array keeps track of the accordion groups
+	  this.groups = [];
+
+	  // Ensure that all the groups in this accordion are closed, unless close-others explicitly says not to
+	  this.closeOthers = function(openGroup) {
+	    var closeOthers = angular.isDefined($attrs.closeOthers) ?
+	      $scope.$eval($attrs.closeOthers) : accordionConfig.closeOthers;
+	    if (closeOthers) {
+	      angular.forEach(this.groups, function(group) {
+	        if (group !== openGroup) {
+	          group.isOpen = false;
+	        }
+	      });
+	    }
+	  };
+
+	  // This is called from the accordion-group directive to add itself to the accordion
+	  this.addGroup = function(groupScope) {
+	    var that = this;
+	    this.groups.push(groupScope);
+
+	    groupScope.$on('$destroy', function(event) {
+	      that.removeGroup(groupScope);
+	    });
+	  };
+
+	  // This is called from the accordion-group directive when to remove itself
+	  this.removeGroup = function(group) {
+	    var index = this.groups.indexOf(group);
+	    if (index !== -1) {
+	      this.groups.splice(index, 1);
+	    }
+	  };
+	}])
+
+	// The accordion directive simply sets up the directive controller
+	// and adds an accordion CSS class to itself element.
+	.directive('uibAccordion', function() {
+	  return {
+	    controller: 'UibAccordionController',
+	    controllerAs: 'accordion',
+	    transclude: true,
+	    templateUrl: function(element, attrs) {
+	      return attrs.templateUrl || 'uib/template/accordion/accordion.html';
+	    }
+	  };
+	})
+
+	// The accordion-group directive indicates a block of html that will expand and collapse in an accordion
+	.directive('uibAccordionGroup', function() {
+	  return {
+	    require: '^uibAccordion',         // We need this directive to be inside an accordion
+	    transclude: true,              // It transcludes the contents of the directive into the template
+	    replace: true,                // The element containing the directive will be replaced with the template
+	    templateUrl: function(element, attrs) {
+	      return attrs.templateUrl || 'uib/template/accordion/accordion-group.html';
+	    },
+	    scope: {
+	      heading: '@',               // Interpolate the heading attribute onto this scope
+	      panelClass: '@?',           // Ditto with panelClass
+	      isOpen: '=?',
+	      isDisabled: '=?'
+	    },
+	    controller: function() {
+	      this.setHeading = function(element) {
+	        this.heading = element;
+	      };
+	    },
+	    link: function(scope, element, attrs, accordionCtrl) {
+	      accordionCtrl.addGroup(scope);
+
+	      scope.openClass = attrs.openClass || 'panel-open';
+	      scope.panelClass = attrs.panelClass || 'panel-default';
+	      scope.$watch('isOpen', function(value) {
+	        element.toggleClass(scope.openClass, !!value);
+	        if (value) {
+	          accordionCtrl.closeOthers(scope);
+	        }
+	      });
+
+	      scope.toggleOpen = function($event) {
+	        if (!scope.isDisabled) {
+	          if (!$event || $event.which === 32) {
+	            scope.isOpen = !scope.isOpen;
+	          }
+	        }
+	      };
+
+	      var id = 'accordiongroup-' + scope.$id + '-' + Math.floor(Math.random() * 10000);
+	      scope.headingId = id + '-tab';
+	      scope.panelId = id + '-panel';
+	    }
+	  };
+	})
+
+	// Use accordion-heading below an accordion-group to provide a heading containing HTML
+	.directive('uibAccordionHeading', function() {
+	  return {
+	    transclude: true,   // Grab the contents to be used as the heading
+	    template: '',       // In effect remove this element!
+	    replace: true,
+	    require: '^uibAccordionGroup',
+	    link: function(scope, element, attrs, accordionGroupCtrl, transclude) {
+	      // Pass the heading to the accordion-group controller
+	      // so that it can be transcluded into the right place in the template
+	      // [The second parameter to transclude causes the elements to be cloned so that they work in ng-repeat]
+	      accordionGroupCtrl.setHeading(transclude(scope, angular.noop));
+	    }
+	  };
+	})
+
+	// Use in the accordion-group template to indicate where you want the heading to be transcluded
+	// You must provide the property on the accordion-group controller that will hold the transcluded element
+	.directive('uibAccordionTransclude', function() {
+	  return {
+	    require: '^uibAccordionGroup',
+	    link: function(scope, element, attrs, controller) {
+	      scope.$watch(function() { return controller[attrs.uibAccordionTransclude]; }, function(heading) {
+	        if (heading) {
+	          var elem = angular.element(element[0].querySelector('[uib-accordion-header]'));
+	          elem.html('');
+	          elem.append(heading);
+	        }
+	      });
+	    }
+	  };
+	});
+
+	angular.module('ui.bootstrap.alert', [])
+
+	.controller('UibAlertController', ['$scope', '$attrs', '$interpolate', '$timeout', function($scope, $attrs, $interpolate, $timeout) {
+	  $scope.closeable = !!$attrs.close;
+
+	  var dismissOnTimeout = angular.isDefined($attrs.dismissOnTimeout) ?
+	    $interpolate($attrs.dismissOnTimeout)($scope.$parent) : null;
+
+	  if (dismissOnTimeout) {
+	    $timeout(function() {
+	      $scope.close();
+	    }, parseInt(dismissOnTimeout, 10));
+	  }
+	}])
+
+	.directive('uibAlert', function() {
+	  return {
+	    controller: 'UibAlertController',
+	    controllerAs: 'alert',
+	    templateUrl: function(element, attrs) {
+	      return attrs.templateUrl || 'uib/template/alert/alert.html';
+	    },
+	    transclude: true,
+	    replace: true,
+	    scope: {
+	      type: '@',
+	      close: '&'
+	    }
+	  };
+	});
+
+	angular.module('ui.bootstrap.buttons', [])
+
+	.constant('uibButtonConfig', {
+	  activeClass: 'active',
+	  toggleEvent: 'click'
+	})
+
+	.controller('UibButtonsController', ['uibButtonConfig', function(buttonConfig) {
+	  this.activeClass = buttonConfig.activeClass || 'active';
+	  this.toggleEvent = buttonConfig.toggleEvent || 'click';
+	}])
+
+	.directive('uibBtnRadio', ['$parse', function($parse) {
+	  return {
+	    require: ['uibBtnRadio', 'ngModel'],
+	    controller: 'UibButtonsController',
+	    controllerAs: 'buttons',
+	    link: function(scope, element, attrs, ctrls) {
+	      var buttonsCtrl = ctrls[0], ngModelCtrl = ctrls[1];
+	      var uncheckableExpr = $parse(attrs.uibUncheckable);
+
+	      element.find('input').css({display: 'none'});
+
+	      //model -> UI
+	      ngModelCtrl.$render = function() {
+	        element.toggleClass(buttonsCtrl.activeClass, angular.equals(ngModelCtrl.$modelValue, scope.$eval(attrs.uibBtnRadio)));
+	      };
+
+	      //ui->model
+	      element.on(buttonsCtrl.toggleEvent, function() {
+	        if (attrs.disabled) {
+	          return;
+	        }
+
+	        var isActive = element.hasClass(buttonsCtrl.activeClass);
+
+	        if (!isActive || angular.isDefined(attrs.uncheckable)) {
+	          scope.$apply(function() {
+	            ngModelCtrl.$setViewValue(isActive ? null : scope.$eval(attrs.uibBtnRadio));
+	            ngModelCtrl.$render();
+	          });
+	        }
+	      });
+
+	      if (attrs.uibUncheckable) {
+	        scope.$watch(uncheckableExpr, function(uncheckable) {
+	          attrs.$set('uncheckable', uncheckable ? '' : undefined);
+	        });
+	      }
+	    }
+	  };
+	}])
+
+	.directive('uibBtnCheckbox', function() {
+	  return {
+	    require: ['uibBtnCheckbox', 'ngModel'],
+	    controller: 'UibButtonsController',
+	    controllerAs: 'button',
+	    link: function(scope, element, attrs, ctrls) {
+	      var buttonsCtrl = ctrls[0], ngModelCtrl = ctrls[1];
+
+	      element.find('input').css({display: 'none'});
+
+	      function getTrueValue() {
+	        return getCheckboxValue(attrs.btnCheckboxTrue, true);
+	      }
+
+	      function getFalseValue() {
+	        return getCheckboxValue(attrs.btnCheckboxFalse, false);
+	      }
+
+	      function getCheckboxValue(attribute, defaultValue) {
+	        return angular.isDefined(attribute) ? scope.$eval(attribute) : defaultValue;
+	      }
+
+	      //model -> UI
+	      ngModelCtrl.$render = function() {
+	        element.toggleClass(buttonsCtrl.activeClass, angular.equals(ngModelCtrl.$modelValue, getTrueValue()));
+	      };
+
+	      //ui->model
+	      element.on(buttonsCtrl.toggleEvent, function() {
+	        if (attrs.disabled) {
+	          return;
+	        }
+
+	        scope.$apply(function() {
+	          ngModelCtrl.$setViewValue(element.hasClass(buttonsCtrl.activeClass) ? getFalseValue() : getTrueValue());
+	          ngModelCtrl.$render();
+	        });
+	      });
+	    }
+	  };
+	});
+
+	angular.module('ui.bootstrap.carousel', [])
+
+	.controller('UibCarouselController', ['$scope', '$element', '$interval', '$timeout', '$animate', function($scope, $element, $interval, $timeout, $animate) {
+	  var self = this,
+	    slides = self.slides = $scope.slides = [],
+	    SLIDE_DIRECTION = 'uib-slideDirection',
+	    currentIndex = $scope.active,
+	    currentInterval, isPlaying, bufferedTransitions = [];
+
+	  var destroyed = false;
+
+	  self.addSlide = function(slide, element) {
+	    slides.push({
+	      slide: slide,
+	      element: element
+	    });
+	    slides.sort(function(a, b) {
+	      return +a.slide.index - +b.slide.index;
+	    });
+	    //if this is the first slide or the slide is set to active, select it
+	    if (slide.index === $scope.active || slides.length === 1 && !angular.isNumber($scope.active)) {
+	      if ($scope.$currentTransition) {
+	        $scope.$currentTransition = null;
+	      }
+
+	      currentIndex = slide.index;
+	      $scope.active = slide.index;
+	      setActive(currentIndex);
+	      self.select(slides[findSlideIndex(slide)]);
+	      if (slides.length === 1) {
+	        $scope.play();
+	      }
+	    }
+	  };
+
+	  self.getCurrentIndex = function() {
+	    for (var i = 0; i < slides.length; i++) {
+	      if (slides[i].slide.index === currentIndex) {
+	        return i;
+	      }
+	    }
+	  };
+
+	  self.next = $scope.next = function() {
+	    var newIndex = (self.getCurrentIndex() + 1) % slides.length;
+
+	    if (newIndex === 0 && $scope.noWrap()) {
+	      $scope.pause();
+	      return;
+	    }
+
+	    return self.select(slides[newIndex], 'next');
+	  };
+
+	  self.prev = $scope.prev = function() {
+	    var newIndex = self.getCurrentIndex() - 1 < 0 ? slides.length - 1 : self.getCurrentIndex() - 1;
+
+	    if ($scope.noWrap() && newIndex === slides.length - 1) {
+	      $scope.pause();
+	      return;
+	    }
+
+	    return self.select(slides[newIndex], 'prev');
+	  };
+
+	  self.removeSlide = function(slide) {
+	    var index = findSlideIndex(slide);
+
+	    var bufferedIndex = bufferedTransitions.indexOf(slides[index]);
+	    if (bufferedIndex !== -1) {
+	      bufferedTransitions.splice(bufferedIndex, 1);
+	    }
+
+	    //get the index of the slide inside the carousel
+	    slides.splice(index, 1);
+	    if (slides.length > 0 && currentIndex === index) {
+	      if (index >= slides.length) {
+	        currentIndex = slides.length - 1;
+	        $scope.active = currentIndex;
+	        setActive(currentIndex);
+	        self.select(slides[slides.length - 1]);
+	      } else {
+	        currentIndex = index;
+	        $scope.active = currentIndex;
+	        setActive(currentIndex);
+	        self.select(slides[index]);
+	      }
+	    } else if (currentIndex > index) {
+	      currentIndex--;
+	      $scope.active = currentIndex;
+	    }
+
+	    //clean the active value when no more slide
+	    if (slides.length === 0) {
+	      currentIndex = null;
+	      $scope.active = null;
+	      clearBufferedTransitions();
+	    }
+	  };
+
+	  /* direction: "prev" or "next" */
+	  self.select = $scope.select = function(nextSlide, direction) {
+	    var nextIndex = findSlideIndex(nextSlide.slide);
+	    //Decide direction if it's not given
+	    if (direction === undefined) {
+	      direction = nextIndex > self.getCurrentIndex() ? 'next' : 'prev';
+	    }
+	    //Prevent this user-triggered transition from occurring if there is already one in progress
+	    if (nextSlide.slide.index !== currentIndex &&
+	      !$scope.$currentTransition) {
+	      goNext(nextSlide.slide, nextIndex, direction);
+	    } else if (nextSlide && nextSlide.slide.index !== currentIndex && $scope.$currentTransition) {
+	      bufferedTransitions.push(slides[nextIndex]);
+	    }
+	  };
+
+	  /* Allow outside people to call indexOf on slides array */
+	  $scope.indexOfSlide = function(slide) {
+	    return +slide.slide.index;
+	  };
+
+	  $scope.isActive = function(slide) {
+	    return $scope.active === slide.slide.index;
+	  };
+
+	  $scope.isPrevDisabled = function() {
+	    return $scope.active === 0 && $scope.noWrap();
+	  };
+
+	  $scope.isNextDisabled = function() {
+	    return $scope.active === slides.length - 1 && $scope.noWrap();
+	  };
+
+	  $scope.pause = function() {
+	    if (!$scope.noPause) {
+	      isPlaying = false;
+	      resetTimer();
+	    }
+	  };
+
+	  $scope.play = function() {
+	    if (!isPlaying) {
+	      isPlaying = true;
+	      restartTimer();
+	    }
+	  };
+
+	  $scope.$on('$destroy', function() {
+	    destroyed = true;
+	    resetTimer();
+	  });
+
+	  $scope.$watch('noTransition', function(noTransition) {
+	    $animate.enabled($element, !noTransition);
+	  });
+
+	  $scope.$watch('interval', restartTimer);
+
+	  $scope.$watchCollection('slides', resetTransition);
+
+	  $scope.$watch('active', function(index) {
+	    if (angular.isNumber(index) && currentIndex !== index) {
+	      for (var i = 0; i < slides.length; i++) {
+	        if (slides[i].slide.index === index) {
+	          index = i;
+	          break;
+	        }
+	      }
+
+	      var slide = slides[index];
+	      if (slide) {
+	        setActive(index);
+	        self.select(slides[index]);
+	        currentIndex = index;
+	      }
+	    }
+	  });
+
+	  function clearBufferedTransitions() {
+	    while (bufferedTransitions.length) {
+	      bufferedTransitions.shift();
+	    }
+	  }
+
+	  function getSlideByIndex(index) {
+	    for (var i = 0, l = slides.length; i < l; ++i) {
+	      if (slides[i].index === index) {
+	        return slides[i];
+	      }
+	    }
+	  }
+
+	  function setActive(index) {
+	    for (var i = 0; i < slides.length; i++) {
+	      slides[i].slide.active = i === index;
+	    }
+	  }
+
+	  function goNext(slide, index, direction) {
+	    if (destroyed) {
+	      return;
+	    }
+
+	    angular.extend(slide, {direction: direction});
+	    angular.extend(slides[currentIndex].slide || {}, {direction: direction});
+	    if ($animate.enabled($element) && !$scope.$currentTransition &&
+	      slides[index].element && self.slides.length > 1) {
+	      slides[index].element.data(SLIDE_DIRECTION, slide.direction);
+	      var currentIdx = self.getCurrentIndex();
+
+	      if (angular.isNumber(currentIdx) && slides[currentIdx].element) {
+	        slides[currentIdx].element.data(SLIDE_DIRECTION, slide.direction);
+	      }
+
+	      $scope.$currentTransition = true;
+	      $animate.on('addClass', slides[index].element, function(element, phase) {
+	        if (phase === 'close') {
+	          $scope.$currentTransition = null;
+	          $animate.off('addClass', element);
+	          if (bufferedTransitions.length) {
+	            var nextSlide = bufferedTransitions.pop().slide;
+	            var nextIndex = nextSlide.index;
+	            var nextDirection = nextIndex > self.getCurrentIndex() ? 'next' : 'prev';
+	            clearBufferedTransitions();
+
+	            goNext(nextSlide, nextIndex, nextDirection);
+	          }
+	        }
+	      });
+	    }
+
+	    $scope.active = slide.index;
+	    currentIndex = slide.index;
+	    setActive(index);
+
+	    //every time you change slides, reset the timer
+	    restartTimer();
+	  }
+
+	  function findSlideIndex(slide) {
+	    for (var i = 0; i < slides.length; i++) {
+	      if (slides[i].slide === slide) {
+	        return i;
+	      }
+	    }
+	  }
+
+	  function resetTimer() {
+	    if (currentInterval) {
+	      $interval.cancel(currentInterval);
+	      currentInterval = null;
+	    }
+	  }
+
+	  function resetTransition(slides) {
+	    if (!slides.length) {
+	      $scope.$currentTransition = null;
+	      clearBufferedTransitions();
+	    }
+	  }
+
+	  function restartTimer() {
+	    resetTimer();
+	    var interval = +$scope.interval;
+	    if (!isNaN(interval) && interval > 0) {
+	      currentInterval = $interval(timerFn, interval);
+	    }
+	  }
+
+	  function timerFn() {
+	    var interval = +$scope.interval;
+	    if (isPlaying && !isNaN(interval) && interval > 0 && slides.length) {
+	      $scope.next();
+	    } else {
+	      $scope.pause();
+	    }
+	  }
+	}])
+
+	.directive('uibCarousel', function() {
+	  return {
+	    transclude: true,
+	    replace: true,
+	    controller: 'UibCarouselController',
+	    controllerAs: 'carousel',
+	    templateUrl: function(element, attrs) {
+	      return attrs.templateUrl || 'uib/template/carousel/carousel.html';
+	    },
+	    scope: {
+	      active: '=',
+	      interval: '=',
+	      noTransition: '=',
+	      noPause: '=',
+	      noWrap: '&'
+	    }
+	  };
+	})
+
+	.directive('uibSlide', function() {
+	  return {
+	    require: '^uibCarousel',
+	    transclude: true,
+	    replace: true,
+	    templateUrl: function(element, attrs) {
+	      return attrs.templateUrl || 'uib/template/carousel/slide.html';
+	    },
+	    scope: {
+	      actual: '=?',
+	      index: '=?'
+	    },
+	    link: function (scope, element, attrs, carouselCtrl) {
+	      carouselCtrl.addSlide(scope, element);
+	      //when the scope is destroyed then remove the slide from the current slides array
+	      scope.$on('$destroy', function() {
+	        carouselCtrl.removeSlide(scope);
+	      });
+	    }
+	  };
+	})
+
+	.animation('.item', ['$animateCss',
+	function($animateCss) {
+	  var SLIDE_DIRECTION = 'uib-slideDirection';
+
+	  function removeClass(element, className, callback) {
+	    element.removeClass(className);
+	    if (callback) {
+	      callback();
+	    }
+	  }
+
+	  return {
+	    beforeAddClass: function(element, className, done) {
+	      if (className === 'active') {
+	        var stopped = false;
+	        var direction = element.data(SLIDE_DIRECTION);
+	        var directionClass = direction === 'next' ? 'left' : 'right';
+	        var removeClassFn = removeClass.bind(this, element,
+	          directionClass + ' ' + direction, done);
+	        element.addClass(direction);
+
+	        $animateCss(element, {addClass: directionClass})
+	          .start()
+	          .done(removeClassFn);
+
+	        return function() {
+	          stopped = true;
+	        };
+	      }
+	      done();
+	    },
+	    beforeRemoveClass: function (element, className, done) {
+	      if (className === 'active') {
+	        var stopped = false;
+	        var direction = element.data(SLIDE_DIRECTION);
+	        var directionClass = direction === 'next' ? 'left' : 'right';
+	        var removeClassFn = removeClass.bind(this, element, directionClass, done);
+
+	        $animateCss(element, {addClass: directionClass})
+	          .start()
+	          .done(removeClassFn);
+
+	        return function() {
+	          stopped = true;
+	        };
+	      }
+	      done();
+	    }
+	  };
+	}]);
+
+	angular.module('ui.bootstrap.dateparser', [])
+
+	.service('uibDateParser', ['$log', '$locale', 'dateFilter', 'orderByFilter', function($log, $locale, dateFilter, orderByFilter) {
+	  // Pulled from https://github.com/mbostock/d3/blob/master/src/format/requote.js
+	  var SPECIAL_CHARACTERS_REGEXP = /[\\\^\$\*\+\?\|\[\]\(\)\.\{\}]/g;
+
+	  var localeId;
+	  var formatCodeToRegex;
+
+	  this.init = function() {
+	    localeId = $locale.id;
+
+	    this.parsers = {};
+	    this.formatters = {};
+
+	    formatCodeToRegex = [
+	      {
+	        key: 'yyyy',
+	        regex: '\\d{4}',
+	        apply: function(value) { this.year = +value; },
+	        formatter: function(date) {
+	          var _date = new Date();
+	          _date.setFullYear(Math.abs(date.getFullYear()));
+	          return dateFilter(_date, 'yyyy');
+	        }
+	      },
+	      {
+	        key: 'yy',
+	        regex: '\\d{2}',
+	        apply: function(value) { value = +value; this.year = value < 69 ? value + 2000 : value + 1900; },
+	        formatter: function(date) {
+	          var _date = new Date();
+	          _date.setFullYear(Math.abs(date.getFullYear()));
+	          return dateFilter(_date, 'yy');
+	        }
+	      },
+	      {
+	        key: 'y',
+	        regex: '\\d{1,4}',
+	        apply: function(value) { this.year = +value; },
+	        formatter: function(date) {
+	          var _date = new Date();
+	          _date.setFullYear(Math.abs(date.getFullYear()));
+	          return dateFilter(_date, 'y');
+	        }
+	      },
+	      {
+	        key: 'M!',
+	        regex: '0?[1-9]|1[0-2]',
+	        apply: function(value) { this.month = value - 1; },
+	        formatter: function(date) {
+	          var value = date.getMonth();
+	          if (/^[0-9]$/.test(value)) {
+	            return dateFilter(date, 'MM');
+	          }
+
+	          return dateFilter(date, 'M');
+	        }
+	      },
+	      {
+	        key: 'MMMM',
+	        regex: $locale.DATETIME_FORMATS.MONTH.join('|'),
+	        apply: function(value) { this.month = $locale.DATETIME_FORMATS.MONTH.indexOf(value); },
+	        formatter: function(date) { return dateFilter(date, 'MMMM'); }
+	      },
+	      {
+	        key: 'MMM',
+	        regex: $locale.DATETIME_FORMATS.SHORTMONTH.join('|'),
+	        apply: function(value) { this.month = $locale.DATETIME_FORMATS.SHORTMONTH.indexOf(value); },
+	        formatter: function(date) { return dateFilter(date, 'MMM'); }
+	      },
+	      {
+	        key: 'MM',
+	        regex: '0[1-9]|1[0-2]',
+	        apply: function(value) { this.month = value - 1; },
+	        formatter: function(date) { return dateFilter(date, 'MM'); }
+	      },
+	      {
+	        key: 'M',
+	        regex: '[1-9]|1[0-2]',
+	        apply: function(value) { this.month = value - 1; },
+	        formatter: function(date) { return dateFilter(date, 'M'); }
+	      },
+	      {
+	        key: 'd!',
+	        regex: '[0-2]?[0-9]{1}|3[0-1]{1}',
+	        apply: function(value) { this.date = +value; },
+	        formatter: function(date) {
+	          var value = date.getDate();
+	          if (/^[1-9]$/.test(value)) {
+	            return dateFilter(date, 'dd');
+	          }
+
+	          return dateFilter(date, 'd');
+	        }
+	      },
+	      {
+	        key: 'dd',
+	        regex: '[0-2][0-9]{1}|3[0-1]{1}',
+	        apply: function(value) { this.date = +value; },
+	        formatter: function(date) { return dateFilter(date, 'dd'); }
+	      },
+	      {
+	        key: 'd',
+	        regex: '[1-2]?[0-9]{1}|3[0-1]{1}',
+	        apply: function(value) { this.date = +value; },
+	        formatter: function(date) { return dateFilter(date, 'd'); }
+	      },
+	      {
+	        key: 'EEEE',
+	        regex: $locale.DATETIME_FORMATS.DAY.join('|'),
+	        formatter: function(date) { return dateFilter(date, 'EEEE'); }
+	      },
+	      {
+	        key: 'EEE',
+	        regex: $locale.DATETIME_FORMATS.SHORTDAY.join('|'),
+	        formatter: function(date) { return dateFilter(date, 'EEE'); }
+	      },
+	      {
+	        key: 'HH',
+	        regex: '(?:0|1)[0-9]|2[0-3]',
+	        apply: function(value) { this.hours = +value; },
+	        formatter: function(date) { return dateFilter(date, 'HH'); }
+	      },
+	      {
+	        key: 'hh',
+	        regex: '0[0-9]|1[0-2]',
+	        apply: function(value) { this.hours = +value; },
+	        formatter: function(date) { return dateFilter(date, 'hh'); }
+	      },
+	      {
+	        key: 'H',
+	        regex: '1?[0-9]|2[0-3]',
+	        apply: function(value) { this.hours = +value; },
+	        formatter: function(date) { return dateFilter(date, 'H'); }
+	      },
+	      {
+	        key: 'h',
+	        regex: '[0-9]|1[0-2]',
+	        apply: function(value) { this.hours = +value; },
+	        formatter: function(date) { return dateFilter(date, 'h'); }
+	      },
+	      {
+	        key: 'mm',
+	        regex: '[0-5][0-9]',
+	        apply: function(value) { this.minutes = +value; },
+	        formatter: function(date) { return dateFilter(date, 'mm'); }
+	      },
+	      {
+	        key: 'm',
+	        regex: '[0-9]|[1-5][0-9]',
+	        apply: function(value) { this.minutes = +value; },
+	        formatter: function(date) { return dateFilter(date, 'm'); }
+	      },
+	      {
+	        key: 'sss',
+	        regex: '[0-9][0-9][0-9]',
+	        apply: function(value) { this.milliseconds = +value; },
+	        formatter: function(date) { return dateFilter(date, 'sss'); }
+	      },
+	      {
+	        key: 'ss',
+	        regex: '[0-5][0-9]',
+	        apply: function(value) { this.seconds = +value; },
+	        formatter: function(date) { return dateFilter(date, 'ss'); }
+	      },
+	      {
+	        key: 's',
+	        regex: '[0-9]|[1-5][0-9]',
+	        apply: function(value) { this.seconds = +value; },
+	        formatter: function(date) { return dateFilter(date, 's'); }
+	      },
+	      {
+	        key: 'a',
+	        regex: $locale.DATETIME_FORMATS.AMPMS.join('|'),
+	        apply: function(value) {
+	          if (this.hours === 12) {
+	            this.hours = 0;
+	          }
+
+	          if (value === 'PM') {
+	            this.hours += 12;
+	          }
+	        },
+	        formatter: function(date) { return dateFilter(date, 'a'); }
+	      },
+	      {
+	        key: 'Z',
+	        regex: '[+-]\\d{4}',
+	        apply: function(value) {
+	          var matches = value.match(/([+-])(\d{2})(\d{2})/),
+	            sign = matches[1],
+	            hours = matches[2],
+	            minutes = matches[3];
+	          this.hours += toInt(sign + hours);
+	          this.minutes += toInt(sign + minutes);
+	        },
+	        formatter: function(date) {
+	          return dateFilter(date, 'Z');
+	        }
+	      },
+	      {
+	        key: 'ww',
+	        regex: '[0-4][0-9]|5[0-3]',
+	        formatter: function(date) { return dateFilter(date, 'ww'); }
+	      },
+	      {
+	        key: 'w',
+	        regex: '[0-9]|[1-4][0-9]|5[0-3]',
+	        formatter: function(date) { return dateFilter(date, 'w'); }
+	      },
+	      {
+	        key: 'GGGG',
+	        regex: $locale.DATETIME_FORMATS.ERANAMES.join('|').replace(/\s/g, '\\s'),
+	        formatter: function(date) { return dateFilter(date, 'GGGG'); }
+	      },
+	      {
+	        key: 'GGG',
+	        regex: $locale.DATETIME_FORMATS.ERAS.join('|'),
+	        formatter: function(date) { return dateFilter(date, 'GGG'); }
+	      },
+	      {
+	        key: 'GG',
+	        regex: $locale.DATETIME_FORMATS.ERAS.join('|'),
+	        formatter: function(date) { return dateFilter(date, 'GG'); }
+	      },
+	      {
+	        key: 'G',
+	        regex: $locale.DATETIME_FORMATS.ERAS.join('|'),
+	        formatter: function(date) { return dateFilter(date, 'G'); }
+	      }
+	    ];
+	  };
+
+	  this.init();
+
+	  function createParser(format, func) {
+	    var map = [], regex = format.split('');
+
+	    // check for literal values
+	    var quoteIndex = format.indexOf('\'');
+	    if (quoteIndex > -1) {
+	      var inLiteral = false;
+	      format = format.split('');
+	      for (var i = quoteIndex; i < format.length; i++) {
+	        if (inLiteral) {
+	          if (format[i] === '\'') {
+	            if (i + 1 < format.length && format[i+1] === '\'') { // escaped single quote
+	              format[i+1] = '$';
+	              regex[i+1] = '';
+	            } else { // end of literal
+	              regex[i] = '';
+	              inLiteral = false;
+	            }
+	          }
+	          format[i] = '$';
+	        } else {
+	          if (format[i] === '\'') { // start of literal
+	            format[i] = '$';
+	            regex[i] = '';
+	            inLiteral = true;
+	          }
+	        }
+	      }
+
+	      format = format.join('');
+	    }
+
+	    angular.forEach(formatCodeToRegex, function(data) {
+	      var index = format.indexOf(data.key);
+
+	      if (index > -1) {
+	        format = format.split('');
+
+	        regex[index] = '(' + data.regex + ')';
+	        format[index] = '$'; // Custom symbol to define consumed part of format
+	        for (var i = index + 1, n = index + data.key.length; i < n; i++) {
+	          regex[i] = '';
+	          format[i] = '$';
+	        }
+	        format = format.join('');
+
+	        map.push({
+	          index: index,
+	          key: data.key,
+	          apply: data[func],
+	          matcher: data.regex
+	        });
+	      }
+	    });
+
+	    return {
+	      regex: new RegExp('^' + regex.join('') + '$'),
+	      map: orderByFilter(map, 'index')
+	    };
+	  }
+
+	  this.filter = function(date, format) {
+	    if (!angular.isDate(date) || isNaN(date) || !format) {
+	      return '';
+	    }
+
+	    format = $locale.DATETIME_FORMATS[format] || format;
+
+	    if ($locale.id !== localeId) {
+	      this.init();
+	    }
+
+	    if (!this.formatters[format]) {
+	      this.formatters[format] = createParser(format, 'formatter');
+	    }
+
+	    var parser = this.formatters[format],
+	      map = parser.map;
+
+	    var _format = format;
+
+	    return map.reduce(function(str, mapper, i) {
+	      var match = _format.match(new RegExp('(.*)' + mapper.key));
+	      if (match && angular.isString(match[1])) {
+	        str += match[1];
+	        _format = _format.replace(match[1] + mapper.key, '');
+	      }
+
+	      var endStr = i === map.length - 1 ? _format : '';
+
+	      if (mapper.apply) {
+	        return str + mapper.apply.call(null, date) + endStr;
+	      }
+
+	      return str + endStr;
+	    }, '');
+	  };
+
+	  this.parse = function(input, format, baseDate) {
+	    if (!angular.isString(input) || !format) {
+	      return input;
+	    }
+
+	    format = $locale.DATETIME_FORMATS[format] || format;
+	    format = format.replace(SPECIAL_CHARACTERS_REGEXP, '\\$&');
+
+	    if ($locale.id !== localeId) {
+	      this.init();
+	    }
+
+	    if (!this.parsers[format]) {
+	      this.parsers[format] = createParser(format, 'apply');
+	    }
+
+	    var parser = this.parsers[format],
+	        regex = parser.regex,
+	        map = parser.map,
+	        results = input.match(regex),
+	        tzOffset = false;
+	    if (results && results.length) {
+	      var fields, dt;
+	      if (angular.isDate(baseDate) && !isNaN(baseDate.getTime())) {
+	        fields = {
+	          year: baseDate.getFullYear(),
+	          month: baseDate.getMonth(),
+	          date: baseDate.getDate(),
+	          hours: baseDate.getHours(),
+	          minutes: baseDate.getMinutes(),
+	          seconds: baseDate.getSeconds(),
+	          milliseconds: baseDate.getMilliseconds()
+	        };
+	      } else {
+	        if (baseDate) {
+	          $log.warn('dateparser:', 'baseDate is not a valid date');
+	        }
+	        fields = { year: 1900, month: 0, date: 1, hours: 0, minutes: 0, seconds: 0, milliseconds: 0 };
+	      }
+
+	      for (var i = 1, n = results.length; i < n; i++) {
+	        var mapper = map[i - 1];
+	        if (mapper.matcher === 'Z') {
+	          tzOffset = true;
+	        }
+
+	        if (mapper.apply) {
+	          mapper.apply.call(fields, results[i]);
+	        }
+	      }
+
+	      var datesetter = tzOffset ? Date.prototype.setUTCFullYear :
+	        Date.prototype.setFullYear;
+	      var timesetter = tzOffset ? Date.prototype.setUTCHours :
+	        Date.prototype.setHours;
+
+	      if (isValid(fields.year, fields.month, fields.date)) {
+	        if (angular.isDate(baseDate) && !isNaN(baseDate.getTime()) && !tzOffset) {
+	          dt = new Date(baseDate);
+	          datesetter.call(dt, fields.year, fields.month, fields.date);
+	          timesetter.call(dt, fields.hours, fields.minutes,
+	            fields.seconds, fields.milliseconds);
+	        } else {
+	          dt = new Date(0);
+	          datesetter.call(dt, fields.year, fields.month, fields.date);
+	          timesetter.call(dt, fields.hours || 0, fields.minutes || 0,
+	            fields.seconds || 0, fields.milliseconds || 0);
+	        }
+	      }
+
+	      return dt;
+	    }
+	  };
+
+	  // Check if date is valid for specific month (and year for February).
+	  // Month: 0 = Jan, 1 = Feb, etc
+	  function isValid(year, month, date) {
+	    if (date < 1) {
+	      return false;
+	    }
+
+	    if (month === 1 && date > 28) {
+	      return date === 29 && (year % 4 === 0 && year % 100 !== 0 || year % 400 === 0);
+	    }
+
+	    if (month === 3 || month === 5 || month === 8 || month === 10) {
+	      return date < 31;
+	    }
+
+	    return true;
+	  }
+
+	  function toInt(str) {
+	    return parseInt(str, 10);
+	  }
+
+	  this.toTimezone = toTimezone;
+	  this.fromTimezone = fromTimezone;
+	  this.timezoneToOffset = timezoneToOffset;
+	  this.addDateMinutes = addDateMinutes;
+	  this.convertTimezoneToLocal = convertTimezoneToLocal;
+
+	  function toTimezone(date, timezone) {
+	    return date && timezone ? convertTimezoneToLocal(date, timezone) : date;
+	  }
+
+	  function fromTimezone(date, timezone) {
+	    return date && timezone ? convertTimezoneToLocal(date, timezone, true) : date;
+	  }
+
+	  //https://github.com/angular/angular.js/blob/4daafd3dbe6a80d578f5a31df1bb99c77559543e/src/Angular.js#L1207
+	  function timezoneToOffset(timezone, fallback) {
+	    var requestedTimezoneOffset = Date.parse('Jan 01, 1970 00:00:00 ' + timezone) / 60000;
+	    return isNaN(requestedTimezoneOffset) ? fallback : requestedTimezoneOffset;
+	  }
+
+	  function addDateMinutes(date, minutes) {
+	    date = new Date(date.getTime());
+	    date.setMinutes(date.getMinutes() + minutes);
+	    return date;
+	  }
+
+	  function convertTimezoneToLocal(date, timezone, reverse) {
+	    reverse = reverse ? -1 : 1;
+	    var timezoneOffset = timezoneToOffset(timezone, date.getTimezoneOffset());
+	    return addDateMinutes(date, reverse * (timezoneOffset - date.getTimezoneOffset()));
+	  }
+	}]);
+
+	// Avoiding use of ng-class as it creates a lot of watchers when a class is to be applied to
+	// at most one element.
+	angular.module('ui.bootstrap.isClass', [])
+	.directive('uibIsClass', [
+	         '$animate',
+	function ($animate) {
+	  //                    11111111          22222222
+	  var ON_REGEXP = /^\s*([\s\S]+?)\s+on\s+([\s\S]+?)\s*$/;
+	  //                    11111111           22222222
+	  var IS_REGEXP = /^\s*([\s\S]+?)\s+for\s+([\s\S]+?)\s*$/;
+
+	  var dataPerTracked = {};
+
+	  return {
+	    restrict: 'A',
+	    compile: function (tElement, tAttrs) {
+	      var linkedScopes = [];
+	      var instances = [];
+	      var expToData = {};
+	      var lastActivated = null;
+	      var onExpMatches = tAttrs.uibIsClass.match(ON_REGEXP);
+	      var onExp = onExpMatches[2];
+	      var expsStr = onExpMatches[1];
+	      var exps = expsStr.split(',');
+
+	      return linkFn;
+
+	      function linkFn(scope, element, attrs) {
+	        linkedScopes.push(scope);
+	        instances.push({
+	          scope: scope,
+	          element: element
+	        });
+
+	        exps.forEach(function (exp, k) {
+	          addForExp(exp, scope);
+	        });
+
+	        scope.$on('$destroy', removeScope);
+	      }
+
+	      function addForExp(exp, scope) {
+	        var matches = exp.match(IS_REGEXP);
+	        var clazz = scope.$eval(matches[1]);
+	        var compareWithExp = matches[2];
+	        var data = expToData[exp];
+	        if (!data) {
+	          var watchFn = function (compareWithVal) {
+	            var newActivated = null;
+	            instances.some(function (instance) {
+	              var thisVal = instance.scope.$eval(onExp);
+	              if (thisVal === compareWithVal) {
+	                newActivated = instance;
+	                return true;
+	              }
+	            });
+	            if (data.lastActivated !== newActivated) {
+	              if (data.lastActivated) {
+	                $animate.removeClass(data.lastActivated.element, clazz);
+	              }
+	              if (newActivated) {
+	                $animate.addClass(newActivated.element, clazz);
+	              }
+	              data.lastActivated = newActivated;
+	            }
+	          };
+	          expToData[exp] = data = {
+	            lastActivated: null,
+	            scope: scope,
+	            watchFn: watchFn,
+	            compareWithExp: compareWithExp,
+	            watcher: scope.$watch(compareWithExp, watchFn)
+	          };
+	        }
+	        data.watchFn(scope.$eval(compareWithExp));
+	      }
+
+	      function removeScope(e) {
+	        var removedScope = e.targetScope;
+	        var index = linkedScopes.indexOf(removedScope);
+	        linkedScopes.splice(index, 1);
+	        instances.splice(index, 1);
+	        if (linkedScopes.length) {
+	          var newWatchScope = linkedScopes[0];
+	          angular.forEach(expToData, function (data) {
+	            if (data.scope === removedScope) {
+	              data.watcher = newWatchScope.$watch(data.compareWithExp, data.watchFn);
+	              data.scope = newWatchScope;
+	            }
+	          });
+	        }
+	        else {
+	          expToData = {};
+	        }
+	      }
+	    }
+	  };
+	}]);
+	angular.module('ui.bootstrap.datepicker', ['ui.bootstrap.dateparser', 'ui.bootstrap.isClass'])
+
+	.value('$datepickerSuppressError', false)
+
+	.value('$datepickerLiteralWarning', true)
+
+	.constant('uibDatepickerConfig', {
+	  datepickerMode: 'day',
+	  formatDay: 'dd',
+	  formatMonth: 'MMMM',
+	  formatYear: 'yyyy',
+	  formatDayHeader: 'EEE',
+	  formatDayTitle: 'MMMM yyyy',
+	  formatMonthTitle: 'yyyy',
+	  maxDate: null,
+	  maxMode: 'year',
+	  minDate: null,
+	  minMode: 'day',
+	  ngModelOptions: {},
+	  shortcutPropagation: false,
+	  showWeeks: true,
+	  yearColumns: 5,
+	  yearRows: 4
+	})
+
+	.controller('UibDatepickerController', ['$scope', '$attrs', '$parse', '$interpolate', '$locale', '$log', 'dateFilter', 'uibDatepickerConfig', '$datepickerLiteralWarning', '$datepickerSuppressError', 'uibDateParser',
+	  function($scope, $attrs, $parse, $interpolate, $locale, $log, dateFilter, datepickerConfig, $datepickerLiteralWarning, $datepickerSuppressError, dateParser) {
+	  var self = this,
+	      ngModelCtrl = { $setViewValue: angular.noop }, // nullModelCtrl;
+	      ngModelOptions = {},
+	      watchListeners = [],
+	      optionsUsed = !!$attrs.datepickerOptions;
+
+	  if (!$scope.datepickerOptions) {
+	    $scope.datepickerOptions = {};
+	  }
+
+	  // Modes chain
+	  this.modes = ['day', 'month', 'year'];
+
+	  [
+	    'customClass',
+	    'dateDisabled',
+	    'datepickerMode',
+	    'formatDay',
+	    'formatDayHeader',
+	    'formatDayTitle',
+	    'formatMonth',
+	    'formatMonthTitle',
+	    'formatYear',
+	    'maxDate',
+	    'maxMode',
+	    'minDate',
+	    'minMode',
+	    'showWeeks',
+	    'shortcutPropagation',
+	    'startingDay',
+	    'yearColumns',
+	    'yearRows'
+	  ].forEach(function(key) {
+	    switch (key) {
+	      case 'customClass':
+	      case 'dateDisabled':
+	        $scope[key] = $scope.datepickerOptions[key] || angular.noop;
+	        break;
+	      case 'datepickerMode':
+	        $scope.datepickerMode = angular.isDefined($scope.datepickerOptions.datepickerMode) ?
+	          $scope.datepickerOptions.datepickerMode : datepickerConfig.datepickerMode;
+	        break;
+	      case 'formatDay':
+	      case 'formatDayHeader':
+	      case 'formatDayTitle':
+	      case 'formatMonth':
+	      case 'formatMonthTitle':
+	      case 'formatYear':
+	        self[key] = angular.isDefined($scope.datepickerOptions[key]) ?
+	          $interpolate($scope.datepickerOptions[key])($scope.$parent) :
+	          datepickerConfig[key];
+	        break;
+	      case 'showWeeks':
+	      case 'shortcutPropagation':
+	      case 'yearColumns':
+	      case 'yearRows':
+	        self[key] = angular.isDefined($scope.datepickerOptions[key]) ?
+	          $scope.datepickerOptions[key] : datepickerConfig[key];
+	        break;
+	      case 'startingDay':
+	        if (angular.isDefined($scope.datepickerOptions.startingDay)) {
+	          self.startingDay = $scope.datepickerOptions.startingDay;
+	        } else if (angular.isNumber(datepickerConfig.startingDay)) {
+	          self.startingDay = datepickerConfig.startingDay;
+	        } else {
+	          self.startingDay = ($locale.DATETIME_FORMATS.FIRSTDAYOFWEEK + 8) % 7;
+	        }
+
+	        break;
+	      case 'maxDate':
+	      case 'minDate':
+	        $scope.$watch('datepickerOptions.' + key, function(value) {
+	          if (value) {
+	            if (angular.isDate(value)) {
+	              self[key] = dateParser.fromTimezone(new Date(value), ngModelOptions.timezone);
+	            } else {
+	              if ($datepickerLiteralWarning) {
+	                $log.warn('Literal date support has been deprecated, please switch to date object usage');
+	              }
+
+	              self[key] = new Date(dateFilter(value, 'medium'));
+	            }
+	          } else {
+	            self[key] = datepickerConfig[key] ?
+	              dateParser.fromTimezone(new Date(datepickerConfig[key]), ngModelOptions.timezone) :
+	              null;
+	          }
+
+	          self.refreshView();
+	        });
+
+	        break;
+	      case 'maxMode':
+	      case 'minMode':
+	        if ($scope.datepickerOptions[key]) {
+	          $scope.$watch(function() { return $scope.datepickerOptions[key]; }, function(value) {
+	            self[key] = $scope[key] = angular.isDefined(value) ? value : datepickerOptions[key];
+	            if (key === 'minMode' && self.modes.indexOf($scope.datepickerOptions.datepickerMode) < self.modes.indexOf(self[key]) ||
+	              key === 'maxMode' && self.modes.indexOf($scope.datepickerOptions.datepickerMode) > self.modes.indexOf(self[key])) {
+	              $scope.datepickerMode = self[key];
+	              $scope.datepickerOptions.datepickerMode = self[key];
+	            }
+	          });
+	        } else {
+	          self[key] = $scope[key] = datepickerConfig[key] || null;
+	        }
+
+	        break;
+	    }
+	  });
+
+	  $scope.uniqueId = 'datepicker-' + $scope.$id + '-' + Math.floor(Math.random() * 10000);
+
+	  $scope.disabled = angular.isDefined($attrs.disabled) || false;
+	  if (angular.isDefined($attrs.ngDisabled)) {
+	    watchListeners.push($scope.$parent.$watch($attrs.ngDisabled, function(disabled) {
+	      $scope.disabled = disabled;
+	      self.refreshView();
+	    }));
+	  }
+
+	  $scope.isActive = function(dateObject) {
+	    if (self.compare(dateObject.date, self.activeDate) === 0) {
+	      $scope.activeDateId = dateObject.uid;
+	      return true;
+	    }
+	    return false;
+	  };
+
+	  this.init = function(ngModelCtrl_) {
+	    ngModelCtrl = ngModelCtrl_;
+	    ngModelOptions = ngModelCtrl_.$options || datepickerConfig.ngModelOptions;
+	    if ($scope.datepickerOptions.initDate) {
+	      self.activeDate = dateParser.fromTimezone($scope.datepickerOptions.initDate, ngModelOptions.timezone) || new Date();
+	      $scope.$watch('datepickerOptions.initDate', function(initDate) {
+	        if (initDate && (ngModelCtrl.$isEmpty(ngModelCtrl.$modelValue) || ngModelCtrl.$invalid)) {
+	          self.activeDate = dateParser.fromTimezone(initDate, ngModelOptions.timezone);
+	          self.refreshView();
+	        }
+	      });
+	    } else {
+	      self.activeDate = new Date();
+	    }
+
+	    this.activeDate = ngModelCtrl.$modelValue ?
+	      dateParser.fromTimezone(new Date(ngModelCtrl.$modelValue), ngModelOptions.timezone) :
+	      dateParser.fromTimezone(new Date(), ngModelOptions.timezone);
+
+	    ngModelCtrl.$render = function() {
+	      self.render();
+	    };
+	  };
+
+	  this.render = function() {
+	    if (ngModelCtrl.$viewValue) {
+	      var date = new Date(ngModelCtrl.$viewValue),
+	          isValid = !isNaN(date);
+
+	      if (isValid) {
+	        this.activeDate = dateParser.fromTimezone(date, ngModelOptions.timezone);
+	      } else if (!$datepickerSuppressError) {
+	        $log.error('Datepicker directive: "ng-model" value must be a Date object');
+	      }
+	    }
+	    this.refreshView();
+	  };
+
+	  this.refreshView = function() {
+	    if (this.element) {
+	      $scope.selectedDt = null;
+	      this._refreshView();
+	      if ($scope.activeDt) {
+	        $scope.activeDateId = $scope.activeDt.uid;
+	      }
+
+	      var date = ngModelCtrl.$viewValue ? new Date(ngModelCtrl.$viewValue) : null;
+	      date = dateParser.fromTimezone(date, ngModelOptions.timezone);
+	      ngModelCtrl.$setValidity('dateDisabled', !date ||
+	        this.element && !this.isDisabled(date));
+	    }
+	  };
+
+	  this.createDateObject = function(date, format) {
+	    var model = ngModelCtrl.$viewValue ? new Date(ngModelCtrl.$viewValue) : null;
+	    model = dateParser.fromTimezone(model, ngModelOptions.timezone);
+	    var today = new Date();
+	    today = dateParser.fromTimezone(today, ngModelOptions.timezone);
+	    var time = this.compare(date, today);
+	    var dt = {
+	      date: date,
+	      label: dateParser.filter(date, format),
+	      selected: model && this.compare(date, model) === 0,
+	      disabled: this.isDisabled(date),
+	      past: time < 0,
+	      current: time === 0,
+	      future: time > 0,
+	      customClass: this.customClass(date) || null
+	    };
+
+	    if (model && this.compare(date, model) === 0) {
+	      $scope.selectedDt = dt;
+	    }
+
+	    if (self.activeDate && this.compare(dt.date, self.activeDate) === 0) {
+	      $scope.activeDt = dt;
+	    }
+
+	    return dt;
+	  };
+
+	  this.isDisabled = function(date) {
+	    return $scope.disabled ||
+	      this.minDate && this.compare(date, this.minDate) < 0 ||
+	      this.maxDate && this.compare(date, this.maxDate) > 0 ||
+	      $scope.dateDisabled && $scope.dateDisabled({date: date, mode: $scope.datepickerMode});
+	  };
+
+	  this.customClass = function(date) {
+	    return $scope.customClass({date: date, mode: $scope.datepickerMode});
+	  };
+
+	  // Split array into smaller arrays
+	  this.split = function(arr, size) {
+	    var arrays = [];
+	    while (arr.length > 0) {
+	      arrays.push(arr.splice(0, size));
+	    }
+	    return arrays;
+	  };
+
+	  $scope.select = function(date) {
+	    if ($scope.datepickerMode === self.minMode) {
+	      var dt = ngModelCtrl.$viewValue ? dateParser.fromTimezone(new Date(ngModelCtrl.$viewValue), ngModelOptions.timezone) : new Date(0, 0, 0, 0, 0, 0, 0);
+	      dt.setFullYear(date.getFullYear(), date.getMonth(), date.getDate());
+	      dt = dateParser.toTimezone(dt, ngModelOptions.timezone);
+	      ngModelCtrl.$setViewValue(dt);
+	      ngModelCtrl.$render();
+	    } else {
+	      self.activeDate = date;
+	      setMode(self.modes[self.modes.indexOf($scope.datepickerMode) - 1]);
+
+	      $scope.$emit('uib:datepicker.mode');
+	    }
+	  };
+
+	  $scope.move = function(direction) {
+	    var year = self.activeDate.getFullYear() + direction * (self.step.years || 0),
+	        month = self.activeDate.getMonth() + direction * (self.step.months || 0);
+	    self.activeDate.setFullYear(year, month, 1);
+	    self.refreshView();
+	  };
+
+	  $scope.toggleMode = function(direction) {
+	    direction = direction || 1;
+
+	    if ($scope.datepickerMode === self.maxMode && direction === 1 ||
+	      $scope.datepickerMode === self.minMode && direction === -1) {
+	      return;
+	    }
+
+	    setMode(self.modes[self.modes.indexOf($scope.datepickerMode) + direction]);
+
+	    $scope.$emit('uib:datepicker.mode');
+	  };
+
+	  // Key event mapper
+	  $scope.keys = { 13: 'enter', 32: 'space', 33: 'pageup', 34: 'pagedown', 35: 'end', 36: 'home', 37: 'left', 38: 'up', 39: 'right', 40: 'down' };
+
+	  var focusElement = function() {
+	    self.element[0].focus();
+	  };
+
+	  // Listen for focus requests from popup directive
+	  $scope.$on('uib:datepicker.focus', focusElement);
+
+	  $scope.keydown = function(evt) {
+	    var key = $scope.keys[evt.which];
+
+	    if (!key || evt.shiftKey || evt.altKey || $scope.disabled) {
+	      return;
+	    }
+
+	    evt.preventDefault();
+	    if (!self.shortcutPropagation) {
+	      evt.stopPropagation();
+	    }
+
+	    if (key === 'enter' || key === 'space') {
+	      if (self.isDisabled(self.activeDate)) {
+	        return; // do nothing
+	      }
+	      $scope.select(self.activeDate);
+	    } else if (evt.ctrlKey && (key === 'up' || key === 'down')) {
+	      $scope.toggleMode(key === 'up' ? 1 : -1);
+	    } else {
+	      self.handleKeyDown(key, evt);
+	      self.refreshView();
+	    }
+	  };
+
+	  $scope.$on("$destroy", function() {
+	    //Clear all watch listeners on destroy
+	    while (watchListeners.length) {
+	      watchListeners.shift()();
+	    }
+	  });
+
+	  function setMode(mode) {
+	    $scope.datepickerMode = mode;
+	    $scope.datepickerOptions.datepickerMode = mode;
+	  }
+	}])
+
+	.controller('UibDaypickerController', ['$scope', '$element', 'dateFilter', function(scope, $element, dateFilter) {
+	  var DAYS_IN_MONTH = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+	  this.step = { months: 1 };
+	  this.element = $element;
+	  function getDaysInMonth(year, month) {
+	    return month === 1 && year % 4 === 0 &&
+	      (year % 100 !== 0 || year % 400 === 0) ? 29 : DAYS_IN_MONTH[month];
+	  }
+
+	  this.init = function(ctrl) {
+	    angular.extend(ctrl, this);
+	    scope.showWeeks = ctrl.showWeeks;
+	    ctrl.refreshView();
+	  };
+
+	  this.getDates = function(startDate, n) {
+	    var dates = new Array(n), current = new Date(startDate), i = 0, date;
+	    while (i < n) {
+	      date = new Date(current);
+	      dates[i++] = date;
+	      current.setDate(current.getDate() + 1);
+	    }
+	    return dates;
+	  };
+
+	  this._refreshView = function() {
+	    var year = this.activeDate.getFullYear(),
+	      month = this.activeDate.getMonth(),
+	      firstDayOfMonth = new Date(this.activeDate);
+
+	    firstDayOfMonth.setFullYear(year, month, 1);
+
+	    var difference = this.startingDay - firstDayOfMonth.getDay(),
+	      numDisplayedFromPreviousMonth = difference > 0 ?
+	        7 - difference : - difference,
+	      firstDate = new Date(firstDayOfMonth);
+
+	    if (numDisplayedFromPreviousMonth > 0) {
+	      firstDate.setDate(-numDisplayedFromPreviousMonth + 1);
+	    }
+
+	    // 42 is the number of days on a six-week calendar
+	    var days = this.getDates(firstDate, 42);
+	    for (var i = 0; i < 42; i ++) {
+	      days[i] = angular.extend(this.createDateObject(days[i], this.formatDay), {
+	        secondary: days[i].getMonth() !== month,
+	        uid: scope.uniqueId + '-' + i
+	      });
+	    }
+
+	    scope.labels = new Array(7);
+	    for (var j = 0; j < 7; j++) {
+	      scope.labels[j] = {
+	        abbr: dateFilter(days[j].date, this.formatDayHeader),
+	        full: dateFilter(days[j].date, 'EEEE')
+	      };
+	    }
+
+	    scope.title = dateFilter(this.activeDate, this.formatDayTitle);
+	    scope.rows = this.split(days, 7);
+
+	    if (scope.showWeeks) {
+	      scope.weekNumbers = [];
+	      var thursdayIndex = (4 + 7 - this.startingDay) % 7,
+	          numWeeks = scope.rows.length;
+	      for (var curWeek = 0; curWeek < numWeeks; curWeek++) {
+	        scope.weekNumbers.push(
+	          getISO8601WeekNumber(scope.rows[curWeek][thursdayIndex].date));
+	      }
+	    }
+	  };
+
+	  this.compare = function(date1, date2) {
+	    var _date1 = new Date(date1.getFullYear(), date1.getMonth(), date1.getDate());
+	    var _date2 = new Date(date2.getFullYear(), date2.getMonth(), date2.getDate());
+	    _date1.setFullYear(date1.getFullYear());
+	    _date2.setFullYear(date2.getFullYear());
+	    return _date1 - _date2;
+	  };
+
+	  function getISO8601WeekNumber(date) {
+	    var checkDate = new Date(date);
+	    checkDate.setDate(checkDate.getDate() + 4 - (checkDate.getDay() || 7)); // Thursday
+	    var time = checkDate.getTime();
+	    checkDate.setMonth(0); // Compare with Jan 1
+	    checkDate.setDate(1);
+	    return Math.floor(Math.round((time - checkDate) / 86400000) / 7) + 1;
+	  }
+
+	  this.handleKeyDown = function(key, evt) {
+	    var date = this.activeDate.getDate();
+
+	    if (key === 'left') {
+	      date = date - 1;
+	    } else if (key === 'up') {
+	      date = date - 7;
+	    } else if (key === 'right') {
+	      date = date + 1;
+	    } else if (key === 'down') {
+	      date = date + 7;
+	    } else if (key === 'pageup' || key === 'pagedown') {
+	      var month = this.activeDate.getMonth() + (key === 'pageup' ? - 1 : 1);
+	      this.activeDate.setMonth(month, 1);
+	      date = Math.min(getDaysInMonth(this.activeDate.getFullYear(), this.activeDate.getMonth()), date);
+	    } else if (key === 'home') {
+	      date = 1;
+	    } else if (key === 'end') {
+	      date = getDaysInMonth(this.activeDate.getFullYear(), this.activeDate.getMonth());
+	    }
+	    this.activeDate.setDate(date);
+	  };
+	}])
+
+	.controller('UibMonthpickerController', ['$scope', '$element', 'dateFilter', function(scope, $element, dateFilter) {
+	  this.step = { years: 1 };
+	  this.element = $element;
+
+	  this.init = function(ctrl) {
+	    angular.extend(ctrl, this);
+	    ctrl.refreshView();
+	  };
+
+	  this._refreshView = function() {
+	    var months = new Array(12),
+	        year = this.activeDate.getFullYear(),
+	        date;
+
+	    for (var i = 0; i < 12; i++) {
+	      date = new Date(this.activeDate);
+	      date.setFullYear(year, i, 1);
+	      months[i] = angular.extend(this.createDateObject(date, this.formatMonth), {
+	        uid: scope.uniqueId + '-' + i
+	      });
+	    }
+
+	    scope.title = dateFilter(this.activeDate, this.formatMonthTitle);
+	    scope.rows = this.split(months, 3);
+	  };
+
+	  this.compare = function(date1, date2) {
+	    var _date1 = new Date(date1.getFullYear(), date1.getMonth());
+	    var _date2 = new Date(date2.getFullYear(), date2.getMonth());
+	    _date1.setFullYear(date1.getFullYear());
+	    _date2.setFullYear(date2.getFullYear());
+	    return _date1 - _date2;
+	  };
+
+	  this.handleKeyDown = function(key, evt) {
+	    var date = this.activeDate.getMonth();
+
+	    if (key === 'left') {
+	      date = date - 1;
+	    } else if (key === 'up') {
+	      date = date - 3;
+	    } else if (key === 'right') {
+	      date = date + 1;
+	    } else if (key === 'down') {
+	      date = date + 3;
+	    } else if (key === 'pageup' || key === 'pagedown') {
+	      var year = this.activeDate.getFullYear() + (key === 'pageup' ? - 1 : 1);
+	      this.activeDate.setFullYear(year);
+	    } else if (key === 'home') {
+	      date = 0;
+	    } else if (key === 'end') {
+	      date = 11;
+	    }
+	    this.activeDate.setMonth(date);
+	  };
+	}])
+
+	.controller('UibYearpickerController', ['$scope', '$element', 'dateFilter', function(scope, $element, dateFilter) {
+	  var columns, range;
+	  this.element = $element;
+
+	  function getStartingYear(year) {
+	    return parseInt((year - 1) / range, 10) * range + 1;
+	  }
+
+	  this.yearpickerInit = function() {
+	    columns = this.yearColumns;
+	    range = this.yearRows * columns;
+	    this.step = { years: range };
+	  };
+
+	  this._refreshView = function() {
+	    var years = new Array(range), date;
+
+	    for (var i = 0, start = getStartingYear(this.activeDate.getFullYear()); i < range; i++) {
+	      date = new Date(this.activeDate);
+	      date.setFullYear(start + i, 0, 1);
+	      years[i] = angular.extend(this.createDateObject(date, this.formatYear), {
+	        uid: scope.uniqueId + '-' + i
+	      });
+	    }
+
+	    scope.title = [years[0].label, years[range - 1].label].join(' - ');
+	    scope.rows = this.split(years, columns);
+	    scope.columns = columns;
+	  };
+
+	  this.compare = function(date1, date2) {
+	    return date1.getFullYear() - date2.getFullYear();
+	  };
+
+	  this.handleKeyDown = function(key, evt) {
+	    var date = this.activeDate.getFullYear();
+
+	    if (key === 'left') {
+	      date = date - 1;
+	    } else if (key === 'up') {
+	      date = date - columns;
+	    } else if (key === 'right') {
+	      date = date + 1;
+	    } else if (key === 'down') {
+	      date = date + columns;
+	    } else if (key === 'pageup' || key === 'pagedown') {
+	      date += (key === 'pageup' ? - 1 : 1) * range;
+	    } else if (key === 'home') {
+	      date = getStartingYear(this.activeDate.getFullYear());
+	    } else if (key === 'end') {
+	      date = getStartingYear(this.activeDate.getFullYear()) + range - 1;
+	    }
+	    this.activeDate.setFullYear(date);
+	  };
+	}])
+
+	.directive('uibDatepicker', function() {
+	  return {
+	    replace: true,
+	    templateUrl: function(element, attrs) {
+	      return attrs.templateUrl || 'uib/template/datepicker/datepicker.html';
+	    },
+	    scope: {
+	      datepickerOptions: '=?'
+	    },
+	    require: ['uibDatepicker', '^ngModel'],
+	    controller: 'UibDatepickerController',
+	    controllerAs: 'datepicker',
+	    link: function(scope, element, attrs, ctrls) {
+	      var datepickerCtrl = ctrls[0], ngModelCtrl = ctrls[1];
+
+	      datepickerCtrl.init(ngModelCtrl);
+	    }
+	  };
+	})
+
+	.directive('uibDaypicker', function() {
+	  return {
+	    replace: true,
+	    templateUrl: function(element, attrs) {
+	      return attrs.templateUrl || 'uib/template/datepicker/day.html';
+	    },
+	    require: ['^uibDatepicker', 'uibDaypicker'],
+	    controller: 'UibDaypickerController',
+	    link: function(scope, element, attrs, ctrls) {
+	      var datepickerCtrl = ctrls[0],
+	        daypickerCtrl = ctrls[1];
+
+	      daypickerCtrl.init(datepickerCtrl);
+	    }
+	  };
+	})
+
+	.directive('uibMonthpicker', function() {
+	  return {
+	    replace: true,
+	    templateUrl: function(element, attrs) {
+	      return attrs.templateUrl || 'uib/template/datepicker/month.html';
+	    },
+	    require: ['^uibDatepicker', 'uibMonthpicker'],
+	    controller: 'UibMonthpickerController',
+	    link: function(scope, element, attrs, ctrls) {
+	      var datepickerCtrl = ctrls[0],
+	        monthpickerCtrl = ctrls[1];
+
+	      monthpickerCtrl.init(datepickerCtrl);
+	    }
+	  };
+	})
+
+	.directive('uibYearpicker', function() {
+	  return {
+	    replace: true,
+	    templateUrl: function(element, attrs) {
+	      return attrs.templateUrl || 'uib/template/datepicker/year.html';
+	    },
+	    require: ['^uibDatepicker', 'uibYearpicker'],
+	    controller: 'UibYearpickerController',
+	    link: function(scope, element, attrs, ctrls) {
+	      var ctrl = ctrls[0];
+	      angular.extend(ctrl, ctrls[1]);
+	      ctrl.yearpickerInit();
+
+	      ctrl.refreshView();
+	    }
+	  };
+	});
+
+	angular.module('ui.bootstrap.position', [])
+
+	/**
+	 * A set of utility methods for working with the DOM.
+	 * It is meant to be used where we need to absolute-position elements in
+	 * relation to another element (this is the case for tooltips, popovers,
+	 * typeahead suggestions etc.).
+	 */
+	  .factory('$uibPosition', ['$document', '$window', function($document, $window) {
+	    /**
+	     * Used by scrollbarWidth() function to cache scrollbar's width.
+	     * Do not access this variable directly, use scrollbarWidth() instead.
+	     */
+	    var SCROLLBAR_WIDTH;
+	    /**
+	     * scrollbar on body and html element in IE and Edge overlay
+	     * content and should be considered 0 width.
+	     */
+	    var BODY_SCROLLBAR_WIDTH;
+	    var OVERFLOW_REGEX = {
+	      normal: /(auto|scroll)/,
+	      hidden: /(auto|scroll|hidden)/
+	    };
+	    var PLACEMENT_REGEX = {
+	      auto: /\s?auto?\s?/i,
+	      primary: /^(top|bottom|left|right)$/,
+	      secondary: /^(top|bottom|left|right|center)$/,
+	      vertical: /^(top|bottom)$/
+	    };
+	    var BODY_REGEX = /(HTML|BODY)/;
+
+	    return {
+
+	      /**
+	       * Provides a raw DOM element from a jQuery/jQLite element.
+	       *
+	       * @param {element} elem - The element to convert.
+	       *
+	       * @returns {element} A HTML element.
+	       */
+	      getRawNode: function(elem) {
+	        return elem.nodeName ? elem : elem[0] || elem;
+	      },
+
+	      /**
+	       * Provides a parsed number for a style property.  Strips
+	       * units and casts invalid numbers to 0.
+	       *
+	       * @param {string} value - The style value to parse.
+	       *
+	       * @returns {number} A valid number.
+	       */
+	      parseStyle: function(value) {
+	        value = parseFloat(value);
+	        return isFinite(value) ? value : 0;
+	      },
+
+	      /**
+	       * Provides the closest positioned ancestor.
+	       *
+	       * @param {element} element - The element to get the offest parent for.
+	       *
+	       * @returns {element} The closest positioned ancestor.
+	       */
+	      offsetParent: function(elem) {
+	        elem = this.getRawNode(elem);
+
+	        var offsetParent = elem.offsetParent || $document[0].documentElement;
+
+	        function isStaticPositioned(el) {
+	          return ($window.getComputedStyle(el).position || 'static') === 'static';
+	        }
+
+	        while (offsetParent && offsetParent !== $document[0].documentElement && isStaticPositioned(offsetParent)) {
+	          offsetParent = offsetParent.offsetParent;
+	        }
+
+	        return offsetParent || $document[0].documentElement;
+	      },
+
+	      /**
+	       * Provides the scrollbar width, concept from TWBS measureScrollbar()
+	       * function in https://github.com/twbs/bootstrap/blob/master/js/modal.js
+	       * In IE and Edge, scollbar on body and html element overlay and should
+	       * return a width of 0.
+	       *
+	       * @returns {number} The width of the browser scollbar.
+	       */
+	      scrollbarWidth: function(isBody) {
+	        if (isBody) {
+	          if (angular.isUndefined(BODY_SCROLLBAR_WIDTH)) {
+	            var bodyElem = $document.find('body');
+	            bodyElem.addClass('uib-position-body-scrollbar-measure');
+	            BODY_SCROLLBAR_WIDTH = $window.innerWidth - bodyElem[0].clientWidth;
+	            BODY_SCROLLBAR_WIDTH = isFinite(BODY_SCROLLBAR_WIDTH) ? BODY_SCROLLBAR_WIDTH : 0;
+	            bodyElem.removeClass('uib-position-body-scrollbar-measure');
+	          }
+	          return BODY_SCROLLBAR_WIDTH;
+	        }
+
+	        if (angular.isUndefined(SCROLLBAR_WIDTH)) {
+	          var scrollElem = angular.element('<div class="uib-position-scrollbar-measure"></div>');
+	          $document.find('body').append(scrollElem);
+	          SCROLLBAR_WIDTH = scrollElem[0].offsetWidth - scrollElem[0].clientWidth;
+	          SCROLLBAR_WIDTH = isFinite(SCROLLBAR_WIDTH) ? SCROLLBAR_WIDTH : 0;
+	          scrollElem.remove();
+	        }
+
+	        return SCROLLBAR_WIDTH;
+	      },
+
+	      /**
+	       * Provides the padding required on an element to replace the scrollbar.
+	       *
+	       * @returns {object} An object with the following properties:
+	       *   <ul>
+	       *     <li>**scrollbarWidth**: the width of the scrollbar</li>
+	       *     <li>**widthOverflow**: whether the the width is overflowing</li>
+	       *     <li>**right**: the amount of right padding on the element needed to replace the scrollbar</li>
+	       *     <li>**rightOriginal**: the amount of right padding currently on the element</li>
+	       *     <li>**heightOverflow**: whether the the height is overflowing</li>
+	       *     <li>**bottom**: the amount of bottom padding on the element needed to replace the scrollbar</li>
+	       *     <li>**bottomOriginal**: the amount of bottom padding currently on the element</li>
+	       *   </ul>
+	       */
+	      scrollbarPadding: function(elem) {
+	        elem = this.getRawNode(elem);
+
+	        var elemStyle = $window.getComputedStyle(elem);
+	        var paddingRight = this.parseStyle(elemStyle.paddingRight);
+	        var paddingBottom = this.parseStyle(elemStyle.paddingBottom);
+	        var scrollParent = this.scrollParent(elem, false, true);
+	        var scrollbarWidth = this.scrollbarWidth(scrollParent, BODY_REGEX.test(scrollParent.tagName));
+
+	        return {
+	          scrollbarWidth: scrollbarWidth,
+	          widthOverflow: scrollParent.scrollWidth > scrollParent.clientWidth,
+	          right: paddingRight + scrollbarWidth,
+	          originalRight: paddingRight,
+	          heightOverflow: scrollParent.scrollHeight > scrollParent.clientHeight,
+	          bottom: paddingBottom + scrollbarWidth,
+	          originalBottom: paddingBottom
+	         };
+	      },
+
+	      /**
+	       * Checks to see if the element is scrollable.
+	       *
+	       * @param {element} elem - The element to check.
+	       * @param {boolean=} [includeHidden=false] - Should scroll style of 'hidden' be considered,
+	       *   default is false.
+	       *
+	       * @returns {boolean} Whether the element is scrollable.
+	       */
+	      isScrollable: function(elem, includeHidden) {
+	        elem = this.getRawNode(elem);
+
+	        var overflowRegex = includeHidden ? OVERFLOW_REGEX.hidden : OVERFLOW_REGEX.normal;
+	        var elemStyle = $window.getComputedStyle(elem);
+	        return overflowRegex.test(elemStyle.overflow + elemStyle.overflowY + elemStyle.overflowX);
+	      },
+
+	      /**
+	       * Provides the closest scrollable ancestor.
+	       * A port of the jQuery UI scrollParent method:
+	       * https://github.com/jquery/jquery-ui/blob/master/ui/scroll-parent.js
+	       *
+	       * @param {element} elem - The element to find the scroll parent of.
+	       * @param {boolean=} [includeHidden=false] - Should scroll style of 'hidden' be considered,
+	       *   default is false.
+	       * @param {boolean=} [includeSelf=false] - Should the element being passed be
+	       * included in the scrollable llokup.
+	       *
+	       * @returns {element} A HTML element.
+	       */
+	      scrollParent: function(elem, includeHidden, includeSelf) {
+	        elem = this.getRawNode(elem);
+
+	        var overflowRegex = includeHidden ? OVERFLOW_REGEX.hidden : OVERFLOW_REGEX.normal;
+	        var documentEl = $document[0].documentElement;
+	        var elemStyle = $window.getComputedStyle(elem);
+	        if (includeSelf && overflowRegex.test(elemStyle.overflow + elemStyle.overflowY + elemStyle.overflowX)) {
+	          return elem;
+	        }
+	        var excludeStatic = elemStyle.position === 'absolute';
+	        var scrollParent = elem.parentElement || documentEl;
+
+	        if (scrollParent === documentEl || elemStyle.position === 'fixed') {
+	          return documentEl;
+	        }
+
+	        while (scrollParent.parentElement && scrollParent !== documentEl) {
+	          var spStyle = $window.getComputedStyle(scrollParent);
+	          if (excludeStatic && spStyle.position !== 'static') {
+	            excludeStatic = false;
+	          }
+
+	          if (!excludeStatic && overflowRegex.test(spStyle.overflow + spStyle.overflowY + spStyle.overflowX)) {
+	            break;
+	          }
+	          scrollParent = scrollParent.parentElement;
+	        }
+
+	        return scrollParent;
+	      },
+
+	      /**
+	       * Provides read-only equivalent of jQuery's position function:
+	       * http://api.jquery.com/position/ - distance to closest positioned
+	       * ancestor.  Does not account for margins by default like jQuery position.
+	       *
+	       * @param {element} elem - The element to caclulate the position on.
+	       * @param {boolean=} [includeMargins=false] - Should margins be accounted
+	       * for, default is false.
+	       *
+	       * @returns {object} An object with the following properties:
+	       *   <ul>
+	       *     <li>**width**: the width of the element</li>
+	       *     <li>**height**: the height of the element</li>
+	       *     <li>**top**: distance to top edge of offset parent</li>
+	       *     <li>**left**: distance to left edge of offset parent</li>
+	       *   </ul>
+	       */
+	      position: function(elem, includeMagins) {
+	        elem = this.getRawNode(elem);
+
+	        var elemOffset = this.offset(elem);
+	        if (includeMagins) {
+	          var elemStyle = $window.getComputedStyle(elem);
+	          elemOffset.top -= this.parseStyle(elemStyle.marginTop);
+	          elemOffset.left -= this.parseStyle(elemStyle.marginLeft);
+	        }
+	        var parent = this.offsetParent(elem);
+	        var parentOffset = {top: 0, left: 0};
+
+	        if (parent !== $document[0].documentElement) {
+	          parentOffset = this.offset(parent);
+	          parentOffset.top += parent.clientTop - parent.scrollTop;
+	          parentOffset.left += parent.clientLeft - parent.scrollLeft;
+	        }
+
+	        return {
+	          width: Math.round(angular.isNumber(elemOffset.width) ? elemOffset.width : elem.offsetWidth),
+	          height: Math.round(angular.isNumber(elemOffset.height) ? elemOffset.height : elem.offsetHeight),
+	          top: Math.round(elemOffset.top - parentOffset.top),
+	          left: Math.round(elemOffset.left - parentOffset.left)
+	        };
+	      },
+
+	      /**
+	       * Provides read-only equivalent of jQuery's offset function:
+	       * http://api.jquery.com/offset/ - distance to viewport.  Does
+	       * not account for borders, margins, or padding on the body
+	       * element.
+	       *
+	       * @param {element} elem - The element to calculate the offset on.
+	       *
+	       * @returns {object} An object with the following properties:
+	       *   <ul>
+	       *     <li>**width**: the width of the element</li>
+	       *     <li>**height**: the height of the element</li>
+	       *     <li>**top**: distance to top edge of viewport</li>
+	       *     <li>**right**: distance to bottom edge of viewport</li>
+	       *   </ul>
+	       */
+	      offset: function(elem) {
+	        elem = this.getRawNode(elem);
+
+	        var elemBCR = elem.getBoundingClientRect();
+	        return {
+	          width: Math.round(angular.isNumber(elemBCR.width) ? elemBCR.width : elem.offsetWidth),
+	          height: Math.round(angular.isNumber(elemBCR.height) ? elemBCR.height : elem.offsetHeight),
+	          top: Math.round(elemBCR.top + ($window.pageYOffset || $document[0].documentElement.scrollTop)),
+	          left: Math.round(elemBCR.left + ($window.pageXOffset || $document[0].documentElement.scrollLeft))
+	        };
+	      },
+
+	      /**
+	       * Provides offset distance to the closest scrollable ancestor
+	       * or viewport.  Accounts for border and scrollbar width.
+	       *
+	       * Right and bottom dimensions represent the distance to the
+	       * respective edge of the viewport element.  If the element
+	       * edge extends beyond the viewport, a negative value will be
+	       * reported.
+	       *
+	       * @param {element} elem - The element to get the viewport offset for.
+	       * @param {boolean=} [useDocument=false] - Should the viewport be the document element instead
+	       * of the first scrollable element, default is false.
+	       * @param {boolean=} [includePadding=true] - Should the padding on the offset parent element
+	       * be accounted for, default is true.
+	       *
+	       * @returns {object} An object with the following properties:
+	       *   <ul>
+	       *     <li>**top**: distance to the top content edge of viewport element</li>
+	       *     <li>**bottom**: distance to the bottom content edge of viewport element</li>
+	       *     <li>**left**: distance to the left content edge of viewport element</li>
+	       *     <li>**right**: distance to the right content edge of viewport element</li>
+	       *   </ul>
+	       */
+	      viewportOffset: function(elem, useDocument, includePadding) {
+	        elem = this.getRawNode(elem);
+	        includePadding = includePadding !== false ? true : false;
+
+	        var elemBCR = elem.getBoundingClientRect();
+	        var offsetBCR = {top: 0, left: 0, bottom: 0, right: 0};
+
+	        var offsetParent = useDocument ? $document[0].documentElement : this.scrollParent(elem);
+	        var offsetParentBCR = offsetParent.getBoundingClientRect();
+
+	        offsetBCR.top = offsetParentBCR.top + offsetParent.clientTop;
+	        offsetBCR.left = offsetParentBCR.left + offsetParent.clientLeft;
+	        if (offsetParent === $document[0].documentElement) {
+	          offsetBCR.top += $window.pageYOffset;
+	          offsetBCR.left += $window.pageXOffset;
+	        }
+	        offsetBCR.bottom = offsetBCR.top + offsetParent.clientHeight;
+	        offsetBCR.right = offsetBCR.left + offsetParent.clientWidth;
+
+	        if (includePadding) {
+	          var offsetParentStyle = $window.getComputedStyle(offsetParent);
+	          offsetBCR.top += this.parseStyle(offsetParentStyle.paddingTop);
+	          offsetBCR.bottom -= this.parseStyle(offsetParentStyle.paddingBottom);
+	          offsetBCR.left += this.parseStyle(offsetParentStyle.paddingLeft);
+	          offsetBCR.right -= this.parseStyle(offsetParentStyle.paddingRight);
+	        }
+
+	        return {
+	          top: Math.round(elemBCR.top - offsetBCR.top),
+	          bottom: Math.round(offsetBCR.bottom - elemBCR.bottom),
+	          left: Math.round(elemBCR.left - offsetBCR.left),
+	          right: Math.round(offsetBCR.right - elemBCR.right)
+	        };
+	      },
+
+	      /**
+	       * Provides an array of placement values parsed from a placement string.
+	       * Along with the 'auto' indicator, supported placement strings are:
+	       *   <ul>
+	       *     <li>top: element on top, horizontally centered on host element.</li>
+	       *     <li>top-left: element on top, left edge aligned with host element left edge.</li>
+	       *     <li>top-right: element on top, lerightft edge aligned with host element right edge.</li>
+	       *     <li>bottom: element on bottom, horizontally centered on host element.</li>
+	       *     <li>bottom-left: element on bottom, left edge aligned with host element left edge.</li>
+	       *     <li>bottom-right: element on bottom, right edge aligned with host element right edge.</li>
+	       *     <li>left: element on left, vertically centered on host element.</li>
+	       *     <li>left-top: element on left, top edge aligned with host element top edge.</li>
+	       *     <li>left-bottom: element on left, bottom edge aligned with host element bottom edge.</li>
+	       *     <li>right: element on right, vertically centered on host element.</li>
+	       *     <li>right-top: element on right, top edge aligned with host element top edge.</li>
+	       *     <li>right-bottom: element on right, bottom edge aligned with host element bottom edge.</li>
+	       *   </ul>
+	       * A placement string with an 'auto' indicator is expected to be
+	       * space separated from the placement, i.e: 'auto bottom-left'  If
+	       * the primary and secondary placement values do not match 'top,
+	       * bottom, left, right' then 'top' will be the primary placement and
+	       * 'center' will be the secondary placement.  If 'auto' is passed, true
+	       * will be returned as the 3rd value of the array.
+	       *
+	       * @param {string} placement - The placement string to parse.
+	       *
+	       * @returns {array} An array with the following values
+	       * <ul>
+	       *   <li>**[0]**: The primary placement.</li>
+	       *   <li>**[1]**: The secondary placement.</li>
+	       *   <li>**[2]**: If auto is passed: true, else undefined.</li>
+	       * </ul>
+	       */
+	      parsePlacement: function(placement) {
+	        var autoPlace = PLACEMENT_REGEX.auto.test(placement);
+	        if (autoPlace) {
+	          placement = placement.replace(PLACEMENT_REGEX.auto, '');
+	        }
+
+	        placement = placement.split('-');
+
+	        placement[0] = placement[0] || 'top';
+	        if (!PLACEMENT_REGEX.primary.test(placement[0])) {
+	          placement[0] = 'top';
+	        }
+
+	        placement[1] = placement[1] || 'center';
+	        if (!PLACEMENT_REGEX.secondary.test(placement[1])) {
+	          placement[1] = 'center';
+	        }
+
+	        if (autoPlace) {
+	          placement[2] = true;
+	        } else {
+	          placement[2] = false;
+	        }
+
+	        return placement;
+	      },
+
+	      /**
+	       * Provides coordinates for an element to be positioned relative to
+	       * another element.  Passing 'auto' as part of the placement parameter
+	       * will enable smart placement - where the element fits. i.e:
+	       * 'auto left-top' will check to see if there is enough space to the left
+	       * of the hostElem to fit the targetElem, if not place right (same for secondary
+	       * top placement).  Available space is calculated using the viewportOffset
+	       * function.
+	       *
+	       * @param {element} hostElem - The element to position against.
+	       * @param {element} targetElem - The element to position.
+	       * @param {string=} [placement=top] - The placement for the targetElem,
+	       *   default is 'top'. 'center' is assumed as secondary placement for
+	       *   'top', 'left', 'right', and 'bottom' placements.  Available placements are:
+	       *   <ul>
+	       *     <li>top</li>
+	       *     <li>top-right</li>
+	       *     <li>top-left</li>
+	       *     <li>bottom</li>
+	       *     <li>bottom-left</li>
+	       *     <li>bottom-right</li>
+	       *     <li>left</li>
+	       *     <li>left-top</li>
+	       *     <li>left-bottom</li>
+	       *     <li>right</li>
+	       *     <li>right-top</li>
+	       *     <li>right-bottom</li>
+	       *   </ul>
+	       * @param {boolean=} [appendToBody=false] - Should the top and left values returned
+	       *   be calculated from the body element, default is false.
+	       *
+	       * @returns {object} An object with the following properties:
+	       *   <ul>
+	       *     <li>**top**: Value for targetElem top.</li>
+	       *     <li>**left**: Value for targetElem left.</li>
+	       *     <li>**placement**: The resolved placement.</li>
+	       *   </ul>
+	       */
+	      positionElements: function(hostElem, targetElem, placement, appendToBody) {
+	        hostElem = this.getRawNode(hostElem);
+	        targetElem = this.getRawNode(targetElem);
+
+	        // need to read from prop to support tests.
+	        var targetWidth = angular.isDefined(targetElem.offsetWidth) ? targetElem.offsetWidth : targetElem.prop('offsetWidth');
+	        var targetHeight = angular.isDefined(targetElem.offsetHeight) ? targetElem.offsetHeight : targetElem.prop('offsetHeight');
+
+	        placement = this.parsePlacement(placement);
+
+	        var hostElemPos = appendToBody ? this.offset(hostElem) : this.position(hostElem);
+	        var targetElemPos = {top: 0, left: 0, placement: ''};
+
+	        if (placement[2]) {
+	          var viewportOffset = this.viewportOffset(hostElem, appendToBody);
+
+	          var targetElemStyle = $window.getComputedStyle(targetElem);
+	          var adjustedSize = {
+	            width: targetWidth + Math.round(Math.abs(this.parseStyle(targetElemStyle.marginLeft) + this.parseStyle(targetElemStyle.marginRight))),
+	            height: targetHeight + Math.round(Math.abs(this.parseStyle(targetElemStyle.marginTop) + this.parseStyle(targetElemStyle.marginBottom)))
+	          };
+
+	          placement[0] = placement[0] === 'top' && adjustedSize.height > viewportOffset.top && adjustedSize.height <= viewportOffset.bottom ? 'bottom' :
+	                         placement[0] === 'bottom' && adjustedSize.height > viewportOffset.bottom && adjustedSize.height <= viewportOffset.top ? 'top' :
+	                         placement[0] === 'left' && adjustedSize.width > viewportOffset.left && adjustedSize.width <= viewportOffset.right ? 'right' :
+	                         placement[0] === 'right' && adjustedSize.width > viewportOffset.right && adjustedSize.width <= viewportOffset.left ? 'left' :
+	                         placement[0];
+
+	          placement[1] = placement[1] === 'top' && adjustedSize.height - hostElemPos.height > viewportOffset.bottom && adjustedSize.height - hostElemPos.height <= viewportOffset.top ? 'bottom' :
+	                         placement[1] === 'bottom' && adjustedSize.height - hostElemPos.height > viewportOffset.top && adjustedSize.height - hostElemPos.height <= viewportOffset.bottom ? 'top' :
+	                         placement[1] === 'left' && adjustedSize.width - hostElemPos.width > viewportOffset.right && adjustedSize.width - hostElemPos.width <= viewportOffset.left ? 'right' :
+	                         placement[1] === 'right' && adjustedSize.width - hostElemPos.width > viewportOffset.left && adjustedSize.width - hostElemPos.width <= viewportOffset.right ? 'left' :
+	                         placement[1];
+
+	          if (placement[1] === 'center') {
+	            if (PLACEMENT_REGEX.vertical.test(placement[0])) {
+	              var xOverflow = hostElemPos.width / 2 - targetWidth / 2;
+	              if (viewportOffset.left + xOverflow < 0 && adjustedSize.width - hostElemPos.width <= viewportOffset.right) {
+	                placement[1] = 'left';
+	              } else if (viewportOffset.right + xOverflow < 0 && adjustedSize.width - hostElemPos.width <= viewportOffset.left) {
+	                placement[1] = 'right';
+	              }
+	            } else {
+	              var yOverflow = hostElemPos.height / 2 - adjustedSize.height / 2;
+	              if (viewportOffset.top + yOverflow < 0 && adjustedSize.height - hostElemPos.height <= viewportOffset.bottom) {
+	                placement[1] = 'top';
+	              } else if (viewportOffset.bottom + yOverflow < 0 && adjustedSize.height - hostElemPos.height <= viewportOffset.top) {
+	                placement[1] = 'bottom';
+	              }
+	            }
+	          }
+	        }
+
+	        switch (placement[0]) {
+	          case 'top':
+	            targetElemPos.top = hostElemPos.top - targetHeight;
+	            break;
+	          case 'bottom':
+	            targetElemPos.top = hostElemPos.top + hostElemPos.height;
+	            break;
+	          case 'left':
+	            targetElemPos.left = hostElemPos.left - targetWidth;
+	            break;
+	          case 'right':
+	            targetElemPos.left = hostElemPos.left + hostElemPos.width;
+	            break;
+	        }
+
+	        switch (placement[1]) {
+	          case 'top':
+	            targetElemPos.top = hostElemPos.top;
+	            break;
+	          case 'bottom':
+	            targetElemPos.top = hostElemPos.top + hostElemPos.height - targetHeight;
+	            break;
+	          case 'left':
+	            targetElemPos.left = hostElemPos.left;
+	            break;
+	          case 'right':
+	            targetElemPos.left = hostElemPos.left + hostElemPos.width - targetWidth;
+	            break;
+	          case 'center':
+	            if (PLACEMENT_REGEX.vertical.test(placement[0])) {
+	              targetElemPos.left = hostElemPos.left + hostElemPos.width / 2 - targetWidth / 2;
+	            } else {
+	              targetElemPos.top = hostElemPos.top + hostElemPos.height / 2 - targetHeight / 2;
+	            }
+	            break;
+	        }
+
+	        targetElemPos.top = Math.round(targetElemPos.top);
+	        targetElemPos.left = Math.round(targetElemPos.left);
+	        targetElemPos.placement = placement[1] === 'center' ? placement[0] : placement[0] + '-' + placement[1];
+
+	        return targetElemPos;
+	      },
+
+	      /**
+	      * Provides a way for positioning tooltip & dropdown
+	      * arrows when using placement options beyond the standard
+	      * left, right, top, or bottom.
+	      *
+	      * @param {element} elem - The tooltip/dropdown element.
+	      * @param {string} placement - The placement for the elem.
+	      */
+	      positionArrow: function(elem, placement) {
+	        elem = this.getRawNode(elem);
+
+	        var innerElem = elem.querySelector('.tooltip-inner, .popover-inner');
+	        if (!innerElem) {
+	          return;
+	        }
+
+	        var isTooltip = angular.element(innerElem).hasClass('tooltip-inner');
+
+	        var arrowElem = isTooltip ? elem.querySelector('.tooltip-arrow') : elem.querySelector('.arrow');
+	        if (!arrowElem) {
+	          return;
+	        }
+
+	        var arrowCss = {
+	          top: '',
+	          bottom: '',
+	          left: '',
+	          right: ''
+	        };
+
+	        placement = this.parsePlacement(placement);
+	        if (placement[1] === 'center') {
+	          // no adjustment necessary - just reset styles
+	          angular.element(arrowElem).css(arrowCss);
+	          return;
+	        }
+
+	        var borderProp = 'border-' + placement[0] + '-width';
+	        var borderWidth = $window.getComputedStyle(arrowElem)[borderProp];
+
+	        var borderRadiusProp = 'border-';
+	        if (PLACEMENT_REGEX.vertical.test(placement[0])) {
+	          borderRadiusProp += placement[0] + '-' + placement[1];
+	        } else {
+	          borderRadiusProp += placement[1] + '-' + placement[0];
+	        }
+	        borderRadiusProp += '-radius';
+	        var borderRadius = $window.getComputedStyle(isTooltip ? innerElem : elem)[borderRadiusProp];
+
+	        switch (placement[0]) {
+	          case 'top':
+	            arrowCss.bottom = isTooltip ? '0' : '-' + borderWidth;
+	            break;
+	          case 'bottom':
+	            arrowCss.top = isTooltip ? '0' : '-' + borderWidth;
+	            break;
+	          case 'left':
+	            arrowCss.right = isTooltip ? '0' : '-' + borderWidth;
+	            break;
+	          case 'right':
+	            arrowCss.left = isTooltip ? '0' : '-' + borderWidth;
+	            break;
+	        }
+
+	        arrowCss[placement[1]] = borderRadius;
+
+	        angular.element(arrowElem).css(arrowCss);
+	      }
+	    };
+	  }]);
+
+	angular.module('ui.bootstrap.datepickerPopup', ['ui.bootstrap.datepicker', 'ui.bootstrap.position'])
+
+	.value('$datepickerPopupLiteralWarning', true)
+
+	.constant('uibDatepickerPopupConfig', {
+	  altInputFormats: [],
+	  appendToBody: false,
+	  clearText: 'Clear',
+	  closeOnDateSelection: true,
+	  closeText: 'Done',
+	  currentText: 'Today',
+	  datepickerPopup: 'yyyy-MM-dd',
+	  datepickerPopupTemplateUrl: 'uib/template/datepickerPopup/popup.html',
+	  datepickerTemplateUrl: 'uib/template/datepicker/datepicker.html',
+	  html5Types: {
+	    date: 'yyyy-MM-dd',
+	    'datetime-local': 'yyyy-MM-ddTHH:mm:ss.sss',
+	    'month': 'yyyy-MM'
+	  },
+	  onOpenFocus: true,
+	  showButtonBar: true,
+	  placement: 'auto bottom-left'
+	})
+
+	.controller('UibDatepickerPopupController', ['$scope', '$element', '$attrs', '$compile', '$log', '$parse', '$window', '$document', '$rootScope', '$uibPosition', 'dateFilter', 'uibDateParser', 'uibDatepickerPopupConfig', '$timeout', 'uibDatepickerConfig', '$datepickerPopupLiteralWarning',
+	function($scope, $element, $attrs, $compile, $log, $parse, $window, $document, $rootScope, $position, dateFilter, dateParser, datepickerPopupConfig, $timeout, datepickerConfig, $datepickerPopupLiteralWarning) {
+	  var cache = {},
+	    isHtml5DateInput = false;
+	  var dateFormat, closeOnDateSelection, appendToBody, onOpenFocus,
+	    datepickerPopupTemplateUrl, datepickerTemplateUrl, popupEl, datepickerEl, scrollParentEl,
+	    ngModel, ngModelOptions, $popup, altInputFormats, watchListeners = [],
+	    timezone;
+
+	  this.init = function(_ngModel_) {
+	    ngModel = _ngModel_;
+	    ngModelOptions = _ngModel_.$options;
+	    closeOnDateSelection = angular.isDefined($attrs.closeOnDateSelection) ?
+	      $scope.$parent.$eval($attrs.closeOnDateSelection) :
+	      datepickerPopupConfig.closeOnDateSelection;
+	    appendToBody = angular.isDefined($attrs.datepickerAppendToBody) ?
+	      $scope.$parent.$eval($attrs.datepickerAppendToBody) :
+	      datepickerPopupConfig.appendToBody;
+	    onOpenFocus = angular.isDefined($attrs.onOpenFocus) ?
+	      $scope.$parent.$eval($attrs.onOpenFocus) : datepickerPopupConfig.onOpenFocus;
+	    datepickerPopupTemplateUrl = angular.isDefined($attrs.datepickerPopupTemplateUrl) ?
+	      $attrs.datepickerPopupTemplateUrl :
+	      datepickerPopupConfig.datepickerPopupTemplateUrl;
+	    datepickerTemplateUrl = angular.isDefined($attrs.datepickerTemplateUrl) ?
+	      $attrs.datepickerTemplateUrl : datepickerPopupConfig.datepickerTemplateUrl;
+	    altInputFormats = angular.isDefined($attrs.altInputFormats) ?
+	      $scope.$parent.$eval($attrs.altInputFormats) :
+	      datepickerPopupConfig.altInputFormats;
+
+	    $scope.showButtonBar = angular.isDefined($attrs.showButtonBar) ?
+	      $scope.$parent.$eval($attrs.showButtonBar) :
+	      datepickerPopupConfig.showButtonBar;
+
+	    if (datepickerPopupConfig.html5Types[$attrs.type]) {
+	      dateFormat = datepickerPopupConfig.html5Types[$attrs.type];
+	      isHtml5DateInput = true;
+	    } else {
+	      dateFormat = $attrs.uibDatepickerPopup || datepickerPopupConfig.datepickerPopup;
+	      $attrs.$observe('uibDatepickerPopup', function(value, oldValue) {
+	        var newDateFormat = value || datepickerPopupConfig.datepickerPopup;
+	        // Invalidate the $modelValue to ensure that formatters re-run
+	        // FIXME: Refactor when PR is merged: https://github.com/angular/angular.js/pull/10764
+	        if (newDateFormat !== dateFormat) {
+	          dateFormat = newDateFormat;
+	          ngModel.$modelValue = null;
+
+	          if (!dateFormat) {
+	            throw new Error('uibDatepickerPopup must have a date format specified.');
+	          }
+	        }
+	      });
+	    }
+
+	    if (!dateFormat) {
+	      throw new Error('uibDatepickerPopup must have a date format specified.');
+	    }
+
+	    if (isHtml5DateInput && $attrs.uibDatepickerPopup) {
+	      throw new Error('HTML5 date input types do not support custom formats.');
+	    }
+
+	    // popup element used to display calendar
+	    popupEl = angular.element('<div uib-datepicker-popup-wrap><div uib-datepicker></div></div>');
+	    if (ngModelOptions) {
+	      timezone = ngModelOptions.timezone;
+	      $scope.ngModelOptions = angular.copy(ngModelOptions);
+	      $scope.ngModelOptions.timezone = null;
+	      if ($scope.ngModelOptions.updateOnDefault === true) {
+	        $scope.ngModelOptions.updateOn = $scope.ngModelOptions.updateOn ?
+	          $scope.ngModelOptions.updateOn + ' default' : 'default';
+	      }
+
+	      popupEl.attr('ng-model-options', 'ngModelOptions');
+	    } else {
+	      timezone = null;
+	    }
+
+	    popupEl.attr({
+	      'ng-model': 'date',
+	      'ng-change': 'dateSelection(date)',
+	      'template-url': datepickerPopupTemplateUrl
+	    });
+
+	    // datepicker element
+	    datepickerEl = angular.element(popupEl.children()[0]);
+	    datepickerEl.attr('template-url', datepickerTemplateUrl);
+
+	    if (!$scope.datepickerOptions) {
+	      $scope.datepickerOptions = {};
+	    }
+
+	    if (isHtml5DateInput) {
+	      if ($attrs.type === 'month') {
+	        $scope.datepickerOptions.datepickerMode = 'month';
+	        $scope.datepickerOptions.minMode = 'month';
+	      }
+	    }
+
+	    datepickerEl.attr('datepicker-options', 'datepickerOptions');
+
+	    if (!isHtml5DateInput) {
+	      // Internal API to maintain the correct ng-invalid-[key] class
+	      ngModel.$$parserName = 'date';
+	      ngModel.$validators.date = validator;
+	      ngModel.$parsers.unshift(parseDate);
+	      ngModel.$formatters.push(function(value) {
+	        if (ngModel.$isEmpty(value)) {
+	          $scope.date = value;
+	          return value;
+	        }
+
+	        $scope.date = dateParser.fromTimezone(value, timezone);
+
+	        if (angular.isNumber($scope.date)) {
+	          $scope.date = new Date($scope.date);
+	        }
+
+	        return dateParser.filter($scope.date, dateFormat);
+	      });
+	    } else {
+	      ngModel.$formatters.push(function(value) {
+	        $scope.date = dateParser.fromTimezone(value, timezone);
+	        return value;
+	      });
+	    }
+
+	    // Detect changes in the view from the text box
+	    ngModel.$viewChangeListeners.push(function() {
+	      $scope.date = parseDateString(ngModel.$viewValue);
+	    });
+
+	    $element.on('keydown', inputKeydownBind);
+
+	    $popup = $compile(popupEl)($scope);
+	    // Prevent jQuery cache memory leak (template is now redundant after linking)
+	    popupEl.remove();
+
+	    if (appendToBody) {
+	      $document.find('body').append($popup);
+	    } else {
+	      $element.after($popup);
+	    }
+
+	    $scope.$on('$destroy', function() {
+	      if ($scope.isOpen === true) {
+	        if (!$rootScope.$$phase) {
+	          $scope.$apply(function() {
+	            $scope.isOpen = false;
+	          });
+	        }
+	      }
+
+	      $popup.remove();
+	      $element.off('keydown', inputKeydownBind);
+	      $document.off('click', documentClickBind);
+	      if (scrollParentEl) {
+	        scrollParentEl.off('scroll', positionPopup);
+	      }
+	      angular.element($window).off('resize', positionPopup);
+
+	      //Clear all watch listeners on destroy
+	      while (watchListeners.length) {
+	        watchListeners.shift()();
+	      }
+	    });
+	  };
+
+	  $scope.getText = function(key) {
+	    return $scope[key + 'Text'] || datepickerPopupConfig[key + 'Text'];
+	  };
+
+	  $scope.isDisabled = function(date) {
+	    if (date === 'today') {
+	      date = dateParser.fromTimezone(new Date(), timezone);
+	    }
+
+	    var dates = {};
+	    angular.forEach(['minDate', 'maxDate'], function(key) {
+	      if ($scope.datepickerOptions[key] === null) {
+	        dates[key] = null;
+	      } else if (angular.isDate($scope.datepickerOptions[key])) {
+	        dates[key] = dateParser.fromTimezone(new Date($scope.datepickerOptions[key]), timezone);
+	      } else {
+	        if ($datepickerPopupLiteralWarning) {
+	          $log.warn('Literal date support has been deprecated, please switch to date object usage');
+	        }
+
+	        dates[key] = new Date(dateFilter($scope.datepickerOptions[key], 'medium'));
+	      }
+	    });
+
+	    return $scope.datepickerOptions &&
+	      dates.minDate && $scope.compare(date, dates.minDate) < 0 ||
+	      dates.maxDate && $scope.compare(date, dates.maxDate) > 0;
+	  };
+
+	  $scope.compare = function(date1, date2) {
+	    return new Date(date1.getFullYear(), date1.getMonth(), date1.getDate()) - new Date(date2.getFullYear(), date2.getMonth(), date2.getDate());
+	  };
+
+	  // Inner change
+	  $scope.dateSelection = function(dt) {
+	    if (angular.isDefined(dt)) {
+	      $scope.date = dt;
+	    }
+	    var date = $scope.date ? dateParser.filter($scope.date, dateFormat) : null; // Setting to NULL is necessary for form validators to function
+	    $element.val(date);
+	    ngModel.$setViewValue(date);
+
+	    if (closeOnDateSelection) {
+	      $scope.isOpen = false;
+	      $element[0].focus();
+	    }
+	  };
+
+	  $scope.keydown = function(evt) {
+	    if (evt.which === 27) {
+	      evt.stopPropagation();
+	      $scope.isOpen = false;
+	      $element[0].focus();
+	    }
+	  };
+
+	  $scope.select = function(date, evt) {
+	    evt.stopPropagation();
+
+	    if (date === 'today') {
+	      var today = new Date();
+	      if (angular.isDate($scope.date)) {
+	        date = new Date($scope.date);
+	        date.setFullYear(today.getFullYear(), today.getMonth(), today.getDate());
+	      } else {
+	        date = new Date(today.setHours(0, 0, 0, 0));
+	      }
+	    }
+	    $scope.dateSelection(date);
+	  };
+
+	  $scope.close = function(evt) {
+	    evt.stopPropagation();
+
+	    $scope.isOpen = false;
+	    $element[0].focus();
+	  };
+
+	  $scope.disabled = angular.isDefined($attrs.disabled) || false;
+	  if ($attrs.ngDisabled) {
+	    watchListeners.push($scope.$parent.$watch($parse($attrs.ngDisabled), function(disabled) {
+	      $scope.disabled = disabled;
+	    }));
+	  }
+
+	  $scope.$watch('isOpen', function(value) {
+	    if (value) {
+	      if (!$scope.disabled) {
+	        $timeout(function() {
+	          positionPopup();
+
+	          if (onOpenFocus) {
+	            $scope.$broadcast('uib:datepicker.focus');
+	          }
+
+	          $document.on('click', documentClickBind);
+
+	          var placement = $attrs.popupPlacement ? $attrs.popupPlacement : datepickerPopupConfig.placement;
+	          if (appendToBody || $position.parsePlacement(placement)[2]) {
+	            scrollParentEl = scrollParentEl || angular.element($position.scrollParent($element));
+	            if (scrollParentEl) {
+	              scrollParentEl.on('scroll', positionPopup);
+	            }
+	          } else {
+	            scrollParentEl = null;
+	          }
+
+	          angular.element($window).on('resize', positionPopup);
+	        }, 0, false);
+	      } else {
+	        $scope.isOpen = false;
+	      }
+	    } else {
+	      $document.off('click', documentClickBind);
+	      if (scrollParentEl) {
+	        scrollParentEl.off('scroll', positionPopup);
+	      }
+	      angular.element($window).off('resize', positionPopup);
+	    }
+	  });
+
+	  function cameltoDash(string) {
+	    return string.replace(/([A-Z])/g, function($1) { return '-' + $1.toLowerCase(); });
+	  }
+
+	  function parseDateString(viewValue) {
+	    var date = dateParser.parse(viewValue, dateFormat, $scope.date);
+	    if (isNaN(date)) {
+	      for (var i = 0; i < altInputFormats.length; i++) {
+	        date = dateParser.parse(viewValue, altInputFormats[i], $scope.date);
+	        if (!isNaN(date)) {
+	          return date;
+	        }
+	      }
+	    }
+	    return date;
+	  }
+
+	  function parseDate(viewValue) {
+	    if (angular.isNumber(viewValue)) {
+	      // presumably timestamp to date object
+	      viewValue = new Date(viewValue);
+	    }
+
+	    if (!viewValue) {
+	      return null;
+	    }
+
+	    if (angular.isDate(viewValue) && !isNaN(viewValue)) {
+	      return viewValue;
+	    }
+
+	    if (angular.isString(viewValue)) {
+	      var date = parseDateString(viewValue);
+	      if (!isNaN(date)) {
+	        return dateParser.toTimezone(date, timezone);
+	      }
+	    }
+
+	    return ngModel.$options && ngModel.$options.allowInvalid ? viewValue : undefined;
+	  }
+
+	  function validator(modelValue, viewValue) {
+	    var value = modelValue || viewValue;
+
+	    if (!$attrs.ngRequired && !value) {
+	      return true;
+	    }
+
+	    if (angular.isNumber(value)) {
+	      value = new Date(value);
+	    }
+
+	    if (!value) {
+	      return true;
+	    }
+
+	    if (angular.isDate(value) && !isNaN(value)) {
+	      return true;
+	    }
+
+	    if (angular.isString(value)) {
+	      return !isNaN(parseDateString(viewValue));
+	    }
+
+	    return false;
+	  }
+
+	  function documentClickBind(event) {
+	    if (!$scope.isOpen && $scope.disabled) {
+	      return;
+	    }
+
+	    var popup = $popup[0];
+	    var dpContainsTarget = $element[0].contains(event.target);
+	    // The popup node may not be an element node
+	    // In some browsers (IE) only element nodes have the 'contains' function
+	    var popupContainsTarget = popup.contains !== undefined && popup.contains(event.target);
+	    if ($scope.isOpen && !(dpContainsTarget || popupContainsTarget)) {
+	      $scope.$apply(function() {
+	        $scope.isOpen = false;
+	      });
+	    }
+	  }
+
+	  function inputKeydownBind(evt) {
+	    if (evt.which === 27 && $scope.isOpen) {
+	      evt.preventDefault();
+	      evt.stopPropagation();
+	      $scope.$apply(function() {
+	        $scope.isOpen = false;
+	      });
+	      $element[0].focus();
+	    } else if (evt.which === 40 && !$scope.isOpen) {
+	      evt.preventDefault();
+	      evt.stopPropagation();
+	      $scope.$apply(function() {
+	        $scope.isOpen = true;
+	      });
+	    }
+	  }
+
+	  function positionPopup() {
+	    if ($scope.isOpen) {
+	      var dpElement = angular.element($popup[0].querySelector('.uib-datepicker-popup'));
+	      var placement = $attrs.popupPlacement ? $attrs.popupPlacement : datepickerPopupConfig.placement;
+	      var position = $position.positionElements($element, dpElement, placement, appendToBody);
+	      dpElement.css({top: position.top + 'px', left: position.left + 'px'});
+	      if (dpElement.hasClass('uib-position-measure')) {
+	        dpElement.removeClass('uib-position-measure');
+	      }
+	    }
+	  }
+
+	  $scope.$on('uib:datepicker.mode', function() {
+	    $timeout(positionPopup, 0, false);
+	  });
+	}])
+
+	.directive('uibDatepickerPopup', function() {
+	  return {
+	    require: ['ngModel', 'uibDatepickerPopup'],
+	    controller: 'UibDatepickerPopupController',
+	    scope: {
+	      datepickerOptions: '=?',
+	      isOpen: '=?',
+	      currentText: '@',
+	      clearText: '@',
+	      closeText: '@'
+	    },
+	    link: function(scope, element, attrs, ctrls) {
+	      var ngModel = ctrls[0],
+	        ctrl = ctrls[1];
+
+	      ctrl.init(ngModel);
+	    }
+	  };
+	})
+
+	.directive('uibDatepickerPopupWrap', function() {
+	  return {
+	    replace: true,
+	    transclude: true,
+	    templateUrl: function(element, attrs) {
+	      return attrs.templateUrl || 'uib/template/datepickerPopup/popup.html';
+	    }
+	  };
+	});
+
+	angular.module('ui.bootstrap.debounce', [])
+	/**
+	 * A helper, internal service that debounces a function
+	 */
+	  .factory('$$debounce', ['$timeout', function($timeout) {
+	    return function(callback, debounceTime) {
+	      var timeoutPromise;
+
+	      return function() {
+	        var self = this;
+	        var args = Array.prototype.slice.call(arguments);
+	        if (timeoutPromise) {
+	          $timeout.cancel(timeoutPromise);
+	        }
+
+	        timeoutPromise = $timeout(function() {
+	          callback.apply(self, args);
+	        }, debounceTime);
+	      };
+	    };
+	  }]);
+
+	angular.module('ui.bootstrap.dropdown', ['ui.bootstrap.position'])
+
+	.constant('uibDropdownConfig', {
+	  appendToOpenClass: 'uib-dropdown-open',
+	  openClass: 'open'
+	})
+
+	.service('uibDropdownService', ['$document', '$rootScope', function($document, $rootScope) {
+	  var openScope = null;
+
+	  this.open = function(dropdownScope) {
+	    if (!openScope) {
+	      $document.on('click', closeDropdown);
+	      $document.on('keydown', keybindFilter);
+	    }
+
+	    if (openScope && openScope !== dropdownScope) {
+	      openScope.isOpen = false;
+	    }
+
+	    openScope = dropdownScope;
+	  };
+
+	  this.close = function(dropdownScope) {
+	    if (openScope === dropdownScope) {
+	      openScope = null;
+	      $document.off('click', closeDropdown);
+	      $document.off('keydown', keybindFilter);
+	    }
+	  };
+
+	  var closeDropdown = function(evt) {
+	    // This method may still be called during the same mouse event that
+	    // unbound this event handler. So check openScope before proceeding.
+	    if (!openScope) { return; }
+
+	    if (evt && openScope.getAutoClose() === 'disabled') { return; }
+
+	    if (evt && evt.which === 3) { return; }
+
+	    var toggleElement = openScope.getToggleElement();
+	    if (evt && toggleElement && toggleElement[0].contains(evt.target)) {
+	      return;
+	    }
+
+	    var dropdownElement = openScope.getDropdownElement();
+	    if (evt && openScope.getAutoClose() === 'outsideClick' &&
+	      dropdownElement && dropdownElement[0].contains(evt.target)) {
+	      return;
+	    }
+
+	    openScope.isOpen = false;
+
+	    if (!$rootScope.$$phase) {
+	      openScope.$apply();
+	    }
+	  };
+
+	  var keybindFilter = function(evt) {
+	    if (evt.which === 27) {
+	      openScope.focusToggleElement();
+	      closeDropdown();
+	    } else if (openScope.isKeynavEnabled() && [38, 40].indexOf(evt.which) !== -1 && openScope.isOpen) {
+	      evt.preventDefault();
+	      evt.stopPropagation();
+	      openScope.focusDropdownEntry(evt.which);
+	    }
+	  };
+	}])
+
+	.controller('UibDropdownController', ['$scope', '$element', '$attrs', '$parse', 'uibDropdownConfig', 'uibDropdownService', '$animate', '$uibPosition', '$document', '$compile', '$templateRequest', function($scope, $element, $attrs, $parse, dropdownConfig, uibDropdownService, $animate, $position, $document, $compile, $templateRequest) {
+	  var self = this,
+	    scope = $scope.$new(), // create a child scope so we are not polluting original one
+	    templateScope,
+	    appendToOpenClass = dropdownConfig.appendToOpenClass,
+	    openClass = dropdownConfig.openClass,
+	    getIsOpen,
+	    setIsOpen = angular.noop,
+	    toggleInvoker = $attrs.onToggle ? $parse($attrs.onToggle) : angular.noop,
+	    appendToBody = false,
+	    appendTo = null,
+	    keynavEnabled = false,
+	    selectedOption = null,
+	    body = $document.find('body');
+
+	  $element.addClass('dropdown');
+
+	  this.init = function() {
+	    if ($attrs.isOpen) {
+	      getIsOpen = $parse($attrs.isOpen);
+	      setIsOpen = getIsOpen.assign;
+
+	      $scope.$watch(getIsOpen, function(value) {
+	        scope.isOpen = !!value;
+	      });
+	    }
+
+	    if (angular.isDefined($attrs.dropdownAppendTo)) {
+	      var appendToEl = $parse($attrs.dropdownAppendTo)(scope);
+	      if (appendToEl) {
+	        appendTo = angular.element(appendToEl);
+	      }
+	    }
+
+	    appendToBody = angular.isDefined($attrs.dropdownAppendToBody);
+	    keynavEnabled = angular.isDefined($attrs.keyboardNav);
+
+	    if (appendToBody && !appendTo) {
+	      appendTo = body;
+	    }
+
+	    if (appendTo && self.dropdownMenu) {
+	      appendTo.append(self.dropdownMenu);
+	      $element.on('$destroy', function handleDestroyEvent() {
+	        self.dropdownMenu.remove();
+	      });
+	    }
+	  };
+
+	  this.toggle = function(open) {
+	    scope.isOpen = arguments.length ? !!open : !scope.isOpen;
+	    if (angular.isFunction(setIsOpen)) {
+	      setIsOpen(scope, scope.isOpen);
+	    }
+
+	    return scope.isOpen;
+	  };
+
+	  // Allow other directives to watch status
+	  this.isOpen = function() {
+	    return scope.isOpen;
+	  };
+
+	  scope.getToggleElement = function() {
+	    return self.toggleElement;
+	  };
+
+	  scope.getAutoClose = function() {
+	    return $attrs.autoClose || 'always'; //or 'outsideClick' or 'disabled'
+	  };
+
+	  scope.getElement = function() {
+	    return $element;
+	  };
+
+	  scope.isKeynavEnabled = function() {
+	    return keynavEnabled;
+	  };
+
+	  scope.focusDropdownEntry = function(keyCode) {
+	    var elems = self.dropdownMenu ? //If append to body is used.
+	      angular.element(self.dropdownMenu).find('a') :
+	      $element.find('ul').eq(0).find('a');
+
+	    switch (keyCode) {
+	      case 40: {
+	        if (!angular.isNumber(self.selectedOption)) {
+	          self.selectedOption = 0;
+	        } else {
+	          self.selectedOption = self.selectedOption === elems.length - 1 ?
+	            self.selectedOption :
+	            self.selectedOption + 1;
+	        }
+	        break;
+	      }
+	      case 38: {
+	        if (!angular.isNumber(self.selectedOption)) {
+	          self.selectedOption = elems.length - 1;
+	        } else {
+	          self.selectedOption = self.selectedOption === 0 ?
+	            0 : self.selectedOption - 1;
+	        }
+	        break;
+	      }
+	    }
+	    elems[self.selectedOption].focus();
+	  };
+
+	  scope.getDropdownElement = function() {
+	    return self.dropdownMenu;
+	  };
+
+	  scope.focusToggleElement = function() {
+	    if (self.toggleElement) {
+	      self.toggleElement[0].focus();
+	    }
+	  };
+
+	  scope.$watch('isOpen', function(isOpen, wasOpen) {
+	    if (appendTo && self.dropdownMenu) {
+	      var pos = $position.positionElements($element, self.dropdownMenu, 'bottom-left', true),
+	        css,
+	        rightalign;
+
+	      css = {
+	        top: pos.top + 'px',
+	        display: isOpen ? 'block' : 'none'
+	      };
+
+	      rightalign = self.dropdownMenu.hasClass('dropdown-menu-right');
+	      if (!rightalign) {
+	        css.left = pos.left + 'px';
+	        css.right = 'auto';
+	      } else {
+	        css.left = 'auto';
+	        css.right = window.innerWidth -
+	          (pos.left + $element.prop('offsetWidth')) + 'px';
+	      }
+
+	      // Need to adjust our positioning to be relative to the appendTo container
+	      // if it's not the body element
+	      if (!appendToBody) {
+	        var appendOffset = $position.offset(appendTo);
+
+	        css.top = pos.top - appendOffset.top + 'px';
+
+	        if (!rightalign) {
+	          css.left = pos.left - appendOffset.left + 'px';
+	        } else {
+	          css.right = window.innerWidth -
+	            (pos.left - appendOffset.left + $element.prop('offsetWidth')) + 'px';
+	        }
+	      }
+
+	      self.dropdownMenu.css(css);
+	    }
+
+	    var openContainer = appendTo ? appendTo : $element;
+	    var hasOpenClass = openContainer.hasClass(appendTo ? appendToOpenClass : openClass);
+
+	    if (hasOpenClass === !isOpen) {
+	      $animate[isOpen ? 'addClass' : 'removeClass'](openContainer, appendTo ? appendToOpenClass : openClass).then(function() {
+	        if (angular.isDefined(isOpen) && isOpen !== wasOpen) {
+	          toggleInvoker($scope, { open: !!isOpen });
+	        }
+	      });
+	    }
+
+	    if (isOpen) {
+	      if (self.dropdownMenuTemplateUrl) {
+	        $templateRequest(self.dropdownMenuTemplateUrl).then(function(tplContent) {
+	          templateScope = scope.$new();
+	          $compile(tplContent.trim())(templateScope, function(dropdownElement) {
+	            var newEl = dropdownElement;
+	            self.dropdownMenu.replaceWith(newEl);
+	            self.dropdownMenu = newEl;
+	          });
+	        });
+	      }
+
+	      scope.focusToggleElement();
+	      uibDropdownService.open(scope);
+	    } else {
+	      if (self.dropdownMenuTemplateUrl) {
+	        if (templateScope) {
+	          templateScope.$destroy();
+	        }
+	        var newEl = angular.element('<ul class="dropdown-menu"></ul>');
+	        self.dropdownMenu.replaceWith(newEl);
+	        self.dropdownMenu = newEl;
+	      }
+
+	      uibDropdownService.close(scope);
+	      self.selectedOption = null;
+	    }
+
+	    if (angular.isFunction(setIsOpen)) {
+	      setIsOpen($scope, isOpen);
+	    }
+	  });
+	}])
+
+	.directive('uibDropdown', function() {
+	  return {
+	    controller: 'UibDropdownController',
+	    link: function(scope, element, attrs, dropdownCtrl) {
+	      dropdownCtrl.init();
+	    }
+	  };
+	})
+
+	.directive('uibDropdownMenu', function() {
+	  return {
+	    restrict: 'A',
+	    require: '?^uibDropdown',
+	    link: function(scope, element, attrs, dropdownCtrl) {
+	      if (!dropdownCtrl || angular.isDefined(attrs.dropdownNested)) {
+	        return;
+	      }
+
+	      element.addClass('dropdown-menu');
+
+	      var tplUrl = attrs.templateUrl;
+	      if (tplUrl) {
+	        dropdownCtrl.dropdownMenuTemplateUrl = tplUrl;
+	      }
+
+	      if (!dropdownCtrl.dropdownMenu) {
+	        dropdownCtrl.dropdownMenu = element;
+	      }
+	    }
+	  };
+	})
+
+	.directive('uibDropdownToggle', function() {
+	  return {
+	    require: '?^uibDropdown',
+	    link: function(scope, element, attrs, dropdownCtrl) {
+	      if (!dropdownCtrl) {
+	        return;
+	      }
+
+	      element.addClass('dropdown-toggle');
+
+	      dropdownCtrl.toggleElement = element;
+
+	      var toggleDropdown = function(event) {
+	        event.preventDefault();
+
+	        if (!element.hasClass('disabled') && !attrs.disabled) {
+	          scope.$apply(function() {
+	            dropdownCtrl.toggle();
+	          });
+	        }
+	      };
+
+	      element.bind('click', toggleDropdown);
+
+	      // WAI-ARIA
+	      element.attr({ 'aria-haspopup': true, 'aria-expanded': false });
+	      scope.$watch(dropdownCtrl.isOpen, function(isOpen) {
+	        element.attr('aria-expanded', !!isOpen);
+	      });
+
+	      scope.$on('$destroy', function() {
+	        element.unbind('click', toggleDropdown);
+	      });
+	    }
+	  };
+	});
+
+	angular.module('ui.bootstrap.stackedMap', [])
+	/**
+	 * A helper, internal data structure that acts as a map but also allows getting / removing
+	 * elements in the LIFO order
+	 */
+	  .factory('$$stackedMap', function() {
+	    return {
+	      createNew: function() {
+	        var stack = [];
+
+	        return {
+	          add: function(key, value) {
+	            stack.push({
+	              key: key,
+	              value: value
+	            });
+	          },
+	          get: function(key) {
+	            for (var i = 0; i < stack.length; i++) {
+	              if (key === stack[i].key) {
+	                return stack[i];
+	              }
+	            }
+	          },
+	          keys: function() {
+	            var keys = [];
+	            for (var i = 0; i < stack.length; i++) {
+	              keys.push(stack[i].key);
+	            }
+	            return keys;
+	          },
+	          top: function() {
+	            return stack[stack.length - 1];
+	          },
+	          remove: function(key) {
+	            var idx = -1;
+	            for (var i = 0; i < stack.length; i++) {
+	              if (key === stack[i].key) {
+	                idx = i;
+	                break;
+	              }
+	            }
+	            return stack.splice(idx, 1)[0];
+	          },
+	          removeTop: function() {
+	            return stack.splice(stack.length - 1, 1)[0];
+	          },
+	          length: function() {
+	            return stack.length;
+	          }
+	        };
+	      }
+	    };
+	  });
+	angular.module('ui.bootstrap.modal', ['ui.bootstrap.stackedMap', 'ui.bootstrap.position'])
+	/**
+	 * A helper, internal data structure that stores all references attached to key
+	 */
+	  .factory('$$multiMap', function() {
+	    return {
+	      createNew: function() {
+	        var map = {};
+
+	        return {
+	          entries: function() {
+	            return Object.keys(map).map(function(key) {
+	              return {
+	                key: key,
+	                value: map[key]
+	              };
+	            });
+	          },
+	          get: function(key) {
+	            return map[key];
+	          },
+	          hasKey: function(key) {
+	            return !!map[key];
+	          },
+	          keys: function() {
+	            return Object.keys(map);
+	          },
+	          put: function(key, value) {
+	            if (!map[key]) {
+	              map[key] = [];
+	            }
+
+	            map[key].push(value);
+	          },
+	          remove: function(key, value) {
+	            var values = map[key];
+
+	            if (!values) {
+	              return;
+	            }
+
+	            var idx = values.indexOf(value);
+
+	            if (idx !== -1) {
+	              values.splice(idx, 1);
+	            }
+
+	            if (!values.length) {
+	              delete map[key];
+	            }
+	          }
+	        };
+	      }
+	    };
+	  })
+
+	/**
+	 * Pluggable resolve mechanism for the modal resolve resolution
+	 * Supports UI Router's $resolve service
+	 */
+	  .provider('$uibResolve', function() {
+	    var resolve = this;
+	    this.resolver = null;
+
+	    this.setResolver = function(resolver) {
+	      this.resolver = resolver;
+	    };
+
+	    this.$get = ['$injector', '$q', function($injector, $q) {
+	      var resolver = resolve.resolver ? $injector.get(resolve.resolver) : null;
+	      return {
+	        resolve: function(invocables, locals, parent, self) {
+	          if (resolver) {
+	            return resolver.resolve(invocables, locals, parent, self);
+	          }
+
+	          var promises = [];
+
+	          angular.forEach(invocables, function(value) {
+	            if (angular.isFunction(value) || angular.isArray(value)) {
+	              promises.push($q.resolve($injector.invoke(value)));
+	            } else if (angular.isString(value)) {
+	              promises.push($q.resolve($injector.get(value)));
+	            } else {
+	              promises.push($q.resolve(value));
+	            }
+	          });
+
+	          return $q.all(promises).then(function(resolves) {
+	            var resolveObj = {};
+	            var resolveIter = 0;
+	            angular.forEach(invocables, function(value, key) {
+	              resolveObj[key] = resolves[resolveIter++];
+	            });
+
+	            return resolveObj;
+	          });
+	        }
+	      };
+	    }];
+	  })
+
+	/**
+	 * A helper directive for the $modal service. It creates a backdrop element.
+	 */
+	  .directive('uibModalBackdrop', ['$animate', '$injector', '$uibModalStack',
+	  function($animate, $injector, $modalStack) {
+	    return {
+	      replace: true,
+	      templateUrl: 'uib/template/modal/backdrop.html',
+	      compile: function(tElement, tAttrs) {
+	        tElement.addClass(tAttrs.backdropClass);
+	        return linkFn;
+	      }
+	    };
+
+	    function linkFn(scope, element, attrs) {
+	      if (attrs.modalInClass) {
+	        $animate.addClass(element, attrs.modalInClass);
+
+	        scope.$on($modalStack.NOW_CLOSING_EVENT, function(e, setIsAsync) {
+	          var done = setIsAsync();
+	          if (scope.modalOptions.animation) {
+	            $animate.removeClass(element, attrs.modalInClass).then(done);
+	          } else {
+	            done();
+	          }
+	        });
+	      }
+	    }
+	  }])
+
+	  .directive('uibModalWindow', ['$uibModalStack', '$q', '$animateCss', '$document',
+	  function($modalStack, $q, $animateCss, $document) {
+	    return {
+	      scope: {
+	        index: '@'
+	      },
+	      replace: true,
+	      transclude: true,
+	      templateUrl: function(tElement, tAttrs) {
+	        return tAttrs.templateUrl || 'uib/template/modal/window.html';
+	      },
+	      link: function(scope, element, attrs) {
+	        element.addClass(attrs.windowClass || '');
+	        element.addClass(attrs.windowTopClass || '');
+	        scope.size = attrs.size;
+
+	        scope.close = function(evt) {
+	          var modal = $modalStack.getTop();
+	          if (modal && modal.value.backdrop &&
+	            modal.value.backdrop !== 'static' &&
+	            evt.target === evt.currentTarget) {
+	            evt.preventDefault();
+	            evt.stopPropagation();
+	            $modalStack.dismiss(modal.key, 'backdrop click');
+	          }
+	        };
+
+	        // moved from template to fix issue #2280
+	        element.on('click', scope.close);
+
+	        // This property is only added to the scope for the purpose of detecting when this directive is rendered.
+	        // We can detect that by using this property in the template associated with this directive and then use
+	        // {@link Attribute#$observe} on it. For more details please see {@link TableColumnResize}.
+	        scope.$isRendered = true;
+
+	        // Deferred object that will be resolved when this modal is render.
+	        var modalRenderDeferObj = $q.defer();
+	        // Observe function will be called on next digest cycle after compilation, ensuring that the DOM is ready.
+	        // In order to use this way of finding whether DOM is ready, we need to observe a scope property used in modal's template.
+	        attrs.$observe('modalRender', function(value) {
+	          if (value === 'true') {
+	            modalRenderDeferObj.resolve();
+	          }
+	        });
+
+	        modalRenderDeferObj.promise.then(function() {
+	          var animationPromise = null;
+
+	          if (attrs.modalInClass) {
+	            animationPromise = $animateCss(element, {
+	              addClass: attrs.modalInClass
+	            }).start();
+
+	            scope.$on($modalStack.NOW_CLOSING_EVENT, function(e, setIsAsync) {
+	              var done = setIsAsync();
+	              $animateCss(element, {
+	                removeClass: attrs.modalInClass
+	              }).start().then(done);
+	            });
+	          }
+
+
+	          $q.when(animationPromise).then(function() {
+	            // Notify {@link $modalStack} that modal is rendered.
+	            var modal = $modalStack.getTop();
+	            if (modal) {
+	              $modalStack.modalRendered(modal.key);
+	            }
+
+	            /**
+	             * If something within the freshly-opened modal already has focus (perhaps via a
+	             * directive that causes focus). then no need to try and focus anything.
+	             */
+	            if (!($document[0].activeElement && element[0].contains($document[0].activeElement))) {
+	              var inputWithAutofocus = element[0].querySelector('[autofocus]');
+	              /**
+	               * Auto-focusing of a freshly-opened modal element causes any child elements
+	               * with the autofocus attribute to lose focus. This is an issue on touch
+	               * based devices which will show and then hide the onscreen keyboard.
+	               * Attempts to refocus the autofocus element via JavaScript will not reopen
+	               * the onscreen keyboard. Fixed by updated the focusing logic to only autofocus
+	               * the modal element if the modal does not contain an autofocus element.
+	               */
+	              if (inputWithAutofocus) {
+	                inputWithAutofocus.focus();
+	              } else {
+	                element[0].focus();
+	              }
+	            }
+	          });
+	        });
+	      }
+	    };
+	  }])
+
+	  .directive('uibModalAnimationClass', function() {
+	    return {
+	      compile: function(tElement, tAttrs) {
+	        if (tAttrs.modalAnimation) {
+	          tElement.addClass(tAttrs.uibModalAnimationClass);
+	        }
+	      }
+	    };
+	  })
+
+	  .directive('uibModalTransclude', function() {
+	    return {
+	      link: function(scope, element, attrs, controller, transclude) {
+	        transclude(scope.$parent, function(clone) {
+	          element.empty();
+	          element.append(clone);
+	        });
+	      }
+	    };
+	  })
+
+	  .factory('$uibModalStack', ['$animate', '$animateCss', '$document',
+	    '$compile', '$rootScope', '$q', '$$multiMap', '$$stackedMap', '$uibPosition',
+	    function($animate, $animateCss, $document, $compile, $rootScope, $q, $$multiMap, $$stackedMap, $uibPosition) {
+	      var OPENED_MODAL_CLASS = 'modal-open';
+
+	      var backdropDomEl, backdropScope;
+	      var openedWindows = $$stackedMap.createNew();
+	      var openedClasses = $$multiMap.createNew();
+	      var $modalStack = {
+	        NOW_CLOSING_EVENT: 'modal.stack.now-closing'
+	      };
+	      var topModalIndex = 0;
+	      var previousTopOpenedModal = null;
+
+	      //Modal focus behavior
+	      var tabableSelector = 'a[href], area[href], input:not([disabled]), ' +
+	        'button:not([disabled]),select:not([disabled]), textarea:not([disabled]), ' +
+	        'iframe, object, embed, *[tabindex], *[contenteditable=true]';
+	      var scrollbarPadding;
+
+	      function isVisible(element) {
+	        return !!(element.offsetWidth ||
+	          element.offsetHeight ||
+	          element.getClientRects().length);
+	      }
+
+	      function backdropIndex() {
+	        var topBackdropIndex = -1;
+	        var opened = openedWindows.keys();
+	        for (var i = 0; i < opened.length; i++) {
+	          if (openedWindows.get(opened[i]).value.backdrop) {
+	            topBackdropIndex = i;
+	          }
+	        }
+
+	        // If any backdrop exist, ensure that it's index is always
+	        // right below the top modal
+	        if (topBackdropIndex > -1 && topBackdropIndex < topModalIndex) {
+	          topBackdropIndex = topModalIndex;
+	        }
+	        return topBackdropIndex;
+	      }
+
+	      $rootScope.$watch(backdropIndex, function(newBackdropIndex) {
+	        if (backdropScope) {
+	          backdropScope.index = newBackdropIndex;
+	        }
+	      });
+
+	      function removeModalWindow(modalInstance, elementToReceiveFocus) {
+	        var modalWindow = openedWindows.get(modalInstance).value;
+	        var appendToElement = modalWindow.appendTo;
+
+	        //clean up the stack
+	        openedWindows.remove(modalInstance);
+	        previousTopOpenedModal = openedWindows.top();
+	        if (previousTopOpenedModal) {
+	          topModalIndex = parseInt(previousTopOpenedModal.value.modalDomEl.attr('index'), 10);
+	        }
+
+	        removeAfterAnimate(modalWindow.modalDomEl, modalWindow.modalScope, function() {
+	          var modalBodyClass = modalWindow.openedClass || OPENED_MODAL_CLASS;
+	          openedClasses.remove(modalBodyClass, modalInstance);
+	          appendToElement.toggleClass(modalBodyClass, openedClasses.hasKey(modalBodyClass));
+	          if (scrollbarPadding && scrollbarPadding.heightOverflow && scrollbarPadding.scrollbarWidth) {
+	            if (scrollbarPadding.originalRight) {
+	              appendToElement.css({paddingRight: scrollbarPadding.originalRight + 'px'});
+	            } else {
+	              appendToElement.css({paddingRight: ''});
+	            }
+	            scrollbarPadding = null;
+	          }
+	          toggleTopWindowClass(true);
+	        }, modalWindow.closedDeferred);
+	        checkRemoveBackdrop();
+
+	        //move focus to specified element if available, or else to body
+	        if (elementToReceiveFocus && elementToReceiveFocus.focus) {
+	          elementToReceiveFocus.focus();
+	        } else if (appendToElement.focus) {
+	          appendToElement.focus();
+	        }
+	      }
+
+	      // Add or remove "windowTopClass" from the top window in the stack
+	      function toggleTopWindowClass(toggleSwitch) {
+	        var modalWindow;
+
+	        if (openedWindows.length() > 0) {
+	          modalWindow = openedWindows.top().value;
+	          modalWindow.modalDomEl.toggleClass(modalWindow.windowTopClass || '', toggleSwitch);
+	        }
+	      }
+
+	      function checkRemoveBackdrop() {
+	        //remove backdrop if no longer needed
+	        if (backdropDomEl && backdropIndex() === -1) {
+	          var backdropScopeRef = backdropScope;
+	          removeAfterAnimate(backdropDomEl, backdropScope, function() {
+	            backdropScopeRef = null;
+	          });
+	          backdropDomEl = undefined;
+	          backdropScope = undefined;
+	        }
+	      }
+
+	      function removeAfterAnimate(domEl, scope, done, closedDeferred) {
+	        var asyncDeferred;
+	        var asyncPromise = null;
+	        var setIsAsync = function() {
+	          if (!asyncDeferred) {
+	            asyncDeferred = $q.defer();
+	            asyncPromise = asyncDeferred.promise;
+	          }
+
+	          return function asyncDone() {
+	            asyncDeferred.resolve();
+	          };
+	        };
+	        scope.$broadcast($modalStack.NOW_CLOSING_EVENT, setIsAsync);
+
+	        // Note that it's intentional that asyncPromise might be null.
+	        // That's when setIsAsync has not been called during the
+	        // NOW_CLOSING_EVENT broadcast.
+	        return $q.when(asyncPromise).then(afterAnimating);
+
+	        function afterAnimating() {
+	          if (afterAnimating.done) {
+	            return;
+	          }
+	          afterAnimating.done = true;
+
+	          $animate.leave(domEl).then(function() {
+	            domEl.remove();
+	            if (closedDeferred) {
+	              closedDeferred.resolve();
+	            }
+	          });
+
+	          scope.$destroy();
+	          if (done) {
+	            done();
+	          }
+	        }
+	      }
+
+	      $document.on('keydown', keydownListener);
+
+	      $rootScope.$on('$destroy', function() {
+	        $document.off('keydown', keydownListener);
+	      });
+
+	      function keydownListener(evt) {
+	        if (evt.isDefaultPrevented()) {
+	          return evt;
+	        }
+
+	        var modal = openedWindows.top();
+	        if (modal) {
+	          switch (evt.which) {
+	            case 27: {
+	              if (modal.value.keyboard) {
+	                evt.preventDefault();
+	                $rootScope.$apply(function() {
+	                  $modalStack.dismiss(modal.key, 'escape key press');
+	                });
+	              }
+	              break;
+	            }
+	            case 9: {
+	              var list = $modalStack.loadFocusElementList(modal);
+	              var focusChanged = false;
+	              if (evt.shiftKey) {
+	                if ($modalStack.isFocusInFirstItem(evt, list) || $modalStack.isModalFocused(evt, modal)) {
+	                  focusChanged = $modalStack.focusLastFocusableElement(list);
+	                }
+	              } else {
+	                if ($modalStack.isFocusInLastItem(evt, list)) {
+	                  focusChanged = $modalStack.focusFirstFocusableElement(list);
+	                }
+	              }
+
+	              if (focusChanged) {
+	                evt.preventDefault();
+	                evt.stopPropagation();
+	              }
+
+	              break;
+	            }
+	          }
+	        }
+	      }
+
+	      $modalStack.open = function(modalInstance, modal) {
+	        var modalOpener = $document[0].activeElement,
+	          modalBodyClass = modal.openedClass || OPENED_MODAL_CLASS;
+
+	        toggleTopWindowClass(false);
+	        
+	        // Store the current top first, to determine what index we ought to use
+	        // for the current top modal
+	        previousTopOpenedModal = openedWindows.top();
+
+	        openedWindows.add(modalInstance, {
+	          deferred: modal.deferred,
+	          renderDeferred: modal.renderDeferred,
+	          closedDeferred: modal.closedDeferred,
+	          modalScope: modal.scope,
+	          backdrop: modal.backdrop,
+	          keyboard: modal.keyboard,
+	          openedClass: modal.openedClass,
+	          windowTopClass: modal.windowTopClass,
+	          animation: modal.animation,
+	          appendTo: modal.appendTo
+	        });
+
+	        openedClasses.put(modalBodyClass, modalInstance);
+
+	        var appendToElement = modal.appendTo,
+	            currBackdropIndex = backdropIndex();
+
+	        if (!appendToElement.length) {
+	          throw new Error('appendTo element not found. Make sure that the element passed is in DOM.');
+	        }
+
+	        if (currBackdropIndex >= 0 && !backdropDomEl) {
+	          backdropScope = $rootScope.$new(true);
+	          backdropScope.modalOptions = modal;
+	          backdropScope.index = currBackdropIndex;
+	          backdropDomEl = angular.element('<div uib-modal-backdrop="modal-backdrop"></div>');
+	          backdropDomEl.attr('backdrop-class', modal.backdropClass);
+	          if (modal.animation) {
+	            backdropDomEl.attr('modal-animation', 'true');
+	          }
+	          $compile(backdropDomEl)(backdropScope);
+	          $animate.enter(backdropDomEl, appendToElement);
+	        }
+
+	        // Set the top modal index based on the index of the previous top modal
+	        topModalIndex = previousTopOpenedModal ? parseInt(previousTopOpenedModal.value.modalDomEl.attr('index'), 10) + 1 : 0;
+	        var angularDomEl = angular.element('<div uib-modal-window="modal-window"></div>');
+	        angularDomEl.attr({
+	          'template-url': modal.windowTemplateUrl,
+	          'window-class': modal.windowClass,
+	          'window-top-class': modal.windowTopClass,
+	          'size': modal.size,
+	          'index': topModalIndex,
+	          'animate': 'animate'
+	        }).html(modal.content);
+	        if (modal.animation) {
+	          angularDomEl.attr('modal-animation', 'true');
+	        }
+
+	        scrollbarPadding = $uibPosition.scrollbarPadding(appendToElement);
+	        if (scrollbarPadding.heightOverflow && scrollbarPadding.scrollbarWidth) {
+	          appendToElement.css({paddingRight: scrollbarPadding.right + 'px'});
+	        }
+	        appendToElement.addClass(modalBodyClass);
+	        $animate.enter($compile(angularDomEl)(modal.scope), appendToElement);
+
+	        openedWindows.top().value.modalDomEl = angularDomEl;
+	        openedWindows.top().value.modalOpener = modalOpener;
+	      };
+
+	      function broadcastClosing(modalWindow, resultOrReason, closing) {
+	        return !modalWindow.value.modalScope.$broadcast('modal.closing', resultOrReason, closing).defaultPrevented;
+	      }
+
+	      $modalStack.close = function(modalInstance, result) {
+	        var modalWindow = openedWindows.get(modalInstance);
+	        if (modalWindow && broadcastClosing(modalWindow, result, true)) {
+	          modalWindow.value.modalScope.$$uibDestructionScheduled = true;
+	          modalWindow.value.deferred.resolve(result);
+	          removeModalWindow(modalInstance, modalWindow.value.modalOpener);
+	          return true;
+	        }
+	        return !modalWindow;
+	      };
+
+	      $modalStack.dismiss = function(modalInstance, reason) {
+	        var modalWindow = openedWindows.get(modalInstance);
+	        if (modalWindow && broadcastClosing(modalWindow, reason, false)) {
+	          modalWindow.value.modalScope.$$uibDestructionScheduled = true;
+	          modalWindow.value.deferred.reject(reason);
+	          removeModalWindow(modalInstance, modalWindow.value.modalOpener);
+	          return true;
+	        }
+	        return !modalWindow;
+	      };
+
+	      $modalStack.dismissAll = function(reason) {
+	        var topModal = this.getTop();
+	        while (topModal && this.dismiss(topModal.key, reason)) {
+	          topModal = this.getTop();
+	        }
+	      };
+
+	      $modalStack.getTop = function() {
+	        return openedWindows.top();
+	      };
+
+	      $modalStack.modalRendered = function(modalInstance) {
+	        var modalWindow = openedWindows.get(modalInstance);
+	        if (modalWindow) {
+	          modalWindow.value.renderDeferred.resolve();
+	        }
+	      };
+
+	      $modalStack.focusFirstFocusableElement = function(list) {
+	        if (list.length > 0) {
+	          list[0].focus();
+	          return true;
+	        }
+	        return false;
+	      };
+
+	      $modalStack.focusLastFocusableElement = function(list) {
+	        if (list.length > 0) {
+	          list[list.length - 1].focus();
+	          return true;
+	        }
+	        return false;
+	      };
+
+	      $modalStack.isModalFocused = function(evt, modalWindow) {
+	        if (evt && modalWindow) {
+	          var modalDomEl = modalWindow.value.modalDomEl;
+	          if (modalDomEl && modalDomEl.length) {
+	            return (evt.target || evt.srcElement) === modalDomEl[0];
+	          }
+	        }
+	        return false;
+	      };
+
+	      $modalStack.isFocusInFirstItem = function(evt, list) {
+	        if (list.length > 0) {
+	          return (evt.target || evt.srcElement) === list[0];
+	        }
+	        return false;
+	      };
+
+	      $modalStack.isFocusInLastItem = function(evt, list) {
+	        if (list.length > 0) {
+	          return (evt.target || evt.srcElement) === list[list.length - 1];
+	        }
+	        return false;
+	      };
+
+	      $modalStack.loadFocusElementList = function(modalWindow) {
+	        if (modalWindow) {
+	          var modalDomE1 = modalWindow.value.modalDomEl;
+	          if (modalDomE1 && modalDomE1.length) {
+	            var elements = modalDomE1[0].querySelectorAll(tabableSelector);
+	            return elements ?
+	              Array.prototype.filter.call(elements, function(element) {
+	                return isVisible(element);
+	              }) : elements;
+	          }
+	        }
+	      };
+
+	      return $modalStack;
+	    }])
+
+	  .provider('$uibModal', function() {
+	    var $modalProvider = {
+	      options: {
+	        animation: true,
+	        backdrop: true, //can also be false or 'static'
+	        keyboard: true
+	      },
+	      $get: ['$rootScope', '$q', '$document', '$templateRequest', '$controller', '$uibResolve', '$uibModalStack',
+	        function ($rootScope, $q, $document, $templateRequest, $controller, $uibResolve, $modalStack) {
+	          var $modal = {};
+
+	          function getTemplatePromise(options) {
+	            return options.template ? $q.when(options.template) :
+	              $templateRequest(angular.isFunction(options.templateUrl) ?
+	                options.templateUrl() : options.templateUrl);
+	          }
+
+	          var promiseChain = null;
+	          $modal.getPromiseChain = function() {
+	            return promiseChain;
+	          };
+
+	          $modal.open = function(modalOptions) {
+	            var modalResultDeferred = $q.defer();
+	            var modalOpenedDeferred = $q.defer();
+	            var modalClosedDeferred = $q.defer();
+	            var modalRenderDeferred = $q.defer();
+
+	            //prepare an instance of a modal to be injected into controllers and returned to a caller
+	            var modalInstance = {
+	              result: modalResultDeferred.promise,
+	              opened: modalOpenedDeferred.promise,
+	              closed: modalClosedDeferred.promise,
+	              rendered: modalRenderDeferred.promise,
+	              close: function (result) {
+	                return $modalStack.close(modalInstance, result);
+	              },
+	              dismiss: function (reason) {
+	                return $modalStack.dismiss(modalInstance, reason);
+	              }
+	            };
+
+	            //merge and clean up options
+	            modalOptions = angular.extend({}, $modalProvider.options, modalOptions);
+	            modalOptions.resolve = modalOptions.resolve || {};
+	            modalOptions.appendTo = modalOptions.appendTo || $document.find('body').eq(0);
+
+	            //verify options
+	            if (!modalOptions.template && !modalOptions.templateUrl) {
+	              throw new Error('One of template or templateUrl options is required.');
+	            }
+
+	            var templateAndResolvePromise =
+	              $q.all([getTemplatePromise(modalOptions), $uibResolve.resolve(modalOptions.resolve, {}, null, null)]);
+
+	            function resolveWithTemplate() {
+	              return templateAndResolvePromise;
+	            }
+
+	            // Wait for the resolution of the existing promise chain.
+	            // Then switch to our own combined promise dependency (regardless of how the previous modal fared).
+	            // Then add to $modalStack and resolve opened.
+	            // Finally clean up the chain variable if no subsequent modal has overwritten it.
+	            var samePromise;
+	            samePromise = promiseChain = $q.all([promiseChain])
+	              .then(resolveWithTemplate, resolveWithTemplate)
+	              .then(function resolveSuccess(tplAndVars) {
+	                var providedScope = modalOptions.scope || $rootScope;
+
+	                var modalScope = providedScope.$new();
+	                modalScope.$close = modalInstance.close;
+	                modalScope.$dismiss = modalInstance.dismiss;
+
+	                modalScope.$on('$destroy', function() {
+	                  if (!modalScope.$$uibDestructionScheduled) {
+	                    modalScope.$dismiss('$uibUnscheduledDestruction');
+	                  }
+	                });
+
+	                var ctrlInstance, ctrlInstantiate, ctrlLocals = {};
+
+	                //controllers
+	                if (modalOptions.controller) {
+	                  ctrlLocals.$scope = modalScope;
+	                  ctrlLocals.$uibModalInstance = modalInstance;
+	                  angular.forEach(tplAndVars[1], function(value, key) {
+	                    ctrlLocals[key] = value;
+	                  });
+
+	                  // the third param will make the controller instantiate later,private api
+	                  // @see https://github.com/angular/angular.js/blob/master/src/ng/controller.js#L126
+	                  ctrlInstantiate = $controller(modalOptions.controller, ctrlLocals, true);
+	                  if (modalOptions.controllerAs) {
+	                    ctrlInstance = ctrlInstantiate.instance;
+
+	                    if (modalOptions.bindToController) {
+	                      ctrlInstance.$close = modalScope.$close;
+	                      ctrlInstance.$dismiss = modalScope.$dismiss;
+	                      angular.extend(ctrlInstance, providedScope);
+	                    }
+
+	                    ctrlInstance = ctrlInstantiate();
+
+	                    modalScope[modalOptions.controllerAs] = ctrlInstance;
+	                  } else {
+	                    ctrlInstance = ctrlInstantiate();
+	                  }
+
+	                  if (angular.isFunction(ctrlInstance.$onInit)) {
+	                    ctrlInstance.$onInit();
+	                  }
+	                }
+
+	                $modalStack.open(modalInstance, {
+	                  scope: modalScope,
+	                  deferred: modalResultDeferred,
+	                  renderDeferred: modalRenderDeferred,
+	                  closedDeferred: modalClosedDeferred,
+	                  content: tplAndVars[0],
+	                  animation: modalOptions.animation,
+	                  backdrop: modalOptions.backdrop,
+	                  keyboard: modalOptions.keyboard,
+	                  backdropClass: modalOptions.backdropClass,
+	                  windowTopClass: modalOptions.windowTopClass,
+	                  windowClass: modalOptions.windowClass,
+	                  windowTemplateUrl: modalOptions.windowTemplateUrl,
+	                  size: modalOptions.size,
+	                  openedClass: modalOptions.openedClass,
+	                  appendTo: modalOptions.appendTo
+	                });
+	                modalOpenedDeferred.resolve(true);
+
+	            }, function resolveError(reason) {
+	              modalOpenedDeferred.reject(reason);
+	              modalResultDeferred.reject(reason);
+	            })['finally'](function() {
+	              if (promiseChain === samePromise) {
+	                promiseChain = null;
+	              }
+	            });
+
+	            return modalInstance;
+	          };
+
+	          return $modal;
+	        }
+	      ]
+	    };
+
+	    return $modalProvider;
+	  });
+
+	angular.module('ui.bootstrap.paging', [])
+	/**
+	 * Helper internal service for generating common controller code between the
+	 * pager and pagination components
+	 */
+	.factory('uibPaging', ['$parse', function($parse) {
+	  return {
+	    create: function(ctrl, $scope, $attrs) {
+	      ctrl.setNumPages = $attrs.numPages ? $parse($attrs.numPages).assign : angular.noop;
+	      ctrl.ngModelCtrl = { $setViewValue: angular.noop }; // nullModelCtrl
+	      ctrl._watchers = [];
+
+	      ctrl.init = function(ngModelCtrl, config) {
+	        ctrl.ngModelCtrl = ngModelCtrl;
+	        ctrl.config = config;
+
+	        ngModelCtrl.$render = function() {
+	          ctrl.render();
+	        };
+
+	        if ($attrs.itemsPerPage) {
+	          ctrl._watchers.push($scope.$parent.$watch($attrs.itemsPerPage, function(value) {
+	            ctrl.itemsPerPage = parseInt(value, 10);
+	            $scope.totalPages = ctrl.calculateTotalPages();
+	            ctrl.updatePage();
+	          }));
+	        } else {
+	          ctrl.itemsPerPage = config.itemsPerPage;
+	        }
+
+	        $scope.$watch('totalItems', function(newTotal, oldTotal) {
+	          if (angular.isDefined(newTotal) || newTotal !== oldTotal) {
+	            $scope.totalPages = ctrl.calculateTotalPages();
+	            ctrl.updatePage();
+	          }
+	        });
+	      };
+
+	      ctrl.calculateTotalPages = function() {
+	        var totalPages = ctrl.itemsPerPage < 1 ? 1 : Math.ceil($scope.totalItems / ctrl.itemsPerPage);
+	        return Math.max(totalPages || 0, 1);
+	      };
+
+	      ctrl.render = function() {
+	        $scope.page = parseInt(ctrl.ngModelCtrl.$viewValue, 10) || 1;
+	      };
+
+	      $scope.selectPage = function(page, evt) {
+	        if (evt) {
+	          evt.preventDefault();
+	        }
+
+	        var clickAllowed = !$scope.ngDisabled || !evt;
+	        if (clickAllowed && $scope.page !== page && page > 0 && page <= $scope.totalPages) {
+	          if (evt && evt.target) {
+	            evt.target.blur();
+	          }
+	          ctrl.ngModelCtrl.$setViewValue(page);
+	          ctrl.ngModelCtrl.$render();
+	        }
+	      };
+
+	      $scope.getText = function(key) {
+	        return $scope[key + 'Text'] || ctrl.config[key + 'Text'];
+	      };
+
+	      $scope.noPrevious = function() {
+	        return $scope.page === 1;
+	      };
+
+	      $scope.noNext = function() {
+	        return $scope.page === $scope.totalPages;
+	      };
+
+	      ctrl.updatePage = function() {
+	        ctrl.setNumPages($scope.$parent, $scope.totalPages); // Readonly variable
+
+	        if ($scope.page > $scope.totalPages) {
+	          $scope.selectPage($scope.totalPages);
+	        } else {
+	          ctrl.ngModelCtrl.$render();
+	        }
+	      };
+
+	      $scope.$on('$destroy', function() {
+	        while (ctrl._watchers.length) {
+	          ctrl._watchers.shift()();
+	        }
+	      });
+	    }
+	  };
+	}]);
+
+	angular.module('ui.bootstrap.pager', ['ui.bootstrap.paging'])
+
+	.controller('UibPagerController', ['$scope', '$attrs', 'uibPaging', 'uibPagerConfig', function($scope, $attrs, uibPaging, uibPagerConfig) {
+	  $scope.align = angular.isDefined($attrs.align) ? $scope.$parent.$eval($attrs.align) : uibPagerConfig.align;
+
+	  uibPaging.create(this, $scope, $attrs);
+	}])
+
+	.constant('uibPagerConfig', {
+	  itemsPerPage: 10,
+	  previousText: '« Previous',
+	  nextText: 'Next »',
+	  align: true
+	})
+
+	.directive('uibPager', ['uibPagerConfig', function(uibPagerConfig) {
+	  return {
+	    scope: {
+	      totalItems: '=',
+	      previousText: '@',
+	      nextText: '@',
+	      ngDisabled: '='
+	    },
+	    require: ['uibPager', '?ngModel'],
+	    controller: 'UibPagerController',
+	    controllerAs: 'pager',
+	    templateUrl: function(element, attrs) {
+	      return attrs.templateUrl || 'uib/template/pager/pager.html';
+	    },
+	    replace: true,
+	    link: function(scope, element, attrs, ctrls) {
+	      var paginationCtrl = ctrls[0], ngModelCtrl = ctrls[1];
+
+	      if (!ngModelCtrl) {
+	        return; // do nothing if no ng-model
+	      }
+
+	      paginationCtrl.init(ngModelCtrl, uibPagerConfig);
+	    }
+	  };
+	}]);
+
+	angular.module('ui.bootstrap.pagination', ['ui.bootstrap.paging'])
+	.controller('UibPaginationController', ['$scope', '$attrs', '$parse', 'uibPaging', 'uibPaginationConfig', function($scope, $attrs, $parse, uibPaging, uibPaginationConfig) {
+	  var ctrl = this;
+	  // Setup configuration parameters
+	  var maxSize = angular.isDefined($attrs.maxSize) ? $scope.$parent.$eval($attrs.maxSize) : uibPaginationConfig.maxSize,
+	    rotate = angular.isDefined($attrs.rotate) ? $scope.$parent.$eval($attrs.rotate) : uibPaginationConfig.rotate,
+	    forceEllipses = angular.isDefined($attrs.forceEllipses) ? $scope.$parent.$eval($attrs.forceEllipses) : uibPaginationConfig.forceEllipses,
+	    boundaryLinkNumbers = angular.isDefined($attrs.boundaryLinkNumbers) ? $scope.$parent.$eval($attrs.boundaryLinkNumbers) : uibPaginationConfig.boundaryLinkNumbers,
+	    pageLabel = angular.isDefined($attrs.pageLabel) ? function(idx) { return $scope.$parent.$eval($attrs.pageLabel, {$page: idx}); } : angular.identity;
+	  $scope.boundaryLinks = angular.isDefined($attrs.boundaryLinks) ? $scope.$parent.$eval($attrs.boundaryLinks) : uibPaginationConfig.boundaryLinks;
+	  $scope.directionLinks = angular.isDefined($attrs.directionLinks) ? $scope.$parent.$eval($attrs.directionLinks) : uibPaginationConfig.directionLinks;
+
+	  uibPaging.create(this, $scope, $attrs);
+
+	  if ($attrs.maxSize) {
+	    ctrl._watchers.push($scope.$parent.$watch($parse($attrs.maxSize), function(value) {
+	      maxSize = parseInt(value, 10);
+	      ctrl.render();
+	    }));
+	  }
+
+	  // Create page object used in template
+	  function makePage(number, text, isActive) {
+	    return {
+	      number: number,
+	      text: text,
+	      active: isActive
+	    };
+	  }
+
+	  function getPages(currentPage, totalPages) {
+	    var pages = [];
+
+	    // Default page limits
+	    var startPage = 1, endPage = totalPages;
+	    var isMaxSized = angular.isDefined(maxSize) && maxSize < totalPages;
+
+	    // recompute if maxSize
+	    if (isMaxSized) {
+	      if (rotate) {
+	        // Current page is displayed in the middle of the visible ones
+	        startPage = Math.max(currentPage - Math.floor(maxSize / 2), 1);
+	        endPage = startPage + maxSize - 1;
+
+	        // Adjust if limit is exceeded
+	        if (endPage > totalPages) {
+	          endPage = totalPages;
+	          startPage = endPage - maxSize + 1;
+	        }
+	      } else {
+	        // Visible pages are paginated with maxSize
+	        startPage = (Math.ceil(currentPage / maxSize) - 1) * maxSize + 1;
+
+	        // Adjust last page if limit is exceeded
+	        endPage = Math.min(startPage + maxSize - 1, totalPages);
+	      }
+	    }
+
+	    // Add page number links
+	    for (var number = startPage; number <= endPage; number++) {
+	      var page = makePage(number, pageLabel(number), number === currentPage);
+	      pages.push(page);
+	    }
+
+	    // Add links to move between page sets
+	    if (isMaxSized && maxSize > 0 && (!rotate || forceEllipses || boundaryLinkNumbers)) {
+	      if (startPage > 1) {
+	        if (!boundaryLinkNumbers || startPage > 3) { //need ellipsis for all options unless range is too close to beginning
+	        var previousPageSet = makePage(startPage - 1, '...', false);
+	        pages.unshift(previousPageSet);
+	      }
+	        if (boundaryLinkNumbers) {
+	          if (startPage === 3) { //need to replace ellipsis when the buttons would be sequential
+	            var secondPageLink = makePage(2, '2', false);
+	            pages.unshift(secondPageLink);
+	          }
+	          //add the first page
+	          var firstPageLink = makePage(1, '1', false);
+	          pages.unshift(firstPageLink);
+	        }
+	      }
+
+	      if (endPage < totalPages) {
+	        if (!boundaryLinkNumbers || endPage < totalPages - 2) { //need ellipsis for all options unless range is too close to end
+	        var nextPageSet = makePage(endPage + 1, '...', false);
+	        pages.push(nextPageSet);
+	      }
+	        if (boundaryLinkNumbers) {
+	          if (endPage === totalPages - 2) { //need to replace ellipsis when the buttons would be sequential
+	            var secondToLastPageLink = makePage(totalPages - 1, totalPages - 1, false);
+	            pages.push(secondToLastPageLink);
+	          }
+	          //add the last page
+	          var lastPageLink = makePage(totalPages, totalPages, false);
+	          pages.push(lastPageLink);
+	        }
+	      }
+	    }
+	    return pages;
+	  }
+
+	  var originalRender = this.render;
+	  this.render = function() {
+	    originalRender();
+	    if ($scope.page > 0 && $scope.page <= $scope.totalPages) {
+	      $scope.pages = getPages($scope.page, $scope.totalPages);
+	    }
+	  };
+	}])
+
+	.constant('uibPaginationConfig', {
+	  itemsPerPage: 10,
+	  boundaryLinks: false,
+	  boundaryLinkNumbers: false,
+	  directionLinks: true,
+	  firstText: 'First',
+	  previousText: 'Previous',
+	  nextText: 'Next',
+	  lastText: 'Last',
+	  rotate: true,
+	  forceEllipses: false
+	})
+
+	.directive('uibPagination', ['$parse', 'uibPaginationConfig', function($parse, uibPaginationConfig) {
+	  return {
+	    scope: {
+	      totalItems: '=',
+	      firstText: '@',
+	      previousText: '@',
+	      nextText: '@',
+	      lastText: '@',
+	      ngDisabled:'='
+	    },
+	    require: ['uibPagination', '?ngModel'],
+	    controller: 'UibPaginationController',
+	    controllerAs: 'pagination',
+	    templateUrl: function(element, attrs) {
+	      return attrs.templateUrl || 'uib/template/pagination/pagination.html';
+	    },
+	    replace: true,
+	    link: function(scope, element, attrs, ctrls) {
+	      var paginationCtrl = ctrls[0], ngModelCtrl = ctrls[1];
+
+	      if (!ngModelCtrl) {
+	         return; // do nothing if no ng-model
+	      }
+
+	      paginationCtrl.init(ngModelCtrl, uibPaginationConfig);
+	    }
+	  };
+	}]);
+
+	/**
+	 * The following features are still outstanding: animation as a
+	 * function, placement as a function, inside, support for more triggers than
+	 * just mouse enter/leave, html tooltips, and selector delegation.
+	 */
+	angular.module('ui.bootstrap.tooltip', ['ui.bootstrap.position', 'ui.bootstrap.stackedMap'])
+
+	/**
+	 * The $tooltip service creates tooltip- and popover-like directives as well as
+	 * houses global options for them.
+	 */
+	.provider('$uibTooltip', function() {
+	  // The default options tooltip and popover.
+	  var defaultOptions = {
+	    placement: 'top',
+	    placementClassPrefix: '',
+	    animation: true,
+	    popupDelay: 0,
+	    popupCloseDelay: 0,
+	    useContentExp: false
+	  };
+
+	  // Default hide triggers for each show trigger
+	  var triggerMap = {
+	    'mouseenter': 'mouseleave',
+	    'click': 'click',
+	    'outsideClick': 'outsideClick',
+	    'focus': 'blur',
+	    'none': ''
+	  };
+
+	  // The options specified to the provider globally.
+	  var globalOptions = {};
+
+	  /**
+	   * `options({})` allows global configuration of all tooltips in the
+	   * application.
+	   *
+	   *   var app = angular.module( 'App', ['ui.bootstrap.tooltip'], function( $tooltipProvider ) {
+	   *     // place tooltips left instead of top by default
+	   *     $tooltipProvider.options( { placement: 'left' } );
+	   *   });
+	   */
+		this.options = function(value) {
+			angular.extend(globalOptions, value);
+		};
+
+	  /**
+	   * This allows you to extend the set of trigger mappings available. E.g.:
+	   *
+	   *   $tooltipProvider.setTriggers( { 'openTrigger': 'closeTrigger' } );
+	   */
+	  this.setTriggers = function setTriggers(triggers) {
+	    angular.extend(triggerMap, triggers);
+	  };
+
+	  /**
+	   * This is a helper function for translating camel-case to snake_case.
+	   */
+	  function snake_case(name) {
+	    var regexp = /[A-Z]/g;
+	    var separator = '-';
+	    return name.replace(regexp, function(letter, pos) {
+	      return (pos ? separator : '') + letter.toLowerCase();
+	    });
+	  }
+
+	  /**
+	   * Returns the actual instance of the $tooltip service.
+	   * TODO support multiple triggers
+	   */
+	  this.$get = ['$window', '$compile', '$timeout', '$document', '$uibPosition', '$interpolate', '$rootScope', '$parse', '$$stackedMap', function($window, $compile, $timeout, $document, $position, $interpolate, $rootScope, $parse, $$stackedMap) {
+	    var openedTooltips = $$stackedMap.createNew();
+	    $document.on('keypress', keypressListener);
+
+	    $rootScope.$on('$destroy', function() {
+	      $document.off('keypress', keypressListener);
+	    });
+
+	    function keypressListener(e) {
+	      if (e.which === 27) {
+	        var last = openedTooltips.top();
+	        if (last) {
+	          last.value.close();
+	          openedTooltips.removeTop();
+	          last = null;
+	        }
+	      }
+	    }
+
+	    return function $tooltip(ttType, prefix, defaultTriggerShow, options) {
+	      options = angular.extend({}, defaultOptions, globalOptions, options);
+
+	      /**
+	       * Returns an object of show and hide triggers.
+	       *
+	       * If a trigger is supplied,
+	       * it is used to show the tooltip; otherwise, it will use the `trigger`
+	       * option passed to the `$tooltipProvider.options` method; else it will
+	       * default to the trigger supplied to this directive factory.
+	       *
+	       * The hide trigger is based on the show trigger. If the `trigger` option
+	       * was passed to the `$tooltipProvider.options` method, it will use the
+	       * mapped trigger from `triggerMap` or the passed trigger if the map is
+	       * undefined; otherwise, it uses the `triggerMap` value of the show
+	       * trigger; else it will just use the show trigger.
+	       */
+	      function getTriggers(trigger) {
+	        var show = (trigger || options.trigger || defaultTriggerShow).split(' ');
+	        var hide = show.map(function(trigger) {
+	          return triggerMap[trigger] || trigger;
+	        });
+	        return {
+	          show: show,
+	          hide: hide
+	        };
+	      }
+
+	      var directiveName = snake_case(ttType);
+
+	      var startSym = $interpolate.startSymbol();
+	      var endSym = $interpolate.endSymbol();
+	      var template =
+	        '<div '+ directiveName + '-popup ' +
+	          'uib-title="' + startSym + 'title' + endSym + '" ' +
+	          (options.useContentExp ?
+	            'content-exp="contentExp()" ' :
+	            'content="' + startSym + 'content' + endSym + '" ') +
+	          'placement="' + startSym + 'placement' + endSym + '" ' +
+	          'popup-class="' + startSym + 'popupClass' + endSym + '" ' +
+	          'animation="animation" ' +
+	          'is-open="isOpen" ' +
+	          'origin-scope="origScope" ' +
+	          'class="uib-position-measure"' +
+	          '>' +
+	        '</div>';
+
+	      return {
+	        compile: function(tElem, tAttrs) {
+	          var tooltipLinker = $compile(template);
+
+	          return function link(scope, element, attrs, tooltipCtrl) {
+	            var tooltip;
+	            var tooltipLinkedScope;
+	            var transitionTimeout;
+	            var showTimeout;
+	            var hideTimeout;
+	            var positionTimeout;
+	            var appendToBody = angular.isDefined(options.appendToBody) ? options.appendToBody : false;
+	            var triggers = getTriggers(undefined);
+	            var hasEnableExp = angular.isDefined(attrs[prefix + 'Enable']);
+	            var ttScope = scope.$new(true);
+	            var repositionScheduled = false;
+	            var isOpenParse = angular.isDefined(attrs[prefix + 'IsOpen']) ? $parse(attrs[prefix + 'IsOpen']) : false;
+	            var contentParse = options.useContentExp ? $parse(attrs[ttType]) : false;
+	            var observers = [];
+	            var lastPlacement;
+
+	            var positionTooltip = function() {
+	              // check if tooltip exists and is not empty
+	              if (!tooltip || !tooltip.html()) { return; }
+
+	              if (!positionTimeout) {
+	                positionTimeout = $timeout(function() {
+	                  var ttPosition = $position.positionElements(element, tooltip, ttScope.placement, appendToBody);
+	                  tooltip.css({ top: ttPosition.top + 'px', left: ttPosition.left + 'px' });
+
+	                  if (!tooltip.hasClass(ttPosition.placement.split('-')[0])) {
+	                    tooltip.removeClass(lastPlacement.split('-')[0]);
+	                    tooltip.addClass(ttPosition.placement.split('-')[0]);
+	                  }
+
+	                  if (!tooltip.hasClass(options.placementClassPrefix + ttPosition.placement)) {
+	                    tooltip.removeClass(options.placementClassPrefix + lastPlacement);
+	                    tooltip.addClass(options.placementClassPrefix + ttPosition.placement);
+	                  }
+
+	                  // first time through tt element will have the
+	                  // uib-position-measure class or if the placement
+	                  // has changed we need to position the arrow.
+	                  if (tooltip.hasClass('uib-position-measure')) {
+	                    $position.positionArrow(tooltip, ttPosition.placement);
+	                    tooltip.removeClass('uib-position-measure');
+	                  } else if (lastPlacement !== ttPosition.placement) {
+	                    $position.positionArrow(tooltip, ttPosition.placement);
+	                  }
+	                  lastPlacement = ttPosition.placement;
+
+	                  positionTimeout = null;
+	                }, 0, false);
+	              }
+	            };
+
+	            // Set up the correct scope to allow transclusion later
+	            ttScope.origScope = scope;
+
+	            // By default, the tooltip is not open.
+	            // TODO add ability to start tooltip opened
+	            ttScope.isOpen = false;
+	            openedTooltips.add(ttScope, {
+	              close: hide
+	            });
+
+	            function toggleTooltipBind() {
+	              if (!ttScope.isOpen) {
+	                showTooltipBind();
+	              } else {
+	                hideTooltipBind();
+	              }
+	            }
+
+	            // Show the tooltip with delay if specified, otherwise show it immediately
+	            function showTooltipBind() {
+	              if (hasEnableExp && !scope.$eval(attrs[prefix + 'Enable'])) {
+	                return;
+	              }
+
+	              cancelHide();
+	              prepareTooltip();
+
+	              if (ttScope.popupDelay) {
+	                // Do nothing if the tooltip was already scheduled to pop-up.
+	                // This happens if show is triggered multiple times before any hide is triggered.
+	                if (!showTimeout) {
+	                  showTimeout = $timeout(show, ttScope.popupDelay, false);
+	                }
+	              } else {
+	                show();
+	              }
+	            }
+
+	            function hideTooltipBind() {
+	              cancelShow();
+
+	              if (ttScope.popupCloseDelay) {
+	                if (!hideTimeout) {
+	                  hideTimeout = $timeout(hide, ttScope.popupCloseDelay, false);
+	                }
+	              } else {
+	                hide();
+	              }
+	            }
+
+	            // Show the tooltip popup element.
+	            function show() {
+	              cancelShow();
+	              cancelHide();
+
+	              // Don't show empty tooltips.
+	              if (!ttScope.content) {
+	                return angular.noop;
+	              }
+
+	              createTooltip();
+
+	              // And show the tooltip.
+	              ttScope.$evalAsync(function() {
+	                ttScope.isOpen = true;
+	                assignIsOpen(true);
+	                positionTooltip();
+	              });
+	            }
+
+	            function cancelShow() {
+	              if (showTimeout) {
+	                $timeout.cancel(showTimeout);
+	                showTimeout = null;
+	              }
+
+	              if (positionTimeout) {
+	                $timeout.cancel(positionTimeout);
+	                positionTimeout = null;
+	              }
+	            }
+
+	            // Hide the tooltip popup element.
+	            function hide() {
+	              if (!ttScope) {
+	                return;
+	              }
+
+	              // First things first: we don't show it anymore.
+	              ttScope.$evalAsync(function() {
+	                if (ttScope) {
+	                  ttScope.isOpen = false;
+	                  assignIsOpen(false);
+	                  // And now we remove it from the DOM. However, if we have animation, we
+	                  // need to wait for it to expire beforehand.
+	                  // FIXME: this is a placeholder for a port of the transitions library.
+	                  // The fade transition in TWBS is 150ms.
+	                  if (ttScope.animation) {
+	                    if (!transitionTimeout) {
+	                      transitionTimeout = $timeout(removeTooltip, 150, false);
+	                    }
+	                  } else {
+	                    removeTooltip();
+	                  }
+	                }
+	              });
+	            }
+
+	            function cancelHide() {
+	              if (hideTimeout) {
+	                $timeout.cancel(hideTimeout);
+	                hideTimeout = null;
+	              }
+
+	              if (transitionTimeout) {
+	                $timeout.cancel(transitionTimeout);
+	                transitionTimeout = null;
+	              }
+	            }
+
+	            function createTooltip() {
+	              // There can only be one tooltip element per directive shown at once.
+	              if (tooltip) {
+	                return;
+	              }
+
+	              tooltipLinkedScope = ttScope.$new();
+	              tooltip = tooltipLinker(tooltipLinkedScope, function(tooltip) {
+	                if (appendToBody) {
+	                  $document.find('body').append(tooltip);
+	                } else {
+	                  element.after(tooltip);
+	                }
+	              });
+
+	              prepObservers();
+	            }
+
+	            function removeTooltip() {
+	              cancelShow();
+	              cancelHide();
+	              unregisterObservers();
+
+	              if (tooltip) {
+	                tooltip.remove();
+	                tooltip = null;
+	              }
+	              if (tooltipLinkedScope) {
+	                tooltipLinkedScope.$destroy();
+	                tooltipLinkedScope = null;
+	              }
+	            }
+
+	            /**
+	             * Set the initial scope values. Once
+	             * the tooltip is created, the observers
+	             * will be added to keep things in sync.
+	             */
+	            function prepareTooltip() {
+	              ttScope.title = attrs[prefix + 'Title'];
+	              if (contentParse) {
+	                ttScope.content = contentParse(scope);
+	              } else {
+	                ttScope.content = attrs[ttType];
+	              }
+
+	              ttScope.popupClass = attrs[prefix + 'Class'];
+	              ttScope.placement = angular.isDefined(attrs[prefix + 'Placement']) ? attrs[prefix + 'Placement'] : options.placement;
+	              var placement = $position.parsePlacement(ttScope.placement);
+	              lastPlacement = placement[1] ? placement[0] + '-' + placement[1] : placement[0];
+
+	              var delay = parseInt(attrs[prefix + 'PopupDelay'], 10);
+	              var closeDelay = parseInt(attrs[prefix + 'PopupCloseDelay'], 10);
+	              ttScope.popupDelay = !isNaN(delay) ? delay : options.popupDelay;
+	              ttScope.popupCloseDelay = !isNaN(closeDelay) ? closeDelay : options.popupCloseDelay;
+	            }
+
+	            function assignIsOpen(isOpen) {
+	              if (isOpenParse && angular.isFunction(isOpenParse.assign)) {
+	                isOpenParse.assign(scope, isOpen);
+	              }
+	            }
+
+	            ttScope.contentExp = function() {
+	              return ttScope.content;
+	            };
+
+	            /**
+	             * Observe the relevant attributes.
+	             */
+	            attrs.$observe('disabled', function(val) {
+	              if (val) {
+	                cancelShow();
+	              }
+
+	              if (val && ttScope.isOpen) {
+	                hide();
+	              }
+	            });
+
+	            if (isOpenParse) {
+	              scope.$watch(isOpenParse, function(val) {
+	                if (ttScope && !val === ttScope.isOpen) {
+	                  toggleTooltipBind();
+	                }
+	              });
+	            }
+
+	            function prepObservers() {
+	              observers.length = 0;
+
+	              if (contentParse) {
+	                observers.push(
+	                  scope.$watch(contentParse, function(val) {
+	                    ttScope.content = val;
+	                    if (!val && ttScope.isOpen) {
+	                      hide();
+	                    }
+	                  })
+	                );
+
+	                observers.push(
+	                  tooltipLinkedScope.$watch(function() {
+	                    if (!repositionScheduled) {
+	                      repositionScheduled = true;
+	                      tooltipLinkedScope.$$postDigest(function() {
+	                        repositionScheduled = false;
+	                        if (ttScope && ttScope.isOpen) {
+	                          positionTooltip();
+	                        }
+	                      });
+	                    }
+	                  })
+	                );
+	              } else {
+	                observers.push(
+	                  attrs.$observe(ttType, function(val) {
+	                    ttScope.content = val;
+	                    if (!val && ttScope.isOpen) {
+	                      hide();
+	                    } else {
+	                      positionTooltip();
+	                    }
+	                  })
+	                );
+	              }
+
+	              observers.push(
+	                attrs.$observe(prefix + 'Title', function(val) {
+	                  ttScope.title = val;
+	                  if (ttScope.isOpen) {
+	                    positionTooltip();
+	                  }
+	                })
+	              );
+
+	              observers.push(
+	                attrs.$observe(prefix + 'Placement', function(val) {
+	                  ttScope.placement = val ? val : options.placement;
+	                  var placement = $position.parsePlacement(ttScope.placement);
+	                  lastPlacement = placement[1] ? placement[0] + '-' + placement[1] : placement[0];
+	                  if (ttScope.isOpen) {
+	                    positionTooltip();
+	                  }
+	                })
+	              );
+	            }
+
+	            function unregisterObservers() {
+	              if (observers.length) {
+	                angular.forEach(observers, function(observer) {
+	                  observer();
+	                });
+	                observers.length = 0;
+	              }
+	            }
+
+	            // hide tooltips/popovers for outsideClick trigger
+	            function bodyHideTooltipBind(e) {
+	              if (!ttScope || !ttScope.isOpen || !tooltip) {
+	                return;
+	              }
+	              // make sure the tooltip/popover link or tool tooltip/popover itself were not clicked
+	              if (!element[0].contains(e.target) && !tooltip[0].contains(e.target)) {
+	                hideTooltipBind();
+	              }
+	            }
+
+	            var unregisterTriggers = function() {
+	              triggers.show.forEach(function(trigger) {
+	                if (trigger === 'outsideClick') {
+	                  element.off('click', toggleTooltipBind);
+	                } else {
+	                  element.off(trigger, showTooltipBind);
+	                  element.off(trigger, toggleTooltipBind);
+	                }
+	              });
+	              triggers.hide.forEach(function(trigger) {
+	                if (trigger === 'outsideClick') {
+	                  $document.off('click', bodyHideTooltipBind);
+	                } else {
+	                  element.off(trigger, hideTooltipBind);
+	                }
+	              });
+	            };
+
+	            function prepTriggers() {
+	              var val = attrs[prefix + 'Trigger'];
+	              unregisterTriggers();
+
+	              triggers = getTriggers(val);
+
+	              if (triggers.show !== 'none') {
+	                triggers.show.forEach(function(trigger, idx) {
+	                  if (trigger === 'outsideClick') {
+	                    element.on('click', toggleTooltipBind);
+	                    $document.on('click', bodyHideTooltipBind);
+	                  } else if (trigger === triggers.hide[idx]) {
+	                    element.on(trigger, toggleTooltipBind);
+	                  } else if (trigger) {
+	                    element.on(trigger, showTooltipBind);
+	                    element.on(triggers.hide[idx], hideTooltipBind);
+	                  }
+
+	                  element.on('keypress', function(e) {
+	                    if (e.which === 27) {
+	                      hideTooltipBind();
+	                    }
+	                  });
+	                });
+	              }
+	            }
+
+	            prepTriggers();
+
+	            var animation = scope.$eval(attrs[prefix + 'Animation']);
+	            ttScope.animation = angular.isDefined(animation) ? !!animation : options.animation;
+
+	            var appendToBodyVal;
+	            var appendKey = prefix + 'AppendToBody';
+	            if (appendKey in attrs && attrs[appendKey] === undefined) {
+	              appendToBodyVal = true;
+	            } else {
+	              appendToBodyVal = scope.$eval(attrs[appendKey]);
+	            }
+
+	            appendToBody = angular.isDefined(appendToBodyVal) ? appendToBodyVal : appendToBody;
+
+	            // Make sure tooltip is destroyed and removed.
+	            scope.$on('$destroy', function onDestroyTooltip() {
+	              unregisterTriggers();
+	              removeTooltip();
+	              openedTooltips.remove(ttScope);
+	              ttScope = null;
+	            });
+	          };
+	        }
+	      };
+	    };
+	  }];
+	})
+
+	// This is mostly ngInclude code but with a custom scope
+	.directive('uibTooltipTemplateTransclude', [
+	         '$animate', '$sce', '$compile', '$templateRequest',
+	function ($animate, $sce, $compile, $templateRequest) {
+	  return {
+	    link: function(scope, elem, attrs) {
+	      var origScope = scope.$eval(attrs.tooltipTemplateTranscludeScope);
+
+	      var changeCounter = 0,
+	        currentScope,
+	        previousElement,
+	        currentElement;
+
+	      var cleanupLastIncludeContent = function() {
+	        if (previousElement) {
+	          previousElement.remove();
+	          previousElement = null;
+	        }
+
+	        if (currentScope) {
+	          currentScope.$destroy();
+	          currentScope = null;
+	        }
+
+	        if (currentElement) {
+	          $animate.leave(currentElement).then(function() {
+	            previousElement = null;
+	          });
+	          previousElement = currentElement;
+	          currentElement = null;
+	        }
+	      };
+
+	      scope.$watch($sce.parseAsResourceUrl(attrs.uibTooltipTemplateTransclude), function(src) {
+	        var thisChangeId = ++changeCounter;
+
+	        if (src) {
+	          //set the 2nd param to true to ignore the template request error so that the inner
+	          //contents and scope can be cleaned up.
+	          $templateRequest(src, true).then(function(response) {
+	            if (thisChangeId !== changeCounter) { return; }
+	            var newScope = origScope.$new();
+	            var template = response;
+
+	            var clone = $compile(template)(newScope, function(clone) {
+	              cleanupLastIncludeContent();
+	              $animate.enter(clone, elem);
+	            });
+
+	            currentScope = newScope;
+	            currentElement = clone;
+
+	            currentScope.$emit('$includeContentLoaded', src);
+	          }, function() {
+	            if (thisChangeId === changeCounter) {
+	              cleanupLastIncludeContent();
+	              scope.$emit('$includeContentError', src);
+	            }
+	          });
+	          scope.$emit('$includeContentRequested', src);
+	        } else {
+	          cleanupLastIncludeContent();
+	        }
+	      });
+
+	      scope.$on('$destroy', cleanupLastIncludeContent);
+	    }
+	  };
+	}])
+
+	/**
+	 * Note that it's intentional that these classes are *not* applied through $animate.
+	 * They must not be animated as they're expected to be present on the tooltip on
+	 * initialization.
+	 */
+	.directive('uibTooltipClasses', ['$uibPosition', function($uibPosition) {
+	  return {
+	    restrict: 'A',
+	    link: function(scope, element, attrs) {
+	      // need to set the primary position so the
+	      // arrow has space during position measure.
+	      // tooltip.positionTooltip()
+	      if (scope.placement) {
+	        // // There are no top-left etc... classes
+	        // // in TWBS, so we need the primary position.
+	        var position = $uibPosition.parsePlacement(scope.placement);
+	        element.addClass(position[0]);
+	      }
+
+	      if (scope.popupClass) {
+	        element.addClass(scope.popupClass);
+	      }
+
+	      if (scope.animation()) {
+	        element.addClass(attrs.tooltipAnimationClass);
+	      }
+	    }
+	  };
+	}])
+
+	.directive('uibTooltipPopup', function() {
+	  return {
+	    replace: true,
+	    scope: { content: '@', placement: '@', popupClass: '@', animation: '&', isOpen: '&' },
+	    templateUrl: 'uib/template/tooltip/tooltip-popup.html'
+	  };
+	})
+
+	.directive('uibTooltip', [ '$uibTooltip', function($uibTooltip) {
+	  return $uibTooltip('uibTooltip', 'tooltip', 'mouseenter');
+	}])
+
+	.directive('uibTooltipTemplatePopup', function() {
+	  return {
+	    replace: true,
+	    scope: { contentExp: '&', placement: '@', popupClass: '@', animation: '&', isOpen: '&',
+	      originScope: '&' },
+	    templateUrl: 'uib/template/tooltip/tooltip-template-popup.html'
+	  };
+	})
+
+	.directive('uibTooltipTemplate', ['$uibTooltip', function($uibTooltip) {
+	  return $uibTooltip('uibTooltipTemplate', 'tooltip', 'mouseenter', {
+	    useContentExp: true
+	  });
+	}])
+
+	.directive('uibTooltipHtmlPopup', function() {
+	  return {
+	    replace: true,
+	    scope: { contentExp: '&', placement: '@', popupClass: '@', animation: '&', isOpen: '&' },
+	    templateUrl: 'uib/template/tooltip/tooltip-html-popup.html'
+	  };
+	})
+
+	.directive('uibTooltipHtml', ['$uibTooltip', function($uibTooltip) {
+	  return $uibTooltip('uibTooltipHtml', 'tooltip', 'mouseenter', {
+	    useContentExp: true
+	  });
+	}]);
+
+	/**
+	 * The following features are still outstanding: popup delay, animation as a
+	 * function, placement as a function, inside, support for more triggers than
+	 * just mouse enter/leave, and selector delegatation.
+	 */
+	angular.module('ui.bootstrap.popover', ['ui.bootstrap.tooltip'])
+
+	.directive('uibPopoverTemplatePopup', function() {
+	  return {
+	    replace: true,
+	    scope: { uibTitle: '@', contentExp: '&', placement: '@', popupClass: '@', animation: '&', isOpen: '&',
+	      originScope: '&' },
+	    templateUrl: 'uib/template/popover/popover-template.html'
+	  };
+	})
+
+	.directive('uibPopoverTemplate', ['$uibTooltip', function($uibTooltip) {
+	  return $uibTooltip('uibPopoverTemplate', 'popover', 'click', {
+	    useContentExp: true
+	  });
+	}])
+
+	.directive('uibPopoverHtmlPopup', function() {
+	  return {
+	    replace: true,
+	    scope: { contentExp: '&', uibTitle: '@', placement: '@', popupClass: '@', animation: '&', isOpen: '&' },
+	    templateUrl: 'uib/template/popover/popover-html.html'
+	  };
+	})
+
+	.directive('uibPopoverHtml', ['$uibTooltip', function($uibTooltip) {
+	  return $uibTooltip('uibPopoverHtml', 'popover', 'click', {
+	    useContentExp: true
+	  });
+	}])
+
+	.directive('uibPopoverPopup', function() {
+	  return {
+	    replace: true,
+	    scope: { uibTitle: '@', content: '@', placement: '@', popupClass: '@', animation: '&', isOpen: '&' },
+	    templateUrl: 'uib/template/popover/popover.html'
+	  };
+	})
+
+	.directive('uibPopover', ['$uibTooltip', function($uibTooltip) {
+	  return $uibTooltip('uibPopover', 'popover', 'click');
+	}]);
+
+	angular.module('ui.bootstrap.progressbar', [])
+
+	.constant('uibProgressConfig', {
+	  animate: true,
+	  max: 100
+	})
+
+	.controller('UibProgressController', ['$scope', '$attrs', 'uibProgressConfig', function($scope, $attrs, progressConfig) {
+	  var self = this,
+	      animate = angular.isDefined($attrs.animate) ? $scope.$parent.$eval($attrs.animate) : progressConfig.animate;
+
+	  this.bars = [];
+	  $scope.max = getMaxOrDefault();
+
+	  this.addBar = function(bar, element, attrs) {
+	    if (!animate) {
+	      element.css({'transition': 'none'});
+	    }
+
+	    this.bars.push(bar);
+
+	    bar.max = getMaxOrDefault();
+	    bar.title = attrs && angular.isDefined(attrs.title) ? attrs.title : 'progressbar';
+
+	    bar.$watch('value', function(value) {
+	      bar.recalculatePercentage();
+	    });
+
+	    bar.recalculatePercentage = function() {
+	      var totalPercentage = self.bars.reduce(function(total, bar) {
+	        bar.percent = +(100 * bar.value / bar.max).toFixed(2);
+	        return total + bar.percent;
+	      }, 0);
+
+	      if (totalPercentage > 100) {
+	        bar.percent -= totalPercentage - 100;
+	      }
+	    };
+
+	    bar.$on('$destroy', function() {
+	      element = null;
+	      self.removeBar(bar);
+	    });
+	  };
+
+	  this.removeBar = function(bar) {
+	    this.bars.splice(this.bars.indexOf(bar), 1);
+	    this.bars.forEach(function (bar) {
+	      bar.recalculatePercentage();
+	    });
+	  };
+
+	  //$attrs.$observe('maxParam', function(maxParam) {
+	  $scope.$watch('maxParam', function(maxParam) {
+	    self.bars.forEach(function(bar) {
+	      bar.max = getMaxOrDefault();
+	      bar.recalculatePercentage();
+	    });
+	  });
+
+	  function getMaxOrDefault () {
+	    return angular.isDefined($scope.maxParam) ? $scope.maxParam : progressConfig.max;
+	  }
+	}])
+
+	.directive('uibProgress', function() {
+	  return {
+	    replace: true,
+	    transclude: true,
+	    controller: 'UibProgressController',
+	    require: 'uibProgress',
+	    scope: {
+	      maxParam: '=?max'
+	    },
+	    templateUrl: 'uib/template/progressbar/progress.html'
+	  };
+	})
+
+	.directive('uibBar', function() {
+	  return {
+	    replace: true,
+	    transclude: true,
+	    require: '^uibProgress',
+	    scope: {
+	      value: '=',
+	      type: '@'
+	    },
+	    templateUrl: 'uib/template/progressbar/bar.html',
+	    link: function(scope, element, attrs, progressCtrl) {
+	      progressCtrl.addBar(scope, element, attrs);
+	    }
+	  };
+	})
+
+	.directive('uibProgressbar', function() {
+	  return {
+	    replace: true,
+	    transclude: true,
+	    controller: 'UibProgressController',
+	    scope: {
+	      value: '=',
+	      maxParam: '=?max',
+	      type: '@'
+	    },
+	    templateUrl: 'uib/template/progressbar/progressbar.html',
+	    link: function(scope, element, attrs, progressCtrl) {
+	      progressCtrl.addBar(scope, angular.element(element.children()[0]), {title: attrs.title});
+	    }
+	  };
+	});
+
+	angular.module('ui.bootstrap.rating', [])
+
+	.constant('uibRatingConfig', {
+	  max: 5,
+	  stateOn: null,
+	  stateOff: null,
+	  enableReset: true,
+	  titles : ['one', 'two', 'three', 'four', 'five']
+	})
+
+	.controller('UibRatingController', ['$scope', '$attrs', 'uibRatingConfig', function($scope, $attrs, ratingConfig) {
+	  var ngModelCtrl = { $setViewValue: angular.noop },
+	    self = this;
+
+	  this.init = function(ngModelCtrl_) {
+	    ngModelCtrl = ngModelCtrl_;
+	    ngModelCtrl.$render = this.render;
+
+	    ngModelCtrl.$formatters.push(function(value) {
+	      if (angular.isNumber(value) && value << 0 !== value) {
+	        value = Math.round(value);
+	      }
+
+	      return value;
+	    });
+
+	    this.stateOn = angular.isDefined($attrs.stateOn) ? $scope.$parent.$eval($attrs.stateOn) : ratingConfig.stateOn;
+	    this.stateOff = angular.isDefined($attrs.stateOff) ? $scope.$parent.$eval($attrs.stateOff) : ratingConfig.stateOff;
+	    this.enableReset = angular.isDefined($attrs.enableReset) ?
+	      $scope.$parent.$eval($attrs.enableReset) : ratingConfig.enableReset;
+	    var tmpTitles = angular.isDefined($attrs.titles) ? $scope.$parent.$eval($attrs.titles) : ratingConfig.titles;
+	    this.titles = angular.isArray(tmpTitles) && tmpTitles.length > 0 ?
+	      tmpTitles : ratingConfig.titles;
+
+	    var ratingStates = angular.isDefined($attrs.ratingStates) ?
+	      $scope.$parent.$eval($attrs.ratingStates) :
+	      new Array(angular.isDefined($attrs.max) ? $scope.$parent.$eval($attrs.max) : ratingConfig.max);
+	    $scope.range = this.buildTemplateObjects(ratingStates);
+	  };
+
+	  this.buildTemplateObjects = function(states) {
+	    for (var i = 0, n = states.length; i < n; i++) {
+	      states[i] = angular.extend({ index: i }, { stateOn: this.stateOn, stateOff: this.stateOff, title: this.getTitle(i) }, states[i]);
+	    }
+	    return states;
+	  };
+
+	  this.getTitle = function(index) {
+	    if (index >= this.titles.length) {
+	      return index + 1;
+	    }
+
+	    return this.titles[index];
+	  };
+
+	  $scope.rate = function(value) {
+	    if (!$scope.readonly && value >= 0 && value <= $scope.range.length) {
+	      var newViewValue = self.enableReset && ngModelCtrl.$viewValue === value ? 0 : value;
+	      ngModelCtrl.$setViewValue(newViewValue);
+	      ngModelCtrl.$render();
+	    }
+	  };
+
+	  $scope.enter = function(value) {
+	    if (!$scope.readonly) {
+	      $scope.value = value;
+	    }
+	    $scope.onHover({value: value});
+	  };
+
+	  $scope.reset = function() {
+	    $scope.value = ngModelCtrl.$viewValue;
+	    $scope.onLeave();
+	  };
+
+	  $scope.onKeydown = function(evt) {
+	    if (/(37|38|39|40)/.test(evt.which)) {
+	      evt.preventDefault();
+	      evt.stopPropagation();
+	      $scope.rate($scope.value + (evt.which === 38 || evt.which === 39 ? 1 : -1));
+	    }
+	  };
+
+	  this.render = function() {
+	    $scope.value = ngModelCtrl.$viewValue;
+	    $scope.title = self.getTitle($scope.value - 1);
+	  };
+	}])
+
+	.directive('uibRating', function() {
+	  return {
+	    require: ['uibRating', 'ngModel'],
+	    scope: {
+	      readonly: '=?readOnly',
+	      onHover: '&',
+	      onLeave: '&'
+	    },
+	    controller: 'UibRatingController',
+	    templateUrl: 'uib/template/rating/rating.html',
+	    replace: true,
+	    link: function(scope, element, attrs, ctrls) {
+	      var ratingCtrl = ctrls[0], ngModelCtrl = ctrls[1];
+	      ratingCtrl.init(ngModelCtrl);
+	    }
+	  };
+	});
+
+	angular.module('ui.bootstrap.tabs', [])
+
+	.controller('UibTabsetController', ['$scope', function ($scope) {
+	  var ctrl = this,
+	    oldIndex;
+	  ctrl.tabs = [];
+
+	  ctrl.select = function(index, evt) {
+	    if (!destroyed) {
+	      var previousIndex = findTabIndex(oldIndex);
+	      var previousSelected = ctrl.tabs[previousIndex];
+	      if (previousSelected) {
+	        previousSelected.tab.onDeselect({
+	          $event: evt
+	        });
+	        if (evt && evt.isDefaultPrevented()) {
+	          return;
+	        }
+	        previousSelected.tab.active = false;
+	      }
+
+	      var selected = ctrl.tabs[index];
+	      if (selected) {
+	        selected.tab.onSelect({
+	          $event: evt
+	        });
+	        selected.tab.active = true;
+	        ctrl.active = selected.index;
+	        oldIndex = selected.index;
+	      } else if (!selected && angular.isNumber(oldIndex)) {
+	        ctrl.active = null;
+	        oldIndex = null;
+	      }
+	    }
+	  };
+
+	  ctrl.addTab = function addTab(tab) {
+	    ctrl.tabs.push({
+	      tab: tab,
+	      index: tab.index
+	    });
+	    ctrl.tabs.sort(function(t1, t2) {
+	      if (t1.index > t2.index) {
+	        return 1;
+	      }
+
+	      if (t1.index < t2.index) {
+	        return -1;
+	      }
+
+	      return 0;
+	    });
+
+	    if (tab.index === ctrl.active || !angular.isNumber(ctrl.active) && ctrl.tabs.length === 1) {
+	      var newActiveIndex = findTabIndex(tab.index);
+	      ctrl.select(newActiveIndex);
+	    }
+	  };
+
+	  ctrl.removeTab = function removeTab(tab) {
+	    var index;
+	    for (var i = 0; i < ctrl.tabs.length; i++) {
+	      if (ctrl.tabs[i].tab === tab) {
+	        index = i;
+	        break;
+	      }
+	    }
+
+	    if (ctrl.tabs[index].index === ctrl.active) {
+	      var newActiveTabIndex = index === ctrl.tabs.length - 1 ?
+	        index - 1 : index + 1 % ctrl.tabs.length;
+	      ctrl.select(newActiveTabIndex);
+	    }
+
+	    ctrl.tabs.splice(index, 1);
+	  };
+
+	  $scope.$watch('tabset.active', function(val) {
+	    if (angular.isNumber(val) && val !== oldIndex) {
+	      ctrl.select(findTabIndex(val));
+	    }
+	  });
+
+	  var destroyed;
+	  $scope.$on('$destroy', function() {
+	    destroyed = true;
+	  });
+
+	  function findTabIndex(index) {
+	    for (var i = 0; i < ctrl.tabs.length; i++) {
+	      if (ctrl.tabs[i].index === index) {
+	        return i;
+	      }
+	    }
+	  }
+	}])
+
+	.directive('uibTabset', function() {
+	  return {
+	    transclude: true,
+	    replace: true,
+	    scope: {},
+	    bindToController: {
+	      active: '=?',
+	      type: '@'
+	    },
+	    controller: 'UibTabsetController',
+	    controllerAs: 'tabset',
+	    templateUrl: function(element, attrs) {
+	      return attrs.templateUrl || 'uib/template/tabs/tabset.html';
+	    },
+	    link: function(scope, element, attrs) {
+	      scope.vertical = angular.isDefined(attrs.vertical) ?
+	        scope.$parent.$eval(attrs.vertical) : false;
+	      scope.justified = angular.isDefined(attrs.justified) ?
+	        scope.$parent.$eval(attrs.justified) : false;
+	      if (angular.isUndefined(attrs.active)) {
+	        scope.active = 0;
+	      }
+	    }
+	  };
+	})
+
+	.directive('uibTab', ['$parse', function($parse) {
+	  return {
+	    require: '^uibTabset',
+	    replace: true,
+	    templateUrl: function(element, attrs) {
+	      return attrs.templateUrl || 'uib/template/tabs/tab.html';
+	    },
+	    transclude: true,
+	    scope: {
+	      heading: '@',
+	      index: '=?',
+	      classes: '@?',
+	      onSelect: '&select', //This callback is called in contentHeadingTransclude
+	                          //once it inserts the tab's content into the dom
+	      onDeselect: '&deselect'
+	    },
+	    controller: function() {
+	      //Empty controller so other directives can require being 'under' a tab
+	    },
+	    controllerAs: 'tab',
+	    link: function(scope, elm, attrs, tabsetCtrl, transclude) {
+	      scope.disabled = false;
+	      if (attrs.disable) {
+	        scope.$parent.$watch($parse(attrs.disable), function(value) {
+	          scope.disabled = !! value;
+	        });
+	      }
+
+	      if (angular.isUndefined(attrs.index)) {
+	        if (tabsetCtrl.tabs && tabsetCtrl.tabs.length) {
+	          scope.index = Math.max.apply(null, tabsetCtrl.tabs.map(function(t) { return t.index; })) + 1;
+	        } else {
+	          scope.index = 0;
+	        }
+	      }
+
+	      if (angular.isUndefined(attrs.classes)) {
+	        scope.classes = '';
+	      }
+
+	      scope.select = function(evt) {
+	        if (!scope.disabled) {
+	          var index;
+	          for (var i = 0; i < tabsetCtrl.tabs.length; i++) {
+	            if (tabsetCtrl.tabs[i].tab === scope) {
+	              index = i;
+	              break;
+	            }
+	          }
+
+	          tabsetCtrl.select(index, evt);
+	        }
+	      };
+
+	      tabsetCtrl.addTab(scope);
+	      scope.$on('$destroy', function() {
+	        tabsetCtrl.removeTab(scope);
+	      });
+
+	      //We need to transclude later, once the content container is ready.
+	      //when this link happens, we're inside a tab heading.
+	      scope.$transcludeFn = transclude;
+	    }
+	  };
+	}])
+
+	.directive('uibTabHeadingTransclude', function() {
+	  return {
+	    restrict: 'A',
+	    require: '^uibTab',
+	    link: function(scope, elm) {
+	      scope.$watch('headingElement', function updateHeadingElement(heading) {
+	        if (heading) {
+	          elm.html('');
+	          elm.append(heading);
+	        }
+	      });
+	    }
+	  };
+	})
+
+	.directive('uibTabContentTransclude', function() {
+	  return {
+	    restrict: 'A',
+	    require: '^uibTabset',
+	    link: function(scope, elm, attrs) {
+	      var tab = scope.$eval(attrs.uibTabContentTransclude).tab;
+
+	      //Now our tab is ready to be transcluded: both the tab heading area
+	      //and the tab content area are loaded.  Transclude 'em both.
+	      tab.$transcludeFn(tab.$parent, function(contents) {
+	        angular.forEach(contents, function(node) {
+	          if (isTabHeading(node)) {
+	            //Let tabHeadingTransclude know.
+	            tab.headingElement = node;
+	          } else {
+	            elm.append(node);
+	          }
+	        });
+	      });
+	    }
+	  };
+
+	  function isTabHeading(node) {
+	    return node.tagName && (
+	      node.hasAttribute('uib-tab-heading') ||
+	      node.hasAttribute('data-uib-tab-heading') ||
+	      node.hasAttribute('x-uib-tab-heading') ||
+	      node.tagName.toLowerCase() === 'uib-tab-heading' ||
+	      node.tagName.toLowerCase() === 'data-uib-tab-heading' ||
+	      node.tagName.toLowerCase() === 'x-uib-tab-heading' ||
+	      node.tagName.toLowerCase() === 'uib:tab-heading'
+	    );
+	  }
+	});
+
+	angular.module('ui.bootstrap.timepicker', [])
+
+	.constant('uibTimepickerConfig', {
+	  hourStep: 1,
+	  minuteStep: 1,
+	  secondStep: 1,
+	  showMeridian: true,
+	  showSeconds: false,
+	  meridians: null,
+	  readonlyInput: false,
+	  mousewheel: true,
+	  arrowkeys: true,
+	  showSpinners: true,
+	  templateUrl: 'uib/template/timepicker/timepicker.html'
+	})
+
+	.controller('UibTimepickerController', ['$scope', '$element', '$attrs', '$parse', '$log', '$locale', 'uibTimepickerConfig', function($scope, $element, $attrs, $parse, $log, $locale, timepickerConfig) {
+	  var selected = new Date(),
+	    watchers = [],
+	    ngModelCtrl = { $setViewValue: angular.noop }, // nullModelCtrl
+	    meridians = angular.isDefined($attrs.meridians) ? $scope.$parent.$eval($attrs.meridians) : timepickerConfig.meridians || $locale.DATETIME_FORMATS.AMPMS,
+	    padHours = angular.isDefined($attrs.padHours) ? $scope.$parent.$eval($attrs.padHours) : true;
+
+	  $scope.tabindex = angular.isDefined($attrs.tabindex) ? $attrs.tabindex : 0;
+	  $element.removeAttr('tabindex');
+
+	  this.init = function(ngModelCtrl_, inputs) {
+	    ngModelCtrl = ngModelCtrl_;
+	    ngModelCtrl.$render = this.render;
+
+	    ngModelCtrl.$formatters.unshift(function(modelValue) {
+	      return modelValue ? new Date(modelValue) : null;
+	    });
+
+	    var hoursInputEl = inputs.eq(0),
+	        minutesInputEl = inputs.eq(1),
+	        secondsInputEl = inputs.eq(2);
+
+	    var mousewheel = angular.isDefined($attrs.mousewheel) ? $scope.$parent.$eval($attrs.mousewheel) : timepickerConfig.mousewheel;
+
+	    if (mousewheel) {
+	      this.setupMousewheelEvents(hoursInputEl, minutesInputEl, secondsInputEl);
+	    }
+
+	    var arrowkeys = angular.isDefined($attrs.arrowkeys) ? $scope.$parent.$eval($attrs.arrowkeys) : timepickerConfig.arrowkeys;
+	    if (arrowkeys) {
+	      this.setupArrowkeyEvents(hoursInputEl, minutesInputEl, secondsInputEl);
+	    }
+
+	    $scope.readonlyInput = angular.isDefined($attrs.readonlyInput) ? $scope.$parent.$eval($attrs.readonlyInput) : timepickerConfig.readonlyInput;
+	    this.setupInputEvents(hoursInputEl, minutesInputEl, secondsInputEl);
+	  };
+
+	  var hourStep = timepickerConfig.hourStep;
+	  if ($attrs.hourStep) {
+	    watchers.push($scope.$parent.$watch($parse($attrs.hourStep), function(value) {
+	      hourStep = +value;
+	    }));
+	  }
+
+	  var minuteStep = timepickerConfig.minuteStep;
+	  if ($attrs.minuteStep) {
+	    watchers.push($scope.$parent.$watch($parse($attrs.minuteStep), function(value) {
+	      minuteStep = +value;
+	    }));
+	  }
+
+	  var min;
+	  watchers.push($scope.$parent.$watch($parse($attrs.min), function(value) {
+	    var dt = new Date(value);
+	    min = isNaN(dt) ? undefined : dt;
+	  }));
+
+	  var max;
+	  watchers.push($scope.$parent.$watch($parse($attrs.max), function(value) {
+	    var dt = new Date(value);
+	    max = isNaN(dt) ? undefined : dt;
+	  }));
+
+	  var disabled = false;
+	  if ($attrs.ngDisabled) {
+	    watchers.push($scope.$parent.$watch($parse($attrs.ngDisabled), function(value) {
+	      disabled = value;
+	    }));
+	  }
+
+	  $scope.noIncrementHours = function() {
+	    var incrementedSelected = addMinutes(selected, hourStep * 60);
+	    return disabled || incrementedSelected > max ||
+	      incrementedSelected < selected && incrementedSelected < min;
+	  };
+
+	  $scope.noDecrementHours = function() {
+	    var decrementedSelected = addMinutes(selected, -hourStep * 60);
+	    return disabled || decrementedSelected < min ||
+	      decrementedSelected > selected && decrementedSelected > max;
+	  };
+
+	  $scope.noIncrementMinutes = function() {
+	    var incrementedSelected = addMinutes(selected, minuteStep);
+	    return disabled || incrementedSelected > max ||
+	      incrementedSelected < selected && incrementedSelected < min;
+	  };
+
+	  $scope.noDecrementMinutes = function() {
+	    var decrementedSelected = addMinutes(selected, -minuteStep);
+	    return disabled || decrementedSelected < min ||
+	      decrementedSelected > selected && decrementedSelected > max;
+	  };
+
+	  $scope.noIncrementSeconds = function() {
+	    var incrementedSelected = addSeconds(selected, secondStep);
+	    return disabled || incrementedSelected > max ||
+	      incrementedSelected < selected && incrementedSelected < min;
+	  };
+
+	  $scope.noDecrementSeconds = function() {
+	    var decrementedSelected = addSeconds(selected, -secondStep);
+	    return disabled || decrementedSelected < min ||
+	      decrementedSelected > selected && decrementedSelected > max;
+	  };
+
+	  $scope.noToggleMeridian = function() {
+	    if (selected.getHours() < 12) {
+	      return disabled || addMinutes(selected, 12 * 60) > max;
+	    }
+
+	    return disabled || addMinutes(selected, -12 * 60) < min;
+	  };
+
+	  var secondStep = timepickerConfig.secondStep;
+	  if ($attrs.secondStep) {
+	    watchers.push($scope.$parent.$watch($parse($attrs.secondStep), function(value) {
+	      secondStep = +value;
+	    }));
+	  }
+
+	  $scope.showSeconds = timepickerConfig.showSeconds;
+	  if ($attrs.showSeconds) {
+	    watchers.push($scope.$parent.$watch($parse($attrs.showSeconds), function(value) {
+	      $scope.showSeconds = !!value;
+	    }));
+	  }
+
+	  // 12H / 24H mode
+	  $scope.showMeridian = timepickerConfig.showMeridian;
+	  if ($attrs.showMeridian) {
+	    watchers.push($scope.$parent.$watch($parse($attrs.showMeridian), function(value) {
+	      $scope.showMeridian = !!value;
+
+	      if (ngModelCtrl.$error.time) {
+	        // Evaluate from template
+	        var hours = getHoursFromTemplate(), minutes = getMinutesFromTemplate();
+	        if (angular.isDefined(hours) && angular.isDefined(minutes)) {
+	          selected.setHours(hours);
+	          refresh();
+	        }
+	      } else {
+	        updateTemplate();
+	      }
+	    }));
+	  }
+
+	  // Get $scope.hours in 24H mode if valid
+	  function getHoursFromTemplate() {
+	    var hours = +$scope.hours;
+	    var valid = $scope.showMeridian ? hours > 0 && hours < 13 :
+	      hours >= 0 && hours < 24;
+	    if (!valid || $scope.hours === '') {
+	      return undefined;
+	    }
+
+	    if ($scope.showMeridian) {
+	      if (hours === 12) {
+	        hours = 0;
+	      }
+	      if ($scope.meridian === meridians[1]) {
+	        hours = hours + 12;
+	      }
+	    }
+	    return hours;
+	  }
+
+	  function getMinutesFromTemplate() {
+	    var minutes = +$scope.minutes;
+	    var valid = minutes >= 0 && minutes < 60;
+	    if (!valid || $scope.minutes === '') {
+	      return undefined;
+	    }
+	    return minutes;
+	  }
+
+	  function getSecondsFromTemplate() {
+	    var seconds = +$scope.seconds;
+	    return seconds >= 0 && seconds < 60 ? seconds : undefined;
+	  }
+
+	  function pad(value, noPad) {
+	    if (value === null) {
+	      return '';
+	    }
+
+	    return angular.isDefined(value) && value.toString().length < 2 && !noPad ?
+	      '0' + value : value.toString();
+	  }
+
+	  // Respond on mousewheel spin
+	  this.setupMousewheelEvents = function(hoursInputEl, minutesInputEl, secondsInputEl) {
+	    var isScrollingUp = function(e) {
+	      if (e.originalEvent) {
+	        e = e.originalEvent;
+	      }
+	      //pick correct delta variable depending on event
+	      var delta = e.wheelDelta ? e.wheelDelta : -e.deltaY;
+	      return e.detail || delta > 0;
+	    };
+
+	    hoursInputEl.bind('mousewheel wheel', function(e) {
+	      if (!disabled) {
+	        $scope.$apply(isScrollingUp(e) ? $scope.incrementHours() : $scope.decrementHours());
+	      }
+	      e.preventDefault();
+	    });
+
+	    minutesInputEl.bind('mousewheel wheel', function(e) {
+	      if (!disabled) {
+	        $scope.$apply(isScrollingUp(e) ? $scope.incrementMinutes() : $scope.decrementMinutes());
+	      }
+	      e.preventDefault();
+	    });
+
+	     secondsInputEl.bind('mousewheel wheel', function(e) {
+	      if (!disabled) {
+	        $scope.$apply(isScrollingUp(e) ? $scope.incrementSeconds() : $scope.decrementSeconds());
+	      }
+	      e.preventDefault();
+	    });
+	  };
+
+	  // Respond on up/down arrowkeys
+	  this.setupArrowkeyEvents = function(hoursInputEl, minutesInputEl, secondsInputEl) {
+	    hoursInputEl.bind('keydown', function(e) {
+	      if (!disabled) {
+	        if (e.which === 38) { // up
+	          e.preventDefault();
+	          $scope.incrementHours();
+	          $scope.$apply();
+	        } else if (e.which === 40) { // down
+	          e.preventDefault();
+	          $scope.decrementHours();
+	          $scope.$apply();
+	        }
+	      }
+	    });
+
+	    minutesInputEl.bind('keydown', function(e) {
+	      if (!disabled) {
+	        if (e.which === 38) { // up
+	          e.preventDefault();
+	          $scope.incrementMinutes();
+	          $scope.$apply();
+	        } else if (e.which === 40) { // down
+	          e.preventDefault();
+	          $scope.decrementMinutes();
+	          $scope.$apply();
+	        }
+	      }
+	    });
+
+	    secondsInputEl.bind('keydown', function(e) {
+	      if (!disabled) {
+	        if (e.which === 38) { // up
+	          e.preventDefault();
+	          $scope.incrementSeconds();
+	          $scope.$apply();
+	        } else if (e.which === 40) { // down
+	          e.preventDefault();
+	          $scope.decrementSeconds();
+	          $scope.$apply();
+	        }
+	      }
+	    });
+	  };
+
+	  this.setupInputEvents = function(hoursInputEl, minutesInputEl, secondsInputEl) {
+	    if ($scope.readonlyInput) {
+	      $scope.updateHours = angular.noop;
+	      $scope.updateMinutes = angular.noop;
+	      $scope.updateSeconds = angular.noop;
+	      return;
+	    }
+
+	    var invalidate = function(invalidHours, invalidMinutes, invalidSeconds) {
+	      ngModelCtrl.$setViewValue(null);
+	      ngModelCtrl.$setValidity('time', false);
+	      if (angular.isDefined(invalidHours)) {
+	        $scope.invalidHours = invalidHours;
+	      }
+
+	      if (angular.isDefined(invalidMinutes)) {
+	        $scope.invalidMinutes = invalidMinutes;
+	      }
+
+	      if (angular.isDefined(invalidSeconds)) {
+	        $scope.invalidSeconds = invalidSeconds;
+	      }
+	    };
+
+	    $scope.updateHours = function() {
+	      var hours = getHoursFromTemplate(),
+	        minutes = getMinutesFromTemplate();
+
+	      ngModelCtrl.$setDirty();
+
+	      if (angular.isDefined(hours) && angular.isDefined(minutes)) {
+	        selected.setHours(hours);
+	        selected.setMinutes(minutes);
+	        if (selected < min || selected > max) {
+	          invalidate(true);
+	        } else {
+	          refresh('h');
+	        }
+	      } else {
+	        invalidate(true);
+	      }
+	    };
+
+	    hoursInputEl.bind('blur', function(e) {
+	      ngModelCtrl.$setTouched();
+	      if (modelIsEmpty()) {
+	        makeValid();
+	      } else if ($scope.hours === null || $scope.hours === '') {
+	        invalidate(true);
+	      } else if (!$scope.invalidHours && $scope.hours < 10) {
+	        $scope.$apply(function() {
+	          $scope.hours = pad($scope.hours, !padHours);
+	        });
+	      }
+	    });
+
+	    $scope.updateMinutes = function() {
+	      var minutes = getMinutesFromTemplate(),
+	        hours = getHoursFromTemplate();
+
+	      ngModelCtrl.$setDirty();
+
+	      if (angular.isDefined(minutes) && angular.isDefined(hours)) {
+	        selected.setHours(hours);
+	        selected.setMinutes(minutes);
+	        if (selected < min || selected > max) {
+	          invalidate(undefined, true);
+	        } else {
+	          refresh('m');
+	        }
+	      } else {
+	        invalidate(undefined, true);
+	      }
+	    };
+
+	    minutesInputEl.bind('blur', function(e) {
+	      ngModelCtrl.$setTouched();
+	      if (modelIsEmpty()) {
+	        makeValid();
+	      } else if ($scope.minutes === null) {
+	        invalidate(undefined, true);
+	      } else if (!$scope.invalidMinutes && $scope.minutes < 10) {
+	        $scope.$apply(function() {
+	          $scope.minutes = pad($scope.minutes);
+	        });
+	      }
+	    });
+
+	    $scope.updateSeconds = function() {
+	      var seconds = getSecondsFromTemplate();
+
+	      ngModelCtrl.$setDirty();
+
+	      if (angular.isDefined(seconds)) {
+	        selected.setSeconds(seconds);
+	        refresh('s');
+	      } else {
+	        invalidate(undefined, undefined, true);
+	      }
+	    };
+
+	    secondsInputEl.bind('blur', function(e) {
+	      if (modelIsEmpty()) {
+	        makeValid();
+	      } else if (!$scope.invalidSeconds && $scope.seconds < 10) {
+	        $scope.$apply( function() {
+	          $scope.seconds = pad($scope.seconds);
+	        });
+	      }
+	    });
+
+	  };
+
+	  this.render = function() {
+	    var date = ngModelCtrl.$viewValue;
+
+	    if (isNaN(date)) {
+	      ngModelCtrl.$setValidity('time', false);
+	      $log.error('Timepicker directive: "ng-model" value must be a Date object, a number of milliseconds since 01.01.1970 or a string representing an RFC2822 or ISO 8601 date.');
+	    } else {
+	      if (date) {
+	        selected = date;
+	      }
+
+	      if (selected < min || selected > max) {
+	        ngModelCtrl.$setValidity('time', false);
+	        $scope.invalidHours = true;
+	        $scope.invalidMinutes = true;
+	      } else {
+	        makeValid();
+	      }
+	      updateTemplate();
+	    }
+	  };
+
+	  // Call internally when we know that model is valid.
+	  function refresh(keyboardChange) {
+	    makeValid();
+	    ngModelCtrl.$setViewValue(new Date(selected));
+	    updateTemplate(keyboardChange);
+	  }
+
+	  function makeValid() {
+	    ngModelCtrl.$setValidity('time', true);
+	    $scope.invalidHours = false;
+	    $scope.invalidMinutes = false;
+	    $scope.invalidSeconds = false;
+	  }
+
+	  function updateTemplate(keyboardChange) {
+	    if (!ngModelCtrl.$modelValue) {
+	      $scope.hours = null;
+	      $scope.minutes = null;
+	      $scope.seconds = null;
+	      $scope.meridian = meridians[0];
+	    } else {
+	      var hours = selected.getHours(),
+	        minutes = selected.getMinutes(),
+	        seconds = selected.getSeconds();
+
+	      if ($scope.showMeridian) {
+	        hours = hours === 0 || hours === 12 ? 12 : hours % 12; // Convert 24 to 12 hour system
+	      }
+
+	      $scope.hours = keyboardChange === 'h' ? hours : pad(hours, !padHours);
+	      if (keyboardChange !== 'm') {
+	        $scope.minutes = pad(minutes);
+	      }
+	      $scope.meridian = selected.getHours() < 12 ? meridians[0] : meridians[1];
+
+	      if (keyboardChange !== 's') {
+	        $scope.seconds = pad(seconds);
+	      }
+	      $scope.meridian = selected.getHours() < 12 ? meridians[0] : meridians[1];
+	    }
+	  }
+
+	  function addSecondsToSelected(seconds) {
+	    selected = addSeconds(selected, seconds);
+	    refresh();
+	  }
+
+	  function addMinutes(selected, minutes) {
+	    return addSeconds(selected, minutes*60);
+	  }
+
+	  function addSeconds(date, seconds) {
+	    var dt = new Date(date.getTime() + seconds * 1000);
+	    var newDate = new Date(date);
+	    newDate.setHours(dt.getHours(), dt.getMinutes(), dt.getSeconds());
+	    return newDate;
+	  }
+
+	  function modelIsEmpty() {
+	    return ($scope.hours === null || $scope.hours === '') &&
+	      ($scope.minutes === null || $scope.minutes === '') &&
+	      (!$scope.showSeconds || $scope.showSeconds && ($scope.seconds === null || $scope.seconds === ''));
+	  }
+
+	  $scope.showSpinners = angular.isDefined($attrs.showSpinners) ?
+	    $scope.$parent.$eval($attrs.showSpinners) : timepickerConfig.showSpinners;
+
+	  $scope.incrementHours = function() {
+	    if (!$scope.noIncrementHours()) {
+	      addSecondsToSelected(hourStep * 60 * 60);
+	    }
+	  };
+
+	  $scope.decrementHours = function() {
+	    if (!$scope.noDecrementHours()) {
+	      addSecondsToSelected(-hourStep * 60 * 60);
+	    }
+	  };
+
+	  $scope.incrementMinutes = function() {
+	    if (!$scope.noIncrementMinutes()) {
+	      addSecondsToSelected(minuteStep * 60);
+	    }
+	  };
+
+	  $scope.decrementMinutes = function() {
+	    if (!$scope.noDecrementMinutes()) {
+	      addSecondsToSelected(-minuteStep * 60);
+	    }
+	  };
+
+	  $scope.incrementSeconds = function() {
+	    if (!$scope.noIncrementSeconds()) {
+	      addSecondsToSelected(secondStep);
+	    }
+	  };
+
+	  $scope.decrementSeconds = function() {
+	    if (!$scope.noDecrementSeconds()) {
+	      addSecondsToSelected(-secondStep);
+	    }
+	  };
+
+	  $scope.toggleMeridian = function() {
+	    var minutes = getMinutesFromTemplate(),
+	        hours = getHoursFromTemplate();
+
+	    if (!$scope.noToggleMeridian()) {
+	      if (angular.isDefined(minutes) && angular.isDefined(hours)) {
+	        addSecondsToSelected(12 * 60 * (selected.getHours() < 12 ? 60 : -60));
+	      } else {
+	        $scope.meridian = $scope.meridian === meridians[0] ? meridians[1] : meridians[0];
+	      }
+	    }
+	  };
+
+	  $scope.blur = function() {
+	    ngModelCtrl.$setTouched();
+	  };
+
+	  $scope.$on('$destroy', function() {
+	    while (watchers.length) {
+	      watchers.shift()();
+	    }
+	  });
+	}])
+
+	.directive('uibTimepicker', ['uibTimepickerConfig', function(uibTimepickerConfig) {
+	  return {
+	    require: ['uibTimepicker', '?^ngModel'],
+	    controller: 'UibTimepickerController',
+	    controllerAs: 'timepicker',
+	    replace: true,
+	    scope: {},
+	    templateUrl: function(element, attrs) {
+	      return attrs.templateUrl || uibTimepickerConfig.templateUrl;
+	    },
+	    link: function(scope, element, attrs, ctrls) {
+	      var timepickerCtrl = ctrls[0], ngModelCtrl = ctrls[1];
+
+	      if (ngModelCtrl) {
+	        timepickerCtrl.init(ngModelCtrl, element.find('input'));
+	      }
+	    }
+	  };
+	}]);
+
+	angular.module('ui.bootstrap.typeahead', ['ui.bootstrap.debounce', 'ui.bootstrap.position'])
+
+	/**
+	 * A helper service that can parse typeahead's syntax (string provided by users)
+	 * Extracted to a separate service for ease of unit testing
+	 */
+	  .factory('uibTypeaheadParser', ['$parse', function($parse) {
+	    //                      00000111000000000000022200000000000000003333333333333330000000000044000
+	    var TYPEAHEAD_REGEXP = /^\s*([\s\S]+?)(?:\s+as\s+([\s\S]+?))?\s+for\s+(?:([\$\w][\$\w\d]*))\s+in\s+([\s\S]+?)$/;
+	    return {
+	      parse: function(input) {
+	        var match = input.match(TYPEAHEAD_REGEXP);
+	        if (!match) {
+	          throw new Error(
+	            'Expected typeahead specification in form of "_modelValue_ (as _label_)? for _item_ in _collection_"' +
+	              ' but got "' + input + '".');
+	        }
+
+	        return {
+	          itemName: match[3],
+	          source: $parse(match[4]),
+	          viewMapper: $parse(match[2] || match[1]),
+	          modelMapper: $parse(match[1])
+	        };
+	      }
+	    };
+	  }])
+
+	  .controller('UibTypeaheadController', ['$scope', '$element', '$attrs', '$compile', '$parse', '$q', '$timeout', '$document', '$window', '$rootScope', '$$debounce', '$uibPosition', 'uibTypeaheadParser',
+	    function(originalScope, element, attrs, $compile, $parse, $q, $timeout, $document, $window, $rootScope, $$debounce, $position, typeaheadParser) {
+	    var HOT_KEYS = [9, 13, 27, 38, 40];
+	    var eventDebounceTime = 200;
+	    var modelCtrl, ngModelOptions;
+	    //SUPPORTED ATTRIBUTES (OPTIONS)
+
+	    //minimal no of characters that needs to be entered before typeahead kicks-in
+	    var minLength = originalScope.$eval(attrs.typeaheadMinLength);
+	    if (!minLength && minLength !== 0) {
+	      minLength = 1;
+	    }
+
+	    originalScope.$watch(attrs.typeaheadMinLength, function (newVal) {
+	        minLength = !newVal && newVal !== 0 ? 1 : newVal;
+	    });
+	    
+	    //minimal wait time after last character typed before typeahead kicks-in
+	    var waitTime = originalScope.$eval(attrs.typeaheadWaitMs) || 0;
+
+	    //should it restrict model values to the ones selected from the popup only?
+	    var isEditable = originalScope.$eval(attrs.typeaheadEditable) !== false;
+	    originalScope.$watch(attrs.typeaheadEditable, function (newVal) {
+	      isEditable = newVal !== false;
+	    });
+
+	    //binding to a variable that indicates if matches are being retrieved asynchronously
+	    var isLoadingSetter = $parse(attrs.typeaheadLoading).assign || angular.noop;
+
+	    //a callback executed when a match is selected
+	    var onSelectCallback = $parse(attrs.typeaheadOnSelect);
+
+	    //should it select highlighted popup value when losing focus?
+	    var isSelectOnBlur = angular.isDefined(attrs.typeaheadSelectOnBlur) ? originalScope.$eval(attrs.typeaheadSelectOnBlur) : false;
+
+	    //binding to a variable that indicates if there were no results after the query is completed
+	    var isNoResultsSetter = $parse(attrs.typeaheadNoResults).assign || angular.noop;
+
+	    var inputFormatter = attrs.typeaheadInputFormatter ? $parse(attrs.typeaheadInputFormatter) : undefined;
+
+	    var appendToBody = attrs.typeaheadAppendToBody ? originalScope.$eval(attrs.typeaheadAppendToBody) : false;
+
+	    var appendTo = attrs.typeaheadAppendTo ?
+	      originalScope.$eval(attrs.typeaheadAppendTo) : null;
+
+	    var focusFirst = originalScope.$eval(attrs.typeaheadFocusFirst) !== false;
+
+	    //If input matches an item of the list exactly, select it automatically
+	    var selectOnExact = attrs.typeaheadSelectOnExact ? originalScope.$eval(attrs.typeaheadSelectOnExact) : false;
+
+	    //binding to a variable that indicates if dropdown is open
+	    var isOpenSetter = $parse(attrs.typeaheadIsOpen).assign || angular.noop;
+
+	    var showHint = originalScope.$eval(attrs.typeaheadShowHint) || false;
+
+	    //INTERNAL VARIABLES
+
+	    //model setter executed upon match selection
+	    var parsedModel = $parse(attrs.ngModel);
+	    var invokeModelSetter = $parse(attrs.ngModel + '($$$p)');
+	    var $setModelValue = function(scope, newValue) {
+	      if (angular.isFunction(parsedModel(originalScope)) &&
+	        ngModelOptions && ngModelOptions.$options && ngModelOptions.$options.getterSetter) {
+	        return invokeModelSetter(scope, {$$$p: newValue});
+	      }
+
+	      return parsedModel.assign(scope, newValue);
+	    };
+
+	    //expressions used by typeahead
+	    var parserResult = typeaheadParser.parse(attrs.uibTypeahead);
+
+	    var hasFocus;
+
+	    //Used to avoid bug in iOS webview where iOS keyboard does not fire
+	    //mousedown & mouseup events
+	    //Issue #3699
+	    var selected;
+
+	    //create a child scope for the typeahead directive so we are not polluting original scope
+	    //with typeahead-specific data (matches, query etc.)
+	    var scope = originalScope.$new();
+	    var offDestroy = originalScope.$on('$destroy', function() {
+	      scope.$destroy();
+	    });
+	    scope.$on('$destroy', offDestroy);
+
+	    // WAI-ARIA
+	    var popupId = 'typeahead-' + scope.$id + '-' + Math.floor(Math.random() * 10000);
+	    element.attr({
+	      'aria-autocomplete': 'list',
+	      'aria-expanded': false,
+	      'aria-owns': popupId
+	    });
+
+	    var inputsContainer, hintInputElem;
+	    //add read-only input to show hint
+	    if (showHint) {
+	      inputsContainer = angular.element('<div></div>');
+	      inputsContainer.css('position', 'relative');
+	      element.after(inputsContainer);
+	      hintInputElem = element.clone();
+	      hintInputElem.attr('placeholder', '');
+	      hintInputElem.attr('tabindex', '-1');
+	      hintInputElem.val('');
+	      hintInputElem.css({
+	        'position': 'absolute',
+	        'top': '0px',
+	        'left': '0px',
+	        'border-color': 'transparent',
+	        'box-shadow': 'none',
+	        'opacity': 1,
+	        'background': 'none 0% 0% / auto repeat scroll padding-box border-box rgb(255, 255, 255)',
+	        'color': '#999'
+	      });
+	      element.css({
+	        'position': 'relative',
+	        'vertical-align': 'top',
+	        'background-color': 'transparent'
+	      });
+	      inputsContainer.append(hintInputElem);
+	      hintInputElem.after(element);
+	    }
+
+	    //pop-up element used to display matches
+	    var popUpEl = angular.element('<div uib-typeahead-popup></div>');
+	    popUpEl.attr({
+	      id: popupId,
+	      matches: 'matches',
+	      active: 'activeIdx',
+	      select: 'select(activeIdx, evt)',
+	      'move-in-progress': 'moveInProgress',
+	      query: 'query',
+	      position: 'position',
+	      'assign-is-open': 'assignIsOpen(isOpen)',
+	      debounce: 'debounceUpdate'
+	    });
+	    //custom item template
+	    if (angular.isDefined(attrs.typeaheadTemplateUrl)) {
+	      popUpEl.attr('template-url', attrs.typeaheadTemplateUrl);
+	    }
+
+	    if (angular.isDefined(attrs.typeaheadPopupTemplateUrl)) {
+	      popUpEl.attr('popup-template-url', attrs.typeaheadPopupTemplateUrl);
+	    }
+
+	    var resetHint = function() {
+	      if (showHint) {
+	        hintInputElem.val('');
+	      }
+	    };
+
+	    var resetMatches = function() {
+	      scope.matches = [];
+	      scope.activeIdx = -1;
+	      element.attr('aria-expanded', false);
+	      resetHint();
+	    };
+
+	    var getMatchId = function(index) {
+	      return popupId + '-option-' + index;
+	    };
+
+	    // Indicate that the specified match is the active (pre-selected) item in the list owned by this typeahead.
+	    // This attribute is added or removed automatically when the `activeIdx` changes.
+	    scope.$watch('activeIdx', function(index) {
+	      if (index < 0) {
+	        element.removeAttr('aria-activedescendant');
+	      } else {
+	        element.attr('aria-activedescendant', getMatchId(index));
+	      }
+	    });
+
+	    var inputIsExactMatch = function(inputValue, index) {
+	      if (scope.matches.length > index && inputValue) {
+	        return inputValue.toUpperCase() === scope.matches[index].label.toUpperCase();
+	      }
+
+	      return false;
+	    };
+
+	    var getMatchesAsync = function(inputValue, evt) {
+	      var locals = {$viewValue: inputValue};
+	      isLoadingSetter(originalScope, true);
+	      isNoResultsSetter(originalScope, false);
+	      $q.when(parserResult.source(originalScope, locals)).then(function(matches) {
+	        //it might happen that several async queries were in progress if a user were typing fast
+	        //but we are interested only in responses that correspond to the current view value
+	        var onCurrentRequest = inputValue === modelCtrl.$viewValue;
+	        if (onCurrentRequest && hasFocus) {
+	          if (matches && matches.length > 0) {
+	            scope.activeIdx = focusFirst ? 0 : -1;
+	            isNoResultsSetter(originalScope, false);
+	            scope.matches.length = 0;
+
+	            //transform labels
+	            for (var i = 0; i < matches.length; i++) {
+	              locals[parserResult.itemName] = matches[i];
+	              scope.matches.push({
+	                id: getMatchId(i),
+	                label: parserResult.viewMapper(scope, locals),
+	                model: matches[i]
+	              });
+	            }
+
+	            scope.query = inputValue;
+	            //position pop-up with matches - we need to re-calculate its position each time we are opening a window
+	            //with matches as a pop-up might be absolute-positioned and position of an input might have changed on a page
+	            //due to other elements being rendered
+	            recalculatePosition();
+
+	            element.attr('aria-expanded', true);
+
+	            //Select the single remaining option if user input matches
+	            if (selectOnExact && scope.matches.length === 1 && inputIsExactMatch(inputValue, 0)) {
+	              if (angular.isNumber(scope.debounceUpdate) || angular.isObject(scope.debounceUpdate)) {
+	                $$debounce(function() {
+	                  scope.select(0, evt);
+	                }, angular.isNumber(scope.debounceUpdate) ? scope.debounceUpdate : scope.debounceUpdate['default']);
+	              } else {
+	                scope.select(0, evt);
+	              }
+	            }
+
+	            if (showHint) {
+	              var firstLabel = scope.matches[0].label;
+	              if (angular.isString(inputValue) &&
+	                inputValue.length > 0 &&
+	                firstLabel.slice(0, inputValue.length).toUpperCase() === inputValue.toUpperCase()) {
+	                hintInputElem.val(inputValue + firstLabel.slice(inputValue.length));
+	              } else {
+	                hintInputElem.val('');
+	              }
+	            }
+	          } else {
+	            resetMatches();
+	            isNoResultsSetter(originalScope, true);
+	          }
+	        }
+	        if (onCurrentRequest) {
+	          isLoadingSetter(originalScope, false);
+	        }
+	      }, function() {
+	        resetMatches();
+	        isLoadingSetter(originalScope, false);
+	        isNoResultsSetter(originalScope, true);
+	      });
+	    };
+
+	    // bind events only if appendToBody params exist - performance feature
+	    if (appendToBody) {
+	      angular.element($window).on('resize', fireRecalculating);
+	      $document.find('body').on('scroll', fireRecalculating);
+	    }
+
+	    // Declare the debounced function outside recalculating for
+	    // proper debouncing
+	    var debouncedRecalculate = $$debounce(function() {
+	      // if popup is visible
+	      if (scope.matches.length) {
+	        recalculatePosition();
+	      }
+
+	      scope.moveInProgress = false;
+	    }, eventDebounceTime);
+
+	    // Default progress type
+	    scope.moveInProgress = false;
+
+	    function fireRecalculating() {
+	      if (!scope.moveInProgress) {
+	        scope.moveInProgress = true;
+	        scope.$digest();
+	      }
+
+	      debouncedRecalculate();
+	    }
+
+	    // recalculate actual position and set new values to scope
+	    // after digest loop is popup in right position
+	    function recalculatePosition() {
+	      scope.position = appendToBody ? $position.offset(element) : $position.position(element);
+	      scope.position.top += element.prop('offsetHeight');
+	    }
+
+	    //we need to propagate user's query so we can higlight matches
+	    scope.query = undefined;
+
+	    //Declare the timeout promise var outside the function scope so that stacked calls can be cancelled later
+	    var timeoutPromise;
+
+	    var scheduleSearchWithTimeout = function(inputValue) {
+	      timeoutPromise = $timeout(function() {
+	        getMatchesAsync(inputValue);
+	      }, waitTime);
+	    };
+
+	    var cancelPreviousTimeout = function() {
+	      if (timeoutPromise) {
+	        $timeout.cancel(timeoutPromise);
+	      }
+	    };
+
+	    resetMatches();
+
+	    scope.assignIsOpen = function (isOpen) {
+	      isOpenSetter(originalScope, isOpen);
+	    };
+
+	    scope.select = function(activeIdx, evt) {
+	      //called from within the $digest() cycle
+	      var locals = {};
+	      var model, item;
+
+	      selected = true;
+	      locals[parserResult.itemName] = item = scope.matches[activeIdx].model;
+	      model = parserResult.modelMapper(originalScope, locals);
+	      $setModelValue(originalScope, model);
+	      modelCtrl.$setValidity('editable', true);
+	      modelCtrl.$setValidity('parse', true);
+
+	      onSelectCallback(originalScope, {
+	        $item: item,
+	        $model: model,
+	        $label: parserResult.viewMapper(originalScope, locals),
+	        $event: evt
+	      });
+
+	      resetMatches();
+
+	      //return focus to the input element if a match was selected via a mouse click event
+	      // use timeout to avoid $rootScope:inprog error
+	      if (scope.$eval(attrs.typeaheadFocusOnSelect) !== false) {
+	        $timeout(function() { element[0].focus(); }, 0, false);
+	      }
+	    };
+
+	    //bind keyboard events: arrows up(38) / down(40), enter(13) and tab(9), esc(27)
+	    element.on('keydown', function(evt) {
+	      //typeahead is open and an "interesting" key was pressed
+	      if (scope.matches.length === 0 || HOT_KEYS.indexOf(evt.which) === -1) {
+	        return;
+	      }
+
+	      /**
+	       * if there's nothing selected (i.e. focusFirst) and enter or tab is hit
+	       * or
+	       * shift + tab is pressed to bring focus to the previous element
+	       * then clear the results
+	       */
+	      if (scope.activeIdx === -1 && (evt.which === 9 || evt.which === 13) || evt.which === 9 && !!evt.shiftKey) {
+	        resetMatches();
+	        scope.$digest();
+	        return;
+	      }
+
+	      evt.preventDefault();
+	      var target;
+	      switch (evt.which) {
+	        case 9:
+	        case 13:
+	          scope.$apply(function () {
+	            if (angular.isNumber(scope.debounceUpdate) || angular.isObject(scope.debounceUpdate)) {
+	              $$debounce(function() {
+	                scope.select(scope.activeIdx, evt);
+	              }, angular.isNumber(scope.debounceUpdate) ? scope.debounceUpdate : scope.debounceUpdate['default']);
+	            } else {
+	              scope.select(scope.activeIdx, evt);
+	            }
+	          });
+	          break;
+	        case 27:
+	          evt.stopPropagation();
+
+	          resetMatches();
+	          originalScope.$digest();
+	          break;
+	        case 38:
+	          scope.activeIdx = (scope.activeIdx > 0 ? scope.activeIdx : scope.matches.length) - 1;
+	          scope.$digest();
+	          target = popUpEl.find('li')[scope.activeIdx];
+	          target.parentNode.scrollTop = target.offsetTop;
+	          break;
+	        case 40:
+	          scope.activeIdx = (scope.activeIdx + 1) % scope.matches.length;
+	          scope.$digest();
+	          target = popUpEl.find('li')[scope.activeIdx];
+	          target.parentNode.scrollTop = target.offsetTop;
+	          break;
+	      }
+	    });
+
+	    element.bind('focus', function (evt) {
+	      hasFocus = true;
+	      if (minLength === 0 && !modelCtrl.$viewValue) {
+	        $timeout(function() {
+	          getMatchesAsync(modelCtrl.$viewValue, evt);
+	        }, 0);
+	      }
+	    });
+
+	    element.bind('blur', function(evt) {
+	      if (isSelectOnBlur && scope.matches.length && scope.activeIdx !== -1 && !selected) {
+	        selected = true;
+	        scope.$apply(function() {
+	          if (angular.isObject(scope.debounceUpdate) && angular.isNumber(scope.debounceUpdate.blur)) {
+	            $$debounce(function() {
+	              scope.select(scope.activeIdx, evt);
+	            }, scope.debounceUpdate.blur);
+	          } else {
+	            scope.select(scope.activeIdx, evt);
+	          }
+	        });
+	      }
+	      if (!isEditable && modelCtrl.$error.editable) {
+	        modelCtrl.$viewValue = '';
+	        // Reset validity as we are clearing
+	        modelCtrl.$setValidity('editable', true);
+	        modelCtrl.$setValidity('parse', true);
+	        element.val('');
+	      }
+	      hasFocus = false;
+	      selected = false;
+	    });
+
+	    // Keep reference to click handler to unbind it.
+	    var dismissClickHandler = function(evt) {
+	      // Issue #3973
+	      // Firefox treats right click as a click on document
+	      if (element[0] !== evt.target && evt.which !== 3 && scope.matches.length !== 0) {
+	        resetMatches();
+	        if (!$rootScope.$$phase) {
+	          originalScope.$digest();
+	        }
+	      }
+	    };
+
+	    $document.on('click', dismissClickHandler);
+
+	    originalScope.$on('$destroy', function() {
+	      $document.off('click', dismissClickHandler);
+	      if (appendToBody || appendTo) {
+	        $popup.remove();
+	      }
+
+	      if (appendToBody) {
+	        angular.element($window).off('resize', fireRecalculating);
+	        $document.find('body').off('scroll', fireRecalculating);
+	      }
+	      // Prevent jQuery cache memory leak
+	      popUpEl.remove();
+
+	      if (showHint) {
+	          inputsContainer.remove();
+	      }
+	    });
+
+	    var $popup = $compile(popUpEl)(scope);
+
+	    if (appendToBody) {
+	      $document.find('body').append($popup);
+	    } else if (appendTo) {
+	      angular.element(appendTo).eq(0).append($popup);
+	    } else {
+	      element.after($popup);
+	    }
+
+	    this.init = function(_modelCtrl, _ngModelOptions) {
+	      modelCtrl = _modelCtrl;
+	      ngModelOptions = _ngModelOptions;
+
+	      scope.debounceUpdate = modelCtrl.$options && $parse(modelCtrl.$options.debounce)(originalScope);
+
+	      //plug into $parsers pipeline to open a typeahead on view changes initiated from DOM
+	      //$parsers kick-in on all the changes coming from the view as well as manually triggered by $setViewValue
+	      modelCtrl.$parsers.unshift(function(inputValue) {
+	        hasFocus = true;
+
+	        if (minLength === 0 || inputValue && inputValue.length >= minLength) {
+	          if (waitTime > 0) {
+	            cancelPreviousTimeout();
+	            scheduleSearchWithTimeout(inputValue);
+	          } else {
+	            getMatchesAsync(inputValue);
+	          }
+	        } else {
+	          isLoadingSetter(originalScope, false);
+	          cancelPreviousTimeout();
+	          resetMatches();
+	        }
+
+	        if (isEditable) {
+	          return inputValue;
+	        }
+
+	        if (!inputValue) {
+	          // Reset in case user had typed something previously.
+	          modelCtrl.$setValidity('editable', true);
+	          return null;
+	        }
+
+	        modelCtrl.$setValidity('editable', false);
+	        return undefined;
+	      });
+
+	      modelCtrl.$formatters.push(function(modelValue) {
+	        var candidateViewValue, emptyViewValue;
+	        var locals = {};
+
+	        // The validity may be set to false via $parsers (see above) if
+	        // the model is restricted to selected values. If the model
+	        // is set manually it is considered to be valid.
+	        if (!isEditable) {
+	          modelCtrl.$setValidity('editable', true);
+	        }
+
+	        if (inputFormatter) {
+	          locals.$model = modelValue;
+	          return inputFormatter(originalScope, locals);
+	        }
+
+	        //it might happen that we don't have enough info to properly render input value
+	        //we need to check for this situation and simply return model value if we can't apply custom formatting
+	        locals[parserResult.itemName] = modelValue;
+	        candidateViewValue = parserResult.viewMapper(originalScope, locals);
+	        locals[parserResult.itemName] = undefined;
+	        emptyViewValue = parserResult.viewMapper(originalScope, locals);
+
+	        return candidateViewValue !== emptyViewValue ? candidateViewValue : modelValue;
+	      });
+	    };
+	  }])
+
+	  .directive('uibTypeahead', function() {
+	    return {
+	      controller: 'UibTypeaheadController',
+	      require: ['ngModel', '^?ngModelOptions', 'uibTypeahead'],
+	      link: function(originalScope, element, attrs, ctrls) {
+	        ctrls[2].init(ctrls[0], ctrls[1]);
+	      }
+	    };
+	  })
+
+	  .directive('uibTypeaheadPopup', ['$$debounce', function($$debounce) {
+	    return {
+	      scope: {
+	        matches: '=',
+	        query: '=',
+	        active: '=',
+	        position: '&',
+	        moveInProgress: '=',
+	        select: '&',
+	        assignIsOpen: '&',
+	        debounce: '&'
+	      },
+	      replace: true,
+	      templateUrl: function(element, attrs) {
+	        return attrs.popupTemplateUrl || 'uib/template/typeahead/typeahead-popup.html';
+	      },
+	      link: function(scope, element, attrs) {
+	        scope.templateUrl = attrs.templateUrl;
+
+	        scope.isOpen = function() {
+	          var isDropdownOpen = scope.matches.length > 0;
+	          scope.assignIsOpen({ isOpen: isDropdownOpen });
+	          return isDropdownOpen;
+	        };
+
+	        scope.isActive = function(matchIdx) {
+	          return scope.active === matchIdx;
+	        };
+
+	        scope.selectActive = function(matchIdx) {
+	          scope.active = matchIdx;
+	        };
+
+	        scope.selectMatch = function(activeIdx, evt) {
+	          var debounce = scope.debounce();
+	          if (angular.isNumber(debounce) || angular.isObject(debounce)) {
+	            $$debounce(function() {
+	              scope.select({activeIdx: activeIdx, evt: evt});
+	            }, angular.isNumber(debounce) ? debounce : debounce['default']);
+	          } else {
+	            scope.select({activeIdx: activeIdx, evt: evt});
+	          }
+	        };
+	      }
+	    };
+	  }])
+
+	  .directive('uibTypeaheadMatch', ['$templateRequest', '$compile', '$parse', function($templateRequest, $compile, $parse) {
+	    return {
+	      scope: {
+	        index: '=',
+	        match: '=',
+	        query: '='
+	      },
+	      link: function(scope, element, attrs) {
+	        var tplUrl = $parse(attrs.templateUrl)(scope.$parent) || 'uib/template/typeahead/typeahead-match.html';
+	        $templateRequest(tplUrl).then(function(tplContent) {
+	          var tplEl = angular.element(tplContent.trim());
+	          element.replaceWith(tplEl);
+	          $compile(tplEl)(scope);
+	        });
+	      }
+	    };
+	  }])
+
+	  .filter('uibTypeaheadHighlight', ['$sce', '$injector', '$log', function($sce, $injector, $log) {
+	    var isSanitizePresent;
+	    isSanitizePresent = $injector.has('$sanitize');
+
+	    function escapeRegexp(queryToEscape) {
+	      // Regex: capture the whole query string and replace it with the string that will be used to match
+	      // the results, for example if the capture is "a" the result will be \a
+	      return queryToEscape.replace(/([.?*+^$[\]\\(){}|-])/g, '\\$1');
+	    }
+
+	    function containsHtml(matchItem) {
+	      return /<.*>/g.test(matchItem);
+	    }
+
+	    return function(matchItem, query) {
+	      if (!isSanitizePresent && containsHtml(matchItem)) {
+	        $log.warn('Unsafe use of typeahead please use ngSanitize'); // Warn the user about the danger
+	      }
+	      matchItem = query ? ('' + matchItem).replace(new RegExp(escapeRegexp(query), 'gi'), '<strong>$&</strong>') : matchItem; // Replaces the capture string with a the same string inside of a "strong" tag
+	      if (!isSanitizePresent) {
+	        matchItem = $sce.trustAsHtml(matchItem); // If $sanitize is not present we pack the string in a $sce object for the ng-bind-html directive
+	      }
+	      return matchItem;
+	    };
+	  }]);
+
+	angular.module("uib/template/accordion/accordion-group.html", []).run(["$templateCache", function($templateCache) {
+	  $templateCache.put("uib/template/accordion/accordion-group.html",
+	    "<div class=\"panel\" ng-class=\"panelClass || 'panel-default'\">\n" +
+	    "  <div role=\"tab\" id=\"{{::headingId}}\" aria-selected=\"{{isOpen}}\" class=\"panel-heading\" ng-keypress=\"toggleOpen($event)\">\n" +
+	    "    <h4 class=\"panel-title\">\n" +
+	    "      <a role=\"button\" data-toggle=\"collapse\" href aria-expanded=\"{{isOpen}}\" aria-controls=\"{{::panelId}}\" tabindex=\"0\" class=\"accordion-toggle\" ng-click=\"toggleOpen()\" uib-accordion-transclude=\"heading\"><span uib-accordion-header ng-class=\"{'text-muted': isDisabled}\">{{heading}}</span></a>\n" +
+	    "    </h4>\n" +
+	    "  </div>\n" +
+	    "  <div id=\"{{::panelId}}\" aria-labelledby=\"{{::headingId}}\" aria-hidden=\"{{!isOpen}}\" role=\"tabpanel\" class=\"panel-collapse collapse\" uib-collapse=\"!isOpen\">\n" +
+	    "    <div class=\"panel-body\" ng-transclude></div>\n" +
+	    "  </div>\n" +
+	    "</div>\n" +
+	    "");
+	}]);
+
+	angular.module("uib/template/accordion/accordion.html", []).run(["$templateCache", function($templateCache) {
+	  $templateCache.put("uib/template/accordion/accordion.html",
+	    "<div role=\"tablist\" class=\"panel-group\" ng-transclude></div>");
+	}]);
+
+	angular.module("uib/template/alert/alert.html", []).run(["$templateCache", function($templateCache) {
+	  $templateCache.put("uib/template/alert/alert.html",
+	    "<div class=\"alert\" ng-class=\"['alert-' + (type || 'warning'), closeable ? 'alert-dismissible' : null]\" role=\"alert\">\n" +
+	    "    <button ng-show=\"closeable\" type=\"button\" class=\"close\" ng-click=\"close({$event: $event})\">\n" +
+	    "        <span aria-hidden=\"true\">&times;</span>\n" +
+	    "        <span class=\"sr-only\">Close</span>\n" +
+	    "    </button>\n" +
+	    "    <div ng-transclude></div>\n" +
+	    "</div>\n" +
+	    "");
+	}]);
+
+	angular.module("uib/template/carousel/carousel.html", []).run(["$templateCache", function($templateCache) {
+	  $templateCache.put("uib/template/carousel/carousel.html",
+	    "<div ng-mouseenter=\"pause()\" ng-mouseleave=\"play()\" class=\"carousel\" ng-swipe-right=\"prev()\" ng-swipe-left=\"next()\">\n" +
+	    "  <div class=\"carousel-inner\" ng-transclude></div>\n" +
+	    "  <a role=\"button\" href class=\"left carousel-control\" ng-click=\"prev()\" ng-class=\"{ disabled: isPrevDisabled() }\" ng-show=\"slides.length > 1\">\n" +
+	    "    <span aria-hidden=\"true\" class=\"glyphicon glyphicon-chevron-left\"></span>\n" +
+	    "    <span class=\"sr-only\">previous</span>\n" +
+	    "  </a>\n" +
+	    "  <a role=\"button\" href class=\"right carousel-control\" ng-click=\"next()\" ng-class=\"{ disabled: isNextDisabled() }\" ng-show=\"slides.length > 1\">\n" +
+	    "    <span aria-hidden=\"true\" class=\"glyphicon glyphicon-chevron-right\"></span>\n" +
+	    "    <span class=\"sr-only\">next</span>\n" +
+	    "  </a>\n" +
+	    "  <ol class=\"carousel-indicators\" ng-show=\"slides.length > 1\">\n" +
+	    "    <li ng-repeat=\"slide in slides | orderBy:indexOfSlide track by $index\" ng-class=\"{ active: isActive(slide) }\" ng-click=\"select(slide)\">\n" +
+	    "      <span class=\"sr-only\">slide {{ $index + 1 }} of {{ slides.length }}<span ng-if=\"isActive(slide)\">, currently active</span></span>\n" +
+	    "    </li>\n" +
+	    "  </ol>\n" +
+	    "</div>\n" +
+	    "");
+	}]);
+
+	angular.module("uib/template/carousel/slide.html", []).run(["$templateCache", function($templateCache) {
+	  $templateCache.put("uib/template/carousel/slide.html",
+	    "<div ng-class=\"{\n" +
+	    "    'active': active\n" +
+	    "  }\" class=\"item text-center\" ng-transclude></div>\n" +
+	    "");
+	}]);
+
+	angular.module("uib/template/datepicker/datepicker.html", []).run(["$templateCache", function($templateCache) {
+	  $templateCache.put("uib/template/datepicker/datepicker.html",
+	    "<div class=\"uib-datepicker\" ng-switch=\"datepickerMode\" role=\"application\" ng-keydown=\"keydown($event)\">\n" +
+	    "  <uib-daypicker ng-switch-when=\"day\" tabindex=\"0\"></uib-daypicker>\n" +
+	    "  <uib-monthpicker ng-switch-when=\"month\" tabindex=\"0\"></uib-monthpicker>\n" +
+	    "  <uib-yearpicker ng-switch-when=\"year\" tabindex=\"0\"></uib-yearpicker>\n" +
+	    "</div>\n" +
+	    "");
+	}]);
+
+	angular.module("uib/template/datepicker/day.html", []).run(["$templateCache", function($templateCache) {
+	  $templateCache.put("uib/template/datepicker/day.html",
+	    "<table class=\"uib-daypicker\" role=\"grid\" aria-labelledby=\"{{::uniqueId}}-title\" aria-activedescendant=\"{{activeDateId}}\">\n" +
+	    "  <thead>\n" +
+	    "    <tr>\n" +
+	    "      <th><button type=\"button\" class=\"btn btn-default btn-sm pull-left uib-left\" ng-click=\"move(-1)\" tabindex=\"-1\"><i class=\"glyphicon glyphicon-chevron-left\"></i></button></th>\n" +
+	    "      <th colspan=\"{{::5 + showWeeks}}\"><button id=\"{{::uniqueId}}-title\" role=\"heading\" aria-live=\"assertive\" aria-atomic=\"true\" type=\"button\" class=\"btn btn-default btn-sm uib-title\" ng-click=\"toggleMode()\" ng-disabled=\"datepickerMode === maxMode\" tabindex=\"-1\"><strong>{{title}}</strong></button></th>\n" +
+	    "      <th><button type=\"button\" class=\"btn btn-default btn-sm pull-right uib-right\" ng-click=\"move(1)\" tabindex=\"-1\"><i class=\"glyphicon glyphicon-chevron-right\"></i></button></th>\n" +
+	    "    </tr>\n" +
+	    "    <tr>\n" +
+	    "      <th ng-if=\"showWeeks\" class=\"text-center\"></th>\n" +
+	    "      <th ng-repeat=\"label in ::labels track by $index\" class=\"text-center\"><small aria-label=\"{{::label.full}}\">{{::label.abbr}}</small></th>\n" +
+	    "    </tr>\n" +
+	    "  </thead>\n" +
+	    "  <tbody>\n" +
+	    "    <tr class=\"uib-weeks\" ng-repeat=\"row in rows track by $index\">\n" +
+	    "      <td ng-if=\"showWeeks\" class=\"text-center h6\"><em>{{ weekNumbers[$index] }}</em></td>\n" +
+	    "      <td ng-repeat=\"dt in row\" class=\"uib-day text-center\" role=\"gridcell\"\n" +
+	    "        id=\"{{::dt.uid}}\"\n" +
+	    "        ng-class=\"::dt.customClass\">\n" +
+	    "        <button type=\"button\" class=\"btn btn-default btn-sm\"\n" +
+	    "          uib-is-class=\"\n" +
+	    "            'btn-info' for selectedDt,\n" +
+	    "            'active' for activeDt\n" +
+	    "            on dt\"\n" +
+	    "          ng-click=\"select(dt.date)\"\n" +
+	    "          ng-disabled=\"::dt.disabled\"\n" +
+	    "          tabindex=\"-1\"><span ng-class=\"::{'text-muted': dt.secondary, 'text-info': dt.current}\">{{::dt.label}}</span></button>\n" +
+	    "      </td>\n" +
+	    "    </tr>\n" +
+	    "  </tbody>\n" +
+	    "</table>\n" +
+	    "");
+	}]);
+
+	angular.module("uib/template/datepicker/month.html", []).run(["$templateCache", function($templateCache) {
+	  $templateCache.put("uib/template/datepicker/month.html",
+	    "<table class=\"uib-monthpicker\" role=\"grid\" aria-labelledby=\"{{::uniqueId}}-title\" aria-activedescendant=\"{{activeDateId}}\">\n" +
+	    "  <thead>\n" +
+	    "    <tr>\n" +
+	    "      <th><button type=\"button\" class=\"btn btn-default btn-sm pull-left uib-left\" ng-click=\"move(-1)\" tabindex=\"-1\"><i class=\"glyphicon glyphicon-chevron-left\"></i></button></th>\n" +
+	    "      <th><button id=\"{{::uniqueId}}-title\" role=\"heading\" aria-live=\"assertive\" aria-atomic=\"true\" type=\"button\" class=\"btn btn-default btn-sm uib-title\" ng-click=\"toggleMode()\" ng-disabled=\"datepickerMode === maxMode\" tabindex=\"-1\"><strong>{{title}}</strong></button></th>\n" +
+	    "      <th><button type=\"button\" class=\"btn btn-default btn-sm pull-right uib-right\" ng-click=\"move(1)\" tabindex=\"-1\"><i class=\"glyphicon glyphicon-chevron-right\"></i></button></th>\n" +
+	    "    </tr>\n" +
+	    "  </thead>\n" +
+	    "  <tbody>\n" +
+	    "    <tr class=\"uib-months\" ng-repeat=\"row in rows track by $index\">\n" +
+	    "      <td ng-repeat=\"dt in row\" class=\"uib-month text-center\" role=\"gridcell\"\n" +
+	    "        id=\"{{::dt.uid}}\"\n" +
+	    "        ng-class=\"::dt.customClass\">\n" +
+	    "        <button type=\"button\" class=\"btn btn-default\"\n" +
+	    "          uib-is-class=\"\n" +
+	    "            'btn-info' for selectedDt,\n" +
+	    "            'active' for activeDt\n" +
+	    "            on dt\"\n" +
+	    "          ng-click=\"select(dt.date)\"\n" +
+	    "          ng-disabled=\"::dt.disabled\"\n" +
+	    "          tabindex=\"-1\"><span ng-class=\"::{'text-info': dt.current}\">{{::dt.label}}</span></button>\n" +
+	    "      </td>\n" +
+	    "    </tr>\n" +
+	    "  </tbody>\n" +
+	    "</table>\n" +
+	    "");
+	}]);
+
+	angular.module("uib/template/datepicker/year.html", []).run(["$templateCache", function($templateCache) {
+	  $templateCache.put("uib/template/datepicker/year.html",
+	    "<table class=\"uib-yearpicker\" role=\"grid\" aria-labelledby=\"{{::uniqueId}}-title\" aria-activedescendant=\"{{activeDateId}}\">\n" +
+	    "  <thead>\n" +
+	    "    <tr>\n" +
+	    "      <th><button type=\"button\" class=\"btn btn-default btn-sm pull-left uib-left\" ng-click=\"move(-1)\" tabindex=\"-1\"><i class=\"glyphicon glyphicon-chevron-left\"></i></button></th>\n" +
+	    "      <th colspan=\"{{::columns - 2}}\"><button id=\"{{::uniqueId}}-title\" role=\"heading\" aria-live=\"assertive\" aria-atomic=\"true\" type=\"button\" class=\"btn btn-default btn-sm uib-title\" ng-click=\"toggleMode()\" ng-disabled=\"datepickerMode === maxMode\" tabindex=\"-1\"><strong>{{title}}</strong></button></th>\n" +
+	    "      <th><button type=\"button\" class=\"btn btn-default btn-sm pull-right uib-right\" ng-click=\"move(1)\" tabindex=\"-1\"><i class=\"glyphicon glyphicon-chevron-right\"></i></button></th>\n" +
+	    "    </tr>\n" +
+	    "  </thead>\n" +
+	    "  <tbody>\n" +
+	    "    <tr class=\"uib-years\" ng-repeat=\"row in rows track by $index\">\n" +
+	    "      <td ng-repeat=\"dt in row\" class=\"uib-year text-center\" role=\"gridcell\"\n" +
+	    "        id=\"{{::dt.uid}}\"\n" +
+	    "        ng-class=\"::dt.customClass\">\n" +
+	    "        <button type=\"button\" class=\"btn btn-default\"\n" +
+	    "          uib-is-class=\"\n" +
+	    "            'btn-info' for selectedDt,\n" +
+	    "            'active' for activeDt\n" +
+	    "            on dt\"\n" +
+	    "          ng-click=\"select(dt.date)\"\n" +
+	    "          ng-disabled=\"::dt.disabled\"\n" +
+	    "          tabindex=\"-1\"><span ng-class=\"::{'text-info': dt.current}\">{{::dt.label}}</span></button>\n" +
+	    "      </td>\n" +
+	    "    </tr>\n" +
+	    "  </tbody>\n" +
+	    "</table>\n" +
+	    "");
+	}]);
+
+	angular.module("uib/template/datepickerPopup/popup.html", []).run(["$templateCache", function($templateCache) {
+	  $templateCache.put("uib/template/datepickerPopup/popup.html",
+	    "<div>\n" +
+	    "  <ul class=\"uib-datepicker-popup dropdown-menu uib-position-measure\" dropdown-nested ng-if=\"isOpen\" ng-keydown=\"keydown($event)\" ng-click=\"$event.stopPropagation()\">\n" +
+	    "    <li ng-transclude></li>\n" +
+	    "    <li ng-if=\"showButtonBar\" class=\"uib-button-bar\">\n" +
+	    "      <span class=\"btn-group pull-left\">\n" +
+	    "        <button type=\"button\" class=\"btn btn-sm btn-info uib-datepicker-current\" ng-click=\"select('today', $event)\" ng-disabled=\"isDisabled('today')\">{{ getText('current') }}</button>\n" +
+	    "        <button type=\"button\" class=\"btn btn-sm btn-danger uib-clear\" ng-click=\"select(null, $event)\">{{ getText('clear') }}</button>\n" +
+	    "      </span>\n" +
+	    "      <button type=\"button\" class=\"btn btn-sm btn-success pull-right uib-close\" ng-click=\"close($event)\">{{ getText('close') }}</button>\n" +
+	    "    </li>\n" +
+	    "  </ul>\n" +
+	    "</div>\n" +
+	    "");
+	}]);
+
+	angular.module("uib/template/modal/backdrop.html", []).run(["$templateCache", function($templateCache) {
+	  $templateCache.put("uib/template/modal/backdrop.html",
+	    "<div class=\"modal-backdrop\"\n" +
+	    "     uib-modal-animation-class=\"fade\"\n" +
+	    "     modal-in-class=\"in\"\n" +
+	    "     ng-style=\"{'z-index': 1040 + (index && 1 || 0) + index*10}\"\n" +
+	    "></div>\n" +
+	    "");
+	}]);
+
+	angular.module("uib/template/modal/window.html", []).run(["$templateCache", function($templateCache) {
+	  $templateCache.put("uib/template/modal/window.html",
+	    "<div modal-render=\"{{$isRendered}}\" tabindex=\"-1\" role=\"dialog\" class=\"modal\"\n" +
+	    "    uib-modal-animation-class=\"fade\"\n" +
+	    "    modal-in-class=\"in\"\n" +
+	    "    ng-style=\"{'z-index': 1050 + index*10, display: 'block'}\">\n" +
+	    "    <div class=\"modal-dialog {{size ? 'modal-' + size : ''}}\"><div class=\"modal-content\" uib-modal-transclude></div></div>\n" +
+	    "</div>\n" +
+	    "");
+	}]);
+
+	angular.module("uib/template/pager/pager.html", []).run(["$templateCache", function($templateCache) {
+	  $templateCache.put("uib/template/pager/pager.html",
+	    "<ul class=\"pager\">\n" +
+	    "  <li ng-class=\"{disabled: noPrevious()||ngDisabled, previous: align}\"><a href ng-click=\"selectPage(page - 1, $event)\">{{::getText('previous')}}</a></li>\n" +
+	    "  <li ng-class=\"{disabled: noNext()||ngDisabled, next: align}\"><a href ng-click=\"selectPage(page + 1, $event)\">{{::getText('next')}}</a></li>\n" +
+	    "</ul>\n" +
+	    "");
+	}]);
+
+	angular.module("uib/template/pagination/pagination.html", []).run(["$templateCache", function($templateCache) {
+	  $templateCache.put("uib/template/pagination/pagination.html",
+	    "<ul class=\"pagination\">\n" +
+	    "  <li ng-if=\"::boundaryLinks\" ng-class=\"{disabled: noPrevious()||ngDisabled}\" class=\"pagination-first\"><a href ng-click=\"selectPage(1, $event)\">{{::getText('first')}}</a></li>\n" +
+	    "  <li ng-if=\"::directionLinks\" ng-class=\"{disabled: noPrevious()||ngDisabled}\" class=\"pagination-prev\"><a href ng-click=\"selectPage(page - 1, $event)\">{{::getText('previous')}}</a></li>\n" +
+	    "  <li ng-repeat=\"page in pages track by $index\" ng-class=\"{active: page.active,disabled: ngDisabled&&!page.active}\" class=\"pagination-page\"><a href ng-click=\"selectPage(page.number, $event)\">{{page.text}}</a></li>\n" +
+	    "  <li ng-if=\"::directionLinks\" ng-class=\"{disabled: noNext()||ngDisabled}\" class=\"pagination-next\"><a href ng-click=\"selectPage(page + 1, $event)\">{{::getText('next')}}</a></li>\n" +
+	    "  <li ng-if=\"::boundaryLinks\" ng-class=\"{disabled: noNext()||ngDisabled}\" class=\"pagination-last\"><a href ng-click=\"selectPage(totalPages, $event)\">{{::getText('last')}}</a></li>\n" +
+	    "</ul>\n" +
+	    "");
+	}]);
+
+	angular.module("uib/template/tooltip/tooltip-html-popup.html", []).run(["$templateCache", function($templateCache) {
+	  $templateCache.put("uib/template/tooltip/tooltip-html-popup.html",
+	    "<div class=\"tooltip\"\n" +
+	    "  tooltip-animation-class=\"fade\"\n" +
+	    "  uib-tooltip-classes\n" +
+	    "  ng-class=\"{ in: isOpen() }\">\n" +
+	    "  <div class=\"tooltip-arrow\"></div>\n" +
+	    "  <div class=\"tooltip-inner\" ng-bind-html=\"contentExp()\"></div>\n" +
+	    "</div>\n" +
+	    "");
+	}]);
+
+	angular.module("uib/template/tooltip/tooltip-popup.html", []).run(["$templateCache", function($templateCache) {
+	  $templateCache.put("uib/template/tooltip/tooltip-popup.html",
+	    "<div class=\"tooltip\"\n" +
+	    "  tooltip-animation-class=\"fade\"\n" +
+	    "  uib-tooltip-classes\n" +
+	    "  ng-class=\"{ in: isOpen() }\">\n" +
+	    "  <div class=\"tooltip-arrow\"></div>\n" +
+	    "  <div class=\"tooltip-inner\" ng-bind=\"content\"></div>\n" +
+	    "</div>\n" +
+	    "");
+	}]);
+
+	angular.module("uib/template/tooltip/tooltip-template-popup.html", []).run(["$templateCache", function($templateCache) {
+	  $templateCache.put("uib/template/tooltip/tooltip-template-popup.html",
+	    "<div class=\"tooltip\"\n" +
+	    "  tooltip-animation-class=\"fade\"\n" +
+	    "  uib-tooltip-classes\n" +
+	    "  ng-class=\"{ in: isOpen() }\">\n" +
+	    "  <div class=\"tooltip-arrow\"></div>\n" +
+	    "  <div class=\"tooltip-inner\"\n" +
+	    "    uib-tooltip-template-transclude=\"contentExp()\"\n" +
+	    "    tooltip-template-transclude-scope=\"originScope()\"></div>\n" +
+	    "</div>\n" +
+	    "");
+	}]);
+
+	angular.module("uib/template/popover/popover-html.html", []).run(["$templateCache", function($templateCache) {
+	  $templateCache.put("uib/template/popover/popover-html.html",
+	    "<div class=\"popover\"\n" +
+	    "  tooltip-animation-class=\"fade\"\n" +
+	    "  uib-tooltip-classes\n" +
+	    "  ng-class=\"{ in: isOpen() }\">\n" +
+	    "  <div class=\"arrow\"></div>\n" +
+	    "\n" +
+	    "  <div class=\"popover-inner\">\n" +
+	    "      <h3 class=\"popover-title\" ng-bind=\"uibTitle\" ng-if=\"uibTitle\"></h3>\n" +
+	    "      <div class=\"popover-content\" ng-bind-html=\"contentExp()\"></div>\n" +
+	    "  </div>\n" +
+	    "</div>\n" +
+	    "");
+	}]);
+
+	angular.module("uib/template/popover/popover-template.html", []).run(["$templateCache", function($templateCache) {
+	  $templateCache.put("uib/template/popover/popover-template.html",
+	    "<div class=\"popover\"\n" +
+	    "  tooltip-animation-class=\"fade\"\n" +
+	    "  uib-tooltip-classes\n" +
+	    "  ng-class=\"{ in: isOpen() }\">\n" +
+	    "  <div class=\"arrow\"></div>\n" +
+	    "\n" +
+	    "  <div class=\"popover-inner\">\n" +
+	    "      <h3 class=\"popover-title\" ng-bind=\"uibTitle\" ng-if=\"uibTitle\"></h3>\n" +
+	    "      <div class=\"popover-content\"\n" +
+	    "        uib-tooltip-template-transclude=\"contentExp()\"\n" +
+	    "        tooltip-template-transclude-scope=\"originScope()\"></div>\n" +
+	    "  </div>\n" +
+	    "</div>\n" +
+	    "");
+	}]);
+
+	angular.module("uib/template/popover/popover.html", []).run(["$templateCache", function($templateCache) {
+	  $templateCache.put("uib/template/popover/popover.html",
+	    "<div class=\"popover\"\n" +
+	    "  tooltip-animation-class=\"fade\"\n" +
+	    "  uib-tooltip-classes\n" +
+	    "  ng-class=\"{ in: isOpen() }\">\n" +
+	    "  <div class=\"arrow\"></div>\n" +
+	    "\n" +
+	    "  <div class=\"popover-inner\">\n" +
+	    "      <h3 class=\"popover-title\" ng-bind=\"uibTitle\" ng-if=\"uibTitle\"></h3>\n" +
+	    "      <div class=\"popover-content\" ng-bind=\"content\"></div>\n" +
+	    "  </div>\n" +
+	    "</div>\n" +
+	    "");
+	}]);
+
+	angular.module("uib/template/progressbar/bar.html", []).run(["$templateCache", function($templateCache) {
+	  $templateCache.put("uib/template/progressbar/bar.html",
+	    "<div class=\"progress-bar\" ng-class=\"type && 'progress-bar-' + type\" role=\"progressbar\" aria-valuenow=\"{{value}}\" aria-valuemin=\"0\" aria-valuemax=\"{{max}}\" ng-style=\"{width: (percent < 100 ? percent : 100) + '%'}\" aria-valuetext=\"{{percent | number:0}}%\" aria-labelledby=\"{{::title}}\" ng-transclude></div>\n" +
+	    "");
+	}]);
+
+	angular.module("uib/template/progressbar/progress.html", []).run(["$templateCache", function($templateCache) {
+	  $templateCache.put("uib/template/progressbar/progress.html",
+	    "<div class=\"progress\" ng-transclude aria-labelledby=\"{{::title}}\"></div>");
+	}]);
+
+	angular.module("uib/template/progressbar/progressbar.html", []).run(["$templateCache", function($templateCache) {
+	  $templateCache.put("uib/template/progressbar/progressbar.html",
+	    "<div class=\"progress\">\n" +
+	    "  <div class=\"progress-bar\" ng-class=\"type && 'progress-bar-' + type\" role=\"progressbar\" aria-valuenow=\"{{value}}\" aria-valuemin=\"0\" aria-valuemax=\"{{max}}\" ng-style=\"{width: (percent < 100 ? percent : 100) + '%'}\" aria-valuetext=\"{{percent | number:0}}%\" aria-labelledby=\"{{::title}}\" ng-transclude></div>\n" +
+	    "</div>\n" +
+	    "");
+	}]);
+
+	angular.module("uib/template/rating/rating.html", []).run(["$templateCache", function($templateCache) {
+	  $templateCache.put("uib/template/rating/rating.html",
+	    "<span ng-mouseleave=\"reset()\" ng-keydown=\"onKeydown($event)\" tabindex=\"0\" role=\"slider\" aria-valuemin=\"0\" aria-valuemax=\"{{range.length}}\" aria-valuenow=\"{{value}}\" aria-valuetext=\"{{title}}\">\n" +
+	    "    <span ng-repeat-start=\"r in range track by $index\" class=\"sr-only\">({{ $index < value ? '*' : ' ' }})</span>\n" +
+	    "    <i ng-repeat-end ng-mouseenter=\"enter($index + 1)\" ng-click=\"rate($index + 1)\" class=\"glyphicon\" ng-class=\"$index < value && (r.stateOn || 'glyphicon-star') || (r.stateOff || 'glyphicon-star-empty')\" ng-attr-title=\"{{r.title}}\"></i>\n" +
+	    "</span>\n" +
+	    "");
+	}]);
+
+	angular.module("uib/template/tabs/tab.html", []).run(["$templateCache", function($templateCache) {
+	  $templateCache.put("uib/template/tabs/tab.html",
+	    "<li ng-class=\"[{active: active, disabled: disabled}, classes]\" class=\"uib-tab nav-item\">\n" +
+	    "  <a href ng-click=\"select($event)\" class=\"nav-link\" uib-tab-heading-transclude>{{heading}}</a>\n" +
+	    "</li>\n" +
+	    "");
+	}]);
+
+	angular.module("uib/template/tabs/tabset.html", []).run(["$templateCache", function($templateCache) {
+	  $templateCache.put("uib/template/tabs/tabset.html",
+	    "<div>\n" +
+	    "  <ul class=\"nav nav-{{tabset.type || 'tabs'}}\" ng-class=\"{'nav-stacked': vertical, 'nav-justified': justified}\" ng-transclude></ul>\n" +
+	    "  <div class=\"tab-content\">\n" +
+	    "    <div class=\"tab-pane\"\n" +
+	    "         ng-repeat=\"tab in tabset.tabs\"\n" +
+	    "         ng-class=\"{active: tabset.active === tab.index}\"\n" +
+	    "         uib-tab-content-transclude=\"tab\">\n" +
+	    "    </div>\n" +
+	    "  </div>\n" +
+	    "</div>\n" +
+	    "");
+	}]);
+
+	angular.module("uib/template/timepicker/timepicker.html", []).run(["$templateCache", function($templateCache) {
+	  $templateCache.put("uib/template/timepicker/timepicker.html",
+	    "<table class=\"uib-timepicker\">\n" +
+	    "  <tbody>\n" +
+	    "    <tr class=\"text-center\" ng-show=\"::showSpinners\">\n" +
+	    "      <td class=\"uib-increment hours\"><a ng-click=\"incrementHours()\" ng-class=\"{disabled: noIncrementHours()}\" class=\"btn btn-link\" ng-disabled=\"noIncrementHours()\" tabindex=\"{{::tabindex}}\"><span class=\"glyphicon glyphicon-chevron-up\"></span></a></td>\n" +
+	    "      <td>&nbsp;</td>\n" +
+	    "      <td class=\"uib-increment minutes\"><a ng-click=\"incrementMinutes()\" ng-class=\"{disabled: noIncrementMinutes()}\" class=\"btn btn-link\" ng-disabled=\"noIncrementMinutes()\" tabindex=\"{{::tabindex}}\"><span class=\"glyphicon glyphicon-chevron-up\"></span></a></td>\n" +
+	    "      <td ng-show=\"showSeconds\">&nbsp;</td>\n" +
+	    "      <td ng-show=\"showSeconds\" class=\"uib-increment seconds\"><a ng-click=\"incrementSeconds()\" ng-class=\"{disabled: noIncrementSeconds()}\" class=\"btn btn-link\" ng-disabled=\"noIncrementSeconds()\" tabindex=\"{{::tabindex}}\"><span class=\"glyphicon glyphicon-chevron-up\"></span></a></td>\n" +
+	    "      <td ng-show=\"showMeridian\"></td>\n" +
+	    "    </tr>\n" +
+	    "    <tr>\n" +
+	    "      <td class=\"form-group uib-time hours\" ng-class=\"{'has-error': invalidHours}\">\n" +
+	    "        <input style=\"width:50px;\" type=\"text\" placeholder=\"HH\" ng-model=\"hours\" ng-change=\"updateHours()\" class=\"form-control text-center\" ng-readonly=\"::readonlyInput\" maxlength=\"2\" tabindex=\"{{::tabindex}}\" ng-disabled=\"noIncrementHours()\" ng-blur=\"blur()\">\n" +
+	    "      </td>\n" +
+	    "      <td class=\"uib-separator\">:</td>\n" +
+	    "      <td class=\"form-group uib-time minutes\" ng-class=\"{'has-error': invalidMinutes}\">\n" +
+	    "        <input style=\"width:50px;\" type=\"text\" placeholder=\"MM\" ng-model=\"minutes\" ng-change=\"updateMinutes()\" class=\"form-control text-center\" ng-readonly=\"::readonlyInput\" maxlength=\"2\" tabindex=\"{{::tabindex}}\" ng-disabled=\"noIncrementMinutes()\" ng-blur=\"blur()\">\n" +
+	    "      </td>\n" +
+	    "      <td ng-show=\"showSeconds\" class=\"uib-separator\">:</td>\n" +
+	    "      <td class=\"form-group uib-time seconds\" ng-class=\"{'has-error': invalidSeconds}\" ng-show=\"showSeconds\">\n" +
+	    "        <input style=\"width:50px;\" type=\"text\" placeholder=\"SS\" ng-model=\"seconds\" ng-change=\"updateSeconds()\" class=\"form-control text-center\" ng-readonly=\"readonlyInput\" maxlength=\"2\" tabindex=\"{{::tabindex}}\" ng-disabled=\"noIncrementSeconds()\" ng-blur=\"blur()\">\n" +
+	    "      </td>\n" +
+	    "      <td ng-show=\"showMeridian\" class=\"uib-time am-pm\"><button type=\"button\" ng-class=\"{disabled: noToggleMeridian()}\" class=\"btn btn-default text-center\" ng-click=\"toggleMeridian()\" ng-disabled=\"noToggleMeridian()\" tabindex=\"{{::tabindex}}\">{{meridian}}</button></td>\n" +
+	    "    </tr>\n" +
+	    "    <tr class=\"text-center\" ng-show=\"::showSpinners\">\n" +
+	    "      <td class=\"uib-decrement hours\"><a ng-click=\"decrementHours()\" ng-class=\"{disabled: noDecrementHours()}\" class=\"btn btn-link\" ng-disabled=\"noDecrementHours()\" tabindex=\"{{::tabindex}}\"><span class=\"glyphicon glyphicon-chevron-down\"></span></a></td>\n" +
+	    "      <td>&nbsp;</td>\n" +
+	    "      <td class=\"uib-decrement minutes\"><a ng-click=\"decrementMinutes()\" ng-class=\"{disabled: noDecrementMinutes()}\" class=\"btn btn-link\" ng-disabled=\"noDecrementMinutes()\" tabindex=\"{{::tabindex}}\"><span class=\"glyphicon glyphicon-chevron-down\"></span></a></td>\n" +
+	    "      <td ng-show=\"showSeconds\">&nbsp;</td>\n" +
+	    "      <td ng-show=\"showSeconds\" class=\"uib-decrement seconds\"><a ng-click=\"decrementSeconds()\" ng-class=\"{disabled: noDecrementSeconds()}\" class=\"btn btn-link\" ng-disabled=\"noDecrementSeconds()\" tabindex=\"{{::tabindex}}\"><span class=\"glyphicon glyphicon-chevron-down\"></span></a></td>\n" +
+	    "      <td ng-show=\"showMeridian\"></td>\n" +
+	    "    </tr>\n" +
+	    "  </tbody>\n" +
+	    "</table>\n" +
+	    "");
+	}]);
+
+	angular.module("uib/template/typeahead/typeahead-match.html", []).run(["$templateCache", function($templateCache) {
+	  $templateCache.put("uib/template/typeahead/typeahead-match.html",
+	    "<a href\n" +
+	    "   tabindex=\"-1\"\n" +
+	    "   ng-bind-html=\"match.label | uibTypeaheadHighlight:query\"\n" +
+	    "   ng-attr-title=\"{{match.label}}\"></a>\n" +
+	    "");
+	}]);
+
+	angular.module("uib/template/typeahead/typeahead-popup.html", []).run(["$templateCache", function($templateCache) {
+	  $templateCache.put("uib/template/typeahead/typeahead-popup.html",
+	    "<ul class=\"dropdown-menu\" ng-show=\"isOpen() && !moveInProgress\" ng-style=\"{top: position().top+'px', left: position().left+'px'}\" role=\"listbox\" aria-hidden=\"{{!isOpen()}}\">\n" +
+	    "    <li ng-repeat=\"match in matches track by $index\" ng-class=\"{active: isActive($index) }\" ng-mouseenter=\"selectActive($index)\" ng-click=\"selectMatch($index, $event)\" role=\"option\" id=\"{{::match.id}}\">\n" +
+	    "        <div uib-typeahead-match index=\"$index\" match=\"match\" query=\"query\" template-url=\"templateUrl\"></div>\n" +
+	    "    </li>\n" +
+	    "</ul>\n" +
+	    "");
+	}]);
+	angular.module('ui.bootstrap.carousel').run(function() {!angular.$$csp().noInlineStyle && !angular.$$uibCarouselCss && angular.element(document).find('head').prepend('<style type="text/css">.ng-animate.item:not(.left):not(.right){-webkit-transition:0s ease-in-out left;transition:0s ease-in-out left}</style>'); angular.$$uibCarouselCss = true; });
+	angular.module('ui.bootstrap.datepicker').run(function() {!angular.$$csp().noInlineStyle && !angular.$$uibDatepickerCss && angular.element(document).find('head').prepend('<style type="text/css">.uib-datepicker .uib-title{width:100%;}.uib-day button,.uib-month button,.uib-year button{min-width:100%;}.uib-left,.uib-right{width:100%}</style>'); angular.$$uibDatepickerCss = true; });
+	angular.module('ui.bootstrap.position').run(function() {!angular.$$csp().noInlineStyle && !angular.$$uibPositionCss && angular.element(document).find('head').prepend('<style type="text/css">.uib-position-measure{display:block !important;visibility:hidden !important;position:absolute !important;top:-9999px !important;left:-9999px !important;}.uib-position-scrollbar-measure{position:absolute !important;top:-9999px !important;width:50px !important;height:50px !important;overflow:scroll !important;}.uib-position-body-scrollbar-measure{overflow:scroll !important;}</style>'); angular.$$uibPositionCss = true; });
+	angular.module('ui.bootstrap.datepickerPopup').run(function() {!angular.$$csp().noInlineStyle && !angular.$$uibDatepickerpopupCss && angular.element(document).find('head').prepend('<style type="text/css">.uib-datepicker-popup.dropdown-menu{display:block;float:none;margin:0;}.uib-button-bar{padding:10px 9px 2px;}</style>'); angular.$$uibDatepickerpopupCss = true; });
+	angular.module('ui.bootstrap.tooltip').run(function() {!angular.$$csp().noInlineStyle && !angular.$$uibTooltipCss && angular.element(document).find('head').prepend('<style type="text/css">[uib-tooltip-popup].tooltip.top-left > .tooltip-arrow,[uib-tooltip-popup].tooltip.top-right > .tooltip-arrow,[uib-tooltip-popup].tooltip.bottom-left > .tooltip-arrow,[uib-tooltip-popup].tooltip.bottom-right > .tooltip-arrow,[uib-tooltip-popup].tooltip.left-top > .tooltip-arrow,[uib-tooltip-popup].tooltip.left-bottom > .tooltip-arrow,[uib-tooltip-popup].tooltip.right-top > .tooltip-arrow,[uib-tooltip-popup].tooltip.right-bottom > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.top-left > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.top-right > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.bottom-left > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.bottom-right > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.left-top > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.left-bottom > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.right-top > .tooltip-arrow,[uib-tooltip-html-popup].tooltip.right-bottom > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.top-left > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.top-right > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.bottom-left > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.bottom-right > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.left-top > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.left-bottom > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.right-top > .tooltip-arrow,[uib-tooltip-template-popup].tooltip.right-bottom > .tooltip-arrow,[uib-popover-popup].popover.top-left > .arrow,[uib-popover-popup].popover.top-right > .arrow,[uib-popover-popup].popover.bottom-left > .arrow,[uib-popover-popup].popover.bottom-right > .arrow,[uib-popover-popup].popover.left-top > .arrow,[uib-popover-popup].popover.left-bottom > .arrow,[uib-popover-popup].popover.right-top > .arrow,[uib-popover-popup].popover.right-bottom > .arrow,[uib-popover-html-popup].popover.top-left > .arrow,[uib-popover-html-popup].popover.top-right > .arrow,[uib-popover-html-popup].popover.bottom-left > .arrow,[uib-popover-html-popup].popover.bottom-right > .arrow,[uib-popover-html-popup].popover.left-top > .arrow,[uib-popover-html-popup].popover.left-bottom > .arrow,[uib-popover-html-popup].popover.right-top > .arrow,[uib-popover-html-popup].popover.right-bottom > .arrow,[uib-popover-template-popup].popover.top-left > .arrow,[uib-popover-template-popup].popover.top-right > .arrow,[uib-popover-template-popup].popover.bottom-left > .arrow,[uib-popover-template-popup].popover.bottom-right > .arrow,[uib-popover-template-popup].popover.left-top > .arrow,[uib-popover-template-popup].popover.left-bottom > .arrow,[uib-popover-template-popup].popover.right-top > .arrow,[uib-popover-template-popup].popover.right-bottom > .arrow{top:auto;bottom:auto;left:auto;right:auto;margin:0;}[uib-popover-popup].popover,[uib-popover-html-popup].popover,[uib-popover-template-popup].popover{display:block !important;}</style>'); angular.$$uibTooltipCss = true; });
+	angular.module('ui.bootstrap.timepicker').run(function() {!angular.$$csp().noInlineStyle && !angular.$$uibTimepickerCss && angular.element(document).find('head').prepend('<style type="text/css">.uib-time input{width:50px;}</style>'); angular.$$uibTimepickerCss = true; });
+	angular.module('ui.bootstrap.typeahead').run(function() {!angular.$$csp().noInlineStyle && !angular.$$uibTypeaheadCss && angular.element(document).find('head').prepend('<style type="text/css">[uib-typeahead-popup].dropdown-menu{display:block;}</style>'); angular.$$uibTypeaheadCss = true; });
+
+/***/ },
+/* 198 */
 /***/ function(module, exports) {
 
 	/******/ (function(modules) { // webpackBootstrap
@@ -41498,7 +48845,2359 @@
 	/******/ ]);
 
 /***/ },
-/* 197 */
+/* 199 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(200);
+	module.exports = 'firebase';
+
+
+/***/ },
+/* 200 */
+/***/ function(module, exports) {
+
+	/*!
+	 * AngularFire is the officially supported AngularJS binding for Firebase. Firebase
+	 * is a full backend so you don't need servers to build your Angular app. AngularFire
+	 * provides you with the $firebase service which allows you to easily keep your $scope
+	 * variables in sync with your Firebase backend.
+	 *
+	 * AngularFire 1.2.0
+	 * https://github.com/firebase/angularfire/
+	 * Date: 03/28/2016
+	 * License: MIT
+	 */
+	(function(exports) {
+	  "use strict";
+
+	// Define the `firebase` module under which all AngularFire
+	// services will live.
+	  angular.module("firebase", [])
+	    //todo use $window
+	    .value("Firebase", exports.Firebase);
+
+	})(window);
+	(function() {
+	  'use strict';
+	  /**
+	   * Creates and maintains a synchronized list of data. This is a pseudo-read-only array. One should
+	   * not call splice(), push(), pop(), et al directly on this array, but should instead use the
+	   * $remove and $add methods.
+	   *
+	   * It is acceptable to .sort() this array, but it is important to use this in conjunction with
+	   * $watch(), so that it will be re-sorted any time the server data changes. Examples of this are
+	   * included in the $watch documentation.
+	   *
+	   * Internally, the $firebase object depends on this class to provide several $$ (i.e. protected)
+	   * methods, which it invokes to notify the array whenever a change has been made at the server:
+	   *    $$added - called whenever a child_added event occurs
+	   *    $$updated - called whenever a child_changed event occurs
+	   *    $$moved - called whenever a child_moved event occurs
+	   *    $$removed - called whenever a child_removed event occurs
+	   *    $$error - called when listeners are canceled due to a security error
+	   *    $$process - called immediately after $$added/$$updated/$$moved/$$removed
+	   *                (assuming that these methods do not abort by returning false or null)
+	   *                to splice/manipulate the array and invoke $$notify
+	   *
+	   * Additionally, these methods may be of interest to devs extending this class:
+	   *    $$notify - triggers notifications to any $watch listeners, called by $$process
+	   *    $$getKey - determines how to look up a record's key (returns $id by default)
+	   *
+	   * Instead of directly modifying this class, one should generally use the $extend
+	   * method to add or change how methods behave. $extend modifies the prototype of
+	   * the array class by returning a clone of $firebaseArray.
+	   *
+	   * <pre><code>
+	   * var ExtendedArray = $firebaseArray.$extend({
+	   *    // add a new method to the prototype
+	   *    foo: function() { return 'bar'; },
+	   *
+	   *    // change how records are created
+	   *    $$added: function(snap, prevChild) {
+	   *       return new Widget(snap, prevChild);
+	   *    },
+	   *
+	   *    // change how records are updated
+	   *    $$updated: function(snap) {
+	   *      return this.$getRecord(snap.key()).update(snap);
+	   *    }
+	   * });
+	   *
+	   * var list = new ExtendedArray(ref);
+	   * </code></pre>
+	   */
+	  angular.module('firebase').factory('$firebaseArray', ["$log", "$firebaseUtils", "$q",
+	    function($log, $firebaseUtils, $q) {
+	      /**
+	       * This constructor should probably never be called manually. It is used internally by
+	       * <code>$firebase.$asArray()</code>.
+	       *
+	       * @param {Firebase} ref
+	       * @returns {Array}
+	       * @constructor
+	       */
+	      function FirebaseArray(ref) {
+	        if( !(this instanceof FirebaseArray) ) {
+	          return new FirebaseArray(ref);
+	        }
+	        var self = this;
+	        this._observers = [];
+	        this.$list = [];
+	        this._ref = ref;
+	        this._sync = new ArraySyncManager(this);
+
+	        $firebaseUtils.assertValidRef(ref, 'Must pass a valid Firebase reference ' +
+	        'to $firebaseArray (not a string or URL)');
+
+	        // indexCache is a weak hashmap (a lazy list) of keys to array indices,
+	        // items are not guaranteed to stay up to date in this list (since the data
+	        // array can be manually edited without calling the $ methods) and it should
+	        // always be used with skepticism regarding whether it is accurate
+	        // (see $indexFor() below for proper usage)
+	        this._indexCache = {};
+
+	        // Array.isArray will not work on objects which extend the Array class.
+	        // So instead of extending the Array class, we just return an actual array.
+	        // However, it's still possible to extend FirebaseArray and have the public methods
+	        // appear on the array object. We do this by iterating the prototype and binding
+	        // any method that is not prefixed with an underscore onto the final array.
+	        $firebaseUtils.getPublicMethods(self, function(fn, key) {
+	          self.$list[key] = fn.bind(self);
+	        });
+
+	        this._sync.init(this.$list);
+
+	        return this.$list;
+	      }
+
+	      FirebaseArray.prototype = {
+	        /**
+	         * Create a new record with a unique ID and add it to the end of the array.
+	         * This should be used instead of Array.prototype.push, since those changes will not be
+	         * synchronized with the server.
+	         *
+	         * Any value, including a primitive, can be added in this way. Note that when the record
+	         * is created, the primitive value would be stored in $value (records are always objects
+	         * by default).
+	         *
+	         * Returns a future which is resolved when the data has successfully saved to the server.
+	         * The resolve callback will be passed a Firebase ref representing the new data element.
+	         *
+	         * @param data
+	         * @returns a promise resolved after data is added
+	         */
+	        $add: function(data) {
+	          this._assertNotDestroyed('$add');
+	          var def = $firebaseUtils.defer();
+	          var ref = this.$ref().ref().push();
+	          ref.set($firebaseUtils.toJSON(data), $firebaseUtils.makeNodeResolver(def));
+	          return def.promise.then(function() {
+	            return ref;
+	          });
+	        },
+
+	        /**
+	         * Pass either an item in the array or the index of an item and it will be saved back
+	         * to Firebase. While the array is read-only and its structure should not be changed,
+	         * it is okay to modify properties on the objects it contains and then save those back
+	         * individually.
+	         *
+	         * Returns a future which is resolved when the data has successfully saved to the server.
+	         * The resolve callback will be passed a Firebase ref representing the saved element.
+	         * If passed an invalid index or an object which is not a record in this array,
+	         * the promise will be rejected.
+	         *
+	         * @param {int|object} indexOrItem
+	         * @returns a promise resolved after data is saved
+	         */
+	        $save: function(indexOrItem) {
+	          this._assertNotDestroyed('$save');
+	          var self = this;
+	          var item = self._resolveItem(indexOrItem);
+	          var key = self.$keyAt(item);
+	          if( key !== null ) {
+	            var ref = self.$ref().ref().child(key);
+	            var data = $firebaseUtils.toJSON(item);
+	            return $firebaseUtils.doSet(ref, data).then(function() {
+	              self.$$notify('child_changed', key);
+	              return ref;
+	            });
+	          }
+	          else {
+	            return $firebaseUtils.reject('Invalid record; could determine key for '+indexOrItem);
+	          }
+	        },
+
+	        /**
+	         * Pass either an existing item in this array or the index of that item and it will
+	         * be removed both locally and in Firebase. This should be used in place of
+	         * Array.prototype.splice for removing items out of the array, as calling splice
+	         * will not update the value on the server.
+	         *
+	         * Returns a future which is resolved when the data has successfully removed from the
+	         * server. The resolve callback will be passed a Firebase ref representing the deleted
+	         * element. If passed an invalid index or an object which is not a record in this array,
+	         * the promise will be rejected.
+	         *
+	         * @param {int|object} indexOrItem
+	         * @returns a promise which resolves after data is removed
+	         */
+	        $remove: function(indexOrItem) {
+	          this._assertNotDestroyed('$remove');
+	          var key = this.$keyAt(indexOrItem);
+	          if( key !== null ) {
+	            var ref = this.$ref().ref().child(key);
+	            return $firebaseUtils.doRemove(ref).then(function() {
+	              return ref;
+	            });
+	          }
+	          else {
+	            return $firebaseUtils.reject('Invalid record; could not determine key for '+indexOrItem);
+	          }
+	        },
+
+	        /**
+	         * Given an item in this array or the index of an item in the array, this returns the
+	         * Firebase key (record.$id) for that record. If passed an invalid key or an item which
+	         * does not exist in this array, it will return null.
+	         *
+	         * @param {int|object} indexOrItem
+	         * @returns {null|string}
+	         */
+	        $keyAt: function(indexOrItem) {
+	          var item = this._resolveItem(indexOrItem);
+	          return this.$$getKey(item);
+	        },
+
+	        /**
+	         * The inverse of $keyAt, this method takes a Firebase key (record.$id) and returns the
+	         * index in the array where that record is stored. If the record is not in the array,
+	         * this method returns -1.
+	         *
+	         * @param {String} key
+	         * @returns {int} -1 if not found
+	         */
+	        $indexFor: function(key) {
+	          var self = this;
+	          var cache = self._indexCache;
+	          // evaluate whether our key is cached and, if so, whether it is up to date
+	          if( !cache.hasOwnProperty(key) || self.$keyAt(cache[key]) !== key ) {
+	            // update the hashmap
+	            var pos = self.$list.findIndex(function(rec) { return self.$$getKey(rec) === key; });
+	            if( pos !== -1 ) {
+	              cache[key] = pos;
+	            }
+	          }
+	          return cache.hasOwnProperty(key)? cache[key] : -1;
+	        },
+
+	        /**
+	         * The loaded method is invoked after the initial batch of data arrives from the server.
+	         * When this resolves, all data which existed prior to calling $asArray() is now cached
+	         * locally in the array.
+	         *
+	         * As a shortcut is also possible to pass resolve/reject methods directly into this
+	         * method just as they would be passed to .then()
+	         *
+	         * @param {Function} [resolve]
+	         * @param {Function} [reject]
+	         * @returns a promise
+	         */
+	        $loaded: function(resolve, reject) {
+	          var promise = this._sync.ready();
+	          if( arguments.length ) {
+	            // allow this method to be called just like .then
+	            // by passing any arguments on to .then
+	            promise = promise.then.call(promise, resolve, reject);
+	          }
+	          return promise;
+	        },
+
+	        /**
+	         * @returns {Firebase} the original Firebase ref used to create this object.
+	         */
+	        $ref: function() { return this._ref; },
+
+	        /**
+	         * Listeners passed into this method are notified whenever a new change (add, updated,
+	         * move, remove) is received from the server. Each invocation is sent an object
+	         * containing <code>{ type: 'child_added|child_updated|child_moved|child_removed',
+	         * key: 'key_of_item_affected'}</code>
+	         *
+	         * Additionally, added and moved events receive a prevChild parameter, containing the
+	         * key of the item before this one in the array.
+	         *
+	         * This method returns a function which can be invoked to stop observing events.
+	         *
+	         * @param {Function} cb
+	         * @param {Object} [context]
+	         * @returns {Function} used to stop observing
+	         */
+	        $watch: function(cb, context) {
+	          var list = this._observers;
+	          list.push([cb, context]);
+	          // an off function for cancelling the listener
+	          return function() {
+	            var i = list.findIndex(function(parts) {
+	              return parts[0] === cb && parts[1] === context;
+	            });
+	            if( i > -1 ) {
+	              list.splice(i, 1);
+	            }
+	          };
+	        },
+
+	        /**
+	         * Informs $firebase to stop sending events and clears memory being used
+	         * by this array (delete's its local content).
+	         */
+	        $destroy: function(err) {
+	          if( !this._isDestroyed ) {
+	            this._isDestroyed = true;
+	            this._sync.destroy(err);
+	            this.$list.length = 0;
+	          }
+	        },
+
+	        /**
+	         * Returns the record for a given Firebase key (record.$id). If the record is not found
+	         * then returns null.
+	         *
+	         * @param {string} key
+	         * @returns {Object|null} a record in this array
+	         */
+	        $getRecord: function(key) {
+	          var i = this.$indexFor(key);
+	          return i > -1? this.$list[i] : null;
+	        },
+
+	        /**
+	         * Called to inform the array when a new item has been added at the server.
+	         * This method should return the record (an object) that will be passed into $$process
+	         * along with the add event. Alternately, the record will be skipped if this method returns
+	         * a falsey value.
+	         *
+	         * @param {object} snap a Firebase snapshot
+	         * @param {string} prevChild
+	         * @return {object} the record to be inserted into the array
+	         * @protected
+	         */
+	        $$added: function(snap/*, prevChild*/) {
+	          // check to make sure record does not exist
+	          var i = this.$indexFor($firebaseUtils.getKey(snap));
+	          if( i === -1 ) {
+	            // parse data and create record
+	            var rec = snap.val();
+	            if( !angular.isObject(rec) ) {
+	              rec = { $value: rec };
+	            }
+	            rec.$id = $firebaseUtils.getKey(snap);
+	            rec.$priority = snap.getPriority();
+	            $firebaseUtils.applyDefaults(rec, this.$$defaults);
+
+	            return rec;
+	          }
+	          return false;
+	        },
+
+	        /**
+	         * Called whenever an item is removed at the server.
+	         * This method does not physically remove the objects, but instead
+	         * returns a boolean indicating whether it should be removed (and
+	         * taking any other desired actions before the remove completes).
+	         *
+	         * @param {object} snap a Firebase snapshot
+	         * @return {boolean} true if item should be removed
+	         * @protected
+	         */
+	        $$removed: function(snap) {
+	          return this.$indexFor($firebaseUtils.getKey(snap)) > -1;
+	        },
+
+	        /**
+	         * Called whenever an item is changed at the server.
+	         * This method should apply the changes, including changes to data
+	         * and to $priority, and then return true if any changes were made.
+	         *
+	         * If this method returns false, then $$process will not be invoked,
+	         * which means that $$notify will not take place and no $watch events
+	         * will be triggered.
+	         *
+	         * @param {object} snap a Firebase snapshot
+	         * @return {boolean} true if any data changed
+	         * @protected
+	         */
+	        $$updated: function(snap) {
+	          var changed = false;
+	          var rec = this.$getRecord($firebaseUtils.getKey(snap));
+	          if( angular.isObject(rec) ) {
+	            // apply changes to the record
+	            changed = $firebaseUtils.updateRec(rec, snap);
+	            $firebaseUtils.applyDefaults(rec, this.$$defaults);
+	          }
+	          return changed;
+	        },
+
+	        /**
+	         * Called whenever an item changes order (moves) on the server.
+	         * This method should set $priority to the updated value and return true if
+	         * the record should actually be moved. It should not actually apply the move
+	         * operation.
+	         *
+	         * If this method returns false, then the record will not be moved in the array
+	         * and no $watch listeners will be notified. (When true, $$process is invoked
+	         * which invokes $$notify)
+	         *
+	         * @param {object} snap a Firebase snapshot
+	         * @param {string} prevChild
+	         * @protected
+	         */
+	        $$moved: function(snap/*, prevChild*/) {
+	          var rec = this.$getRecord($firebaseUtils.getKey(snap));
+	          if( angular.isObject(rec) ) {
+	            rec.$priority = snap.getPriority();
+	            return true;
+	          }
+	          return false;
+	        },
+
+	        /**
+	         * Called whenever a security error or other problem causes the listeners to become
+	         * invalid. This is generally an unrecoverable error.
+	         *
+	         * @param {Object} err which will have a `code` property and possibly a `message`
+	         * @protected
+	         */
+	        $$error: function(err) {
+	          $log.error(err);
+	          this.$destroy(err);
+	        },
+
+	        /**
+	         * Returns ID for a given record
+	         * @param {object} rec
+	         * @returns {string||null}
+	         * @protected
+	         */
+	        $$getKey: function(rec) {
+	          return angular.isObject(rec)? rec.$id : null;
+	        },
+
+	        /**
+	         * Handles placement of recs in the array, sending notifications,
+	         * and other internals. Called by the synchronization process
+	         * after $$added, $$updated, $$moved, and $$removed return a truthy value.
+	         *
+	         * @param {string} event one of child_added, child_removed, child_moved, or child_changed
+	         * @param {object} rec
+	         * @param {string} [prevChild]
+	         * @protected
+	         */
+	        $$process: function(event, rec, prevChild) {
+	          var key = this.$$getKey(rec);
+	          var changed = false;
+	          var curPos;
+	          switch(event) {
+	            case 'child_added':
+	              curPos = this.$indexFor(key);
+	              break;
+	            case 'child_moved':
+	              curPos = this.$indexFor(key);
+	              this._spliceOut(key);
+	              break;
+	            case 'child_removed':
+	              // remove record from the array
+	              changed = this._spliceOut(key) !== null;
+	              break;
+	            case 'child_changed':
+	              changed = true;
+	              break;
+	            default:
+	              throw new Error('Invalid event type: ' + event);
+	          }
+	          if( angular.isDefined(curPos) ) {
+	            // add it to the array
+	            changed = this._addAfter(rec, prevChild) !== curPos;
+	          }
+	          if( changed ) {
+	            // send notifications to anybody monitoring $watch
+	            this.$$notify(event, key, prevChild);
+	          }
+	          return changed;
+	        },
+
+	        /**
+	         * Used to trigger notifications for listeners registered using $watch. This method is
+	         * typically invoked internally by the $$process method.
+	         *
+	         * @param {string} event
+	         * @param {string} key
+	         * @param {string} [prevChild]
+	         * @protected
+	         */
+	        $$notify: function(event, key, prevChild) {
+	          var eventData = {event: event, key: key};
+	          if( angular.isDefined(prevChild) ) {
+	            eventData.prevChild = prevChild;
+	          }
+	          angular.forEach(this._observers, function(parts) {
+	            parts[0].call(parts[1], eventData);
+	          });
+	        },
+
+	        /**
+	         * Used to insert a new record into the array at a specific position. If prevChild is
+	         * null, is inserted first, if prevChild is not found, it is inserted last, otherwise,
+	         * it goes immediately after prevChild.
+	         *
+	         * @param {object} rec
+	         * @param {string|null} prevChild
+	         * @private
+	         */
+	        _addAfter: function(rec, prevChild) {
+	          var i;
+	          if( prevChild === null ) {
+	            i = 0;
+	          }
+	          else {
+	            i = this.$indexFor(prevChild)+1;
+	            if( i === 0 ) { i = this.$list.length; }
+	          }
+	          this.$list.splice(i, 0, rec);
+	          this._indexCache[this.$$getKey(rec)] = i;
+	          return i;
+	        },
+
+	        /**
+	         * Removes a record from the array by calling splice. If the item is found
+	         * this method returns it. Otherwise, this method returns null.
+	         *
+	         * @param {string} key
+	         * @returns {object|null}
+	         * @private
+	         */
+	        _spliceOut: function(key) {
+	          var i = this.$indexFor(key);
+	          if( i > -1 ) {
+	            delete this._indexCache[key];
+	            return this.$list.splice(i, 1)[0];
+	          }
+	          return null;
+	        },
+
+	        /**
+	         * Resolves a variable which may contain an integer or an item that exists in this array.
+	         * Returns the item or null if it does not exist.
+	         *
+	         * @param indexOrItem
+	         * @returns {*}
+	         * @private
+	         */
+	        _resolveItem: function(indexOrItem) {
+	          var list = this.$list;
+	          if( angular.isNumber(indexOrItem) && indexOrItem >= 0 && list.length >= indexOrItem ) {
+	            return list[indexOrItem];
+	          }
+	          else if( angular.isObject(indexOrItem) ) {
+	            // it must be an item in this array; it's not sufficient for it just to have
+	            // a $id or even a $id that is in the array, it must be an actual record
+	            // the fastest way to determine this is to use $getRecord (to avoid iterating all recs)
+	            // and compare the two
+	            var key = this.$$getKey(indexOrItem);
+	            var rec = this.$getRecord(key);
+	            return rec === indexOrItem? rec : null;
+	          }
+	          return null;
+	        },
+
+	        /**
+	         * Throws an error if $destroy has been called. Should be used for any function
+	         * which tries to write data back to $firebase.
+	         * @param {string} method
+	         * @private
+	         */
+	        _assertNotDestroyed: function(method) {
+	          if( this._isDestroyed ) {
+	            throw new Error('Cannot call ' + method + ' method on a destroyed $firebaseArray object');
+	          }
+	        }
+	      };
+
+	      /**
+	       * This method allows FirebaseArray to be inherited by child classes. Methods passed into this
+	       * function will be added onto the array's prototype. They can override existing methods as
+	       * well.
+	       *
+	       * In addition to passing additional methods, it is also possible to pass in a class function.
+	       * The prototype on that class function will be preserved, and it will inherit from
+	       * FirebaseArray. It's also possible to do both, passing a class to inherit and additional
+	       * methods to add onto the prototype.
+	       *
+	       *  <pre><code>
+	       * var ExtendedArray = $firebaseArray.$extend({
+	       *    // add a method onto the prototype that sums all items in the array
+	       *    getSum: function() {
+	       *       var ct = 0;
+	       *       angular.forEach(this.$list, function(rec) { ct += rec.x; });
+	        *      return ct;
+	       *    }
+	       * });
+	       *
+	       * // use our new factory in place of $firebaseArray
+	       * var list = new ExtendedArray(ref);
+	       * </code></pre>
+	       *
+	       * @param {Function} [ChildClass] a child class which should inherit FirebaseArray
+	       * @param {Object} [methods] a list of functions to add onto the prototype
+	       * @returns {Function} a child class suitable for use with $firebase (this will be ChildClass if provided)
+	       * @static
+	       */
+	      FirebaseArray.$extend = function(ChildClass, methods) {
+	        if( arguments.length === 1 && angular.isObject(ChildClass) ) {
+	          methods = ChildClass;
+	          ChildClass = function(ref) {
+	            if( !(this instanceof ChildClass) ) {
+	              return new ChildClass(ref);
+	            }
+	            FirebaseArray.apply(this, arguments);
+	            return this.$list;
+	          };
+	        }
+	        return $firebaseUtils.inherit(ChildClass, FirebaseArray, methods);
+	      };
+
+	      function ArraySyncManager(firebaseArray) {
+	        function destroy(err) {
+	          if( !sync.isDestroyed ) {
+	            sync.isDestroyed = true;
+	            var ref = firebaseArray.$ref();
+	            ref.off('child_added', created);
+	            ref.off('child_moved', moved);
+	            ref.off('child_changed', updated);
+	            ref.off('child_removed', removed);
+	            firebaseArray = null;
+	            initComplete(err||'destroyed');
+	          }
+	        }
+
+	        function init($list) {
+	          var ref = firebaseArray.$ref();
+
+	          // listen for changes at the Firebase instance
+	          ref.on('child_added', created, error);
+	          ref.on('child_moved', moved, error);
+	          ref.on('child_changed', updated, error);
+	          ref.on('child_removed', removed, error);
+
+	          // determine when initial load is completed
+	          ref.once('value', function(snap) {
+	            if (angular.isArray(snap.val())) {
+	              $log.warn('Storing data using array indices in Firebase can result in unexpected behavior. See https://www.firebase.com/docs/web/guide/understanding-data.html#section-arrays-in-firebase for more information.');
+	            }
+
+	            initComplete(null, $list);
+	          }, initComplete);
+	        }
+
+	        // call initComplete(), do not call this directly
+	        function _initComplete(err, result) {
+	          if( !isResolved ) {
+	            isResolved = true;
+	            if( err ) { def.reject(err); }
+	            else { def.resolve(result); }
+	          }
+	        }
+
+	        var def     = $firebaseUtils.defer();
+	        var created = function(snap, prevChild) {
+	          waitForResolution(firebaseArray.$$added(snap, prevChild), function(rec) {
+	            firebaseArray.$$process('child_added', rec, prevChild);
+	          });
+	        };
+	        var updated = function(snap) {
+	          var rec = firebaseArray.$getRecord($firebaseUtils.getKey(snap));
+	          if( rec ) {
+	            waitForResolution(firebaseArray.$$updated(snap), function() {
+	              firebaseArray.$$process('child_changed', rec);
+	            });
+	          }
+	        };
+	        var moved   = function(snap, prevChild) {
+	          var rec = firebaseArray.$getRecord($firebaseUtils.getKey(snap));
+	          if( rec ) {
+	            waitForResolution(firebaseArray.$$moved(snap, prevChild), function() {
+	              firebaseArray.$$process('child_moved', rec, prevChild);
+	            });
+	          }
+	        };
+	        var removed = function(snap) {
+	          var rec = firebaseArray.$getRecord($firebaseUtils.getKey(snap));
+	          if( rec ) {
+	            waitForResolution(firebaseArray.$$removed(snap), function() {
+	               firebaseArray.$$process('child_removed', rec);
+	            });
+	          }
+	        };
+
+	        function waitForResolution(maybePromise, callback) {
+	          var promise = $q.when(maybePromise);
+	          promise.then(function(result){
+	            if (result) {
+	              callback(result);
+	            }
+	          });
+	          if (!isResolved) {
+	            resolutionPromises.push(promise);
+	          }
+	        }
+
+	        var resolutionPromises = [];
+	        var isResolved = false;
+	        var error   = $firebaseUtils.batch(function(err) {
+	          _initComplete(err);
+	          if( firebaseArray ) {
+	            firebaseArray.$$error(err);
+	          }
+	        });
+	        var initComplete = $firebaseUtils.batch(_initComplete);
+
+	        var sync = {
+	          destroy: destroy,
+	          isDestroyed: false,
+	          init: init,
+	          ready: function() { return def.promise.then(function(result){
+	            return $q.all(resolutionPromises).then(function(){
+	              return result;
+	            });
+	          }); }
+	        };
+
+	        return sync;
+	      }
+
+	      return FirebaseArray;
+	    }
+	  ]);
+
+	  /** @deprecated */
+	  angular.module('firebase').factory('$FirebaseArray', ['$log', '$firebaseArray',
+	    function($log, $firebaseArray) {
+	      return function() {
+	        $log.warn('$FirebaseArray has been renamed. Use $firebaseArray instead.');
+	        return $firebaseArray.apply(null, arguments);
+	      };
+	    }
+	  ]);
+	})();
+
+	(function() {
+	  'use strict';
+	  var FirebaseAuth;
+
+	  // Define a service which provides user authentication and management.
+	  angular.module('firebase').factory('$firebaseAuth', [
+	    '$q', '$firebaseUtils', function($q, $firebaseUtils) {
+	      /**
+	       * This factory returns an object allowing you to manage the client's authentication state.
+	       *
+	       * @param {Firebase} ref A Firebase reference to authenticate.
+	       * @return {object} An object containing methods for authenticating clients, retrieving
+	       * authentication state, and managing users.
+	       */
+	      return function(ref) {
+	        var auth = new FirebaseAuth($q, $firebaseUtils, ref);
+	        return auth.construct();
+	      };
+	    }
+	  ]);
+
+	  FirebaseAuth = function($q, $firebaseUtils, ref) {
+	    this._q = $q;
+	    this._utils = $firebaseUtils;
+	    if (typeof ref === 'string') {
+	      throw new Error('Please provide a Firebase reference instead of a URL when creating a `$firebaseAuth` object.');
+	    }
+	    this._ref = ref;
+	    this._initialAuthResolver = this._initAuthResolver();
+	  };
+
+	  FirebaseAuth.prototype = {
+	    construct: function() {
+	      this._object = {
+	        // Authentication methods
+	        $authWithCustomToken: this.authWithCustomToken.bind(this),
+	        $authAnonymously: this.authAnonymously.bind(this),
+	        $authWithPassword: this.authWithPassword.bind(this),
+	        $authWithOAuthPopup: this.authWithOAuthPopup.bind(this),
+	        $authWithOAuthRedirect: this.authWithOAuthRedirect.bind(this),
+	        $authWithOAuthToken: this.authWithOAuthToken.bind(this),
+	        $unauth: this.unauth.bind(this),
+
+	        // Authentication state methods
+	        $onAuth: this.onAuth.bind(this),
+	        $getAuth: this.getAuth.bind(this),
+	        $requireAuth: this.requireAuth.bind(this),
+	        $waitForAuth: this.waitForAuth.bind(this),
+
+	        // User management methods
+	        $createUser: this.createUser.bind(this),
+	        $changePassword: this.changePassword.bind(this),
+	        $changeEmail: this.changeEmail.bind(this),
+	        $removeUser: this.removeUser.bind(this),
+	        $resetPassword: this.resetPassword.bind(this)
+	      };
+
+	      return this._object;
+	    },
+
+
+	    /********************/
+	    /*  Authentication  */
+	    /********************/
+
+	    /**
+	     * Authenticates the Firebase reference with a custom authentication token.
+	     *
+	     * @param {string} authToken An authentication token or a Firebase Secret. A Firebase Secret
+	     * should only be used for authenticating a server process and provides full read / write
+	     * access to the entire Firebase.
+	     * @param {Object} [options] An object containing optional client arguments, such as configuring
+	     * session persistence.
+	     * @return {Promise<Object>} A promise fulfilled with an object containing authentication data.
+	     */
+	    authWithCustomToken: function(authToken, options) {
+	      var deferred = this._q.defer();
+
+	      try {
+	        this._ref.authWithCustomToken(authToken, this._utils.makeNodeResolver(deferred), options);
+	      } catch (error) {
+	        deferred.reject(error);
+	      }
+
+	      return deferred.promise;
+	    },
+
+	    /**
+	     * Authenticates the Firebase reference anonymously.
+	     *
+	     * @param {Object} [options] An object containing optional client arguments, such as configuring
+	     * session persistence.
+	     * @return {Promise<Object>} A promise fulfilled with an object containing authentication data.
+	     */
+	    authAnonymously: function(options) {
+	      var deferred = this._q.defer();
+
+	      try {
+	        this._ref.authAnonymously(this._utils.makeNodeResolver(deferred), options);
+	      } catch (error) {
+	        deferred.reject(error);
+	      }
+
+	      return deferred.promise;
+	    },
+
+	    /**
+	     * Authenticates the Firebase reference with an email/password user.
+	     *
+	     * @param {Object} credentials An object containing email and password attributes corresponding
+	     * to the user account.
+	     * @param {Object} [options] An object containing optional client arguments, such as configuring
+	     * session persistence.
+	     * @return {Promise<Object>} A promise fulfilled with an object containing authentication data.
+	     */
+	    authWithPassword: function(credentials, options) {
+	      var deferred = this._q.defer();
+
+	      try {
+	        this._ref.authWithPassword(credentials, this._utils.makeNodeResolver(deferred), options);
+	      } catch (error) {
+	        deferred.reject(error);
+	      }
+
+	      return deferred.promise;
+	    },
+
+	    /**
+	     * Authenticates the Firebase reference with the OAuth popup flow.
+	     *
+	     * @param {string} provider The unique string identifying the OAuth provider to authenticate
+	     * with, e.g. google.
+	     * @param {Object} [options] An object containing optional client arguments, such as configuring
+	     * session persistence.
+	     * @return {Promise<Object>} A promise fulfilled with an object containing authentication data.
+	     */
+	    authWithOAuthPopup: function(provider, options) {
+	      var deferred = this._q.defer();
+
+	      try {
+	        this._ref.authWithOAuthPopup(provider, this._utils.makeNodeResolver(deferred), options);
+	      } catch (error) {
+	        deferred.reject(error);
+	      }
+
+	      return deferred.promise;
+	    },
+
+	    /**
+	     * Authenticates the Firebase reference with the OAuth redirect flow.
+	     *
+	     * @param {string} provider The unique string identifying the OAuth provider to authenticate
+	     * with, e.g. google.
+	     * @param {Object} [options] An object containing optional client arguments, such as configuring
+	     * session persistence.
+	     * @return {Promise<Object>} A promise fulfilled with an object containing authentication data.
+	     */
+	    authWithOAuthRedirect: function(provider, options) {
+	      var deferred = this._q.defer();
+
+	      try {
+	        this._ref.authWithOAuthRedirect(provider, this._utils.makeNodeResolver(deferred), options);
+	      } catch (error) {
+	        deferred.reject(error);
+	      }
+
+	      return deferred.promise;
+	    },
+
+	    /**
+	     * Authenticates the Firebase reference with an OAuth token.
+	     *
+	     * @param {string} provider The unique string identifying the OAuth provider to authenticate
+	     * with, e.g. google.
+	     * @param {string|Object} credentials Either a string, such as an OAuth 2.0 access token, or an
+	     * Object of key / value pairs, such as a set of OAuth 1.0a credentials.
+	     * @param {Object} [options] An object containing optional client arguments, such as configuring
+	     * session persistence.
+	     * @return {Promise<Object>} A promise fulfilled with an object containing authentication data.
+	     */
+	    authWithOAuthToken: function(provider, credentials, options) {
+	      var deferred = this._q.defer();
+
+	      try {
+	        this._ref.authWithOAuthToken(provider, credentials, this._utils.makeNodeResolver(deferred), options);
+	      } catch (error) {
+	        deferred.reject(error);
+	      }
+
+	      return deferred.promise;
+	    },
+
+	    /**
+	     * Unauthenticates the Firebase reference.
+	     */
+	    unauth: function() {
+	      if (this.getAuth() !== null) {
+	        this._ref.unauth();
+	      }
+	    },
+
+
+	    /**************************/
+	    /*  Authentication State  */
+	    /**************************/
+	    /**
+	     * Asynchronously fires the provided callback with the current authentication data every time
+	     * the authentication data changes. It also fires as soon as the authentication data is
+	     * retrieved from the server.
+	     *
+	     * @param {function} callback A callback that fires when the client's authenticate state
+	     * changes. If authenticated, the callback will be passed an object containing authentication
+	     * data according to the provider used to authenticate. Otherwise, it will be passed null.
+	     * @param {string} [context] If provided, this object will be used as this when calling your
+	     * callback.
+	     * @return {function} A function which can be used to deregister the provided callback.
+	     */
+	    onAuth: function(callback, context) {
+	      var self = this;
+
+	      var fn = this._utils.debounce(callback, context, 0);
+	      this._ref.onAuth(fn);
+
+	      // Return a method to detach the `onAuth()` callback.
+	      return function() {
+	        self._ref.offAuth(fn);
+	      };
+	    },
+
+	    /**
+	     * Synchronously retrieves the current authentication data.
+	     *
+	     * @return {Object} The client's authentication data.
+	     */
+	    getAuth: function() {
+	      return this._ref.getAuth();
+	    },
+
+	    /**
+	     * Helper onAuth() callback method for the two router-related methods.
+	     *
+	     * @param {boolean} rejectIfAuthDataIsNull Determines if the returned promise should be
+	     * resolved or rejected upon an unauthenticated client.
+	     * @return {Promise<Object>} A promise fulfilled with the client's authentication state or
+	     * rejected if the client is unauthenticated and rejectIfAuthDataIsNull is true.
+	     */
+	    _routerMethodOnAuthPromise: function(rejectIfAuthDataIsNull) {
+	      var ref = this._ref, utils = this._utils;
+	      // wait for the initial auth state to resolve; on page load we have to request auth state
+	      // asynchronously so we don't want to resolve router methods or flash the wrong state
+	      return this._initialAuthResolver.then(function() {
+	        // auth state may change in the future so rather than depend on the initially resolved state
+	        // we also check the auth data (synchronously) if a new promise is requested, ensuring we resolve
+	        // to the current auth state and not a stale/initial state
+	        var authData = ref.getAuth(), res = null;
+	        if (rejectIfAuthDataIsNull && authData === null) {
+	          res = utils.reject("AUTH_REQUIRED");
+	        }
+	        else {
+	          res = utils.resolve(authData);
+	        }
+	        return res;
+	      });
+	    },
+
+	    /**
+	     * Helper that returns a promise which resolves when the initial auth state has been
+	     * fetched from the Firebase server. This never rejects and resolves to undefined.
+	     *
+	     * @return {Promise<Object>} A promise fulfilled when the server returns initial auth state.
+	     */
+	    _initAuthResolver: function() {
+	      var ref = this._ref;
+	      return this._utils.promise(function(resolve) {
+	        function callback() {
+	          // Turn off this onAuth() callback since we just needed to get the authentication data once.
+	          ref.offAuth(callback);
+	          resolve();
+	        }
+	        ref.onAuth(callback);
+	      });
+	    },
+
+	    /**
+	     * Utility method which can be used in a route's resolve() method to require that a route has
+	     * a logged in client.
+	     *
+	     * @returns {Promise<Object>} A promise fulfilled with the client's current authentication
+	     * state or rejected if the client is not authenticated.
+	     */
+	    requireAuth: function() {
+	      return this._routerMethodOnAuthPromise(true);
+	    },
+
+	    /**
+	     * Utility method which can be used in a route's resolve() method to grab the current
+	     * authentication data.
+	     *
+	     * @returns {Promise<Object|null>} A promise fulfilled with the client's current authentication
+	     * state, which will be null if the client is not authenticated.
+	     */
+	    waitForAuth: function() {
+	      return this._routerMethodOnAuthPromise(false);
+	    },
+
+
+	    /*********************/
+	    /*  User Management  */
+	    /*********************/
+	    /**
+	     * Creates a new email/password user. Note that this function only creates the user, if you
+	     * wish to log in as the newly created user, call $authWithPassword() after the promise for
+	     * this method has been resolved.
+	     *
+	     * @param {Object} credentials An object containing the email and password of the user to create.
+	     * @return {Promise<Object>} A promise fulfilled with the user object, which contains the
+	     * uid of the created user.
+	     */
+	    createUser: function(credentials) {
+	      var deferred = this._q.defer();
+
+	      // Throw an error if they are trying to pass in separate string arguments
+	      if (typeof credentials === "string") {
+	        throw new Error("$createUser() expects an object containing 'email' and 'password', but got a string.");
+	      }
+
+	      try {
+	        this._ref.createUser(credentials, this._utils.makeNodeResolver(deferred));
+	      } catch (error) {
+	        deferred.reject(error);
+	      }
+
+	      return deferred.promise;
+	    },
+
+	    /**
+	     * Changes the password for an email/password user.
+	     *
+	     * @param {Object} credentials An object containing the email, old password, and new password of
+	     * the user whose password is to change.
+	     * @return {Promise<>} An empty promise fulfilled once the password change is complete.
+	     */
+	    changePassword: function(credentials) {
+	      var deferred = this._q.defer();
+
+	      // Throw an error if they are trying to pass in separate string arguments
+	      if (typeof credentials === "string") {
+	        throw new Error("$changePassword() expects an object containing 'email', 'oldPassword', and 'newPassword', but got a string.");
+	      }
+
+	      try {
+	        this._ref.changePassword(credentials, this._utils.makeNodeResolver(deferred));
+	      } catch (error) {
+	        deferred.reject(error);
+	      }
+
+	      return deferred.promise;
+	    },
+
+	    /**
+	     * Changes the email for an email/password user.
+	     *
+	     * @param {Object} credentials An object containing the old email, new email, and password of
+	     * the user whose email is to change.
+	     * @return {Promise<>} An empty promise fulfilled once the email change is complete.
+	     */
+	    changeEmail: function(credentials) {
+	      var deferred = this._q.defer();
+
+	      if (typeof this._ref.changeEmail !== 'function') {
+	        throw new Error("$firebaseAuth.$changeEmail() requires Firebase version 2.1.0 or greater.");
+	      } else if (typeof credentials === 'string') {
+	        throw new Error("$changeEmail() expects an object containing 'oldEmail', 'newEmail', and 'password', but got a string.");
+	      }
+
+	      try {
+	        this._ref.changeEmail(credentials, this._utils.makeNodeResolver(deferred));
+	      } catch (error) {
+	        deferred.reject(error);
+	      }
+
+	      return deferred.promise;
+	    },
+
+	    /**
+	     * Removes an email/password user.
+	     *
+	     * @param {Object} credentials An object containing the email and password of the user to remove.
+	     * @return {Promise<>} An empty promise fulfilled once the user is removed.
+	     */
+	    removeUser: function(credentials) {
+	      var deferred = this._q.defer();
+
+	      // Throw an error if they are trying to pass in separate string arguments
+	      if (typeof credentials === "string") {
+	        throw new Error("$removeUser() expects an object containing 'email' and 'password', but got a string.");
+	      }
+
+	      try {
+	        this._ref.removeUser(credentials, this._utils.makeNodeResolver(deferred));
+	      } catch (error) {
+	        deferred.reject(error);
+	      }
+
+	      return deferred.promise;
+	    },
+
+
+	    /**
+	     * Sends a password reset email to an email/password user.
+	     *
+	     * @param {Object} credentials An object containing the email of the user to send a reset
+	     * password email to.
+	     * @return {Promise<>} An empty promise fulfilled once the reset password email is sent.
+	     */
+	    resetPassword: function(credentials) {
+	      var deferred = this._q.defer();
+
+	      // Throw an error if they are trying to pass in a string argument
+	      if (typeof credentials === "string") {
+	        throw new Error("$resetPassword() expects an object containing 'email', but got a string.");
+	      }
+
+	      try {
+	        this._ref.resetPassword(credentials, this._utils.makeNodeResolver(deferred));
+	      } catch (error) {
+	        deferred.reject(error);
+	      }
+
+	      return deferred.promise;
+	    }
+	  };
+	})();
+
+	(function() {
+	  'use strict';
+	  /**
+	   * Creates and maintains a synchronized object, with 2-way bindings between Angular and Firebase.
+	   *
+	   * Implementations of this class are contracted to provide the following internal methods,
+	   * which are used by the synchronization process and 3-way bindings:
+	   *    $$updated - called whenever a change occurs (a value event from Firebase)
+	   *    $$error - called when listeners are canceled due to a security error
+	   *    $$notify - called to update $watch listeners and trigger updates to 3-way bindings
+	   *    $ref - called to obtain the underlying Firebase reference
+	   *
+	   * Instead of directly modifying this class, one should generally use the $extend
+	   * method to add or change how methods behave:
+	   *
+	   * <pre><code>
+	   * var ExtendedObject = $firebaseObject.$extend({
+	   *    // add a new method to the prototype
+	   *    foo: function() { return 'bar'; },
+	   * });
+	   *
+	   * var obj = new ExtendedObject(ref);
+	   * </code></pre>
+	   */
+	  angular.module('firebase').factory('$firebaseObject', [
+	    '$parse', '$firebaseUtils', '$log',
+	    function($parse, $firebaseUtils, $log) {
+	      /**
+	       * Creates a synchronized object with 2-way bindings between Angular and Firebase.
+	       *
+	       * @param {Firebase} ref
+	       * @returns {FirebaseObject}
+	       * @constructor
+	       */
+	      function FirebaseObject(ref) {
+	        if( !(this instanceof FirebaseObject) ) {
+	          return new FirebaseObject(ref);
+	        }
+	        // These are private config props and functions used internally
+	        // they are collected here to reduce clutter in console.log and forEach
+	        this.$$conf = {
+	          // synchronizes data to Firebase
+	          sync: new ObjectSyncManager(this, ref),
+	          // stores the Firebase ref
+	          ref: ref,
+	          // synchronizes $scope variables with this object
+	          binding: new ThreeWayBinding(this),
+	          // stores observers registered with $watch
+	          listeners: []
+	        };
+
+	        // this bit of magic makes $$conf non-enumerable and non-configurable
+	        // and non-writable (its properties are still writable but the ref cannot be replaced)
+	        // we redundantly assign it above so the IDE can relax
+	        Object.defineProperty(this, '$$conf', {
+	          value: this.$$conf
+	        });
+
+	        this.$id = $firebaseUtils.getKey(ref.ref());
+	        this.$priority = null;
+
+	        $firebaseUtils.applyDefaults(this, this.$$defaults);
+
+	        // start synchronizing data with Firebase
+	        this.$$conf.sync.init();
+	      }
+
+	      FirebaseObject.prototype = {
+	        /**
+	         * Saves all data on the FirebaseObject back to Firebase.
+	         * @returns a promise which will resolve after the save is completed.
+	         */
+	        $save: function () {
+	          var self = this;
+	          var ref = self.$ref();
+	          var data = $firebaseUtils.toJSON(self);
+	          return $firebaseUtils.doSet(ref, data).then(function() {
+	            self.$$notify();
+	            return self.$ref();
+	          });
+	        },
+
+	        /**
+	         * Removes all keys from the FirebaseObject and also removes
+	         * the remote data from the server.
+	         *
+	         * @returns a promise which will resolve after the op completes
+	         */
+	        $remove: function() {
+	          var self = this;
+	          $firebaseUtils.trimKeys(self, {});
+	          self.$value = null;
+	          return $firebaseUtils.doRemove(self.$ref()).then(function() {
+	            self.$$notify();
+	            return self.$ref();
+	          });
+	        },
+
+	        /**
+	         * The loaded method is invoked after the initial batch of data arrives from the server.
+	         * When this resolves, all data which existed prior to calling $asObject() is now cached
+	         * locally in the object.
+	         *
+	         * As a shortcut is also possible to pass resolve/reject methods directly into this
+	         * method just as they would be passed to .then()
+	         *
+	         * @param {Function} resolve
+	         * @param {Function} reject
+	         * @returns a promise which resolves after initial data is downloaded from Firebase
+	         */
+	        $loaded: function(resolve, reject) {
+	          var promise = this.$$conf.sync.ready();
+	          if (arguments.length) {
+	            // allow this method to be called just like .then
+	            // by passing any arguments on to .then
+	            promise = promise.then.call(promise, resolve, reject);
+	          }
+	          return promise;
+	        },
+
+	        /**
+	         * @returns {Firebase} the original Firebase instance used to create this object.
+	         */
+	        $ref: function () {
+	          return this.$$conf.ref;
+	        },
+
+	        /**
+	         * Creates a 3-way data sync between this object, the Firebase server, and a
+	         * scope variable. This means that any changes made to the scope variable are
+	         * pushed to Firebase, and vice versa.
+	         *
+	         * If scope emits a $destroy event, the binding is automatically severed. Otherwise,
+	         * it is possible to unbind the scope variable by using the `unbind` function
+	         * passed into the resolve method.
+	         *
+	         * Can only be bound to one scope variable at a time. If a second is attempted,
+	         * the promise will be rejected with an error.
+	         *
+	         * @param {object} scope
+	         * @param {string} varName
+	         * @returns a promise which resolves to an unbind method after data is set in scope
+	         */
+	        $bindTo: function (scope, varName) {
+	          var self = this;
+	          return self.$loaded().then(function () {
+	            return self.$$conf.binding.bindTo(scope, varName);
+	          });
+	        },
+
+	        /**
+	         * Listeners passed into this method are notified whenever a new change is received
+	         * from the server. Each invocation is sent an object containing
+	         * <code>{ type: 'value', key: 'my_firebase_id' }</code>
+	         *
+	         * This method returns an unbind function that can be used to detach the listener.
+	         *
+	         * @param {Function} cb
+	         * @param {Object} [context]
+	         * @returns {Function} invoke to stop observing events
+	         */
+	        $watch: function (cb, context) {
+	          var list = this.$$conf.listeners;
+	          list.push([cb, context]);
+	          // an off function for cancelling the listener
+	          return function () {
+	            var i = list.findIndex(function (parts) {
+	              return parts[0] === cb && parts[1] === context;
+	            });
+	            if (i > -1) {
+	              list.splice(i, 1);
+	            }
+	          };
+	        },
+
+	        /**
+	         * Informs $firebase to stop sending events and clears memory being used
+	         * by this object (delete's its local content).
+	         */
+	        $destroy: function(err) {
+	          var self = this;
+	          if (!self.$isDestroyed) {
+	            self.$isDestroyed = true;
+	            self.$$conf.sync.destroy(err);
+	            self.$$conf.binding.destroy();
+	            $firebaseUtils.each(self, function (v, k) {
+	              delete self[k];
+	            });
+	          }
+	        },
+
+	        /**
+	         * Called by $firebase whenever an item is changed at the server.
+	         * This method must exist on any objectFactory passed into $firebase.
+	         *
+	         * It should return true if any changes were made, otherwise `$$notify` will
+	         * not be invoked.
+	         *
+	         * @param {object} snap a Firebase snapshot
+	         * @return {boolean} true if any changes were made.
+	         */
+	        $$updated: function (snap) {
+	          // applies new data to this object
+	          var changed = $firebaseUtils.updateRec(this, snap);
+	          // applies any defaults set using $$defaults
+	          $firebaseUtils.applyDefaults(this, this.$$defaults);
+	          // returning true here causes $$notify to be triggered
+	          return changed;
+	        },
+
+	        /**
+	         * Called whenever a security error or other problem causes the listeners to become
+	         * invalid. This is generally an unrecoverable error.
+	         * @param {Object} err which will have a `code` property and possibly a `message`
+	         */
+	        $$error: function (err) {
+	          // prints an error to the console (via Angular's logger)
+	          $log.error(err);
+	          // frees memory and cancels any remaining listeners
+	          this.$destroy(err);
+	        },
+
+	        /**
+	         * Called internally by $bindTo when data is changed in $scope.
+	         * Should apply updates to this record but should not call
+	         * notify().
+	         */
+	        $$scopeUpdated: function(newData) {
+	          // we use a one-directional loop to avoid feedback with 3-way bindings
+	          // since set() is applied locally anyway, this is still performant
+	          var def = $firebaseUtils.defer();
+	          this.$ref().set($firebaseUtils.toJSON(newData), $firebaseUtils.makeNodeResolver(def));
+	          return def.promise;
+	        },
+
+	        /**
+	         * Updates any bound scope variables and
+	         * notifies listeners registered with $watch
+	         */
+	        $$notify: function() {
+	          var self = this, list = this.$$conf.listeners.slice();
+	          // be sure to do this after setting up data and init state
+	          angular.forEach(list, function (parts) {
+	            parts[0].call(parts[1], {event: 'value', key: self.$id});
+	          });
+	        },
+
+	        /**
+	         * Overrides how Angular.forEach iterates records on this object so that only
+	         * fields stored in Firebase are part of the iteration. To include meta fields like
+	         * $id and $priority in the iteration, utilize for(key in obj) instead.
+	         */
+	        forEach: function(iterator, context) {
+	          return $firebaseUtils.each(this, iterator, context);
+	        }
+	      };
+
+	      /**
+	       * This method allows FirebaseObject to be copied into a new factory. Methods passed into this
+	       * function will be added onto the object's prototype. They can override existing methods as
+	       * well.
+	       *
+	       * In addition to passing additional methods, it is also possible to pass in a class function.
+	       * The prototype on that class function will be preserved, and it will inherit from
+	       * FirebaseObject. It's also possible to do both, passing a class to inherit and additional
+	       * methods to add onto the prototype.
+	       *
+	       * Once a factory is obtained by this method, it can be passed into $firebase as the
+	       * `objectFactory` parameter:
+	       *
+	       * <pre><code>
+	       * var MyFactory = $firebaseObject.$extend({
+	       *    // add a method onto the prototype that prints a greeting
+	       *    getGreeting: function() {
+	       *       return 'Hello ' + this.first_name + ' ' + this.last_name + '!';
+	       *    }
+	       * });
+	       *
+	       * // use our new factory in place of $firebaseObject
+	       * var obj = $firebase(ref, {objectFactory: MyFactory}).$asObject();
+	       * </code></pre>
+	       *
+	       * @param {Function} [ChildClass] a child class which should inherit FirebaseObject
+	       * @param {Object} [methods] a list of functions to add onto the prototype
+	       * @returns {Function} a new factory suitable for use with $firebase
+	       */
+	      FirebaseObject.$extend = function(ChildClass, methods) {
+	        if( arguments.length === 1 && angular.isObject(ChildClass) ) {
+	          methods = ChildClass;
+	          ChildClass = function(ref) {
+	            if( !(this instanceof ChildClass) ) {
+	              return new ChildClass(ref);
+	            }
+	            FirebaseObject.apply(this, arguments);
+	          };
+	        }
+	        return $firebaseUtils.inherit(ChildClass, FirebaseObject, methods);
+	      };
+
+	      /**
+	       * Creates a three-way data binding on a scope variable.
+	       *
+	       * @param {FirebaseObject} rec
+	       * @returns {*}
+	       * @constructor
+	       */
+	      function ThreeWayBinding(rec) {
+	        this.subs = [];
+	        this.scope = null;
+	        this.key = null;
+	        this.rec = rec;
+	      }
+
+	      ThreeWayBinding.prototype = {
+	        assertNotBound: function(varName) {
+	          if( this.scope ) {
+	            var msg = 'Cannot bind to ' + varName + ' because this instance is already bound to ' +
+	              this.key + '; one binding per instance ' +
+	              '(call unbind method or create another FirebaseObject instance)';
+	            $log.error(msg);
+	            return $firebaseUtils.reject(msg);
+	          }
+	        },
+
+	        bindTo: function(scope, varName) {
+	          function _bind(self) {
+	            var sending = false;
+	            var parsed = $parse(varName);
+	            var rec = self.rec;
+	            self.scope = scope;
+	            self.varName = varName;
+
+	            function equals(scopeValue) {
+	              return angular.equals(scopeValue, rec) &&
+	                scopeValue.$priority === rec.$priority &&
+	                scopeValue.$value === rec.$value;
+	            }
+
+	            function setScope(rec) {
+	              parsed.assign(scope, $firebaseUtils.scopeData(rec));
+	            }
+
+	            var send = $firebaseUtils.debounce(function(val) {
+	              var scopeData = $firebaseUtils.scopeData(val);
+	              rec.$$scopeUpdated(scopeData)
+	                ['finally'](function() {
+	                  sending = false;
+	                  if(!scopeData.hasOwnProperty('$value')){
+	                    delete rec.$value;
+	                    delete parsed(scope).$value;
+	                  }
+	                  setScope(rec);
+	                }
+	              );
+	            }, 50, 500);
+
+	            var scopeUpdated = function(newVal) {
+	              newVal = newVal[0];
+	              if( !equals(newVal) ) {
+	                sending = true;
+	                send(newVal);
+	              }
+	            };
+
+	            var recUpdated = function() {
+	              if( !sending && !equals(parsed(scope)) ) {
+	                setScope(rec);
+	              }
+	            };
+
+	            // $watch will not check any vars prefixed with $, so we
+	            // manually check $priority and $value using this method
+	            function watchExp(){
+	              var obj = parsed(scope);
+	              return [obj, obj.$priority, obj.$value];
+	            }
+
+	            setScope(rec);
+	            self.subs.push(scope.$on('$destroy', self.unbind.bind(self)));
+
+	            // monitor scope for any changes
+	            self.subs.push(scope.$watch(watchExp, scopeUpdated, true));
+
+	            // monitor the object for changes
+	            self.subs.push(rec.$watch(recUpdated));
+
+	            return self.unbind.bind(self);
+	          }
+
+	          return this.assertNotBound(varName) || _bind(this);
+	        },
+
+	        unbind: function() {
+	          if( this.scope ) {
+	            angular.forEach(this.subs, function(unbind) {
+	              unbind();
+	            });
+	            this.subs = [];
+	            this.scope = null;
+	            this.key = null;
+	          }
+	        },
+
+	        destroy: function() {
+	          this.unbind();
+	          this.rec = null;
+	        }
+	      };
+
+	      function ObjectSyncManager(firebaseObject, ref) {
+	        function destroy(err) {
+	          if( !sync.isDestroyed ) {
+	            sync.isDestroyed = true;
+	            ref.off('value', applyUpdate);
+	            firebaseObject = null;
+	            initComplete(err||'destroyed');
+	          }
+	        }
+
+	        function init() {
+	          ref.on('value', applyUpdate, error);
+	          ref.once('value', function(snap) {
+	            if (angular.isArray(snap.val())) {
+	              $log.warn('Storing data using array indices in Firebase can result in unexpected behavior. See https://www.firebase.com/docs/web/guide/understanding-data.html#section-arrays-in-firebase for more information. Also note that you probably wanted $firebaseArray and not $firebaseObject.');
+	            }
+
+	            initComplete(null);
+	          }, initComplete);
+	        }
+
+	        // call initComplete(); do not call this directly
+	        function _initComplete(err) {
+	          if( !isResolved ) {
+	            isResolved = true;
+	            if( err ) { def.reject(err); }
+	            else { def.resolve(firebaseObject); }
+	          }
+	        }
+
+	        var isResolved = false;
+	        var def = $firebaseUtils.defer();
+	        var applyUpdate = $firebaseUtils.batch(function(snap) {
+	          var changed = firebaseObject.$$updated(snap);
+	          if( changed ) {
+	            // notifies $watch listeners and
+	            // updates $scope if bound to a variable
+	            firebaseObject.$$notify();
+	          }
+	        });
+	        var error = $firebaseUtils.batch(function(err) {
+	          _initComplete(err);
+	          if( firebaseObject ) {
+	            firebaseObject.$$error(err);
+	          }
+	        });
+	        var initComplete = $firebaseUtils.batch(_initComplete);
+
+	        var sync = {
+	          isDestroyed: false,
+	          destroy: destroy,
+	          init: init,
+	          ready: function() { return def.promise; }
+	        };
+	        return sync;
+	      }
+
+	      return FirebaseObject;
+	    }
+	  ]);
+
+	  /** @deprecated */
+	  angular.module('firebase').factory('$FirebaseObject', ['$log', '$firebaseObject',
+	    function($log, $firebaseObject) {
+	      return function() {
+	        $log.warn('$FirebaseObject has been renamed. Use $firebaseObject instead.');
+	        return $firebaseObject.apply(null, arguments);
+	      };
+	    }
+	  ]);
+	})();
+
+	(function() {
+	  'use strict';
+
+	  angular.module("firebase")
+
+	    /** @deprecated */
+	    .factory("$firebase", function() {
+	      return function() {
+	        throw new Error('$firebase has been removed. You may instantiate $firebaseArray and $firebaseObject ' +
+	        'directly now. For simple write operations, just use the Firebase ref directly. ' +
+	        'See the AngularFire 1.0.0 changelog for details: https://www.firebase.com/docs/web/libraries/angular/changelog.html');
+	      };
+	    });
+
+	})();
+
+	(function() {
+	  "use strict";
+
+	  function FirebaseAuthService($firebaseAuth, $firebaseRef) {
+	    return $firebaseAuth($firebaseRef.default);
+	  }
+	  FirebaseAuthService.$inject = ['$firebaseAuth', '$firebaseRef'];
+
+	  angular.module('firebase')
+	    .factory('$firebaseAuthService', FirebaseAuthService);
+
+	})();
+
+	(function() {
+	  "use strict";
+
+	  function FirebaseRef() {
+	    this.urls = null;
+	    this.registerUrl = function registerUrl(urlOrConfig) {
+
+	      if (typeof urlOrConfig === 'string') {
+	        this.urls = {};
+	        this.urls.default = urlOrConfig;
+	      }
+
+	      if (angular.isObject(urlOrConfig)) {
+	        this.urls = urlOrConfig;
+	      }
+
+	    };
+
+	    this.$$checkUrls = function $$checkUrls(urlConfig) {
+	      if (!urlConfig) {
+	        return new Error('No Firebase URL registered. Use firebaseRefProvider.registerUrl() in the config phase. This is required if you are using $firebaseAuthService.');
+	      }
+	      if (!urlConfig.default) {
+	        return new Error('No default Firebase URL registered. Use firebaseRefProvider.registerUrl({ default: "https://<my-firebase-app>.firebaseio.com/"}).');
+	      }
+	    };
+
+	    this.$$createRefsFromUrlConfig = function $$createMultipleRefs(urlConfig) {
+	      var refs = {};
+	      var error = this.$$checkUrls(urlConfig);
+	      if (error) { throw error; }
+	      angular.forEach(urlConfig, function(value, key) {
+	        refs[key] = new Firebase(value);
+	      });
+	      return refs;
+	    };
+
+	    this.$get = function FirebaseRef_$get() {
+	      return this.$$createRefsFromUrlConfig(this.urls);
+	    };
+	  }
+
+	  angular.module('firebase')
+	    .provider('$firebaseRef', FirebaseRef);
+
+	})();
+
+	'use strict';
+
+	// Shim Array.indexOf for IE compatibility.
+	if (!Array.prototype.indexOf) {
+	  Array.prototype.indexOf = function (searchElement, fromIndex) {
+	    if (this === undefined || this === null) {
+	      throw new TypeError("'this' is null or not defined");
+	    }
+	    // Hack to convert object.length to a UInt32
+	    // jshint -W016
+	    var length = this.length >>> 0;
+	    fromIndex = +fromIndex || 0;
+	    // jshint +W016
+
+	    if (Math.abs(fromIndex) === Infinity) {
+	      fromIndex = 0;
+	    }
+
+	    if (fromIndex < 0) {
+	      fromIndex += length;
+	      if (fromIndex < 0) {
+	        fromIndex = 0;
+	      }
+	    }
+
+	    for (;fromIndex < length; fromIndex++) {
+	      if (this[fromIndex] === searchElement) {
+	        return fromIndex;
+	      }
+	    }
+
+	    return -1;
+	  };
+	}
+
+	// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind
+	if (!Function.prototype.bind) {
+	  Function.prototype.bind = function (oThis) {
+	    if (typeof this !== "function") {
+	      // closest thing possible to the ECMAScript 5
+	      // internal IsCallable function
+	      throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable");
+	    }
+
+	    var aArgs = Array.prototype.slice.call(arguments, 1),
+	      fToBind = this,
+	      fNOP = function () {},
+	      fBound = function () {
+	        return fToBind.apply(this instanceof fNOP && oThis
+	            ? this
+	            : oThis,
+	          aArgs.concat(Array.prototype.slice.call(arguments)));
+	      };
+
+	    fNOP.prototype = this.prototype;
+	    fBound.prototype = new fNOP();
+
+	    return fBound;
+	  };
+	}
+
+	// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findIndex
+	if (!Array.prototype.findIndex) {
+	  Object.defineProperty(Array.prototype, 'findIndex', {
+	    enumerable: false,
+	    configurable: true,
+	    writable: true,
+	    value: function(predicate) {
+	      if (this == null) {
+	        throw new TypeError('Array.prototype.find called on null or undefined');
+	      }
+	      if (typeof predicate !== 'function') {
+	        throw new TypeError('predicate must be a function');
+	      }
+	      var list = Object(this);
+	      var length = list.length >>> 0;
+	      var thisArg = arguments[1];
+	      var value;
+
+	      for (var i = 0; i < length; i++) {
+	        if (i in list) {
+	          value = list[i];
+	          if (predicate.call(thisArg, value, i, list)) {
+	            return i;
+	          }
+	        }
+	      }
+	      return -1;
+	    }
+	  });
+	}
+
+	// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/create
+	if (typeof Object.create != 'function') {
+	  (function () {
+	    var F = function () {};
+	    Object.create = function (o) {
+	      if (arguments.length > 1) {
+	        throw new Error('Second argument not supported');
+	      }
+	      if (o === null) {
+	        throw new Error('Cannot set a null [[Prototype]]');
+	      }
+	      if (typeof o != 'object') {
+	        throw new TypeError('Argument must be an object');
+	      }
+	      F.prototype = o;
+	      return new F();
+	    };
+	  })();
+	}
+
+	// From https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys
+	if (!Object.keys) {
+	  Object.keys = (function () {
+	    'use strict';
+	    var hasOwnProperty = Object.prototype.hasOwnProperty,
+	      hasDontEnumBug = !({toString: null}).propertyIsEnumerable('toString'),
+	      dontEnums = [
+	        'toString',
+	        'toLocaleString',
+	        'valueOf',
+	        'hasOwnProperty',
+	        'isPrototypeOf',
+	        'propertyIsEnumerable',
+	        'constructor'
+	      ],
+	      dontEnumsLength = dontEnums.length;
+
+	    return function (obj) {
+	      if (typeof obj !== 'object' && (typeof obj !== 'function' || obj === null)) {
+	        throw new TypeError('Object.keys called on non-object');
+	      }
+
+	      var result = [], prop, i;
+
+	      for (prop in obj) {
+	        if (hasOwnProperty.call(obj, prop)) {
+	          result.push(prop);
+	        }
+	      }
+
+	      if (hasDontEnumBug) {
+	        for (i = 0; i < dontEnumsLength; i++) {
+	          if (hasOwnProperty.call(obj, dontEnums[i])) {
+	            result.push(dontEnums[i]);
+	          }
+	        }
+	      }
+	      return result;
+	    };
+	  }());
+	}
+
+	// http://ejohn.org/blog/objectgetprototypeof/
+	if ( typeof Object.getPrototypeOf !== "function" ) {
+	  if ( typeof "test".__proto__ === "object" ) {
+	    Object.getPrototypeOf = function(object){
+	      return object.__proto__;
+	    };
+	  } else {
+	    Object.getPrototypeOf = function(object){
+	      // May break if the constructor has been tampered with
+	      return object.constructor.prototype;
+	    };
+	  }
+	}
+
+	(function() {
+	  'use strict';
+
+	  angular.module('firebase')
+	    .factory('$firebaseConfig', ["$firebaseArray", "$firebaseObject", "$injector",
+	      function($firebaseArray, $firebaseObject, $injector) {
+	        return function(configOpts) {
+	          // make a copy we can modify
+	          var opts = angular.extend({}, configOpts);
+	          // look up factories if passed as string names
+	          if( typeof opts.objectFactory === 'string' ) {
+	            opts.objectFactory = $injector.get(opts.objectFactory);
+	          }
+	          if( typeof opts.arrayFactory === 'string' ) {
+	            opts.arrayFactory = $injector.get(opts.arrayFactory);
+	          }
+	          // extend defaults and return
+	          return angular.extend({
+	            arrayFactory: $firebaseArray,
+	            objectFactory: $firebaseObject
+	          }, opts);
+	        };
+	      }
+	    ])
+
+	    .factory('$firebaseUtils', ["$q", "$timeout", "$rootScope",
+	      function($q, $timeout, $rootScope) {
+
+	        // ES6 style promises polyfill for angular 1.2.x
+	        // Copied from angular 1.3.x implementation: https://github.com/angular/angular.js/blob/v1.3.5/src/ng/q.js#L539
+	        function Q(resolver) {
+	          if (!angular.isFunction(resolver)) {
+	            throw new Error('missing resolver function');
+	          }
+
+	          var deferred = $q.defer();
+
+	          function resolveFn(value) {
+	            deferred.resolve(value);
+	          }
+
+	          function rejectFn(reason) {
+	            deferred.reject(reason);
+	          }
+
+	          resolver(resolveFn, rejectFn);
+
+	          return deferred.promise;
+	        }
+
+	        var utils = {
+	          /**
+	           * Returns a function which, each time it is invoked, will gather up the values until
+	           * the next "tick" in the Angular compiler process. Then they are all run at the same
+	           * time to avoid multiple cycles of the digest loop. Internally, this is done using $evalAsync()
+	           *
+	           * @param {Function} action
+	           * @param {Object} [context]
+	           * @returns {Function}
+	           */
+	          batch: function(action, context) {
+	            return function() {
+	              var args = Array.prototype.slice.call(arguments, 0);
+	              utils.compile(function() {
+	                action.apply(context, args);
+	              });
+	            };
+	          },
+
+	          /**
+	           * A rudimentary debounce method
+	           * @param {function} fn the function to debounce
+	           * @param {object} [ctx] the `this` context to set in fn
+	           * @param {int} wait number of milliseconds to pause before sending out after each invocation
+	           * @param {int} [maxWait] max milliseconds to wait before sending out, defaults to wait * 10 or 100
+	           */
+	          debounce: function(fn, ctx, wait, maxWait) {
+	            var start, cancelTimer, args, runScheduledForNextTick;
+	            if( typeof(ctx) === 'number' ) {
+	              maxWait = wait;
+	              wait = ctx;
+	              ctx = null;
+	            }
+
+	            if( typeof wait !== 'number' ) {
+	              throw new Error('Must provide a valid integer for wait. Try 0 for a default');
+	            }
+	            if( typeof(fn) !== 'function' ) {
+	              throw new Error('Must provide a valid function to debounce');
+	            }
+	            if( !maxWait ) { maxWait = wait*10 || 100; }
+
+	            // clears the current wait timer and creates a new one
+	            // however, if maxWait is exceeded, calls runNow() on the next tick.
+	            function resetTimer() {
+	              if( cancelTimer ) {
+	                cancelTimer();
+	                cancelTimer = null;
+	              }
+	              if( start && Date.now() - start > maxWait ) {
+	                if(!runScheduledForNextTick){
+	                  runScheduledForNextTick = true;
+	                  utils.compile(runNow);
+	                }
+	              }
+	              else {
+	                if( !start ) { start = Date.now(); }
+	                cancelTimer = utils.wait(runNow, wait);
+	              }
+	            }
+
+	            // Clears the queue and invokes the debounced function with the most recent arguments
+	            function runNow() {
+	              cancelTimer = null;
+	              start = null;
+	              runScheduledForNextTick = false;
+	              fn.apply(ctx, args);
+	            }
+
+	            function debounced() {
+	              args = Array.prototype.slice.call(arguments, 0);
+	              resetTimer();
+	            }
+	            debounced.running = function() {
+	              return start > 0;
+	            };
+
+	            return debounced;
+	          },
+
+	          assertValidRef: function(ref, msg) {
+	            if( !angular.isObject(ref) ||
+	              typeof(ref.ref) !== 'function' ||
+	              typeof(ref.ref().transaction) !== 'function' ) {
+	              throw new Error(msg || 'Invalid Firebase reference');
+	            }
+	          },
+
+	          // http://stackoverflow.com/questions/7509831/alternative-for-the-deprecated-proto
+	          // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/create
+	          inherit: function(ChildClass, ParentClass, methods) {
+	            var childMethods = ChildClass.prototype;
+	            ChildClass.prototype = Object.create(ParentClass.prototype);
+	            ChildClass.prototype.constructor = ChildClass; // restoring proper constructor for child class
+	            angular.forEach(Object.keys(childMethods), function(k) {
+	              ChildClass.prototype[k] = childMethods[k];
+	            });
+	            if( angular.isObject(methods) ) {
+	              angular.extend(ChildClass.prototype, methods);
+	            }
+	            return ChildClass;
+	          },
+
+	          getPrototypeMethods: function(inst, iterator, context) {
+	            var methods = {};
+	            var objProto = Object.getPrototypeOf({});
+	            var proto = angular.isFunction(inst) && angular.isObject(inst.prototype)?
+	              inst.prototype : Object.getPrototypeOf(inst);
+	            while(proto && proto !== objProto) {
+	              for (var key in proto) {
+	                // we only invoke each key once; if a super is overridden it's skipped here
+	                if (proto.hasOwnProperty(key) && !methods.hasOwnProperty(key)) {
+	                  methods[key] = true;
+	                  iterator.call(context, proto[key], key, proto);
+	                }
+	              }
+	              proto = Object.getPrototypeOf(proto);
+	            }
+	          },
+
+	          getPublicMethods: function(inst, iterator, context) {
+	            utils.getPrototypeMethods(inst, function(m, k) {
+	              if( typeof(m) === 'function' && k.charAt(0) !== '_' ) {
+	                iterator.call(context, m, k);
+	              }
+	            });
+	          },
+
+	          defer: $q.defer,
+
+	          reject: $q.reject,
+
+	          resolve: $q.when,
+
+	          //TODO: Remove false branch and use only angular implementation when we drop angular 1.2.x support.
+	          promise: angular.isFunction($q) ? $q : Q,
+
+	          makeNodeResolver:function(deferred){
+	            return function(err,result){
+	              if(err === null){
+	                if(arguments.length > 2){
+	                  result = Array.prototype.slice.call(arguments,1);
+	                }
+	                deferred.resolve(result);
+	              }
+	              else {
+	                deferred.reject(err);
+	              }
+	            };
+	          },
+
+	          wait: function(fn, wait) {
+	            var to = $timeout(fn, wait||0);
+	            return function() {
+	              if( to ) {
+	                $timeout.cancel(to);
+	                to = null;
+	              }
+	            };
+	          },
+
+	          compile: function(fn) {
+	            return $rootScope.$evalAsync(fn||function() {});
+	          },
+
+	          deepCopy: function(obj) {
+	            if( !angular.isObject(obj) ) { return obj; }
+	            var newCopy = angular.isArray(obj) ? obj.slice() : angular.extend({}, obj);
+	            for (var key in newCopy) {
+	              if (newCopy.hasOwnProperty(key)) {
+	                if (angular.isObject(newCopy[key])) {
+	                  newCopy[key] = utils.deepCopy(newCopy[key]);
+	                }
+	              }
+	            }
+	            return newCopy;
+	          },
+
+	          trimKeys: function(dest, source) {
+	            utils.each(dest, function(v,k) {
+	              if( !source.hasOwnProperty(k) ) {
+	                delete dest[k];
+	              }
+	            });
+	          },
+
+	          scopeData: function(dataOrRec) {
+	            var data = {
+	              $id: dataOrRec.$id,
+	              $priority: dataOrRec.$priority
+	            };
+	            var hasPublicProp = false;
+	            utils.each(dataOrRec, function(v,k) {
+	              hasPublicProp = true;
+	              data[k] = utils.deepCopy(v);
+	            });
+	            if(!hasPublicProp && dataOrRec.hasOwnProperty('$value')){
+	              data.$value = dataOrRec.$value;
+	            }
+	            return data;
+	          },
+
+	          updateRec: function(rec, snap) {
+	            var data = snap.val();
+	            var oldData = angular.extend({}, rec);
+
+	            // deal with primitives
+	            if( !angular.isObject(data) ) {
+	              rec.$value = data;
+	              data = {};
+	            }
+	            else {
+	              delete rec.$value;
+	            }
+
+	            // apply changes: remove old keys, insert new data, set priority
+	            utils.trimKeys(rec, data);
+	            angular.extend(rec, data);
+	            rec.$priority = snap.getPriority();
+
+	            return !angular.equals(oldData, rec) ||
+	              oldData.$value !== rec.$value ||
+	              oldData.$priority !== rec.$priority;
+	          },
+
+	          applyDefaults: function(rec, defaults) {
+	            if( angular.isObject(defaults) ) {
+	              angular.forEach(defaults, function(v,k) {
+	                if( !rec.hasOwnProperty(k) ) {
+	                  rec[k] = v;
+	                }
+	              });
+	            }
+	            return rec;
+	          },
+
+	          dataKeys: function(obj) {
+	            var out = [];
+	            utils.each(obj, function(v,k) {
+	              out.push(k);
+	            });
+	            return out;
+	          },
+
+	          each: function(obj, iterator, context) {
+	            if(angular.isObject(obj)) {
+	              for (var k in obj) {
+	                if (obj.hasOwnProperty(k)) {
+	                  var c = k.charAt(0);
+	                  if( c !== '_' && c !== '$' && c !== '.' ) {
+	                    iterator.call(context, obj[k], k, obj);
+	                  }
+	                }
+	              }
+	            }
+	            else if(angular.isArray(obj)) {
+	              for(var i = 0, len = obj.length; i < len; i++) {
+	                iterator.call(context, obj[i], i, obj);
+	              }
+	            }
+	            return obj;
+	          },
+
+	          /**
+	           * A utility for retrieving a Firebase reference or DataSnapshot's
+	           * key name. This is backwards-compatible with `name()` from Firebase
+	           * 1.x.x and `key()` from Firebase 2.0.0+. Once support for Firebase
+	           * 1.x.x is dropped in AngularFire, this helper can be removed.
+	           */
+	          getKey: function(refOrSnapshot) {
+	            return (typeof refOrSnapshot.key === 'function') ? refOrSnapshot.key() : refOrSnapshot.name();
+	          },
+
+	          /**
+	           * A utility for converting records to JSON objects
+	           * which we can save into Firebase. It asserts valid
+	           * keys and strips off any items prefixed with $.
+	           *
+	           * If the rec passed into this method has a toJSON()
+	           * method, that will be used in place of the custom
+	           * functionality here.
+	           *
+	           * @param rec
+	           * @returns {*}
+	           */
+	          toJSON: function(rec) {
+	            var dat;
+	            if( !angular.isObject(rec) ) {
+	              rec = {$value: rec};
+	            }
+	            if (angular.isFunction(rec.toJSON)) {
+	              dat = rec.toJSON();
+	            }
+	            else {
+	              dat = {};
+	              utils.each(rec, function (v, k) {
+	                dat[k] = stripDollarPrefixedKeys(v);
+	              });
+	            }
+	            if( angular.isDefined(rec.$value) && Object.keys(dat).length === 0 && rec.$value !== null ) {
+	              dat['.value'] = rec.$value;
+	            }
+	            if( angular.isDefined(rec.$priority) && Object.keys(dat).length > 0 && rec.$priority !== null ) {
+	              dat['.priority'] = rec.$priority;
+	            }
+	            angular.forEach(dat, function(v,k) {
+	              if (k.match(/[.$\[\]#\/]/) && k !== '.value' && k !== '.priority' ) {
+	                throw new Error('Invalid key ' + k + ' (cannot contain .$[]#)');
+	              }
+	              else if( angular.isUndefined(v) ) {
+	                throw new Error('Key '+k+' was undefined. Cannot pass undefined in JSON. Use null instead.');
+	              }
+	            });
+	            return dat;
+	          },
+
+	          doSet: function(ref, data) {
+	            var def = utils.defer();
+	            if( angular.isFunction(ref.set) || !angular.isObject(data) ) {
+	              // this is not a query, just do a flat set
+	              ref.set(data, utils.makeNodeResolver(def));
+	            }
+	            else {
+	              var dataCopy = angular.extend({}, data);
+	              // this is a query, so we will replace all the elements
+	              // of this query with the value provided, but not blow away
+	              // the entire Firebase path
+	              ref.once('value', function(snap) {
+	                snap.forEach(function(ss) {
+	                  if( !dataCopy.hasOwnProperty(utils.getKey(ss)) ) {
+	                    dataCopy[utils.getKey(ss)] = null;
+	                  }
+	                });
+	                ref.ref().update(dataCopy, utils.makeNodeResolver(def));
+	              }, function(err) {
+	                def.reject(err);
+	              });
+	            }
+	            return def.promise;
+	          },
+
+	          doRemove: function(ref) {
+	            var def = utils.defer();
+	            if( angular.isFunction(ref.remove) ) {
+	              // ref is not a query, just do a flat remove
+	              ref.remove(utils.makeNodeResolver(def));
+	            }
+	            else {
+	              // ref is a query so let's only remove the
+	              // items in the query and not the entire path
+	              ref.once('value', function(snap) {
+	                var promises = [];
+	                snap.forEach(function(ss) {
+	                  var d = utils.defer();
+	                  promises.push(d.promise);
+	                  ss.ref().remove(utils.makeNodeResolver(def));
+	                });
+	                utils.allPromises(promises)
+	                  .then(function() {
+	                    def.resolve(ref);
+	                  },
+	                  function(err){
+	                    def.reject(err);
+	                  }
+	                );
+	              }, function(err) {
+	                def.reject(err);
+	              });
+	            }
+	            return def.promise;
+	          },
+
+	          /**
+	           * AngularFire version number.
+	           */
+	          VERSION: '1.2.0',
+
+	          allPromises: $q.all.bind($q)
+	        };
+
+	        return utils;
+	      }
+	    ]);
+
+	    function stripDollarPrefixedKeys(data) {
+	      if( !angular.isObject(data) ) { return data; }
+	      var out = angular.isArray(data)? [] : {};
+	      angular.forEach(data, function(v,k) {
+	        if(typeof k !== 'string' || k.charAt(0) !== '$') {
+	          out[k] = stripDollarPrefixedKeys(v);
+	        }
+	      });
+	      return out;
+	    }
+	})();
+
+
+/***/ },
+/* 201 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -41511,7 +51210,7 @@
 
 	var _angular2 = _interopRequireDefault(_angular);
 
-	var _jentoo = __webpack_require__(198);
+	var _jentoo = __webpack_require__(202);
 
 	var _jentoo2 = _interopRequireDefault(_jentoo);
 
@@ -41522,7 +51221,7 @@
 	exports.default = componentModule;
 
 /***/ },
-/* 198 */
+/* 202 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -41535,15 +51234,15 @@
 
 	var _angular2 = _interopRequireDefault(_angular);
 
-	var _jentoo = __webpack_require__(199);
+	var _jentoo = __webpack_require__(203);
 
 	var _jentoo2 = _interopRequireDefault(_jentoo);
 
-	var _jentoo3 = __webpack_require__(200);
+	var _jentoo3 = __webpack_require__(204);
 
 	var _jentoo4 = _interopRequireDefault(_jentoo3);
 
-	var _jentoo5 = __webpack_require__(207);
+	var _jentoo5 = __webpack_require__(210);
 
 	var _jentoo6 = _interopRequireDefault(_jentoo5);
 
@@ -41554,7 +51253,7 @@
 	exports.default = jentooModule;
 
 /***/ },
-/* 199 */
+/* 203 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -41577,7 +51276,7 @@
 	exports.default = jentooRoutes;
 
 /***/ },
-/* 200 */
+/* 204 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -41586,46 +51285,39 @@
 	  value: true
 	});
 
-	var _jentoo = __webpack_require__(201);
+	var _jentoo = __webpack_require__(205);
 
 	var _jentoo2 = _interopRequireDefault(_jentoo);
 
-	__webpack_require__(203);
+	__webpack_require__(206);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var jentooComponent = {
 	  template: _jentoo2.default,
 	  controller: 'JentooController',
-	  controllerAs: 'jentooCtrl',
 	  bindings: {}
 	};
 
 	exports.default = jentooComponent;
 
 /***/ },
-/* 201 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = "<div id=\"jero\">\n  <h1>{{ jentooCtrl.name }}</h1>\n   <img src=\"" + __webpack_require__(202) + "\" alt=\"blackend\">\n</div>\n";
-
-/***/ },
-/* 202 */
+/* 205 */
 /***/ function(module, exports) {
 
-	module.exports = "data:image/jpeg;base64,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CQSQQQCAACQAAQQQQASSQQCQQASQCQQAQCADCCCCSQCCCSaACSCQSCACSCCQCQQQQQASACSACSKAAQSQSSSQACBCIASQCSACQSSAACRACCLCACCAQAQSACASCSSABQCSQQQCAyCAACQAQAAQSSASACQAQKaASSSCASCQACCCAASCQQSAQCQAQCASSQSSSCCSCCCQSCCYBCAIaAASAQCCCACTRICAQQSQSAASACSCSCSACQQSAASCSSTSYCLQACSQSCQCCyQSSAQCCbCCQASAAAACSQCSSQSCAASCCSSQAQCCQbACQCSCAAZTSABAAAAACAQSSCSQQSTQASIQCSQCACARSaCQCBCZCAQCQmWSQSDJISaSCAAACQBCQKQSQSAAASIAACSQSSSSSCQCACCASSRSCYaQQCASQAQAAAQAAQTAACCQQQCQSADJCKBSQACAQCQAQQSAQAZKCZKSSSSSCCAAAQQQACCCQCSSCAAABbZQSSCAASAACCCYCSSCCAAAaSQAQQQCTSJCCQQCQCSQSSASQAQAQCYSCQSQSSSCRQQCCCCSCCSSCCBCCCAQQACQAAASQAQSQQCAQQAQQCCQSCBYICAQCCQQDSQQQASCCASQAASCQQCSCACCCTSACCLQACCLYCSCQQSAASSCSSASASSQQQCQSQDSASARQQASCQSSCSSACCSAAACAQAQAQCZSASSSSASQQAQSAQCAQAQSQQCSSQCQCAAQBZCQCCSASSQCSACSACQQSAAAAABRACSAYSCSICQCQSAASASSQCSQQASCACSQQABQKASAICSCCCQAQCAASCQAQQACSAQQSSDCaATKCACQSQSCQSQSSSAQCSAQQCCSbQTRISCBACSSASSCQAQCASQQQACATSKCQCIQCQbAICACSSSQCASQQSQAACQQACCCQSASSARSKQCSAQQASQQASCSAASQAaACAACAQQSABSSSSSAQACSACCQSSCAQQRRYCbaISSQJTQSQQQSASQAQSSSQSCAAyUSSDCQASCACQQAAASSSACSACACSQQQSQAASSQQQQACSSSASCSSSSCQAQASCQASASASCSQCCSCQAQCACAAQSSCSASCSQSQSCQUQSSCQASSQCCCSCQQASCASSASAQSQQACACCQACAQAQSQQCAAQAACQQCACQCSCSQAAASSSSASQSSQCCCASQCAQQCS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"
+	module.exports = "<form name=\"poleForm\">\n\n   <div class=\"row\">\n      <div class=\"col-md-3\">\n         <label class=\"\" for=\"name\">Nombre</label>\n         <input id=\"name\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"name\"\n                ng-model=\"$ctrl.student.name\"\n                placeholder=\"\">\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"lastName\">Apellidos</label>\n         <input id=\"lastName\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"lastName\"\n                ng-model=\"$ctrl.student.lastName\"\n                placeholder=\"\">\n      </div>\n      <div class=\"col-md-6\">\n\n         <div style=\"display:inline-block; min-height:290px;\">\n            <label class=\"\"\n                   for=\"lastName\">Fecha de Inscripción</label>\n            <uib-datepicker ng-model=\"$ctrl.student.inscriptionDate\"\n                            class=\"well well-sm\"\n                            datepicker-options=\"inlineOptions\">\n            </uib-datepicker>\n         </div>\n         <!--<label class=\"sr-only\"\n                for=\"inscriptionDate\">Fecha de Matrícula</label>\n         <p class=\"input-group\">\n            <input id=\"inscriptionDate\"\n                   type=\"text\"\n                   name=\"inscriptionDate\"\n                   class=\"form-control\"\n                   uib-datepicker-popup=\"{{$ctrl.format}}\"\n                   ng-model=\"$ctrl.student.inscriptionDate\"\n                   is-open=\"$ctrl.popup.opened\"\n                   datepicker-options=\"$ctrl.dateOptions\"\n                   close-text=\"Cerrar\"\n                   alt-input-formats=\"$ctrl.altInputFormats\" />\n            <span class=\"input-group-btn\">\n               <button type=\"button\"\n                       class=\"btn btn-default\"\n                       ng-click=\"$ctrl.openCalendar()\">\n                  <i class=\"glyphicon glyphicon-calendar\"></i>\n               </button>\n            </span>\n         </p>-->\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"documentType\">Tipo de Documento</label>\n         <input id=\"documentType\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"documentType\"\n                ng-model=\"$ctrl.student.documentType\"\n                placeholder=\"\">\n      </div>\n     <!-- <pre>{{$ctrl.olgah | json}}</pre>-->\n   </div>\n   <div class=\"row\">\n\n   </div>\n\n</form>\n";
 
 /***/ },
-/* 203 */
+/* 206 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(204);
+	var content = __webpack_require__(207);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(206)(content, {});
+	var update = __webpack_require__(209)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -41642,10 +51334,10 @@
 	}
 
 /***/ },
-/* 204 */
+/* 207 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(205)();
+	exports = module.exports = __webpack_require__(208)();
 	// imports
 
 
@@ -41656,7 +51348,7 @@
 
 
 /***/ },
-/* 205 */
+/* 208 */
 /***/ function(module, exports) {
 
 	/*
@@ -41712,7 +51404,7 @@
 
 
 /***/ },
-/* 206 */
+/* 209 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -41966,7 +51658,7 @@
 
 
 /***/ },
-/* 207 */
+/* 210 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -41974,17 +51666,71 @@
 	Object.defineProperty(exports, "__esModule", {
 	   value: true
 	});
-	function JentooController() {
+	JentooController.$inject = ['$firebaseObject'];
+
+	function JentooController($firebaseObject) {
 	   'use strict';
 
 	   var self = this;
-	   self.name = 'jentoo';
+
+	   var ref = new Firebase('https://olgah.firebaseio.com/users');
+
+	   console.log('ref');
+	   console.log(ref);
+
+	   self.olgah = $firebaseObject(ref);
+
+	   console.log('self.ogah');
+	   console.log(self.ogah);
+
+	   self.inlineOptions = {
+	      //customClass: getDayClass,
+	      minDate: new Date(),
+	      showWeeks: true
+	   };
+
+	   /*function getDayClass(data) {
+	      var date = data.date,
+	         mode = data.mode;
+	      if (mode === 'day') {
+	         var dayToCheck = new Date(date).setHours(0,0,0,0);
+	          for (var i = 0; i < self.events.length; i++) {
+	            var currentDay = new Date(self.events[i].date).setHours(0,0,0,0);
+	             if (dayToCheck === currentDay) {
+	               return self.events[i].status;
+	            }
+	         }
+	      }
+	       return '';
+	   }*/
+
+	   self.dateOptions = {
+	      formatYear: 'yy',
+	      maxDate: new Date(2020, 5, 22),
+	      minDate: new Date(),
+	      startingDay: 1
+	   };
+
+	   self.altInputFormats = ['M!/d!/yyyy'];
+	   self.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
+	   self.format = self.formats[0];
+
+	   self.popup = {
+	      opened: false
+	   };
+
+	   self.openCalendar = openCalendar;
+
+	   function openCalendar() {
+
+	      self.popup.opened = true;
+	   }
 	}
 
 	exports.default = JentooController;
 
 /***/ },
-/* 208 */
+/* 211 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -41993,11 +51739,11 @@
 	   value: true
 	});
 
-	var _app = __webpack_require__(209);
+	var _app = __webpack_require__(212);
 
 	var _app2 = _interopRequireDefault(_app);
 
-	__webpack_require__(210);
+	__webpack_require__(213);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -42008,22 +51754,22 @@
 	exports.default = appComponent;
 
 /***/ },
-/* 209 */
+/* 212 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"site-wrapper\">\n\n   <div class=\"site-wrapper-inner\">\n\n      <div class=\"cover-container\">\n\n         <div class=\"masthead clearfix\">\n            <div class=\"inner\">\n               <h3 class=\"masthead-brand\">Coco's</h3>\n               <nav>\n                  <ul class=\"nav masthead-nav\">\n                     <li class=\"active\"><a href=\"#\">Home</a></li>\n                     <li><a ui-sref=\"jentoo\">Jentoo</a></li>\n                     <li><a href=\"#\">Contact</a></li>\n                  </ul>\n               </nav>\n            </div>\n         </div>\n\n         <div class=\"inner cover\">\n            <h1 class=\"cover-heading\">Welcome</h1>\n            <ui-view></ui-view>\n         </div>\n\n         <div class=\"mastfoot\">\n            <div class=\"inner\">\n               <p><a href=\"http://cocointeractivo.co\">Coco Interactivo</a></p>\n            </div>\n         </div>\n\n      </div>\n\n   </div>\n\n</div>";
+	module.exports = "<div class=\"site-wrapper\">\n\n   <nav>\n      <ul class=\"nav masthead-nav\">\n         <!--<li class=\"active\"><a href=\"#\">Home</a></li>-->\n         <li><a ui-sref=\"jentoo\">Form</a></li>\n         <!--<li><a href=\"#\">Contact</a></li>-->\n      </ul>\n   </nav>\n\n   <ui-view></ui-view>\n\n\n</div>";
 
 /***/ },
-/* 210 */
+/* 213 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(211);
+	var content = __webpack_require__(214);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(206)(content, {});
+	var update = __webpack_require__(209)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -42040,10 +51786,10 @@
 	}
 
 /***/ },
-/* 211 */
+/* 214 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(205)();
+	exports = module.exports = __webpack_require__(208)();
 	// imports
 
 
