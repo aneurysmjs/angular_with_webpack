@@ -1,10 +1,10 @@
 import angular from 'angular';
-import uiRouter from 'angular-ui-router';
+import appLibraries from './app.libraries';
 import components from './components/components';
 import appComponent from './app.component';
 
 angular.module('app', [
-      uiRouter,
+      appLibraries.name,
       components.name
    ])
    .component('app', appComponent);
