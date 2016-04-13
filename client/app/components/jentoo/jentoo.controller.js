@@ -9,6 +9,9 @@ function JentooController($firebaseObject) {
 
    console.log('ref');
    console.log(ref);
+   self.documentTypes = ['TI', 'CC', 'PAS'];
+   self.ocupations = ['dependent', 'independent', 'student'];
+   self.plans = ['cuarzo', 'rubí', 'záfiro', 'esmeralda', 'turqueza', 'diamante'];
 
    self.olgah = $firebaseObject(ref);
    
@@ -61,6 +64,12 @@ function JentooController($firebaseObject) {
 
       self.popup.opened = true;
    }
+
+   self.addStudent = function() {
+      console.log('self.student');
+      console.log(self.student);
+      self.olgah.$add(self.user);
+   };
 
 }
 
