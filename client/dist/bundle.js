@@ -34,7 +34,7 @@
 /******/ 	__webpack_require__.c = installedModules;
 
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "http://localhost:3000/assets/242e4fab612f2d5943c1";
+/******/ 	__webpack_require__.p = "http://localhost:3000/assets/41e865a1b6cc2b7fa94e";
 
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
@@ -5329,7 +5329,7 @@
 
 	var _components2 = _interopRequireDefault(_components);
 
-	var _app3 = __webpack_require__(210);
+	var _app3 = __webpack_require__(211);
 
 	var _app4 = _interopRequireDefault(_app3);
 
@@ -20816,9 +20816,13 @@
 
 	var _jentoo6 = _interopRequireDefault(_jentoo5);
 
+	var _jentoo7 = __webpack_require__(210);
+
+	var _jentoo8 = _interopRequireDefault(_jentoo7);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var jentooModule = _angular2.default.module('jentoo', []).config(_jentoo2.default).component('jentoo', _jentoo4.default).controller('JentooController', _jentoo6.default);
+	var jentooModule = _angular2.default.module('jentoo', []).config(_jentoo2.default).component('jentoo', _jentoo4.default).controller('JentooController', _jentoo6.default).service('JentooService', _jentoo8.default);
 
 	exports.default = jentooModule;
 
@@ -21236,9 +21240,9 @@
 	Object.defineProperty(exports, "__esModule", {
 	   value: true
 	});
-	JentooController.$inject = ['$firebaseObject'];
+	JentooController.$inject = ['JentooService', '$firebaseArray'];
 
-	function JentooController($firebaseObject) {
+	function JentooController(JentooService, $firebaseArray) {
 	   'use strict';
 
 	   var self = this;
@@ -21249,12 +21253,12 @@
 	   console.log(ref);
 
 	   self.documentTypes = ['TI', 'CC', 'PAS'];
-	   self.ocupations = ['dependent', 'independent', 'student'];
+	   self.ocupations = ['dependiente', 'independiente', 'estudiante'];
 	   self.plans = ['cuarzo', 'rubí', 'záfiro', 'esmeralda', 'turqueza', 'diamante'];
 
-	   self.olgah = $firebaseObject(ref);
+	   self.olgah = $firebaseArray(ref);
 
-	   self.olgah.$loaded().then(successHandler);
+	   self.olgah.$loaded().then(successHandler).catch(catchHandler);
 
 	   function successHandler(e) {
 
@@ -21264,10 +21268,19 @@
 	      //console.log("loaded record:", obj.$id, obj.someOtherKeyInData);
 	      console.log("loaded record:");
 
+	      self.olgah.forEach(function (student) {
+	         console.log('student');
+	         console.log(student);
+	      });
 	      // To iterate the key/value pairs of the object, use angular.forEach()
 	      /* angular.forEach(obj, function(value, key) {
 	       console.log(key, value);
 	       });*/
+	   }
+
+	   function catchHandler(error) {
+	      console.log('error');
+	      console.log(error);
 	   }
 
 	   self.inlineOptions = {
@@ -21309,14 +21322,13 @@
 	   self.openCalendar = openCalendar;
 
 	   function openCalendar() {
-
 	      self.popup.opened = true;
 	   }
 
 	   self.addStudent = function () {
 	      console.log('self.student');
 	      console.log(self.student);
-	      self.olgah.$add(self.user);
+	      self.olgah.$add(self.student).then(successHandler);
 	   };
 	}
 
@@ -21324,6 +21336,70 @@
 
 /***/ },
 /* 210 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	Object.defineProperty(exports, "__esModule", {
+	   value: true
+	});
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var JentooService = (function () {
+	   function JentooService($firebaseObject, $firebaseArray) {
+	      _classCallCheck(this, JentooService);
+
+	      this.$firebaseArray = $firebaseArray;
+	      this.ref = new Firebase('https://olgah.firebaseio.com/users');
+	      this.olgah = this.$firebaseArray(this.ref);
+	   }
+
+	   _createClass(JentooService, [{
+	      key: 'getStudents',
+	      value: function getStudents() {
+	         this.olgah.$loaded().then(this.successHandler).catch(this.catchHandler);
+	      }
+	   }, {
+	      key: 'successHandler',
+	      value: function successHandler(e) {
+
+	         console.log('e');
+	         console.log(e);
+
+	         //console.log("loaded record:", obj.$id, obj.someOtherKeyInData);
+	         console.log("loaded record:");
+
+	         self.olgah.forEach(function (student) {
+	            console.log('student');
+	            console.log(student);
+	         });
+	         // To iterate the key/value pairs of the object, use angular.forEach()
+	         /* angular.forEach(obj, function(value, key) {
+	          console.log(key, value);
+	          });*/
+
+	         return e;
+	      }
+	   }, {
+	      key: 'catchHandler',
+	      value: function catchHandler(error) {
+	         console.log('error');
+	         console.log(error);
+	      }
+	   }]);
+
+	   return JentooService;
+	})();
+
+	JentooService.$inject = ['$firebaseObject', '$firebaseArray'];
+
+	exports.default = JentooService;
+
+/***/ },
+/* 211 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21332,11 +21408,11 @@
 	   value: true
 	});
 
-	var _app = __webpack_require__(211);
+	var _app = __webpack_require__(212);
 
 	var _app2 = _interopRequireDefault(_app);
 
-	__webpack_require__(212);
+	__webpack_require__(213);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -21347,19 +21423,19 @@
 	exports.default = appComponent;
 
 /***/ },
-/* 211 */
+/* 212 */
 /***/ function(module, exports) {
 
 	module.exports = "<div class=\"site-wrapper\">\n\n   <nav>\n      <ul class=\"nav masthead-nav\">\n         <!--<li class=\"active\"><a href=\"#\">Home</a></li>-->\n         <li><a ui-sref=\"jentoo\">Form</a></li>\n         <!--<li><a href=\"#\">Contact</a></li>-->\n      </ul>\n   </nav>\n\n   <ui-view></ui-view>\n\n\n</div>";
 
 /***/ },
-/* 212 */
+/* 213 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(213);
+	var content = __webpack_require__(214);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(208)(content, {});
@@ -21379,7 +21455,7 @@
 	}
 
 /***/ },
-/* 213 */
+/* 214 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(207)();

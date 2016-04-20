@@ -1,6 +1,6 @@
-JentooController.$inject = ['$firebaseObject'];
+JentooController.$inject = ['JentooService', '$firebaseArray'];
 
-function JentooController($firebaseObject) {
+function JentooController(JentooService, $firebaseArray) {
    'use strict';
 
    let self = this;
@@ -10,14 +10,15 @@ function JentooController($firebaseObject) {
    console.log('ref');
    console.log(ref);
 
+
    self.documentTypes = ['TI', 'CC', 'PAS'];
-   self.ocupations = ['dependent', 'independent', 'student'];
+   self.ocupations = ['dependiente', 'independiente', 'estudiante'];
    self.plans = ['cuarzo', 'rubí', 'záfiro', 'esmeralda', 'turqueza', 'diamante'];
 
-   self.olgah = $firebaseObject(ref);
+   self.olgah = $firebaseArray(ref);
    
 
-   self.olgah.$loaded().then(successHandler);
+   self.olgah.$loaded().then(successHandler).catch(catchHandler);
 
    function successHandler(e) {
 
@@ -27,11 +28,20 @@ function JentooController($firebaseObject) {
       //console.log("loaded record:", obj.$id, obj.someOtherKeyInData);
       console.log("loaded record:");
 
+      self.olgah.forEach(student => {
+         console.log('student');
+         console.log(student);
+      });
       // To iterate the key/value pairs of the object, use angular.forEach()
       /* angular.forEach(obj, function(value, key) {
        console.log(key, value);
        });*/
 
+   }
+
+   function catchHandler(error) {
+      console.log('error');
+      console.log(error);
    }
 
    self.inlineOptions = {
@@ -78,14 +88,13 @@ function JentooController($firebaseObject) {
    self.openCalendar = openCalendar;
 
    function openCalendar() {
-
       self.popup.opened = true;
    }
 
    self.addStudent = function() {
       console.log('self.student');
       console.log(self.student);
-      self.olgah.$add(self.user);
+      self.olgah.$add(self.student).then(successHandler);
    };
 
 }
