@@ -9,14 +9,30 @@ function JentooController($firebaseObject) {
 
    console.log('ref');
    console.log(ref);
+
    self.documentTypes = ['TI', 'CC', 'PAS'];
    self.ocupations = ['dependent', 'independent', 'student'];
    self.plans = ['cuarzo', 'rubí', 'záfiro', 'esmeralda', 'turqueza', 'diamante'];
 
    self.olgah = $firebaseObject(ref);
    
-   console.log('self.ogah');
-   console.log(self.ogah);
+
+   self.olgah.$loaded().then(successHandler);
+
+   function successHandler(e) {
+
+      console.log('e');
+      console.log(e);
+
+      //console.log("loaded record:", obj.$id, obj.someOtherKeyInData);
+      console.log("loaded record:");
+
+      // To iterate the key/value pairs of the object, use angular.forEach()
+      /* angular.forEach(obj, function(value, key) {
+       console.log(key, value);
+       });*/
+
+   }
 
    self.inlineOptions = {
       //customClass: getDayClass,
@@ -41,6 +57,7 @@ function JentooController($firebaseObject) {
 
       return '';
    }*/
+
 
    self.dateOptions = {
       formatYear: 'yy',

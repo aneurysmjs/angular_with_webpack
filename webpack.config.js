@@ -44,6 +44,6 @@ module.exports = {
       //new webpack.optimize.CommonsChunkPlugin('common.js')
    ],
    externals: {
-      //angular: true
+      angular: true
    }
 };
