@@ -8,3 +8,9 @@ angular.module('app', [
       components.name
    ])
    .component('app', appComponent);
+
+
+// manually bootstrap angular
+angular.bootstrap(document, ['app'], {
+   strictDi: true
+});

@@ -34,7 +34,7 @@
 /******/ 	__webpack_require__.c = installedModules;
 
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "http://localhost:3000/assets/97aa7f9ce69e137b478b";
+/******/ 	__webpack_require__.p = "http://localhost:3000/assets/242e4fab612f2d5943c1";
 
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
@@ -5336,6 +5336,11 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	_angular2.default.module('app', [_app2.default.name, _components2.default.name]).component('app', _app4.default);
+
+	// manually bootstrap angular
+	_angular2.default.bootstrap(document, ['app'], {
+	   strictDi: true
+	});
 
 /***/ },
 /* 192 */
