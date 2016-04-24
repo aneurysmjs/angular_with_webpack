@@ -1,6 +1,6 @@
-JentooController.$inject = ['JentooService', '$firebaseArray'];
+StudentsController.$inject = ['StudentsService', '$firebaseArray'];
 
-function JentooController(JentooService, $firebaseArray) {
+function StudentsController(StudentsService, $firebaseArray) {
    'use strict';
 
    let self = this;
@@ -99,4 +99,4 @@ function JentooController(JentooService, $firebaseArray) {
 
 }
 
-export default JentooController;
+export default StudentsController;

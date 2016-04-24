@@ -34,7 +34,7 @@
 /******/ 	__webpack_require__.c = installedModules;
 
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "http://localhost:3000/assets/41e865a1b6cc2b7fa94e";
+/******/ 	__webpack_require__.p = "http://localhost:3000/assets/4a874b2822fa007ef261";
 
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
@@ -20780,148 +20780,23 @@
 
 	var _angular2 = _interopRequireDefault(_angular);
 
-	var _jentoo = __webpack_require__(201);
+	var _students = __webpack_require__(215);
 
-	var _jentoo2 = _interopRequireDefault(_jentoo);
+	var _students2 = _interopRequireDefault(_students);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var componentModule = _angular2.default.module('app.components', [_jentoo2.default.name]);
+	var componentModule = _angular2.default.module('app.components', [_students2.default.name]);
 
 	exports.default = componentModule;
 
 /***/ },
-/* 201 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	   value: true
-	});
-
-	var _angular = __webpack_require__(192);
-
-	var _angular2 = _interopRequireDefault(_angular);
-
-	var _jentoo = __webpack_require__(202);
-
-	var _jentoo2 = _interopRequireDefault(_jentoo);
-
-	var _jentoo3 = __webpack_require__(203);
-
-	var _jentoo4 = _interopRequireDefault(_jentoo3);
-
-	var _jentoo5 = __webpack_require__(209);
-
-	var _jentoo6 = _interopRequireDefault(_jentoo5);
-
-	var _jentoo7 = __webpack_require__(210);
-
-	var _jentoo8 = _interopRequireDefault(_jentoo7);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var jentooModule = _angular2.default.module('jentoo', []).config(_jentoo2.default).component('jentoo', _jentoo4.default).controller('JentooController', _jentoo6.default).service('JentooService', _jentoo8.default);
-
-	exports.default = jentooModule;
-
-/***/ },
-/* 202 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	   value: true
-	});
-	jentooRoutes.$inject = ['$stateProvider', '$urlRouterProvider'];
-
-	function jentooRoutes($stateProvider, $urlRouterProvider) {
-
-	   $urlRouterProvider.otherwise('/jentoo');
-
-	   $stateProvider.state('jentoo', {
-	      url: '/jentoo',
-	      template: '<jentoo></jentoo>'
-	   });
-	}
-
-	exports.default = jentooRoutes;
-
-/***/ },
-/* 203 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _jentoo = __webpack_require__(204);
-
-	var _jentoo2 = _interopRequireDefault(_jentoo);
-
-	__webpack_require__(205);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var jentooComponent = {
-	  template: _jentoo2.default,
-	  controller: 'JentooController',
-	  bindings: {}
-	};
-
-	exports.default = jentooComponent;
-
-/***/ },
-/* 204 */
-/***/ function(module, exports) {
-
-	module.exports = "<form name=\"poleForm\">\n\n   <div class=\"row\">\n      <div class=\"col-md-3\">\n         <label class=\"\" for=\"name\">Nombre</label>\n         <input id=\"name\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"name\"\n                ng-model=\"$ctrl.student.name\"\n                placeholder=\"\">\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"lastName\">Apellidos</label>\n         <input id=\"lastName\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"lastName\"\n                ng-model=\"$ctrl.student.lastName\"\n                placeholder=\"\">\n      </div>\n      <div class=\"col-md-6\">\n\n         <div style=\"display:inline-block; min-height:290px;\">\n            <label class=\"\"\n                   for=\"lastName\">Fecha de Inscripción</label>\n            <uib-datepicker ng-model=\"$ctrl.student.inscriptionDate\"\n                            class=\"well well-sm\"\n                            datepicker-options=\"inlineOptions\">\n            </uib-datepicker>\n         </div>\n         <!--<label class=\"sr-only\"\n                for=\"inscriptionDate\">Fecha de Matrícula</label>\n         <p class=\"input-group\">\n            <input id=\"inscriptionDate\"\n                   type=\"text\"\n                   name=\"inscriptionDate\"\n                   class=\"form-control\"\n                   uib-datepicker-popup=\"{{$ctrl.format}}\"\n                   ng-model=\"$ctrl.student.inscriptionDate\"\n                   is-open=\"$ctrl.popup.opened\"\n                   datepicker-options=\"$ctrl.dateOptions\"\n                   close-text=\"Cerrar\"\n                   alt-input-formats=\"$ctrl.altInputFormats\" />\n            <span class=\"input-group-btn\">\n               <button type=\"button\"\n                       class=\"btn btn-default\"\n                       ng-click=\"$ctrl.openCalendar()\">\n                  <i class=\"glyphicon glyphicon-calendar\"></i>\n               </button>\n            </span>\n         </p>-->\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"children\">Hijos</label>\n         <label class=\"checkbox-inline\">\n            <input type=\"checkbox\"\n                   id=\"children\"\n                   name=\"children\"\n                   ng-model=\"$ctrl.student.children\">\n         </label>\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"documentType\">Tipo de Documento</label>\n         <select id=\"documentType\"\n                 name=\"documentType\"\n                 ng-model=\"$ctrl.student.documentType\"\n                 class=\"form-control\"\n                 ng-options=\"doc for doc in $ctrl.documentTypes\">\n         </select>\n      </div>\n\n\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"phone\">Teléfono</label>\n         <input id=\"phone\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"phone\"\n                ng-model=\"$ctrl.student.phone\"\n                placeholder=\"\">\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"mobile\">Celular</label>\n         <input id=\"mobile\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"mobile\"\n                ng-model=\"$ctrl.student.mobile\"\n                placeholder=\"\">\n      </div>\n     <!-- <pre>{{$ctrl.olgah | json}}</pre>-->\n   </div>\n   <div class=\"row\">\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"address\">Dirección</label>\n         <input id=\"address\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"address\"\n                ng-model=\"$ctrl.student.address\"\n                placeholder=\"\">\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"email\">Email</label>\n         <input id=\"email\"\n                type=\"email\"\n                class=\"form-control\"\n                name=\"email\"\n                ng-model=\"$ctrl.student.email\"\n                placeholder=\"\">\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"healthInsurance\">EPS</label>\n         <input id=\"healthInsurance\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"healthInsurance\"\n                ng-model=\"$ctrl.student.healthInsurance\"\n                placeholder=\"\">\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"weight\">Peso</label>\n         <input id=\"weight\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"weight\"\n                ng-model=\"$ctrl.student.weight\"\n                placeholder=\"\">\n      </div>\n   </div>\n   <div class=\"row\">\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"height\">Estatura</label>\n         <input id=\"height\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"height\"\n                ng-model=\"$ctrl.student.height\"\n                placeholder=\"\">\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"Profession\">Profesión</label>\n         <input id=\"Profession\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"Profession\"\n                ng-model=\"$ctrl.student.Profession\"\n                placeholder=\"\">\n      </div>\n   </div>\n   <hr>\n   <div class=\"row\">\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"ocupation\">Ocupación</label>\n         <select id=\"ocupation\"\n                 name=\"ocupation\"\n                 ng-model=\"$ctrl.student.ocupation\"\n                 class=\"form-control\"\n                 ng-options=\"doc for doc in $ctrl.ocupations\">\n         </select>\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"companyName\">Empresa donde trabaja</label>\n         <input id=\"companyName\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"companyName\"\n                ng-model=\"$ctrl.student.companyName\"\n                placeholder=\"\">\n\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"companyPhone\">Teléfono Empresa</label>\n         <input id=\"companyPhone\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"companyPhone\"\n                ng-model=\"$ctrl.student.companyPhone\"\n                placeholder=\"\">\n\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"charge\">Cargo</label>\n         <input id=\"charge\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"charge\"\n                ng-model=\"$ctrl.student.charge\"\n                placeholder=\"\">\n\n      </div>\n   </div>\n   <div class=\"row\">\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"howYouMeetPoleCenter\">¿Como conoció Pole Center?</label>\n         <input id=\"howYouMeetPoleCenter\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"howYouMeetPoleCenter\"\n                ng-model=\"$ctrl.student.howYouMeetPoleCenter\"\n                placeholder=\"\">\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"plan\">Plan</label>\n         <select id=\"plan\"\n                 name=\"plan\"\n                 ng-model=\"$ctrl.student.plan\"\n                 class=\"form-control\"\n                 ng-options=\"plan for plan in $ctrl.plans\">\n         </select>\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"inCaseOfEmergency\">En caso de emergencia comunicarse con</label>\n         <input id=\"inCaseOfEmergency\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"inCaseOfEmergency\"\n                ng-model=\"$ctrl.student.inCaseOfEmergency.name\"\n                placeholder=\"Nombre\">\n         <input\n                type=\"text\"\n                class=\"form-control\"\n                name=\"inCaseOfEmergency\"\n                ng-model=\"$ctrl.student.inCaseOfEmergency.phone\"\n                placeholder=\"Teléfono\">\n      </div>\n      <div class=\"col-md-3\">\n         <button class=\"btn btn default\"\n                  ng-click=\"$ctrl.addStudent()\">Guardar</button>\n      </div>\n   </div>\n\n\n\n\n</form>\n";
-
-/***/ },
-/* 205 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-
-	// load the styles
-	var content = __webpack_require__(206);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(208)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../../../../node_modules/css-loader/index.js!./../../../../node_modules/stylus-loader/index.js!./jentoo.styl", function() {
-				var newContent = require("!!./../../../../node_modules/css-loader/index.js!./../../../../node_modules/stylus-loader/index.js!./jentoo.styl");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 206 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(207)();
-	// imports
-
-
-	// module
-	exports.push([module.id, "", ""]);
-
-	// exports
-
-
-/***/ },
+/* 201 */,
+/* 202 */,
+/* 203 */,
+/* 204 */,
+/* 205 */,
+/* 206 */,
 /* 207 */
 /***/ function(module, exports) {
 
@@ -21232,7 +21107,115 @@
 
 
 /***/ },
-/* 209 */
+/* 209 */,
+/* 210 */,
+/* 211 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	   value: true
+	});
+
+	var _app = __webpack_require__(212);
+
+	var _app2 = _interopRequireDefault(_app);
+
+	__webpack_require__(213);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var appComponent = {
+	   template: _app2.default
+	};
+
+	exports.default = appComponent;
+
+/***/ },
+/* 212 */
+/***/ function(module, exports) {
+
+	module.exports = "<div class=\"site-wrapper\">\n\n   <nav>\n      <ul class=\"nav masthead-nav\">\n         <!--<li class=\"active\"><a href=\"#\">Home</a></li>-->\n         <li><a ui-sref=\"jentoo\">Form</a></li>\n         <!--<li><a href=\"#\">Contact</a></li>-->\n      </ul>\n   </nav>\n\n   <ui-view></ui-view>\n\n\n</div>";
+
+/***/ },
+/* 213 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(214);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(208)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/stylus-loader/index.js!./app.styl", function() {
+				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/stylus-loader/index.js!./app.styl");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 214 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(207)();
+	// imports
+
+
+	// module
+	exports.push([module.id, "", ""]);
+
+	// exports
+
+
+/***/ },
+/* 215 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	   value: true
+	});
+
+	var _angular = __webpack_require__(192);
+
+	var _angular2 = _interopRequireDefault(_angular);
+
+	var _students = __webpack_require__(216);
+
+	var _students2 = _interopRequireDefault(_students);
+
+	var _students3 = __webpack_require__(217);
+
+	var _students4 = _interopRequireDefault(_students3);
+
+	var _students5 = __webpack_require__(221);
+
+	var _students6 = _interopRequireDefault(_students5);
+
+	var _students7 = __webpack_require__(222);
+
+	var _students8 = _interopRequireDefault(_students7);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var studentsModule = _angular2.default.module('students', []).config(_students2.default).component('students', _students4.default).controller('StudentsController', _students6.default).service('StudentsService', _students8.default);
+
+	exports.default = studentsModule;
+
+/***/ },
+/* 216 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -21240,9 +21223,104 @@
 	Object.defineProperty(exports, "__esModule", {
 	   value: true
 	});
-	JentooController.$inject = ['JentooService', '$firebaseArray'];
+	studentsRoutes.$inject = ['$stateProvider', '$urlRouterProvider'];
 
-	function JentooController(JentooService, $firebaseArray) {
+	function studentsRoutes($stateProvider, $urlRouterProvider) {
+
+	   $urlRouterProvider.otherwise('/students');
+
+	   $stateProvider.state('students', {
+	      url: '/students',
+	      template: '<students></students>'
+	   });
+	}
+
+	exports.default = studentsRoutes;
+
+/***/ },
+/* 217 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _students = __webpack_require__(218);
+
+	var _students2 = _interopRequireDefault(_students);
+
+	__webpack_require__(219);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var studentsComponent = {
+	  template: _students2.default,
+	  controller: 'StudentsController',
+	  bindings: {}
+	};
+
+	exports.default = studentsComponent;
+
+/***/ },
+/* 218 */
+/***/ function(module, exports) {
+
+	module.exports = "<form name=\"poleForm\">\n\n   <div class=\"row\">\n      <div class=\"col-md-3\">\n         <label class=\"\" for=\"name\">Nombre</label>\n         <input id=\"name\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"name\"\n                ng-model=\"$ctrl.student.name\"\n                placeholder=\"\">\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"lastName\">Apellidos</label>\n         <input id=\"lastName\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"lastName\"\n                ng-model=\"$ctrl.student.lastName\"\n                placeholder=\"\">\n      </div>\n      <div class=\"col-md-6\">\n\n         <div style=\"display:inline-block; min-height:290px;\">\n            <label class=\"\"\n                   for=\"lastName\">Fecha de Inscripción</label>\n            <uib-datepicker ng-model=\"$ctrl.student.inscriptionDate\"\n                            class=\"well well-sm\"\n                            datepicker-options=\"inlineOptions\">\n            </uib-datepicker>\n         </div>\n         <!--<label class=\"sr-only\"\n                for=\"inscriptionDate\">Fecha de Matrícula</label>\n         <p class=\"input-group\">\n            <input id=\"inscriptionDate\"\n                   type=\"text\"\n                   name=\"inscriptionDate\"\n                   class=\"form-control\"\n                   uib-datepicker-popup=\"{{$ctrl.format}}\"\n                   ng-model=\"$ctrl.student.inscriptionDate\"\n                   is-open=\"$ctrl.popup.opened\"\n                   datepicker-options=\"$ctrl.dateOptions\"\n                   close-text=\"Cerrar\"\n                   alt-input-formats=\"$ctrl.altInputFormats\" />\n            <span class=\"input-group-btn\">\n               <button type=\"button\"\n                       class=\"btn btn-default\"\n                       ng-click=\"$ctrl.openCalendar()\">\n                  <i class=\"glyphicon glyphicon-calendar\"></i>\n               </button>\n            </span>\n         </p>-->\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"children\">Hijos</label>\n         <label class=\"checkbox-inline\">\n            <input type=\"checkbox\"\n                   id=\"children\"\n                   name=\"children\"\n                   ng-model=\"$ctrl.student.children\">\n         </label>\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"documentType\">Tipo de Documento</label>\n         <select id=\"documentType\"\n                 name=\"documentType\"\n                 ng-model=\"$ctrl.student.documentType\"\n                 class=\"form-control\"\n                 ng-options=\"doc for doc in $ctrl.documentTypes\">\n         </select>\n      </div>\n\n\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"phone\">Teléfono</label>\n         <input id=\"phone\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"phone\"\n                ng-model=\"$ctrl.student.phone\"\n                placeholder=\"\">\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"mobile\">Celular</label>\n         <input id=\"mobile\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"mobile\"\n                ng-model=\"$ctrl.student.mobile\"\n                placeholder=\"\">\n      </div>\n     <!-- <pre>{{$ctrl.olgah | json}}</pre>-->\n   </div>\n   <div class=\"row\">\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"address\">Dirección</label>\n         <input id=\"address\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"address\"\n                ng-model=\"$ctrl.student.address\"\n                placeholder=\"\">\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"email\">Email</label>\n         <input id=\"email\"\n                type=\"email\"\n                class=\"form-control\"\n                name=\"email\"\n                ng-model=\"$ctrl.student.email\"\n                placeholder=\"\">\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"healthInsurance\">EPS</label>\n         <input id=\"healthInsurance\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"healthInsurance\"\n                ng-model=\"$ctrl.student.healthInsurance\"\n                placeholder=\"\">\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"weight\">Peso</label>\n         <input id=\"weight\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"weight\"\n                ng-model=\"$ctrl.student.weight\"\n                placeholder=\"\">\n      </div>\n   </div>\n   <div class=\"row\">\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"height\">Estatura</label>\n         <input id=\"height\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"height\"\n                ng-model=\"$ctrl.student.height\"\n                placeholder=\"\">\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"Profession\">Profesión</label>\n         <input id=\"Profession\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"Profession\"\n                ng-model=\"$ctrl.student.Profession\"\n                placeholder=\"\">\n      </div>\n   </div>\n   <hr>\n   <div class=\"row\">\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"ocupation\">Ocupación</label>\n         <select id=\"ocupation\"\n                 name=\"ocupation\"\n                 ng-model=\"$ctrl.student.ocupation\"\n                 class=\"form-control\"\n                 ng-options=\"doc for doc in $ctrl.ocupations\">\n         </select>\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"companyName\">Empresa donde trabaja</label>\n         <input id=\"companyName\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"companyName\"\n                ng-model=\"$ctrl.student.companyName\"\n                placeholder=\"\">\n\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"companyPhone\">Teléfono Empresa</label>\n         <input id=\"companyPhone\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"companyPhone\"\n                ng-model=\"$ctrl.student.companyPhone\"\n                placeholder=\"\">\n\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"charge\">Cargo</label>\n         <input id=\"charge\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"charge\"\n                ng-model=\"$ctrl.student.charge\"\n                placeholder=\"\">\n\n      </div>\n   </div>\n   <div class=\"row\">\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"howYouMeetPoleCenter\">¿Como conoció Pole Center?</label>\n         <input id=\"howYouMeetPoleCenter\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"howYouMeetPoleCenter\"\n                ng-model=\"$ctrl.student.howYouMeetPoleCenter\"\n                placeholder=\"\">\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"plan\">Plan</label>\n         <select id=\"plan\"\n                 name=\"plan\"\n                 ng-model=\"$ctrl.student.plan\"\n                 class=\"form-control\"\n                 ng-options=\"plan for plan in $ctrl.plans\">\n         </select>\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"inCaseOfEmergency\">En caso de emergencia comunicarse con</label>\n         <input id=\"inCaseOfEmergency\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"inCaseOfEmergency\"\n                ng-model=\"$ctrl.student.inCaseOfEmergency.name\"\n                placeholder=\"Nombre\">\n         <input\n                type=\"text\"\n                class=\"form-control\"\n                name=\"inCaseOfEmergency\"\n                ng-model=\"$ctrl.student.inCaseOfEmergency.phone\"\n                placeholder=\"Teléfono\">\n      </div>\n      <div class=\"col-md-3\">\n         <button class=\"btn btn default\"\n                  ng-click=\"$ctrl.addStudent()\">Guardar</button>\n      </div>\n   </div>\n\n\n\n\n</form>\n";
+
+/***/ },
+/* 219 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(220);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(208)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../../../node_modules/css-loader/index.js!./../../../../node_modules/stylus-loader/index.js!./students.styl", function() {
+				var newContent = require("!!./../../../../node_modules/css-loader/index.js!./../../../../node_modules/stylus-loader/index.js!./students.styl");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 220 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(207)();
+	// imports
+
+
+	// module
+	exports.push([module.id, "", ""]);
+
+	// exports
+
+
+/***/ },
+/* 221 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	   value: true
+	});
+	StudentsController.$inject = ['StudentsService', '$firebaseArray'];
+
+	function StudentsController(StudentsService, $firebaseArray) {
 	   'use strict';
 
 	   var self = this;
@@ -21332,10 +21410,10 @@
 	   };
 	}
 
-	exports.default = JentooController;
+	exports.default = StudentsController;
 
 /***/ },
-/* 210 */
+/* 222 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -21397,76 +21475,6 @@
 	JentooService.$inject = ['$firebaseObject', '$firebaseArray'];
 
 	exports.default = JentooService;
-
-/***/ },
-/* 211 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	   value: true
-	});
-
-	var _app = __webpack_require__(212);
-
-	var _app2 = _interopRequireDefault(_app);
-
-	__webpack_require__(213);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var appComponent = {
-	   template: _app2.default
-	};
-
-	exports.default = appComponent;
-
-/***/ },
-/* 212 */
-/***/ function(module, exports) {
-
-	module.exports = "<div class=\"site-wrapper\">\n\n   <nav>\n      <ul class=\"nav masthead-nav\">\n         <!--<li class=\"active\"><a href=\"#\">Home</a></li>-->\n         <li><a ui-sref=\"jentoo\">Form</a></li>\n         <!--<li><a href=\"#\">Contact</a></li>-->\n      </ul>\n   </nav>\n\n   <ui-view></ui-view>\n\n\n</div>";
-
-/***/ },
-/* 213 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-
-	// load the styles
-	var content = __webpack_require__(214);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(208)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../../node_modules/css-loader/index.js!./../../node_modules/stylus-loader/index.js!./app.styl", function() {
-				var newContent = require("!!./../../node_modules/css-loader/index.js!./../../node_modules/stylus-loader/index.js!./app.styl");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 214 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(207)();
-	// imports
-
-
-	// module
-	exports.push([module.id, "", ""]);
-
-	// exports
-
 
 /***/ }
 /******/ ]);

@@ -1,8 +1,8 @@
 import angular from 'angular';
-import jentoo from './jentoo/jentoo';
+import students from './students/students';
 
 let componentModule = angular.module('app.components', [
-      jentoo.name
+      students.name
    ]);
 
 export default componentModule;
