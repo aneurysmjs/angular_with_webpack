@@ -1,7 +1,8 @@
 class StudentsController {
 
-   constructor(StudentsService, $firebaseArray) {
-
+   constructor(StudentsService, $firebaseArray, $stateParams, $state) {
+      this.StudentsService = StudentsService;
+      this.$state = $state;
       this.documentTypes = ['TI', 'CC', 'PAS'];
       this.ocupations = ['dependiente', 'independiente', 'estudiante'];
       this.plans = ['cuarzo', 'rubí', 'záfiro', 'esmeralda', 'turqueza', 'diamante'];
@@ -26,11 +27,16 @@ class StudentsController {
          showWeeks: true
       };
 
+      this.isUpdate = false;
+
       StudentsService.getStudents().then(response => {
-         console.log('response');
-         console.log(response);
          this.students = response;
       });
+
+      if ($stateParams.id) {
+         this.getStudent($stateParams.id);
+         this.isUpdate = true;
+      }
 
    }
 
@@ -47,10 +53,26 @@ class StudentsController {
       this.popup.opened = true;
    }
 
-   addStudent() {
-      console.log('this.student');
-      console.log(this.student);
-      this.students.$add(this.student).then(this.successHandler);
+   studentProfile(student) {
+      this.$state.go('students.update', {id: student.$id});
+   }
+
+   getStudent(id) {
+      this.StudentsService.getStudent(id).then(response => {
+         this.student = response;
+      });
+   }
+
+   save() {
+      if (this.isUpdate) {
+
+         this.students.$save(this.student).then(function(ref) {
+            //ref.key() === this.students[2].$id; // true
+         });
+
+      } else {
+         this.students.$add(this.student).then(this.successHandler);
+      }
    }
 
    deleteStudent(student){
@@ -63,6 +85,6 @@ class StudentsController {
 
 }
 
-StudentsController.$inject = ['StudentsService', '$firebaseArray'];
+StudentsController.$inject = ['StudentsService', '$firebaseArray', '$stateParams', '$state'];
 
 export default StudentsController;

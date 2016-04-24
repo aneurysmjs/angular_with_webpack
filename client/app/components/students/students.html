@@ -14,11 +14,12 @@
       </tr>
       </thead>
       <tbody>
-      <tr ng-repeat="student in $ctrl.students track by $index">
+      <tr ng-repeat="student in $ctrl.students track by $index"
+          ng-dblclick="$ctrl.studentProfile(student)">
          <th ng-bind="student.name"></th>
          <td ng-bind="student.lastName"></td>
          <td ng-bind="student.email"></td>
-         <td ng-bind="student.Profession"></td>
+         <td ng-bind="student.profession"></td>
          <td ng-bind="student.plan"></td>
          <td ng-click="$ctrl.deleteStudent(student)">
             <span class="fui-cross"></span>

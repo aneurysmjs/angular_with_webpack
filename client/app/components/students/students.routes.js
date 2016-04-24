@@ -12,6 +12,10 @@ function studentsRoutes($stateProvider, $urlRouterProvider) {
       .state('students.create', {
          url: '/create',
          template: '<students-form ctrl="StudentsController"></students-form>'
+      })
+      .state('students.update', {
+         url: '/update/:id',
+         template: '<students-form ctrl="StudentsController"></students-form>'
       });
 
 }

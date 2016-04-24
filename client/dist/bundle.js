@@ -34,7 +34,7 @@
 /******/ 	__webpack_require__.c = installedModules;
 
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "http://localhost:3000/assets/9c3a83d6db61a9972e27";
+/******/ 	__webpack_require__.p = "http://localhost:3000/assets/cfe8ffd32c0534e0b4b2";
 
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
@@ -20853,6 +20853,9 @@
 	   }).state('students.create', {
 	      url: '/create',
 	      template: '<students-form ctrl="StudentsController"></students-form>'
+	   }).state('students.update', {
+	      url: '/update/:id',
+	      template: '<students-form ctrl="StudentsController"></students-form>'
 	   });
 	}
 
@@ -20888,7 +20891,7 @@
 /* 204 */
 /***/ function(module, exports) {
 
-	module.exports = "<ui-view>\n\n   <button type=\"button\" ui-sref=\"students.create\">Create</button>\n\n   <table class=\"table table-hover\">\n      <thead>\n      <tr>\n         <th>First Name</th>\n         <th>Last Name</th>\n         <th>Email</th>\n         <th>Profession</th>\n         <th>Plan</th>\n         <th>&nbsp;</th>\n      </tr>\n      </thead>\n      <tbody>\n      <tr ng-repeat=\"student in $ctrl.students track by $index\">\n         <th ng-bind=\"student.name\"></th>\n         <td ng-bind=\"student.lastName\"></td>\n         <td ng-bind=\"student.email\"></td>\n         <td ng-bind=\"student.Profession\"></td>\n         <td ng-bind=\"student.plan\"></td>\n         <td ng-click=\"$ctrl.deleteStudent(student)\">\n            <span class=\"fui-cross\"></span>\n         </td>\n      </tr>\n      </tbody>\n   </table>\n\n</ui-view>";
+	module.exports = "<ui-view>\n\n   <button type=\"button\" ui-sref=\"students.create\">Create</button>\n\n   <table class=\"table table-hover\">\n      <thead>\n      <tr>\n         <th>First Name</th>\n         <th>Last Name</th>\n         <th>Email</th>\n         <th>Profession</th>\n         <th>Plan</th>\n         <th>&nbsp;</th>\n      </tr>\n      </thead>\n      <tbody>\n      <tr ng-repeat=\"student in $ctrl.students track by $index\"\n          ng-dblclick=\"$ctrl.studentProfile(student)\">\n         <th ng-bind=\"student.name\"></th>\n         <td ng-bind=\"student.lastName\"></td>\n         <td ng-bind=\"student.email\"></td>\n         <td ng-bind=\"student.profession\"></td>\n         <td ng-bind=\"student.plan\"></td>\n         <td ng-click=\"$ctrl.deleteStudent(student)\">\n            <span class=\"fui-cross\"></span>\n         </td>\n      </tr>\n      </tbody>\n   </table>\n\n</ui-view>";
 
 /***/ },
 /* 205 */
@@ -21255,11 +21258,13 @@
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	var StudentsController = (function () {
-	   function StudentsController(StudentsService, $firebaseArray) {
+	   function StudentsController(StudentsService, $firebaseArray, $stateParams, $state) {
 	      var _this = this;
 
 	      _classCallCheck(this, StudentsController);
 
+	      this.StudentsService = StudentsService;
+	      this.$state = $state;
 	      this.documentTypes = ['TI', 'CC', 'PAS'];
 	      this.ocupations = ['dependiente', 'independiente', 'estudiante'];
 	      this.plans = ['cuarzo', 'rubí', 'záfiro', 'esmeralda', 'turqueza', 'diamante'];
@@ -21284,11 +21289,16 @@
 	         showWeeks: true
 	      };
 
+	      this.isUpdate = false;
+
 	      StudentsService.getStudents().then(function (response) {
-	         console.log('response');
-	         console.log(response);
 	         _this.students = response;
 	      });
+
+	      if ($stateParams.id) {
+	         this.getStudent($stateParams.id);
+	         this.isUpdate = true;
+	      }
 	   }
 
 	   _createClass(StudentsController, [{
@@ -21306,11 +21316,30 @@
 	         this.popup.opened = true;
 	      }
 	   }, {
-	      key: 'addStudent',
-	      value: function addStudent() {
-	         console.log('this.student');
-	         console.log(this.student);
-	         this.students.$add(this.student).then(this.successHandler);
+	      key: 'studentProfile',
+	      value: function studentProfile(student) {
+	         this.$state.go('students.update', { id: student.$id });
+	      }
+	   }, {
+	      key: 'getStudent',
+	      value: function getStudent(id) {
+	         var _this2 = this;
+
+	         this.StudentsService.getStudent(id).then(function (response) {
+	            _this2.student = response;
+	         });
+	      }
+	   }, {
+	      key: 'save',
+	      value: function save() {
+	         if (this.isUpdate) {
+
+	            this.students.$save(this.student).then(function (ref) {
+	               //ref.key() === this.students[2].$id; // true
+	            });
+	         } else {
+	               this.students.$add(this.student).then(this.successHandler);
+	            }
 	      }
 	   }, {
 	      key: 'deleteStudent',
@@ -21326,7 +21355,7 @@
 	   return StudentsController;
 	})();
 
-	StudentsController.$inject = ['StudentsService', '$firebaseArray'];
+	StudentsController.$inject = ['StudentsService', '$firebaseArray', '$stateParams', '$state'];
 
 	exports.default = StudentsController;
 
@@ -21348,16 +21377,10 @@
 	   function JentooService($q, $firebaseArray) {
 	      _classCallCheck(this, JentooService);
 
-	      this.ref = new Firebase('https://olgah.firebaseio.com/users');
-
 	      this.$q = $q;
-
+	      this.ref = new Firebase('https://olgah.firebaseio.com/users/');
 	      this.olgah = $firebaseArray(this.ref);
 	      this.olgah.$loaded().then(this.successHandler).catch(this.catchHandler);
-
-	      this.$firebaseArray = $firebaseArray;
-	      this.ref = new Firebase('https://olgah.firebaseio.com/users');
-	      this.olgah = this.$firebaseArray(this.ref);
 	   }
 
 	   _createClass(JentooService, [{
@@ -21365,11 +21388,20 @@
 	      value: function getStudents() {
 	         var _this = this;
 
-	         console.log('this');
-	         console.log(this);
-
 	         return this.$q(function (resolve, reject) {
 	            resolve(_this.olgah);
+	         });
+	      }
+	   }, {
+	      key: 'getStudent',
+	      value: function getStudent(id) {
+	         var _this2 = this;
+
+	         var student = {};
+
+	         return this.$q(function (resolve, reject) {
+	            student = _this2.olgah.$getRecord(id);
+	            resolve(student);
 	         });
 	      }
 	   }, {
@@ -21426,7 +21458,7 @@
 /* 212 */
 /***/ function(module, exports) {
 
-	module.exports = "<form name=\"poleForm\">\n\n   <div class=\"row\">\n      <div class=\"col-md-3\">\n         <label class=\"\" for=\"name\">Nombre</label>\n         <input id=\"name\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"name\"\n                ng-model=\"$ctrl.student.name\"\n                placeholder=\"\">\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"lastName\">Apellidos</label>\n         <input id=\"lastName\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"lastName\"\n                ng-model=\"$ctrl.student.lastName\"\n                placeholder=\"\">\n      </div>\n      <div class=\"col-md-6\">\n\n         <div style=\"display:inline-block; min-height:290px;\">\n            <label class=\"\"\n                   for=\"lastName\">Fecha de Inscripción</label>\n            <uib-datepicker ng-model=\"$ctrl.student.inscriptionDate\"\n                            class=\"well well-sm\"\n                            datepicker-options=\"inlineOptions\">\n            </uib-datepicker>\n         </div>\n         <!--<label class=\"sr-only\"\n                for=\"inscriptionDate\">Fecha de Matrícula</label>\n         <p class=\"input-group\">\n            <input id=\"inscriptionDate\"\n                   type=\"text\"\n                   name=\"inscriptionDate\"\n                   class=\"form-control\"\n                   uib-datepicker-popup=\"{{$ctrl.format}}\"\n                   ng-model=\"$ctrl.student.inscriptionDate\"\n                   is-open=\"$ctrl.popup.opened\"\n                   datepicker-options=\"$ctrl.dateOptions\"\n                   close-text=\"Cerrar\"\n                   alt-input-formats=\"$ctrl.altInputFormats\" />\n            <span class=\"input-group-btn\">\n               <button type=\"button\"\n                       class=\"btn btn-default\"\n                       ng-click=\"$ctrl.openCalendar()\">\n                  <i class=\"glyphicon glyphicon-calendar\"></i>\n               </button>\n            </span>\n         </p>-->\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"children\">Hijos</label>\n         <label class=\"checkbox-inline\">\n            <input type=\"checkbox\"\n                   id=\"children\"\n                   name=\"children\"\n                   ng-model=\"$ctrl.student.children\">\n         </label>\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"documentType\">Tipo de Documento</label>\n         <select id=\"documentType\"\n                 name=\"documentType\"\n                 ng-model=\"$ctrl.student.documentType\"\n                 class=\"form-control\"\n                 ng-options=\"doc for doc in $ctrl.documentTypes\">\n         </select>\n      </div>\n\n\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"phone\">Teléfono</label>\n         <input id=\"phone\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"phone\"\n                ng-model=\"$ctrl.student.phone\"\n                placeholder=\"\">\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"mobile\">Celular</label>\n         <input id=\"mobile\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"mobile\"\n                ng-model=\"$ctrl.student.mobile\"\n                placeholder=\"\">\n      </div>\n      <!-- <pre>{{$ctrl.olgah | json}}</pre>-->\n   </div>\n   <div class=\"row\">\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"address\">Dirección</label>\n         <input id=\"address\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"address\"\n                ng-model=\"$ctrl.student.address\"\n                placeholder=\"\">\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"email\">Email</label>\n         <input id=\"email\"\n                type=\"email\"\n                class=\"form-control\"\n                name=\"email\"\n                ng-model=\"$ctrl.student.email\"\n                placeholder=\"\">\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"healthInsurance\">EPS</label>\n         <input id=\"healthInsurance\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"healthInsurance\"\n                ng-model=\"$ctrl.student.healthInsurance\"\n                placeholder=\"\">\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"weight\">Peso</label>\n         <input id=\"weight\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"weight\"\n                ng-model=\"$ctrl.student.weight\"\n                placeholder=\"\">\n      </div>\n   </div>\n   <div class=\"row\">\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"height\">Estatura</label>\n         <input id=\"height\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"height\"\n                ng-model=\"$ctrl.student.height\"\n                placeholder=\"\">\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"Profession\">Profesión</label>\n         <input id=\"Profession\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"Profession\"\n                ng-model=\"$ctrl.student.profession\"\n                placeholder=\"\">\n      </div>\n   </div>\n   <hr>\n   <div class=\"row\">\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"ocupation\">Ocupación</label>\n         <select id=\"ocupation\"\n                 name=\"ocupation\"\n                 ng-model=\"$ctrl.student.ocupation\"\n                 class=\"form-control\"\n                 ng-options=\"doc for doc in $ctrl.ocupations\">\n         </select>\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"companyName\">Empresa donde trabaja</label>\n         <input id=\"companyName\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"companyName\"\n                ng-model=\"$ctrl.student.companyName\"\n                placeholder=\"\">\n\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"companyPhone\">Teléfono Empresa</label>\n         <input id=\"companyPhone\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"companyPhone\"\n                ng-model=\"$ctrl.student.companyPhone\"\n                placeholder=\"\">\n\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"charge\">Cargo</label>\n         <input id=\"charge\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"charge\"\n                ng-model=\"$ctrl.student.charge\"\n                placeholder=\"\">\n\n      </div>\n   </div>\n   <div class=\"row\">\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"howYouMeetPoleCenter\">¿Como conoció Pole Center?</label>\n         <input id=\"howYouMeetPoleCenter\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"howYouMeetPoleCenter\"\n                ng-model=\"$ctrl.student.howYouMeetPoleCenter\"\n                placeholder=\"\">\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"plan\">Plan</label>\n         <select id=\"plan\"\n                 name=\"plan\"\n                 ng-model=\"$ctrl.student.plan\"\n                 class=\"form-control\"\n                 ng-options=\"plan for plan in $ctrl.plans\">\n         </select>\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"inCaseOfEmergency\">En caso de emergencia comunicarse con</label>\n         <input id=\"inCaseOfEmergency\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"inCaseOfEmergency\"\n                ng-model=\"$ctrl.student.inCaseOfEmergency.name\"\n                placeholder=\"Nombre\">\n         <input\n                 type=\"text\"\n                 class=\"form-control\"\n                 name=\"inCaseOfEmergency\"\n                 ng-model=\"$ctrl.student.inCaseOfEmergency.phone\"\n                 placeholder=\"Teléfono\">\n      </div>\n      <div class=\"col-md-3\">\n         <button class=\"btn btn default\"\n                 ng-click=\"$ctrl.addStudent()\">Guardar\n         </button>\n      </div>\n   </div>\n\n</form>";
+	module.exports = "<form name=\"poleForm\">\n\n   <div class=\"row\">\n      <div class=\"col-md-3\">\n         <label class=\"\" for=\"name\">Nombre</label>\n         <input id=\"name\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"name\"\n                ng-model=\"$ctrl.student.name\"\n                placeholder=\"\">\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"lastName\">Apellidos</label>\n         <input id=\"lastName\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"lastName\"\n                ng-model=\"$ctrl.student.lastName\"\n                placeholder=\"\">\n      </div>\n      <div class=\"col-md-6\">\n\n         <div style=\"display:inline-block; min-height:290px;\">\n            <label class=\"\"\n                   for=\"lastName\">Fecha de Inscripción</label>\n            <uib-datepicker ng-model=\"$ctrl.student.inscriptionDate\"\n                            class=\"well well-sm\"\n                            datepicker-options=\"inlineOptions\">\n            </uib-datepicker>\n         </div>\n         <!--<label class=\"sr-only\"\n                for=\"inscriptionDate\">Fecha de Matrícula</label>\n         <p class=\"input-group\">\n            <input id=\"inscriptionDate\"\n                   type=\"text\"\n                   name=\"inscriptionDate\"\n                   class=\"form-control\"\n                   uib-datepicker-popup=\"{{$ctrl.format}}\"\n                   ng-model=\"$ctrl.student.inscriptionDate\"\n                   is-open=\"$ctrl.popup.opened\"\n                   datepicker-options=\"$ctrl.dateOptions\"\n                   close-text=\"Cerrar\"\n                   alt-input-formats=\"$ctrl.altInputFormats\" />\n            <span class=\"input-group-btn\">\n               <button type=\"button\"\n                       class=\"btn btn-default\"\n                       ng-click=\"$ctrl.openCalendar()\">\n                  <i class=\"glyphicon glyphicon-calendar\"></i>\n               </button>\n            </span>\n         </p>-->\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"children\">Hijos</label>\n         <label class=\"checkbox-inline\">\n            <input type=\"checkbox\"\n                   id=\"children\"\n                   name=\"children\"\n                   ng-model=\"$ctrl.student.children\">\n         </label>\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"documentType\">Tipo de Documento</label>\n         <select id=\"documentType\"\n                 name=\"documentType\"\n                 ng-model=\"$ctrl.student.documentType\"\n                 class=\"form-control\"\n                 ng-options=\"doc for doc in $ctrl.documentTypes\">\n         </select>\n      </div>\n\n\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"phone\">Teléfono</label>\n         <input id=\"phone\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"phone\"\n                ng-model=\"$ctrl.student.phone\"\n                placeholder=\"\">\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"mobile\">Celular</label>\n         <input id=\"mobile\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"mobile\"\n                ng-model=\"$ctrl.student.mobile\"\n                placeholder=\"\">\n      </div>\n      <!-- <pre>{{$ctrl.olgah | json}}</pre>-->\n   </div>\n   <div class=\"row\">\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"address\">Dirección</label>\n         <input id=\"address\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"address\"\n                ng-model=\"$ctrl.student.address\"\n                placeholder=\"\">\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"email\">Email</label>\n         <input id=\"email\"\n                type=\"email\"\n                class=\"form-control\"\n                name=\"email\"\n                ng-model=\"$ctrl.student.email\"\n                placeholder=\"\">\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"healthInsurance\">EPS</label>\n         <input id=\"healthInsurance\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"healthInsurance\"\n                ng-model=\"$ctrl.student.healthInsurance\"\n                placeholder=\"\">\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"weight\">Peso</label>\n         <input id=\"weight\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"weight\"\n                ng-model=\"$ctrl.student.weight\"\n                placeholder=\"\">\n      </div>\n   </div>\n   <div class=\"row\">\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"height\">Estatura</label>\n         <input id=\"height\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"height\"\n                ng-model=\"$ctrl.student.height\"\n                placeholder=\"\">\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"Profession\">Profesión</label>\n         <input id=\"Profession\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"Profession\"\n                ng-model=\"$ctrl.student.profession\"\n                placeholder=\"\">\n      </div>\n   </div>\n   <hr>\n   <div class=\"row\">\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"ocupation\">Ocupación</label>\n         <select id=\"ocupation\"\n                 name=\"ocupation\"\n                 ng-model=\"$ctrl.student.ocupation\"\n                 class=\"form-control\"\n                 ng-options=\"doc for doc in $ctrl.ocupations\">\n         </select>\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"companyName\">Empresa donde trabaja</label>\n         <input id=\"companyName\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"companyName\"\n                ng-model=\"$ctrl.student.companyName\"\n                placeholder=\"\">\n\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"companyPhone\">Teléfono Empresa</label>\n         <input id=\"companyPhone\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"companyPhone\"\n                ng-model=\"$ctrl.student.companyPhone\"\n                placeholder=\"\">\n\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"charge\">Cargo</label>\n         <input id=\"charge\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"charge\"\n                ng-model=\"$ctrl.student.charge\"\n                placeholder=\"\">\n\n      </div>\n   </div>\n   <div class=\"row\">\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"howYouMeetPoleCenter\">¿Como conoció Pole Center?</label>\n         <input id=\"howYouMeetPoleCenter\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"howYouMeetPoleCenter\"\n                ng-model=\"$ctrl.student.howYouMeetPoleCenter\"\n                placeholder=\"\">\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"plan\">Plan</label>\n         <select id=\"plan\"\n                 name=\"plan\"\n                 ng-model=\"$ctrl.student.plan\"\n                 class=\"form-control\"\n                 ng-options=\"plan for plan in $ctrl.plans\">\n         </select>\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"inCaseOfEmergency\">En caso de emergencia comunicarse con</label>\n         <input id=\"inCaseOfEmergency\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"inCaseOfEmergency\"\n                ng-model=\"$ctrl.student.inCaseOfEmergency.name\"\n                placeholder=\"Nombre\">\n         <input\n                 type=\"text\"\n                 class=\"form-control\"\n                 name=\"inCaseOfEmergency\"\n                 ng-model=\"$ctrl.student.inCaseOfEmergency.phone\"\n                 placeholder=\"Teléfono\">\n      </div>\n      <div class=\"col-md-3\">\n         <button class=\"btn btn default\"\n                 ng-click=\"$ctrl.save()\">Guardar\n         </button>\n      </div>\n   </div>\n\n</form>";
 
 /***/ },
 /* 213 */
