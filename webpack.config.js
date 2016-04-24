@@ -9,6 +9,7 @@ module.exports = {
       'babel-polyfill',
       './client/app/app.js'
    ],
+   devtools: 'source-map',
    output: {
       //publicPath: '/',
       path: path.resolve(__dirname, './client/dist'),

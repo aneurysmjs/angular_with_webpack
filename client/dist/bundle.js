@@ -34,7 +34,7 @@
 /******/ 	__webpack_require__.c = installedModules;
 
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "http://localhost:3000/assets/bce6909e8cb5455718cd";
+/******/ 	__webpack_require__.p = "http://localhost:3000/assets/343700bc2213d81491f6";
 
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
@@ -21247,12 +21247,9 @@
 
 	var StudentsController = (function () {
 	   function StudentsController(StudentsService, $firebaseArray) {
+	      var _this = this;
+
 	      _classCallCheck(this, StudentsController);
-
-	      var ref = new Firebase('https://olgah.firebaseio.com/users');
-
-	      this.olgah = $firebaseArray(ref);
-	      this.olgah.$loaded().then(this.successHandler).catch(this.catchHandler);
 
 	      this.documentTypes = ['TI', 'CC', 'PAS'];
 	      this.ocupations = ['dependiente', 'independiente', 'estudiante'];
@@ -21277,28 +21274,17 @@
 	         minDate: new Date(),
 	         showWeeks: true
 	      };
+
+	      StudentsService.getStudents().then(function (response) {
+	         console.log('response');
+	         console.log(response);
+	         _this.students = response;
+	      });
 	   }
 
 	   _createClass(StudentsController, [{
 	      key: 'successHandler',
-	      value: function successHandler(students) {
-
-	         console.log('this');
-	         console.log(this);
-
-	         //console.log("loaded record:", obj.$id, obj.someOtherKeyInData);
-	         console.log("loaded record:");
-
-	         //this.students = students;
-
-	         console.log('students');
-	         console.log(students);
-
-	         /*this.students.forEach(student => {
-	            console.log('student');
-	            console.log(student);
-	         });*/
-	      }
+	      value: function successHandler(students) {}
 	   }, {
 	      key: 'catchHandler',
 	      value: function catchHandler(error) {
@@ -21341,8 +21327,15 @@
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	var JentooService = (function () {
-	   function JentooService($firebaseObject, $firebaseArray) {
+	   function JentooService($q, $firebaseArray) {
 	      _classCallCheck(this, JentooService);
+
+	      this.ref = new Firebase('https://olgah.firebaseio.com/users');
+
+	      this.$q = $q;
+
+	      this.olgah = $firebaseArray(this.ref);
+	      this.olgah.$loaded().then(this.successHandler).catch(this.catchHandler);
 
 	      this.$firebaseArray = $firebaseArray;
 	      this.ref = new Firebase('https://olgah.firebaseio.com/users');
@@ -21352,29 +21345,18 @@
 	   _createClass(JentooService, [{
 	      key: 'getStudents',
 	      value: function getStudents() {
-	         this.olgah.$loaded().then(this.successHandler).catch(this.catchHandler);
+	         var _this = this;
+
+	         console.log('this');
+	         console.log(this);
+
+	         return this.$q(function (resolve, reject) {
+	            resolve(_this.olgah);
+	         });
 	      }
 	   }, {
 	      key: 'successHandler',
-	      value: function successHandler(e) {
-
-	         console.log('e');
-	         console.log(e);
-
-	         //console.log("loaded record:", obj.$id, obj.someOtherKeyInData);
-	         console.log("loaded record:");
-
-	         self.olgah.forEach(function (student) {
-	            console.log('student');
-	            console.log(student);
-	         });
-	         // To iterate the key/value pairs of the object, use angular.forEach()
-	         /* angular.forEach(obj, function(value, key) {
-	          console.log(key, value);
-	          });*/
-
-	         return e;
-	      }
+	      value: function successHandler(students) {}
 	   }, {
 	      key: 'catchHandler',
 	      value: function catchHandler(error) {
@@ -21386,7 +21368,7 @@
 	   return JentooService;
 	})();
 
-	JentooService.$inject = ['$firebaseObject', '$firebaseArray'];
+	JentooService.$inject = ['$q', '$firebaseArray'];
 
 	exports.default = JentooService;
 

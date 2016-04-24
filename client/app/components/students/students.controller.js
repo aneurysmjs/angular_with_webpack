@@ -2,11 +2,6 @@ class StudentsController {
 
    constructor(StudentsService, $firebaseArray) {
 
-      let ref = new Firebase('https://olgah.firebaseio.com/users');
-
-      this.olgah = $firebaseArray(ref);
-      this.olgah.$loaded().then(this.successHandler).catch(this.catchHandler);
-
       this.documentTypes = ['TI', 'CC', 'PAS'];
       this.ocupations = ['dependiente', 'independiente', 'estudiante'];
       this.plans = ['cuarzo', 'rubí', 'záfiro', 'esmeralda', 'turqueza', 'diamante'];
@@ -31,25 +26,15 @@ class StudentsController {
          showWeeks: true
       };
 
+      StudentsService.getStudents().then(response => {
+         console.log('response');
+         console.log(response);
+         this.students = response;
+      });
+
    }
 
    successHandler(students) {
-
-      console.log('this');
-      console.log(this);
-
-      //console.log("loaded record:", obj.$id, obj.someOtherKeyInData);
-      console.log("loaded record:");
-
-      //this.students = students;
-
-      console.log('students');
-      console.log(students);
-
-      /*this.students.forEach(student => {
-         console.log('student');
-         console.log(student);
-      });*/
 
    }
 
