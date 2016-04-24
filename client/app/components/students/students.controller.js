@@ -53,6 +53,14 @@ class StudentsController {
       this.students.$add(this.student).then(this.successHandler);
    }
 
+   deleteStudent(student){
+
+      this.students.$remove(student).then((ref) => {
+        console.log('deteleStudent response');
+        console.log(ref);
+      });
+   }
+
 }
 
 StudentsController.$inject = ['StudentsService', '$firebaseArray'];

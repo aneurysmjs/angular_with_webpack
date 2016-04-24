@@ -94,7 +94,7 @@
                 ng-model="$ctrl.student.mobile"
                 placeholder="">
       </div>
-     <!-- <pre>{{$ctrl.olgah | json}}</pre>-->
+      <!-- <pre>{{$ctrl.olgah | json}}</pre>-->
    </div>
    <div class="row">
       <div class="col-md-3">
@@ -156,7 +156,7 @@
                 type="text"
                 class="form-control"
                 name="Profession"
-                ng-model="$ctrl.student.Profession"
+                ng-model="$ctrl.student.profession"
                 placeholder="">
       </div>
    </div>
@@ -237,19 +237,42 @@
                 ng-model="$ctrl.student.inCaseOfEmergency.name"
                 placeholder="Nombre">
          <input
-                type="text"
-                class="form-control"
-                name="inCaseOfEmergency"
-                ng-model="$ctrl.student.inCaseOfEmergency.phone"
-                placeholder="Teléfono">
+                 type="text"
+                 class="form-control"
+                 name="inCaseOfEmergency"
+                 ng-model="$ctrl.student.inCaseOfEmergency.phone"
+                 placeholder="Teléfono">
       </div>
       <div class="col-md-3">
          <button class="btn btn default"
-                  ng-click="$ctrl.addStudent()">Guardar</button>
+                 ng-click="$ctrl.addStudent()">Guardar
+         </button>
       </div>
    </div>
 
-
-
-
 </form>
+
+<table class="table table-hover">
+   <thead>
+   <tr>
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th>Email</th>
+      <th>Profession</th>
+      <th>Plan</th>
+      <th>&nbsp;</th>
+   </tr>
+   </thead>
+   <tbody>
+   <tr ng-repeat="student in $ctrl.students track by $index">
+      <th ng-bind="student.name"></th>
+      <td ng-bind="student.lastName"></td>
+      <td ng-bind="student.email"></td>
+      <td ng-bind="student.Profession"></td>
+      <td ng-bind="student.plan"></td>
+      <td ng-click="$ctrl.deleteStudent(student)">
+         <span class="fui-cross"></span>
+      </td>
+   </tr>
+   </tbody>
+</table>
