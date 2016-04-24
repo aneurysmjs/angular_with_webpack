@@ -3,22 +3,20 @@ class LoaderDisplayService {
    constructor($window) {
       this.$window = $window;
 
-      var getComputedStyle = function () {
+      this.getComputedStyle = (function () {
          let func = null;
 
          if (document.defaultView && document.defaultView.getComputedStyle) {
             func = document.defaultView.getComputedStyle;
          } else if (typeof (document.body.curentStyle) !== "undefined") {
-            func = function (element, anything) {
-               return element.currentStyle;
-            };
+            func = (element, anything) => element.currentStyle;
          }
 
          return function (element, style) {
             return func(element, null)[style];
          };
 
-      }();
+      }());
 
    }
 
@@ -49,9 +47,9 @@ class LoaderDisplayService {
          h = this.$window.innerHeight;
       }
 
-      let content = document.getElementById('overlay-content'),
-          contentWidth = parseInt(getComputedStyle(content, 'width').replace('px', '')),
-          contentHeight = parseInt(getComputedStyle(content, 'height').replace('px', ''));
+      let content = document.getElementById('loader-content'),
+          contentWidth  = parseInt(this.getComputedStyle(content, 'width').replace('px', '')),
+          contentHeight = parseInt(this.getComputedStyle(content, 'height').replace('px', ''));
 
       content.style.top  = h / 2 - contentHeight / 2 + 'px';
       content.style.left = w / 2 - contentWidth / 2 + 'px';

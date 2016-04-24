@@ -5,6 +5,7 @@
   "main": "",
   "scripts": {
     "test": "karma start",
+    "build": "webpack --progress --watch",
     "start": "node node_modules/.bin/webpack-dev-server --context-base /client/app"
   },
   "repository": {
@@ -64,6 +65,7 @@
     "angular-ui-router": "0.2.15",
     "angularfire": "1.2.0",
     "dragular": "4.1.0",
-    "flat-ui": "2.1.1"
+    "flat-ui": "2.1.1",
+    "font-awesome": "4.6.1"
   }
 }

@@ -11,9 +11,9 @@ function Loader($q, $timeout, LoadingInterceptor, loaderConfig, LoadingDisplay) 
          delay: '@'
       },
       template: `
-         <div id="overlay-container" class="overlayContainer">
-            <div id="overlay-background" class="overlayBackground"></div>
-            <div id="overlay-content" class="overlayContent">
+         <div id="loader-container" class="loaderContainer">
+            <div id="loader-background" class="loaderBackground"></div>
+            <div id="loader-content" class="loaderContent">
               <ng-transclude></ng-transclude>
             </div>
          </div>`,
@@ -30,33 +30,31 @@ function Loader($q, $timeout, LoadingInterceptor, loaderConfig, LoadingDisplay) 
           queue = [],
           loadingConfig = loaderConfig.getConfig();
 
-      function getOverlayContainer() {
-         return document.getElementById('overlay-container');
-      }
-
       init();
 
       function init() {
          wireUpHttpInterceptor();
-         overlayContainer = getOverlayContainer();
+         overlayContainer = document.querySelector('#loader-container');
       }
 
       //Hook into httpInterceptor factory request/response/responseError functions
       function wireUpHttpInterceptor() {
 
-         LoadingInterceptor.request = function (config) {
+         LoadingInterceptor.request = (config) => {
             //I want to have a condition to not show the overlay on specific calls
-            if(shouldShowOverlay(config.method, config.url))
+            if(shouldShowOverlay(config.method, config.url)) {
                processRequest();
+            }
+
             return config || $q.when(config);
          };
 
-         LoadingInterceptor.response = function (response) {
+         LoadingInterceptor.response = (response) => {
             processResponse();
             return response || $q.when(response);
          };
 
-         LoadingInterceptor.responseError = function (rejection) {
+         LoadingInterceptor.responseError = (rejection) => {
             processResponse();
             return $q.reject(rejection);
          };
@@ -77,7 +75,7 @@ function Loader($q, $timeout, LoadingInterceptor, loaderConfig, LoadingDisplay) 
             //Since we don't know if another XHR request will be made, pause before
             //hiding the overlay. If another XHR request comes in then the overlay
             //will stay visible which prevents a flicker
-            timerPromiseHide = $timeout(function () {
+            timerPromiseHide = $timeout(() => {
                //Make sure queue is still 0 since a new XHR request may have come in
                //while timer was running
                if (queue.length === 0) {

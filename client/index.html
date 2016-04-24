@@ -4,14 +4,17 @@
    <meta charset="UTF-8">
    <title>Angular with Webpack</title>
    <link rel="stylesheet" href="../node_modules/flat-ui/bootstrap/css/bootstrap.css">
+   <link rel="stylesheet" href="../node_modules/font-awesome/css/font-awesome.min.css">
 </head>
 <body class="container">
 
 <app></app>
 
-<div loading delay="100">
-   <br /><!--<img src="content/images/spinner.gif" />-->&nbsp;&nbsp;Loading
-</div>
+<loading >
+   <span class="sr-only">Loading...</span>
+   <i class="fa fa-refresh fa-spin fa-3x fa-fw margin-bottom"></i>
+</loading>
+
 <script src="https://cdn.firebase.com/js/client/2.2.4/firebase.js"></script>
 <script src="../node_modules/angular/angular.js"></script>
 <script src="dist/bundle.js"></script>

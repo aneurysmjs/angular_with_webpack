@@ -34,7 +34,7 @@
 /******/ 	__webpack_require__.c = installedModules;
 
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "http://localhost:3000/assets/97e6c7f5cda066fb2e76";
+/******/ 	__webpack_require__.p = "http://localhost:3000/assets/22a0efd3d02673aeaf74";
 
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
@@ -21541,7 +21541,7 @@
 /* 217 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"site-wrapper\">\n\n   <nav>\n      <ul class=\"nav masthead-nav\">\n         <!--<li class=\"active\"><a href=\"#\">Home</a></li>-->\n         <li><a ui-sref=\"students\">Students</a></li>\n         <!--<li><a href=\"#\">Contact</a></li>-->\n      </ul>\n   </nav>\n\n   <ui-view></ui-view>\n\n\n</div>";
+	module.exports = "<div class=\"site-wrapper\">\n\n   <nav>\n      <ul class=\"nav masthead-nav\">\n         <!--<li class=\"active\"><a href=\"#\">Home</a></li>-->\n         <li><a ui-sref=\"students\">Students</a></li>\n         <!--<li><a href=\"#\">Contact</a></li>-->\n      </ul>\n   </nav>\n\n   <ui-view></ui-view>\n\n\n   <footer id=\"olgahFooter\">\n      All rights Reserved, Coco Interactivo 2016\n   </footer>\n\n\n</div>";
 
 /***/ },
 /* 218 */
@@ -21578,7 +21578,7 @@
 
 
 	// module
-	exports.push([module.id, "", ""]);
+	exports.push([module.id, "#olgahFooter {\n  position: absolute;\n  bottom: 0;\n}\n", ""]);
 
 	// exports
 
@@ -21716,7 +21716,7 @@
 	      scope: {
 	         delay: '@'
 	      },
-	      template: '\n         <div id="overlay-container" class="overlayContainer">\n            <div id="overlay-background" class="overlayBackground"></div>\n            <div id="overlay-content" class="overlayContent">\n              <ng-transclude></ng-transclude>\n            </div>\n         </div>',
+	      template: '\n         <div id="loader-container" class="loaderContainer">\n            <div id="loader-background" class="loaderBackground"></div>\n            <div id="loader-content" class="loaderContent">\n              <ng-transclude></ng-transclude>\n            </div>\n         </div>',
 	      link: link
 	   };
 
@@ -21729,15 +21729,11 @@
 	          queue = [],
 	          loadingConfig = loaderConfig.getConfig();
 
-	      function getOverlayContainer() {
-	         return document.getElementById('overlay-container');
-	      }
-
 	      init();
 
 	      function init() {
 	         wireUpHttpInterceptor();
-	         overlayContainer = getOverlayContainer();
+	         overlayContainer = document.querySelector('#loader-container');
 	      }
 
 	      //Hook into httpInterceptor factory request/response/responseError functions
@@ -21745,7 +21741,10 @@
 
 	         LoadingInterceptor.request = function (config) {
 	            //I want to have a condition to not show the overlay on specific calls
-	            if (shouldShowOverlay(config.method, config.url)) processRequest();
+	            if (shouldShowOverlay(config.method, config.url)) {
+	               processRequest();
+	            }
+
 	            return config || $q.when(config);
 	         };
 
@@ -21853,7 +21852,7 @@
 
 
 	// module
-	exports.push([module.id, "overlayContainer {\n  display: none;\n}\n.overlayBackground {\n  top: 0;\n  left: 0;\n  padding-left: 100px;\n  position: absolute;\n  z-index: 1000;\n  height: 100%;\n  width: 100%;\n  background-color: #808080;\n  opacity: 0.3;\n}\n.overlayContent {\n  position: absolute;\n  border: 1px solid #000;\n  background-color: #fff;\n  font-weight: bold;\n  height: 100px;\n  width: 300px;\n  z-index: 1000;\n  text-align: center;\n}\n", ""]);
+	exports.push([module.id, "loaderContainer {\n  display: none;\n}\n.loaderBackground {\n  top: 0;\n  left: 0;\n  padding-left: 100px;\n  position: absolute;\n  z-index: 1000;\n  height: 100%;\n  width: 100%;\n  background-color: #808080;\n  opacity: 0.3;\n}\n.loaderContent {\n  position: absolute;\n  border: 1px solid #000;\n  background-color: #fff;\n  font-weight: bold;\n  height: 100px;\n  width: 300px;\n  z-index: 1000;\n  text-align: center;\n}\n", ""]);
 
 	// exports
 
@@ -21898,7 +21897,7 @@
 
 	      this.$window = $window;
 
-	      var getComputedStyle = (function () {
+	      this.getComputedStyle = (function () {
 	         var func = null;
 
 	         if (document.defaultView && document.defaultView.getComputedStyle) {
@@ -21944,9 +21943,9 @@
 	            h = this.$window.innerHeight;
 	         }
 
-	         var content = document.getElementById('overlay-content'),
-	             contentWidth = parseInt(getComputedStyle(content, 'width').replace('px', '')),
-	             contentHeight = parseInt(getComputedStyle(content, 'height').replace('px', ''));
+	         var content = document.getElementById('loader-content'),
+	             contentWidth = parseInt(this.getComputedStyle(content, 'width').replace('px', '')),
+	             contentHeight = parseInt(this.getComputedStyle(content, 'height').replace('px', ''));
 
 	         content.style.top = h / 2 - contentHeight / 2 + 'px';
 	         content.style.left = w / 2 - contentWidth / 2 + 'px';
