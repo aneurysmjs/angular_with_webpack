@@ -34,7 +34,7 @@
 /******/ 	__webpack_require__.c = installedModules;
 
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "http://localhost:3000/assets/4a874b2822fa007ef261";
+/******/ 	__webpack_require__.p = "http://localhost:3000/assets/bce6909e8cb5455718cd";
 
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
@@ -20780,7 +20780,7 @@
 
 	var _angular2 = _interopRequireDefault(_angular);
 
-	var _students = __webpack_require__(215);
+	var _students = __webpack_require__(201);
 
 	var _students2 = _interopRequireDefault(_students);
 
@@ -20791,12 +20791,137 @@
 	exports.default = componentModule;
 
 /***/ },
-/* 201 */,
-/* 202 */,
-/* 203 */,
-/* 204 */,
-/* 205 */,
-/* 206 */,
+/* 201 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	   value: true
+	});
+
+	var _angular = __webpack_require__(192);
+
+	var _angular2 = _interopRequireDefault(_angular);
+
+	var _students = __webpack_require__(202);
+
+	var _students2 = _interopRequireDefault(_students);
+
+	var _students3 = __webpack_require__(203);
+
+	var _students4 = _interopRequireDefault(_students3);
+
+	var _students5 = __webpack_require__(209);
+
+	var _students6 = _interopRequireDefault(_students5);
+
+	var _students7 = __webpack_require__(210);
+
+	var _students8 = _interopRequireDefault(_students7);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var studentsModule = _angular2.default.module('students', []).config(_students2.default).component('students', _students4.default).controller('StudentsController', _students6.default).service('StudentsService', _students8.default);
+
+	exports.default = studentsModule;
+
+/***/ },
+/* 202 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	   value: true
+	});
+	studentsRoutes.$inject = ['$stateProvider', '$urlRouterProvider'];
+
+	function studentsRoutes($stateProvider, $urlRouterProvider) {
+
+	   $urlRouterProvider.otherwise('/students');
+
+	   $stateProvider.state('students', {
+	      url: '/students',
+	      template: '<students></students>'
+	   });
+	}
+
+	exports.default = studentsRoutes;
+
+/***/ },
+/* 203 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _students = __webpack_require__(204);
+
+	var _students2 = _interopRequireDefault(_students);
+
+	__webpack_require__(205);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var studentsComponent = {
+	  template: _students2.default,
+	  controller: 'StudentsController',
+	  bindings: {}
+	};
+
+	exports.default = studentsComponent;
+
+/***/ },
+/* 204 */
+/***/ function(module, exports) {
+
+	module.exports = "<form name=\"poleForm\">\n\n   <div class=\"row\">\n      <div class=\"col-md-3\">\n         <label class=\"\" for=\"name\">Nombre</label>\n         <input id=\"name\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"name\"\n                ng-model=\"$ctrl.student.name\"\n                placeholder=\"\">\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"lastName\">Apellidos</label>\n         <input id=\"lastName\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"lastName\"\n                ng-model=\"$ctrl.student.lastName\"\n                placeholder=\"\">\n      </div>\n      <div class=\"col-md-6\">\n\n         <div style=\"display:inline-block; min-height:290px;\">\n            <label class=\"\"\n                   for=\"lastName\">Fecha de Inscripción</label>\n            <uib-datepicker ng-model=\"$ctrl.student.inscriptionDate\"\n                            class=\"well well-sm\"\n                            datepicker-options=\"inlineOptions\">\n            </uib-datepicker>\n         </div>\n         <!--<label class=\"sr-only\"\n                for=\"inscriptionDate\">Fecha de Matrícula</label>\n         <p class=\"input-group\">\n            <input id=\"inscriptionDate\"\n                   type=\"text\"\n                   name=\"inscriptionDate\"\n                   class=\"form-control\"\n                   uib-datepicker-popup=\"{{$ctrl.format}}\"\n                   ng-model=\"$ctrl.student.inscriptionDate\"\n                   is-open=\"$ctrl.popup.opened\"\n                   datepicker-options=\"$ctrl.dateOptions\"\n                   close-text=\"Cerrar\"\n                   alt-input-formats=\"$ctrl.altInputFormats\" />\n            <span class=\"input-group-btn\">\n               <button type=\"button\"\n                       class=\"btn btn-default\"\n                       ng-click=\"$ctrl.openCalendar()\">\n                  <i class=\"glyphicon glyphicon-calendar\"></i>\n               </button>\n            </span>\n         </p>-->\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"children\">Hijos</label>\n         <label class=\"checkbox-inline\">\n            <input type=\"checkbox\"\n                   id=\"children\"\n                   name=\"children\"\n                   ng-model=\"$ctrl.student.children\">\n         </label>\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"documentType\">Tipo de Documento</label>\n         <select id=\"documentType\"\n                 name=\"documentType\"\n                 ng-model=\"$ctrl.student.documentType\"\n                 class=\"form-control\"\n                 ng-options=\"doc for doc in $ctrl.documentTypes\">\n         </select>\n      </div>\n\n\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"phone\">Teléfono</label>\n         <input id=\"phone\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"phone\"\n                ng-model=\"$ctrl.student.phone\"\n                placeholder=\"\">\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"mobile\">Celular</label>\n         <input id=\"mobile\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"mobile\"\n                ng-model=\"$ctrl.student.mobile\"\n                placeholder=\"\">\n      </div>\n     <!-- <pre>{{$ctrl.olgah | json}}</pre>-->\n   </div>\n   <div class=\"row\">\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"address\">Dirección</label>\n         <input id=\"address\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"address\"\n                ng-model=\"$ctrl.student.address\"\n                placeholder=\"\">\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"email\">Email</label>\n         <input id=\"email\"\n                type=\"email\"\n                class=\"form-control\"\n                name=\"email\"\n                ng-model=\"$ctrl.student.email\"\n                placeholder=\"\">\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"healthInsurance\">EPS</label>\n         <input id=\"healthInsurance\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"healthInsurance\"\n                ng-model=\"$ctrl.student.healthInsurance\"\n                placeholder=\"\">\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"weight\">Peso</label>\n         <input id=\"weight\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"weight\"\n                ng-model=\"$ctrl.student.weight\"\n                placeholder=\"\">\n      </div>\n   </div>\n   <div class=\"row\">\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"height\">Estatura</label>\n         <input id=\"height\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"height\"\n                ng-model=\"$ctrl.student.height\"\n                placeholder=\"\">\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"Profession\">Profesión</label>\n         <input id=\"Profession\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"Profession\"\n                ng-model=\"$ctrl.student.Profession\"\n                placeholder=\"\">\n      </div>\n   </div>\n   <hr>\n   <div class=\"row\">\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"ocupation\">Ocupación</label>\n         <select id=\"ocupation\"\n                 name=\"ocupation\"\n                 ng-model=\"$ctrl.student.ocupation\"\n                 class=\"form-control\"\n                 ng-options=\"doc for doc in $ctrl.ocupations\">\n         </select>\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"companyName\">Empresa donde trabaja</label>\n         <input id=\"companyName\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"companyName\"\n                ng-model=\"$ctrl.student.companyName\"\n                placeholder=\"\">\n\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"companyPhone\">Teléfono Empresa</label>\n         <input id=\"companyPhone\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"companyPhone\"\n                ng-model=\"$ctrl.student.companyPhone\"\n                placeholder=\"\">\n\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"charge\">Cargo</label>\n         <input id=\"charge\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"charge\"\n                ng-model=\"$ctrl.student.charge\"\n                placeholder=\"\">\n\n      </div>\n   </div>\n   <div class=\"row\">\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"howYouMeetPoleCenter\">¿Como conoció Pole Center?</label>\n         <input id=\"howYouMeetPoleCenter\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"howYouMeetPoleCenter\"\n                ng-model=\"$ctrl.student.howYouMeetPoleCenter\"\n                placeholder=\"\">\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"plan\">Plan</label>\n         <select id=\"plan\"\n                 name=\"plan\"\n                 ng-model=\"$ctrl.student.plan\"\n                 class=\"form-control\"\n                 ng-options=\"plan for plan in $ctrl.plans\">\n         </select>\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"inCaseOfEmergency\">En caso de emergencia comunicarse con</label>\n         <input id=\"inCaseOfEmergency\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"inCaseOfEmergency\"\n                ng-model=\"$ctrl.student.inCaseOfEmergency.name\"\n                placeholder=\"Nombre\">\n         <input\n                type=\"text\"\n                class=\"form-control\"\n                name=\"inCaseOfEmergency\"\n                ng-model=\"$ctrl.student.inCaseOfEmergency.phone\"\n                placeholder=\"Teléfono\">\n      </div>\n      <div class=\"col-md-3\">\n         <button class=\"btn btn default\"\n                  ng-click=\"$ctrl.addStudent()\">Guardar</button>\n      </div>\n   </div>\n\n\n\n\n</form>\n";
+
+/***/ },
+/* 205 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(206);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(208)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../../../node_modules/css-loader/index.js!./../../../../node_modules/stylus-loader/index.js!./students.styl", function() {
+				var newContent = require("!!./../../../../node_modules/css-loader/index.js!./../../../../node_modules/stylus-loader/index.js!./students.styl");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 206 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(207)();
+	// imports
+
+
+	// module
+	exports.push([module.id, "", ""]);
+
+	// exports
+
+
+/***/ },
 /* 207 */
 /***/ function(module, exports) {
 
@@ -21107,8 +21232,165 @@
 
 
 /***/ },
-/* 209 */,
-/* 210 */,
+/* 209 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	Object.defineProperty(exports, "__esModule", {
+	   value: true
+	});
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var StudentsController = (function () {
+	   function StudentsController(StudentsService, $firebaseArray) {
+	      _classCallCheck(this, StudentsController);
+
+	      var ref = new Firebase('https://olgah.firebaseio.com/users');
+
+	      this.olgah = $firebaseArray(ref);
+	      this.olgah.$loaded().then(this.successHandler).catch(this.catchHandler);
+
+	      this.documentTypes = ['TI', 'CC', 'PAS'];
+	      this.ocupations = ['dependiente', 'independiente', 'estudiante'];
+	      this.plans = ['cuarzo', 'rubí', 'záfiro', 'esmeralda', 'turqueza', 'diamante'];
+	      this.dateOptions = {
+	         formatYear: 'yy',
+	         maxDate: new Date(2020, 5, 22),
+	         minDate: new Date(),
+	         startingDay: 1
+	      };
+
+	      this.altInputFormats = ['M!/d!/yyyy'];
+	      this.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
+	      this.format = this.formats[0];
+
+	      this.popup = {
+	         opened: false
+	      };
+
+	      this.inlineOptions = {
+	         //customClass: getDayClass,
+	         minDate: new Date(),
+	         showWeeks: true
+	      };
+	   }
+
+	   _createClass(StudentsController, [{
+	      key: 'successHandler',
+	      value: function successHandler(students) {
+
+	         console.log('this');
+	         console.log(this);
+
+	         //console.log("loaded record:", obj.$id, obj.someOtherKeyInData);
+	         console.log("loaded record:");
+
+	         //this.students = students;
+
+	         console.log('students');
+	         console.log(students);
+
+	         /*this.students.forEach(student => {
+	            console.log('student');
+	            console.log(student);
+	         });*/
+	      }
+	   }, {
+	      key: 'catchHandler',
+	      value: function catchHandler(error) {
+	         console.log('error');
+	         console.log(error);
+	      }
+	   }, {
+	      key: 'openCalendar',
+	      value: function openCalendar() {
+	         this.popup.opened = true;
+	      }
+	   }, {
+	      key: 'addStudent',
+	      value: function addStudent() {
+	         console.log('this.student');
+	         console.log(this.student);
+	         this.students.$add(this.student).then(this.successHandler);
+	      }
+	   }]);
+
+	   return StudentsController;
+	})();
+
+	StudentsController.$inject = ['StudentsService', '$firebaseArray'];
+
+	exports.default = StudentsController;
+
+/***/ },
+/* 210 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	Object.defineProperty(exports, "__esModule", {
+	   value: true
+	});
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var JentooService = (function () {
+	   function JentooService($firebaseObject, $firebaseArray) {
+	      _classCallCheck(this, JentooService);
+
+	      this.$firebaseArray = $firebaseArray;
+	      this.ref = new Firebase('https://olgah.firebaseio.com/users');
+	      this.olgah = this.$firebaseArray(this.ref);
+	   }
+
+	   _createClass(JentooService, [{
+	      key: 'getStudents',
+	      value: function getStudents() {
+	         this.olgah.$loaded().then(this.successHandler).catch(this.catchHandler);
+	      }
+	   }, {
+	      key: 'successHandler',
+	      value: function successHandler(e) {
+
+	         console.log('e');
+	         console.log(e);
+
+	         //console.log("loaded record:", obj.$id, obj.someOtherKeyInData);
+	         console.log("loaded record:");
+
+	         self.olgah.forEach(function (student) {
+	            console.log('student');
+	            console.log(student);
+	         });
+	         // To iterate the key/value pairs of the object, use angular.forEach()
+	         /* angular.forEach(obj, function(value, key) {
+	          console.log(key, value);
+	          });*/
+
+	         return e;
+	      }
+	   }, {
+	      key: 'catchHandler',
+	      value: function catchHandler(error) {
+	         console.log('error');
+	         console.log(error);
+	      }
+	   }]);
+
+	   return JentooService;
+	})();
+
+	JentooService.$inject = ['$firebaseObject', '$firebaseArray'];
+
+	exports.default = JentooService;
+
+/***/ },
 /* 211 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -21177,304 +21459,6 @@
 
 	// exports
 
-
-/***/ },
-/* 215 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	   value: true
-	});
-
-	var _angular = __webpack_require__(192);
-
-	var _angular2 = _interopRequireDefault(_angular);
-
-	var _students = __webpack_require__(216);
-
-	var _students2 = _interopRequireDefault(_students);
-
-	var _students3 = __webpack_require__(217);
-
-	var _students4 = _interopRequireDefault(_students3);
-
-	var _students5 = __webpack_require__(221);
-
-	var _students6 = _interopRequireDefault(_students5);
-
-	var _students7 = __webpack_require__(222);
-
-	var _students8 = _interopRequireDefault(_students7);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var studentsModule = _angular2.default.module('students', []).config(_students2.default).component('students', _students4.default).controller('StudentsController', _students6.default).service('StudentsService', _students8.default);
-
-	exports.default = studentsModule;
-
-/***/ },
-/* 216 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	   value: true
-	});
-	studentsRoutes.$inject = ['$stateProvider', '$urlRouterProvider'];
-
-	function studentsRoutes($stateProvider, $urlRouterProvider) {
-
-	   $urlRouterProvider.otherwise('/students');
-
-	   $stateProvider.state('students', {
-	      url: '/students',
-	      template: '<students></students>'
-	   });
-	}
-
-	exports.default = studentsRoutes;
-
-/***/ },
-/* 217 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _students = __webpack_require__(218);
-
-	var _students2 = _interopRequireDefault(_students);
-
-	__webpack_require__(219);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var studentsComponent = {
-	  template: _students2.default,
-	  controller: 'StudentsController',
-	  bindings: {}
-	};
-
-	exports.default = studentsComponent;
-
-/***/ },
-/* 218 */
-/***/ function(module, exports) {
-
-	module.exports = "<form name=\"poleForm\">\n\n   <div class=\"row\">\n      <div class=\"col-md-3\">\n         <label class=\"\" for=\"name\">Nombre</label>\n         <input id=\"name\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"name\"\n                ng-model=\"$ctrl.student.name\"\n                placeholder=\"\">\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"lastName\">Apellidos</label>\n         <input id=\"lastName\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"lastName\"\n                ng-model=\"$ctrl.student.lastName\"\n                placeholder=\"\">\n      </div>\n      <div class=\"col-md-6\">\n\n         <div style=\"display:inline-block; min-height:290px;\">\n            <label class=\"\"\n                   for=\"lastName\">Fecha de Inscripción</label>\n            <uib-datepicker ng-model=\"$ctrl.student.inscriptionDate\"\n                            class=\"well well-sm\"\n                            datepicker-options=\"inlineOptions\">\n            </uib-datepicker>\n         </div>\n         <!--<label class=\"sr-only\"\n                for=\"inscriptionDate\">Fecha de Matrícula</label>\n         <p class=\"input-group\">\n            <input id=\"inscriptionDate\"\n                   type=\"text\"\n                   name=\"inscriptionDate\"\n                   class=\"form-control\"\n                   uib-datepicker-popup=\"{{$ctrl.format}}\"\n                   ng-model=\"$ctrl.student.inscriptionDate\"\n                   is-open=\"$ctrl.popup.opened\"\n                   datepicker-options=\"$ctrl.dateOptions\"\n                   close-text=\"Cerrar\"\n                   alt-input-formats=\"$ctrl.altInputFormats\" />\n            <span class=\"input-group-btn\">\n               <button type=\"button\"\n                       class=\"btn btn-default\"\n                       ng-click=\"$ctrl.openCalendar()\">\n                  <i class=\"glyphicon glyphicon-calendar\"></i>\n               </button>\n            </span>\n         </p>-->\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"children\">Hijos</label>\n         <label class=\"checkbox-inline\">\n            <input type=\"checkbox\"\n                   id=\"children\"\n                   name=\"children\"\n                   ng-model=\"$ctrl.student.children\">\n         </label>\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"documentType\">Tipo de Documento</label>\n         <select id=\"documentType\"\n                 name=\"documentType\"\n                 ng-model=\"$ctrl.student.documentType\"\n                 class=\"form-control\"\n                 ng-options=\"doc for doc in $ctrl.documentTypes\">\n         </select>\n      </div>\n\n\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"phone\">Teléfono</label>\n         <input id=\"phone\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"phone\"\n                ng-model=\"$ctrl.student.phone\"\n                placeholder=\"\">\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"mobile\">Celular</label>\n         <input id=\"mobile\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"mobile\"\n                ng-model=\"$ctrl.student.mobile\"\n                placeholder=\"\">\n      </div>\n     <!-- <pre>{{$ctrl.olgah | json}}</pre>-->\n   </div>\n   <div class=\"row\">\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"address\">Dirección</label>\n         <input id=\"address\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"address\"\n                ng-model=\"$ctrl.student.address\"\n                placeholder=\"\">\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"email\">Email</label>\n         <input id=\"email\"\n                type=\"email\"\n                class=\"form-control\"\n                name=\"email\"\n                ng-model=\"$ctrl.student.email\"\n                placeholder=\"\">\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"healthInsurance\">EPS</label>\n         <input id=\"healthInsurance\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"healthInsurance\"\n                ng-model=\"$ctrl.student.healthInsurance\"\n                placeholder=\"\">\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"weight\">Peso</label>\n         <input id=\"weight\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"weight\"\n                ng-model=\"$ctrl.student.weight\"\n                placeholder=\"\">\n      </div>\n   </div>\n   <div class=\"row\">\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"height\">Estatura</label>\n         <input id=\"height\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"height\"\n                ng-model=\"$ctrl.student.height\"\n                placeholder=\"\">\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"Profession\">Profesión</label>\n         <input id=\"Profession\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"Profession\"\n                ng-model=\"$ctrl.student.Profession\"\n                placeholder=\"\">\n      </div>\n   </div>\n   <hr>\n   <div class=\"row\">\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"ocupation\">Ocupación</label>\n         <select id=\"ocupation\"\n                 name=\"ocupation\"\n                 ng-model=\"$ctrl.student.ocupation\"\n                 class=\"form-control\"\n                 ng-options=\"doc for doc in $ctrl.ocupations\">\n         </select>\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"companyName\">Empresa donde trabaja</label>\n         <input id=\"companyName\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"companyName\"\n                ng-model=\"$ctrl.student.companyName\"\n                placeholder=\"\">\n\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"companyPhone\">Teléfono Empresa</label>\n         <input id=\"companyPhone\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"companyPhone\"\n                ng-model=\"$ctrl.student.companyPhone\"\n                placeholder=\"\">\n\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"charge\">Cargo</label>\n         <input id=\"charge\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"charge\"\n                ng-model=\"$ctrl.student.charge\"\n                placeholder=\"\">\n\n      </div>\n   </div>\n   <div class=\"row\">\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"howYouMeetPoleCenter\">¿Como conoció Pole Center?</label>\n         <input id=\"howYouMeetPoleCenter\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"howYouMeetPoleCenter\"\n                ng-model=\"$ctrl.student.howYouMeetPoleCenter\"\n                placeholder=\"\">\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"plan\">Plan</label>\n         <select id=\"plan\"\n                 name=\"plan\"\n                 ng-model=\"$ctrl.student.plan\"\n                 class=\"form-control\"\n                 ng-options=\"plan for plan in $ctrl.plans\">\n         </select>\n      </div>\n      <div class=\"col-md-3\">\n         <label class=\"\"\n                for=\"inCaseOfEmergency\">En caso de emergencia comunicarse con</label>\n         <input id=\"inCaseOfEmergency\"\n                type=\"text\"\n                class=\"form-control\"\n                name=\"inCaseOfEmergency\"\n                ng-model=\"$ctrl.student.inCaseOfEmergency.name\"\n                placeholder=\"Nombre\">\n         <input\n                type=\"text\"\n                class=\"form-control\"\n                name=\"inCaseOfEmergency\"\n                ng-model=\"$ctrl.student.inCaseOfEmergency.phone\"\n                placeholder=\"Teléfono\">\n      </div>\n      <div class=\"col-md-3\">\n         <button class=\"btn btn default\"\n                  ng-click=\"$ctrl.addStudent()\">Guardar</button>\n      </div>\n   </div>\n\n\n\n\n</form>\n";
-
-/***/ },
-/* 219 */
-/***/ function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-
-	// load the styles
-	var content = __webpack_require__(220);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(208)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../../../../node_modules/css-loader/index.js!./../../../../node_modules/stylus-loader/index.js!./students.styl", function() {
-				var newContent = require("!!./../../../../node_modules/css-loader/index.js!./../../../../node_modules/stylus-loader/index.js!./students.styl");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 220 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(207)();
-	// imports
-
-
-	// module
-	exports.push([module.id, "", ""]);
-
-	// exports
-
-
-/***/ },
-/* 221 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	   value: true
-	});
-	StudentsController.$inject = ['StudentsService', '$firebaseArray'];
-
-	function StudentsController(StudentsService, $firebaseArray) {
-	   'use strict';
-
-	   var self = this;
-
-	   var ref = new Firebase('https://olgah.firebaseio.com/users');
-
-	   console.log('ref');
-	   console.log(ref);
-
-	   self.documentTypes = ['TI', 'CC', 'PAS'];
-	   self.ocupations = ['dependiente', 'independiente', 'estudiante'];
-	   self.plans = ['cuarzo', 'rubí', 'záfiro', 'esmeralda', 'turqueza', 'diamante'];
-
-	   self.olgah = $firebaseArray(ref);
-
-	   self.olgah.$loaded().then(successHandler).catch(catchHandler);
-
-	   function successHandler(e) {
-
-	      console.log('e');
-	      console.log(e);
-
-	      //console.log("loaded record:", obj.$id, obj.someOtherKeyInData);
-	      console.log("loaded record:");
-
-	      self.olgah.forEach(function (student) {
-	         console.log('student');
-	         console.log(student);
-	      });
-	      // To iterate the key/value pairs of the object, use angular.forEach()
-	      /* angular.forEach(obj, function(value, key) {
-	       console.log(key, value);
-	       });*/
-	   }
-
-	   function catchHandler(error) {
-	      console.log('error');
-	      console.log(error);
-	   }
-
-	   self.inlineOptions = {
-	      //customClass: getDayClass,
-	      minDate: new Date(),
-	      showWeeks: true
-	   };
-
-	   /*function getDayClass(data) {
-	      var date = data.date,
-	         mode = data.mode;
-	      if (mode === 'day') {
-	         var dayToCheck = new Date(date).setHours(0,0,0,0);
-	          for (var i = 0; i < self.events.length; i++) {
-	            var currentDay = new Date(self.events[i].date).setHours(0,0,0,0);
-	             if (dayToCheck === currentDay) {
-	               return self.events[i].status;
-	            }
-	         }
-	      }
-	       return '';
-	   }*/
-
-	   self.dateOptions = {
-	      formatYear: 'yy',
-	      maxDate: new Date(2020, 5, 22),
-	      minDate: new Date(),
-	      startingDay: 1
-	   };
-
-	   self.altInputFormats = ['M!/d!/yyyy'];
-	   self.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
-	   self.format = self.formats[0];
-
-	   self.popup = {
-	      opened: false
-	   };
-
-	   self.openCalendar = openCalendar;
-
-	   function openCalendar() {
-	      self.popup.opened = true;
-	   }
-
-	   self.addStudent = function () {
-	      console.log('self.student');
-	      console.log(self.student);
-	      self.olgah.$add(self.student).then(successHandler);
-	   };
-	}
-
-	exports.default = StudentsController;
-
-/***/ },
-/* 222 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-	Object.defineProperty(exports, "__esModule", {
-	   value: true
-	});
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	var JentooService = (function () {
-	   function JentooService($firebaseObject, $firebaseArray) {
-	      _classCallCheck(this, JentooService);
-
-	      this.$firebaseArray = $firebaseArray;
-	      this.ref = new Firebase('https://olgah.firebaseio.com/users');
-	      this.olgah = this.$firebaseArray(this.ref);
-	   }
-
-	   _createClass(JentooService, [{
-	      key: 'getStudents',
-	      value: function getStudents() {
-	         this.olgah.$loaded().then(this.successHandler).catch(this.catchHandler);
-	      }
-	   }, {
-	      key: 'successHandler',
-	      value: function successHandler(e) {
-
-	         console.log('e');
-	         console.log(e);
-
-	         //console.log("loaded record:", obj.$id, obj.someOtherKeyInData);
-	         console.log("loaded record:");
-
-	         self.olgah.forEach(function (student) {
-	            console.log('student');
-	            console.log(student);
-	         });
-	         // To iterate the key/value pairs of the object, use angular.forEach()
-	         /* angular.forEach(obj, function(value, key) {
-	          console.log(key, value);
-	          });*/
-
-	         return e;
-	      }
-	   }, {
-	      key: 'catchHandler',
-	      value: function catchHandler(error) {
-	         console.log('error');
-	         console.log(error);
-	      }
-	   }]);
-
-	   return JentooService;
-	})();
-
-	JentooService.$inject = ['$firebaseObject', '$firebaseArray'];
-
-	exports.default = JentooService;
 
 /***/ }
 /******/ ]);

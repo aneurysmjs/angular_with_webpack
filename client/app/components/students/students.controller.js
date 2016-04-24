@@ -1,102 +1,75 @@
-StudentsController.$inject = ['StudentsService', '$firebaseArray'];
+class StudentsController {
 
-function StudentsController(StudentsService, $firebaseArray) {
-   'use strict';
+   constructor(StudentsService, $firebaseArray) {
 
-   let self = this;
+      let ref = new Firebase('https://olgah.firebaseio.com/users');
 
-   let ref = new Firebase('https://olgah.firebaseio.com/users');
+      this.olgah = $firebaseArray(ref);
+      this.olgah.$loaded().then(this.successHandler).catch(this.catchHandler);
 
-   console.log('ref');
-   console.log(ref);
+      this.documentTypes = ['TI', 'CC', 'PAS'];
+      this.ocupations = ['dependiente', 'independiente', 'estudiante'];
+      this.plans = ['cuarzo', 'rubí', 'záfiro', 'esmeralda', 'turqueza', 'diamante'];
+      this.dateOptions = {
+         formatYear: 'yy',
+         maxDate: new Date(2020, 5, 22),
+         minDate: new Date(),
+         startingDay: 1
+      };
 
+      this.altInputFormats = ['M!/d!/yyyy'];
+      this.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
+      this.format = this.formats[0];
 
-   self.documentTypes = ['TI', 'CC', 'PAS'];
-   self.ocupations = ['dependiente', 'independiente', 'estudiante'];
-   self.plans = ['cuarzo', 'rubí', 'záfiro', 'esmeralda', 'turqueza', 'diamante'];
+      this.popup = {
+         opened: false
+      };
 
-   self.olgah = $firebaseArray(ref);
-   
+      this.inlineOptions = {
+         //customClass: getDayClass,
+         minDate: new Date(),
+         showWeeks: true
+      };
 
-   self.olgah.$loaded().then(successHandler).catch(catchHandler);
+   }
 
-   function successHandler(e) {
+   successHandler(students) {
 
-      console.log('e');
-      console.log(e);
+      console.log('this');
+      console.log(this);
 
       //console.log("loaded record:", obj.$id, obj.someOtherKeyInData);
       console.log("loaded record:");
 
-      self.olgah.forEach(student => {
+      //this.students = students;
+
+      console.log('students');
+      console.log(students);
+
+      /*this.students.forEach(student => {
          console.log('student');
          console.log(student);
-      });
-      // To iterate the key/value pairs of the object, use angular.forEach()
-      /* angular.forEach(obj, function(value, key) {
-       console.log(key, value);
-       });*/
+      });*/
 
    }
 
-   function catchHandler(error) {
+   catchHandler(error) {
       console.log('error');
       console.log(error);
    }
 
-   self.inlineOptions = {
-      //customClass: getDayClass,
-      minDate: new Date(),
-      showWeeks: true
-   };
-
-   /*function getDayClass(data) {
-      var date = data.date,
-         mode = data.mode;
-      if (mode === 'day') {
-         var dayToCheck = new Date(date).setHours(0,0,0,0);
-
-         for (var i = 0; i < self.events.length; i++) {
-            var currentDay = new Date(self.events[i].date).setHours(0,0,0,0);
-
-            if (dayToCheck === currentDay) {
-               return self.events[i].status;
-            }
-         }
-      }
-
-      return '';
-   }*/
-
-
-   self.dateOptions = {
-      formatYear: 'yy',
-      maxDate: new Date(2020, 5, 22),
-      minDate: new Date(),
-      startingDay: 1
-   };
-
-
-   self.altInputFormats = ['M!/d!/yyyy'];
-   self.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
-   self.format = self.formats[0];
-
-   self.popup = {
-      opened: false
-   };
-
-   self.openCalendar = openCalendar;
-
-   function openCalendar() {
-      self.popup.opened = true;
+   openCalendar() {
+      this.popup.opened = true;
    }
 
-   self.addStudent = function() {
-      console.log('self.student');
-      console.log(self.student);
-      self.olgah.$add(self.student).then(successHandler);
-   };
+   addStudent() {
+      console.log('this.student');
+      console.log(this.student);
+      this.students.$add(this.student).then(this.successHandler);
+   }
 
 }
+
+StudentsController.$inject = ['StudentsService', '$firebaseArray'];
 
 export default StudentsController;
