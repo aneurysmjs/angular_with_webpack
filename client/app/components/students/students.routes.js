@@ -8,6 +8,10 @@ function studentsRoutes($stateProvider, $urlRouterProvider) {
       .state('students', {
          url: '/students',
          template: '<students></students>'
+      })
+      .state('students.create', {
+         url: '/create',
+         template: '<students-form ctrl="StudentsController"></students-form>'
       });
 
 }

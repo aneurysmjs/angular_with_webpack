@@ -1,278 +1,30 @@
-<form name="poleForm">
+<ui-view>
 
-   <div class="row">
-      <div class="col-md-3">
-         <label class="" for="name">Nombre</label>
-         <input id="name"
-                type="text"
-                class="form-control"
-                name="name"
-                ng-model="$ctrl.student.name"
-                placeholder="">
-      </div>
-      <div class="col-md-3">
-         <label class=""
-                for="lastName">Apellidos</label>
-         <input id="lastName"
-                type="text"
-                class="form-control"
-                name="lastName"
-                ng-model="$ctrl.student.lastName"
-                placeholder="">
-      </div>
-      <div class="col-md-6">
+   <button type="button" ui-sref="students.create">Create</button>
 
-         <div style="display:inline-block; min-height:290px;">
-            <label class=""
-                   for="lastName">Fecha de Inscripción</label>
-            <uib-datepicker ng-model="$ctrl.student.inscriptionDate"
-                            class="well well-sm"
-                            datepicker-options="inlineOptions">
-            </uib-datepicker>
-         </div>
-         <!--<label class="sr-only"
-                for="inscriptionDate">Fecha de Matrícula</label>
-         <p class="input-group">
-            <input id="inscriptionDate"
-                   type="text"
-                   name="inscriptionDate"
-                   class="form-control"
-                   uib-datepicker-popup="{{$ctrl.format}}"
-                   ng-model="$ctrl.student.inscriptionDate"
-                   is-open="$ctrl.popup.opened"
-                   datepicker-options="$ctrl.dateOptions"
-                   close-text="Cerrar"
-                   alt-input-formats="$ctrl.altInputFormats" />
-            <span class="input-group-btn">
-               <button type="button"
-                       class="btn btn-default"
-                       ng-click="$ctrl.openCalendar()">
-                  <i class="glyphicon glyphicon-calendar"></i>
-               </button>
-            </span>
-         </p>-->
-      </div>
-      <div class="col-md-3">
-         <label class=""
-                for="children">Hijos</label>
-         <label class="checkbox-inline">
-            <input type="checkbox"
-                   id="children"
-                   name="children"
-                   ng-model="$ctrl.student.children">
-         </label>
-      </div>
-      <div class="col-md-3">
-         <label class=""
-                for="documentType">Tipo de Documento</label>
-         <select id="documentType"
-                 name="documentType"
-                 ng-model="$ctrl.student.documentType"
-                 class="form-control"
-                 ng-options="doc for doc in $ctrl.documentTypes">
-         </select>
-      </div>
+   <table class="table table-hover">
+      <thead>
+      <tr>
+         <th>First Name</th>
+         <th>Last Name</th>
+         <th>Email</th>
+         <th>Profession</th>
+         <th>Plan</th>
+         <th>&nbsp;</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="student in $ctrl.students track by $index">
+         <th ng-bind="student.name"></th>
+         <td ng-bind="student.lastName"></td>
+         <td ng-bind="student.email"></td>
+         <td ng-bind="student.Profession"></td>
+         <td ng-bind="student.plan"></td>
+         <td ng-click="$ctrl.deleteStudent(student)">
+            <span class="fui-cross"></span>
+         </td>
+      </tr>
+      </tbody>
+   </table>
 
-
-      <div class="col-md-3">
-         <label class=""
-                for="phone">Teléfono</label>
-         <input id="phone"
-                type="text"
-                class="form-control"
-                name="phone"
-                ng-model="$ctrl.student.phone"
-                placeholder="">
-      </div>
-      <div class="col-md-3">
-         <label class=""
-                for="mobile">Celular</label>
-         <input id="mobile"
-                type="text"
-                class="form-control"
-                name="mobile"
-                ng-model="$ctrl.student.mobile"
-                placeholder="">
-      </div>
-      <!-- <pre>{{$ctrl.olgah | json}}</pre>-->
-   </div>
-   <div class="row">
-      <div class="col-md-3">
-         <label class=""
-                for="address">Dirección</label>
-         <input id="address"
-                type="text"
-                class="form-control"
-                name="address"
-                ng-model="$ctrl.student.address"
-                placeholder="">
-      </div>
-      <div class="col-md-3">
-         <label class=""
-                for="email">Email</label>
-         <input id="email"
-                type="email"
-                class="form-control"
-                name="email"
-                ng-model="$ctrl.student.email"
-                placeholder="">
-      </div>
-      <div class="col-md-3">
-         <label class=""
-                for="healthInsurance">EPS</label>
-         <input id="healthInsurance"
-                type="text"
-                class="form-control"
-                name="healthInsurance"
-                ng-model="$ctrl.student.healthInsurance"
-                placeholder="">
-      </div>
-      <div class="col-md-3">
-         <label class=""
-                for="weight">Peso</label>
-         <input id="weight"
-                type="text"
-                class="form-control"
-                name="weight"
-                ng-model="$ctrl.student.weight"
-                placeholder="">
-      </div>
-   </div>
-   <div class="row">
-      <div class="col-md-3">
-         <label class=""
-                for="height">Estatura</label>
-         <input id="height"
-                type="text"
-                class="form-control"
-                name="height"
-                ng-model="$ctrl.student.height"
-                placeholder="">
-      </div>
-      <div class="col-md-3">
-         <label class=""
-                for="Profession">Profesión</label>
-         <input id="Profession"
-                type="text"
-                class="form-control"
-                name="Profession"
-                ng-model="$ctrl.student.profession"
-                placeholder="">
-      </div>
-   </div>
-   <hr>
-   <div class="row">
-      <div class="col-md-3">
-         <label class=""
-                for="ocupation">Ocupación</label>
-         <select id="ocupation"
-                 name="ocupation"
-                 ng-model="$ctrl.student.ocupation"
-                 class="form-control"
-                 ng-options="doc for doc in $ctrl.ocupations">
-         </select>
-      </div>
-      <div class="col-md-3">
-         <label class=""
-                for="companyName">Empresa donde trabaja</label>
-         <input id="companyName"
-                type="text"
-                class="form-control"
-                name="companyName"
-                ng-model="$ctrl.student.companyName"
-                placeholder="">
-
-      </div>
-      <div class="col-md-3">
-         <label class=""
-                for="companyPhone">Teléfono Empresa</label>
-         <input id="companyPhone"
-                type="text"
-                class="form-control"
-                name="companyPhone"
-                ng-model="$ctrl.student.companyPhone"
-                placeholder="">
-
-      </div>
-      <div class="col-md-3">
-         <label class=""
-                for="charge">Cargo</label>
-         <input id="charge"
-                type="text"
-                class="form-control"
-                name="charge"
-                ng-model="$ctrl.student.charge"
-                placeholder="">
-
-      </div>
-   </div>
-   <div class="row">
-      <div class="col-md-3">
-         <label class=""
-                for="howYouMeetPoleCenter">¿Como conoció Pole Center?</label>
-         <input id="howYouMeetPoleCenter"
-                type="text"
-                class="form-control"
-                name="howYouMeetPoleCenter"
-                ng-model="$ctrl.student.howYouMeetPoleCenter"
-                placeholder="">
-      </div>
-      <div class="col-md-3">
-         <label class=""
-                for="plan">Plan</label>
-         <select id="plan"
-                 name="plan"
-                 ng-model="$ctrl.student.plan"
-                 class="form-control"
-                 ng-options="plan for plan in $ctrl.plans">
-         </select>
-      </div>
-      <div class="col-md-3">
-         <label class=""
-                for="inCaseOfEmergency">En caso de emergencia comunicarse con</label>
-         <input id="inCaseOfEmergency"
-                type="text"
-                class="form-control"
-                name="inCaseOfEmergency"
-                ng-model="$ctrl.student.inCaseOfEmergency.name"
-                placeholder="Nombre">
-         <input
-                 type="text"
-                 class="form-control"
-                 name="inCaseOfEmergency"
-                 ng-model="$ctrl.student.inCaseOfEmergency.phone"
-                 placeholder="Teléfono">
-      </div>
-      <div class="col-md-3">
-         <button class="btn btn default"
-                 ng-click="$ctrl.addStudent()">Guardar
-         </button>
-      </div>
-   </div>
-
-</form>
-
-<table class="table table-hover">
-   <thead>
-   <tr>
-      <th>First Name</th>
-      <th>Last Name</th>
-      <th>Email</th>
-      <th>Profession</th>
-      <th>Plan</th>
-      <th>&nbsp;</th>
-   </tr>
-   </thead>
-   <tbody>
-   <tr ng-repeat="student in $ctrl.students track by $index">
-      <th ng-bind="student.name"></th>
-      <td ng-bind="student.lastName"></td>
-      <td ng-bind="student.email"></td>
-      <td ng-bind="student.Profession"></td>
-      <td ng-bind="student.plan"></td>
-      <td ng-click="$ctrl.deleteStudent(student)">
-         <span class="fui-cross"></span>
-      </td>
-   </tr>
-   </tbody>
-</table>
+</ui-view>
