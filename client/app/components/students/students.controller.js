@@ -3,9 +3,9 @@ class StudentsController {
    constructor(StudentsService, $stateParams, $state, studentsSetup) {
       this.StudentsService = StudentsService;
       this.$state = $state;
-
       this.setup = studentsSetup;
       this.format = studentsSetup.format(0);
+      this.buttonText = 'Guardar';
 
       StudentsService.getStudents().then(response => {
          this.students = response;
@@ -14,6 +14,7 @@ class StudentsController {
       if ($stateParams.id) {
          this.getStudent($stateParams.id);
          this.isUpdate = true;
+         this.buttonText = 'Actualizar';
       }
 
       this.student = {};
@@ -51,7 +52,7 @@ class StudentsController {
       if (this.isUpdate) {
 
          this.students.$save(this.student).then(function(ref) {
-            //ref.key() === this.students[2].$id; // true
+
          });
 
       } else {

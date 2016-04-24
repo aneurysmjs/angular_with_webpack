@@ -1,6 +1,8 @@
 <ui-view>
 
-   <button type="button" ui-sref="students.create">Create</button>
+   <button type="button" ui-sref="students.create">
+      crear
+   </button>
 
    <table class="table table-hover">
       <thead>
@@ -8,6 +10,7 @@
          <th>First Name</th>
          <th>Last Name</th>
          <th>Email</th>
+         <th>Celular</th>
          <th>Profession</th>
          <th>Plan</th>
          <th>&nbsp;</th>
@@ -19,10 +22,14 @@
          <th ng-bind="student.name"></th>
          <td ng-bind="student.lastName"></td>
          <td ng-bind="student.email"></td>
+         <td ng-bind="student.mobile"></td>
          <td ng-bind="student.profession"></td>
          <td ng-bind="student.plan"></td>
          <td ng-click="$ctrl.deleteStudent(student)">
-            <span class="fui-cross"></span>
+             <span class="glyphicon glyphicon-remove"
+                   tooltip-placement="top"
+                   uib-tooltip="Eliminar">
+             </span>
          </td>
       </tr>
       </tbody>
