@@ -1,4 +1,5 @@
 import angular from 'angular';
+import appConfig from './app.config';
 import appLibraries from './app.libraries';
 import components from './components/components';
 import appComponent from './app.component';
@@ -9,6 +10,7 @@ angular.module('app', [
       components.name,
       sharedModule.name
    ])
+   .config(appConfig)
    .component('app', appComponent);
 
 

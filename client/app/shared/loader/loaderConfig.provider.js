@@ -38,6 +38,7 @@ function loadingConfigProvider () {
 
    };
 
+
 }
 
 export default loadingConfigProvider;

@@ -1,34 +1,34 @@
 import './loader.styl';
 
-class LoadingInterceptor {
+Loader.$inject = ['$q', '$timeout', 'LoadingInterceptor', 'loaderConfig', 'LoadingDisplay'];
 
-   constructor($q, $timeout, $window, LoadingInterceptor, loadingConfig, LoadingDisplay) {
-      this.$q = $q;
-      this.$timeout = $timeout;
-      this.$window = $window;
-      this.LoadingInterceptor = LoadingInterceptor;
-      this.loadingConfig = loadingConfig;
-      this.LoadingDisplay = LoadingDisplay;
-      this.restrict = 'EA';
-      this.scope = {
+function Loader($q, $timeout, LoadingInterceptor, loaderConfig, LoadingDisplay) {
+
+   return {
+      restrict: 'EA',
+      transclude: true,
+      scope: {
          delay: '@'
-      };
-      this.template = `<div id="overlay-container" class="overlayContainer">
-                          <div id="overlay-background" class="overlayBackground"></div>
-                          <div id="overlay-content" class="overlayContent">
-                             <ng-transclude></ng-transclude>
-                          </div>
-                       </div>`;
-   }
+      },
+      template: `
+         <div id="overlay-container" class="overlayContainer">
+            <div id="overlay-background" class="overlayBackground"></div>
+            <div id="overlay-content" class="overlayContent">
+              <ng-transclude></ng-transclude>
+            </div>
+         </div>`,
+      link
+   };
 
-   link(scope, element, attrs) {
+
+   function link(scope, element, attrs) {
 
       let overlayContainer = null,
           timerPromise = null,
           timerPromiseHide = null,
           inSession = false,
           queue = [],
-          loadingConfig = this.loadingConfig.getConfig();
+          loadingConfig = loaderConfig.getConfig();
 
       function getOverlayContainer() {
          return document.getElementById('overlay-container');
@@ -44,28 +44,28 @@ class LoadingInterceptor {
       //Hook into httpInterceptor factory request/response/responseError functions
       function wireUpHttpInterceptor() {
 
-         this.LoadingInterceptor.request = function (config) {
+         LoadingInterceptor.request = function (config) {
             //I want to have a condition to not show the overlay on specific calls
             if(shouldShowOverlay(config.method, config.url))
                processRequest();
-            return config || this.$q.when(config);
+            return config || $q.when(config);
          };
 
-         this.LoadingInterceptor.response = function (response) {
+         LoadingInterceptor.response = function (response) {
             processResponse();
-            return response || this.$q.when(response);
+            return response || $q.when(response);
          };
 
-         this.LoadingInterceptor.responseError = function (rejection) {
+         LoadingInterceptor.responseError = function (rejection) {
             processResponse();
-            return this.$q.reject(rejection);
+            return $q.reject(rejection);
          };
       }
 
       function processRequest() {
          queue.push({});
          if (queue.length === 1) {
-            timerPromise = this.$timeout(function () {
+            timerPromise = $timeout(function () {
                if (queue.length) showOverlay();
             }, scope.delay ? scope.delay : loadingConfig.delay); //Delay showing for 500 millis to avoid flicker
          }
@@ -77,37 +77,37 @@ class LoadingInterceptor {
             //Since we don't know if another XHR request will be made, pause before
             //hiding the overlay. If another XHR request comes in then the overlay
             //will stay visible which prevents a flicker
-            timerPromiseHide = this.$timeout(function () {
+            timerPromiseHide = $timeout(function () {
                //Make sure queue is still 0 since a new XHR request may have come in
                //while timer was running
                if (queue.length === 0) {
                   hideOverlay();
-                  if (timerPromiseHide) this.$timeout.cancel(timerPromiseHide);
+                  if (timerPromiseHide) $timeout.cancel(timerPromiseHide);
                }
             }, scope.wcOverlayDelay ? scope.wcOverlayDelay : loadingConfig.delay);
          }
       }
 
       function showOverlay() {
-         this.LoadingDisplay.show(overlayContainer);
+         LoadingDisplay.show(overlayContainer);
       }
 
       function hideOverlay() {
-         if (timerPromise) this.$timeout.cancel(timerPromise);
-         this.LoadingDisplay.hide(overlayContainer);
+         if (timerPromise) $timeout.cancel(timerPromise);
+         LoadingDisplay.hide(overlayContainer);
       }
 
       function shouldShowOverlay(method, url){
-         var searchCriteria = {
+         let searchCriteria = {
             method: method,
             url: url
          };
-         return angular.isUndefined(findUrl(this.loadingConfig.exceptUrls, searchCriteria));
+         return angular.isUndefined(findUrl(loadingConfig.exceptUrls, searchCriteria));
       }
 
       function findUrl(urlList, searchCriteria){
          let retVal = '';
-         angular.forEach(urlList, function (url) {
+         angular.forEach(urlList, url => {
             if(angular.equals(url, searchCriteria)){
                retVal = true;
                return false; //break out of forEach
@@ -119,6 +119,4 @@ class LoadingInterceptor {
 
 }
 
-LoadingInterceptor.$inject = ['$q', '$timeout', '$window', 'LoadingInterceptor', 'loadingConfig'];
-
-export default LoadingInterceptor;
+export default Loader;

@@ -1,4 +1,4 @@
-class LoaderService {
+class LoaderDisplayService {
 
    constructor($window) {
       this.$window = $window;
@@ -36,7 +36,7 @@ class LoaderService {
 
       if (!this.$window.innerWidth) {
 
-         if (!document.documentElement.clientWidth === 0) {
+         if (document.documentElement.clientWidth !== 0) {
             w = document.documentElement.clientWidth;
             h = document.documentElement.clientHeight;
          } else {
@@ -61,3 +61,7 @@ class LoaderService {
    }
 
 }
+
+LoaderDisplayService.$inject = ['$window'];
+
+export default LoaderDisplayService;

@@ -1,9 +1,9 @@
 import angular from 'angular';
 
-import loadingModule from 'loader/loader';
+import loaderModule from './loader/loader';
 
 let sharedModule = angular.module('app.shared', [
-   loadingModule.name
+   loaderModule.name
 ]);
 
 

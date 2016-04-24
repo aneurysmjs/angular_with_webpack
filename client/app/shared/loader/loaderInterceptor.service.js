@@ -1,11 +1,11 @@
 class LoadingInterceptorService {
 
-    constructor($q) {
-        this.$q = $q;
+    constructor() {
+
     }
 
 }
 
-LoadingInterceptorService.$inject = ['$q'];
+LoadingInterceptorService.$inject = [];
 
 export default LoadingInterceptorService;
