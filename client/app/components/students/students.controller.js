@@ -1,6 +1,6 @@
 class StudentsController {
 
-   constructor(StudentsService, $firebaseArray, $stateParams, $state, studentsSetup) {
+   constructor(StudentsService, $stateParams, $state, studentsSetup) {
       this.StudentsService = StudentsService;
       this.$state = $state;
 
@@ -16,7 +16,11 @@ class StudentsController {
          this.isUpdate = true;
       }
 
+      this.student = {};
 
+      this.student.documentType = studentsSetup.documentTypes[0];
+      this.student.occupation   = studentsSetup.occupations[0];
+      this.student.plan         = studentsSetup.plans[0];
 
    }
 
@@ -61,10 +65,11 @@ class StudentsController {
         console.log('deteleStudent response');
         console.log(ref);
       });
+
    }
 
 }
 
-StudentsController.$inject = ['StudentsService', '$firebaseArray', '$stateParams', '$state', 'studentsSetup'];
+StudentsController.$inject = ['StudentsService', '$stateParams', '$state', 'studentsSetup'];
 
 export default StudentsController;

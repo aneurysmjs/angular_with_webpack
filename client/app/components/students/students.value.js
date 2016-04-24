@@ -1,6 +1,6 @@
 export default {
    documentTypes: ['TI', 'CC', 'PAS'],
-   ocupations: ['dependiente', 'independiente', 'estudiante'],
+   occupations: ['dependiente', 'independiente', 'estudiante'],
    plans: ['cuarzo', 'rubí', 'záfiro', 'esmeralda', 'turqueza', 'diamante'],
    dateOptions: {
       formatYear: 'yy',
