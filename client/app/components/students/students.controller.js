@@ -1,33 +1,11 @@
 class StudentsController {
 
-   constructor(StudentsService, $firebaseArray, $stateParams, $state) {
+   constructor(StudentsService, $firebaseArray, $stateParams, $state, studentsSetup) {
       this.StudentsService = StudentsService;
       this.$state = $state;
-      this.documentTypes = ['TI', 'CC', 'PAS'];
-      this.ocupations = ['dependiente', 'independiente', 'estudiante'];
-      this.plans = ['cuarzo', 'rubí', 'záfiro', 'esmeralda', 'turqueza', 'diamante'];
-      this.dateOptions = {
-         formatYear: 'yy',
-         maxDate: new Date(2020, 5, 22),
-         minDate: new Date(),
-         startingDay: 1
-      };
 
-      this.altInputFormats = ['M!/d!/yyyy'];
-      this.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
-      this.format = this.formats[0];
-
-      this.popup = {
-         opened: false
-      };
-
-      this.inlineOptions = {
-         //customClass: getDayClass,
-         minDate: new Date(),
-         showWeeks: true
-      };
-
-      this.isUpdate = false;
+      this.setup = studentsSetup;
+      this.format = studentsSetup.format(0);
 
       StudentsService.getStudents().then(response => {
          this.students = response;
@@ -37,6 +15,8 @@ class StudentsController {
          this.getStudent($stateParams.id);
          this.isUpdate = true;
       }
+
+
 
    }
 
@@ -50,7 +30,7 @@ class StudentsController {
    }
 
    openCalendar() {
-      this.popup.opened = true;
+      this.setup.popup.opened = true;
    }
 
    studentProfile(student) {
@@ -85,6 +65,6 @@ class StudentsController {
 
 }
 
-StudentsController.$inject = ['StudentsService', '$firebaseArray', '$stateParams', '$state'];
+StudentsController.$inject = ['StudentsService', '$firebaseArray', '$stateParams', '$state', 'studentsSetup'];
 
 export default StudentsController;

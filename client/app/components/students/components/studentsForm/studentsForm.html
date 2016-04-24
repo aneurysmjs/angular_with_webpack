@@ -1,5 +1,6 @@
 <form name="poleForm">
 
+   <pre>{{$ctrl.setup | json }}</pre>
    <div class="row">
       <div class="col-md-3">
          <label class="" for="name">Nombre</label>
@@ -22,15 +23,15 @@
       </div>
       <div class="col-md-6">
 
-         <div style="display:inline-block; min-height:290px;">
+         <!--<div style="display:inline-block; min-height:290px;">
             <label class=""
                    for="lastName">Fecha de Inscripción</label>
             <uib-datepicker ng-model="$ctrl.student.inscriptionDate"
                             class="well well-sm"
                             datepicker-options="inlineOptions">
             </uib-datepicker>
-         </div>
-         <!--<label class="sr-only"
+         </div>-->
+         <label class="sr-only"
                 for="inscriptionDate">Fecha de Matrícula</label>
          <p class="input-group">
             <input id="inscriptionDate"
@@ -38,11 +39,11 @@
                    name="inscriptionDate"
                    class="form-control"
                    uib-datepicker-popup="{{$ctrl.format}}"
-                   ng-model="$ctrl.student.inscriptionDate"
-                   is-open="$ctrl.popup.opened"
-                   datepicker-options="$ctrl.dateOptions"
+                   ng-model="$ctrl.setup.inscriptionDate"
+                   is-open="$ctrl.setup.popup.opened"
+                   datepicker-options="$ctrl.setup.dateOptions"
                    close-text="Cerrar"
-                   alt-input-formats="$ctrl.altInputFormats" />
+                   alt-input-formats="$ctrl.setup.altInputFormats" />
             <span class="input-group-btn">
                <button type="button"
                        class="btn btn-default"
@@ -50,7 +51,7 @@
                   <i class="glyphicon glyphicon-calendar"></i>
                </button>
             </span>
-         </p>-->
+         </p>
       </div>
       <div class="col-md-3">
          <label class=""
