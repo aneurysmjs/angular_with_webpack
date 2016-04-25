@@ -5,20 +5,24 @@ class LoginController {
       this.name = 'login';
    }
 
-   createUser() {
-      this.message = null;
+   login() {
+
+      this.authData = null;
       this.error = null;
 
-      this.LoginService.$createUser({
+      this.LoginService.$authWithPassword({
          email: this.user.email,
          password: this.user.password
-      }).then(userData => {
-         this.message = "User created with uid: " + userData.uid;
-      }).catch(error => {
+      })
+      .then(authData =>  {
+         console.log('authData');
+         console.log(authData);
+         this.authData = authData;
+      }).catch(function (error) {
          this.error = error;
       });
+   }
 
-   };
 
 }
 

@@ -18,7 +18,7 @@ class LoginRegisterController {
          this.error = error;
       });
 
-   };
+   }
 
 }
 
