@@ -1,0 +1,21 @@
+<div>
+   <form name="loginForm">
+      <div class="form-group">
+         <label for="userEmail">Email address</label>
+         <input type="email"
+                class="form-control"
+                ng-model="$ctrl.user.email"
+                id="userEmail"
+                placeholder="Email">
+      </div>
+      <div class="form-group">
+         <label for="userPassword">Password</label>
+         <input type="password"
+                class="form-control"
+                ng-model="$ctrl.user.password"
+                id="userPassword"
+                placeholder="Password">
+      </div>
+      <button type="submit" class="btn btn-default">Login</button>
+   </form>
+</div>

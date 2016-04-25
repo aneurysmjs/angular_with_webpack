@@ -1,8 +1,6 @@
-studentsRoutes.$inject = ['$stateProvider', '$urlRouterProvider'];
+studentsRoutes.$inject = ['$stateProvider'];
 
-function studentsRoutes($stateProvider, $urlRouterProvider) {
-
-   $urlRouterProvider.otherwise('/students');
+function studentsRoutes($stateProvider) {
 
    $stateProvider
       .state('students', {

@@ -4,7 +4,6 @@ import './<%= name %>.styl';
 let <%= name %>Component =  {
    template,
    controller: '<%= upCaseName %>Controller',
-   controllerAs: '<%= name %>Ctrl',
    bindings: {}
 };
 
