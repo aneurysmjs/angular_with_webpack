@@ -1,0 +1,46 @@
+<form name="registerForm">
+   <div class="form-group">
+      <label for="userEmail">Email address</label>
+      <input type="email"
+             class="form-control"
+             ng-model="$ctrl.user.email"
+             name="userEmail"
+             id="userEmail"
+             placeholder="Email">
+   </div>
+   <div class="form-group">
+      <label for="userPassword">Password</label>
+      <input type="password"
+             class="form-control"
+             ng-model="$ctrl.user.password"
+             name="userPassword"
+             ng-minlength="7"
+             id="userPassword"
+             placeholder="Password">
+   </div>
+    <span ng-show="registerForm.userPassword.$error.minlength">
+       7 carácteres mínimo
+   </span>
+   <div class="form-group">
+      <label for="userRetypePassword">Retype Password</label>
+      <input type="password"
+             class="form-control"
+             ng-model="$ctrl.user.newPassword"
+             name="userNewPassword"
+             ng-minlength="7"
+             password-match="$ctrl.user.password"
+             id="userRetypePassword"
+             placeholder="Password">
+   </div>
+   <span ng-show="registerForm.userNewPassword.$error.minlength">
+       7 carácteres mínimo
+   </span>
+   <span ng-show="registerForm.userNewPassword.$error.unique">
+       Contraseñas no coinciden
+   </span>
+   <button type="button"
+           ng-click="$ctrl.createUser()"
+           class="btn btn-default">
+      Register
+   </button>
+</form>

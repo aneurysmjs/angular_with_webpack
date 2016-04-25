@@ -8,6 +8,10 @@ function loginRoutes($stateProvider, $urlRouterProvider) {
       .state('login', {
          url: '/login',
          template: '<login></login>'
+      })
+      .state('login.register', {
+         url: '/register',
+         template: '<register></register>'
       });
 
 }

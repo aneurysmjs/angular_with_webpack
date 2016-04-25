@@ -1,4 +1,4 @@
-class LoginController {
+class LoginRegisterController {
 
    constructor(LoginService) {
       this.LoginService = LoginService;
@@ -22,6 +22,6 @@ class LoginController {
 
 }
 
-LoginController.$inject = ['LoginService'];
+LoginRegisterController.$inject = ['LoginService'];
 
-export default LoginController;
+export default LoginRegisterController;
