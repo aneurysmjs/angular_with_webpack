@@ -32,7 +32,8 @@ module.exports = {
                path.resolve(__dirname, 'node_modules')
             ],
             query: {
-               presets: ['es2015', 'stage-0']
+               presets: ['es2015', 'stage-0'],
+               plugins: ['transform-decorators-legacy']
             }
          },
          {test: /\.html$/, loader: 'html', exclude: /node_modules/},
