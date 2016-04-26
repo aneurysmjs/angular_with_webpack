@@ -15,9 +15,15 @@
                   <input type="email"
                          class="form-control"
                          ng-model="$ctrl.user.email"
+                         name="userEmail"
                          id="userEmail"
                          placeholder="Email">
+
                </div>
+               <span class="text-danger"
+                     ng-if="loginForm.userEmail.$error.email">
+                  Correo Inválido
+               </span>
                <div class="form-group">
                   <label for="userPassword">Password</label>
                   <input type="password"
@@ -33,12 +39,16 @@
                </button>
                <button type="submit"
                        ng-click="$ctrl.login()"
+                       ng-disabled="loginForm.$invalid"
                        class="btn btn-default">Login</button>
             </form>
+            <div class="bg-danger"
+                  ng-if="$ctrl.error">
+               <span ng-bind="$ctrl.error"></span>
+            </div>
          </ui-view>
       </div>
       <div class="col-md-3"></div>
    </div>
-   <p ng-if="$ctrl.message">Message: <strong>{{ $ctrl.message }}</strong></p>
-   <p ng-if="$ctrl.error">Error: <strong>{{ $ctrl.error }}</strong></p>
+   <!--<p ng-if="$ctrl.message">Message: <strong>{{ $ctrl.message }}</strong></p>-->
 </section>

@@ -13,16 +13,16 @@ class LoginController {
       this.LoginService.$authWithPassword({
          email: this.user.email,
          password: this.user.password
-      })
-      .then(authData =>  {
+      }).then(authData =>  {
          console.log('authData');
          console.log(authData);
          this.authData = authData;
-      }).catch(function (error) {
+      }).catch((error) => {
+         console.log('error');
+         console.log(error);
          this.error = error;
       });
    }
-
 
 }
 

@@ -1,7 +1,9 @@
 class LoginRegisterController {
 
-   constructor(LoginService) {
+   constructor(LoginService, $state, $timeout) {
       this.LoginService = LoginService;
+      this.$state = $state;
+      this.$timeout = $timeout;
       this.name = 'login';
    }
 
@@ -20,8 +22,18 @@ class LoginRegisterController {
 
    }
 
+   goBack() {
+      this.$state.go('^');
+   }
+
+   hideErrors() {
+      if (this.error) {
+         this.error = '';
+      }
+   }
+
 }
 
-LoginRegisterController.$inject = ['LoginService'];
+LoginRegisterController.$inject = ['LoginService', '$state', '$timeout'];
 
 export default LoginRegisterController;

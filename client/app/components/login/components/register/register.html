@@ -5,11 +5,12 @@
       <input type="email"
              class="form-control"
              ng-model="$ctrl.user.email"
+             ng-keyup="$ctrl.hideErrors()"
              name="userEmail"
              id="userEmail"
              placeholder="Email">
    </div>
-   <span class="text-warning"
+   <span class="text-danger"
          ng-if="registerForm.userEmail.$error.email">
       Escribe un correo válido
    </span>
@@ -23,9 +24,9 @@
              id="userPassword"
              placeholder="Password">
    </div>
-   <span class="text-warning"
+   <span class="text-danger"
          ng-if="registerForm.userPassword.$error.minlength">
-       7 carácteres mínimo
+       La contraseña de tener 7 carácteres mínimo
    </span>
    <div class="form-group">
       <label for="userRetypePassword">Retype Password</label>
@@ -38,11 +39,11 @@
              id="userRetypePassword"
              placeholder="Password">
    </div>
-   <span class="text-warning"
+   <span class="text-danger"
          ng-if="registerForm.userNewPassword.$error.minlength">
-       7 carácteres mínimo
+      La contraseña de tener 7 carácteres mínimo
    </span>
-   <span class="text-warning"
+   <span class="text-danger"
          ng-if="registerForm.userNewPassword.$error.unique">
        Contraseñas no coinciden
    </span>
@@ -52,4 +53,13 @@
            class="btn btn-default">
       Register
    </button>
+   <button type="button"
+           ng-disabled="registerForm.$invalid"
+           ng-click="$ctrl.goBack()"
+           class="btn btn-default">
+      Back
+   </button>
+   <p class="bg-danger" ng-if="$ctrl.error">
+      <span ng-bind="$ctrl.error"></span>
+   </p>
 </form>

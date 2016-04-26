@@ -34,7 +34,7 @@
 /******/ 	__webpack_require__.c = installedModules;
 
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "http://localhost:3000/assets/f52b04fee63e10c9a412";
+/******/ 	__webpack_require__.p = "http://localhost:3000/assets/d221a999e3002b9b1b6b";
 
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
@@ -20939,7 +20939,7 @@
 /* 206 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<section>\n   <div class=\"row\">\n      <div class=\"col-md-3\"></div>\n      <div class=\"col-md-6\">\n         <figure>\n            <img class=\"img-responsive center-block\"\n                 width=\"150px\"\n                 src=\"" + __webpack_require__(207) + "\"\n                 alt=\"logo coco interactivo\">\n         </figure>\n         <ui-view>\n            <form name=\"loginForm\">\n               <div class=\"form-group\">\n                  <label for=\"userEmail\">Email address</label>\n                  <input type=\"email\"\n                         class=\"form-control\"\n                         ng-model=\"$ctrl.user.email\"\n                         id=\"userEmail\"\n                         placeholder=\"Email\">\n               </div>\n               <div class=\"form-group\">\n                  <label for=\"userPassword\">Password</label>\n                  <input type=\"password\"\n                         class=\"form-control\"\n                         ng-model=\"$ctrl.user.password\"\n                         id=\"userPassword\"\n                         placeholder=\"Password\">\n               </div>\n               <button type=\"button\"\n                       ui-sref=\"login.register\"\n                       class=\"btn btn-default\">\n                  Need account?\n               </button>\n               <button type=\"submit\"\n                       ng-click=\"$ctrl.login()\"\n                       class=\"btn btn-default\">Login</button>\n            </form>\n         </ui-view>\n      </div>\n      <div class=\"col-md-3\"></div>\n   </div>\n   <p ng-if=\"$ctrl.message\">Message: <strong>{{ $ctrl.message }}</strong></p>\n   <p ng-if=\"$ctrl.error\">Error: <strong>{{ $ctrl.error }}</strong></p>\n</section>\n";
+	module.exports = "<section>\n   <div class=\"row\">\n      <div class=\"col-md-3\"></div>\n      <div class=\"col-md-6\">\n         <figure>\n            <img class=\"img-responsive center-block\"\n                 width=\"150px\"\n                 src=\"" + __webpack_require__(207) + "\"\n                 alt=\"logo coco interactivo\">\n         </figure>\n         <ui-view>\n            <form name=\"loginForm\">\n               <div class=\"form-group\">\n                  <label for=\"userEmail\">Email address</label>\n                  <input type=\"email\"\n                         class=\"form-control\"\n                         ng-model=\"$ctrl.user.email\"\n                         name=\"userEmail\"\n                         id=\"userEmail\"\n                         placeholder=\"Email\">\n\n               </div>\n               <span class=\"text-danger\"\n                     ng-if=\"loginForm.userEmail.$error.email\">\n                  Correo Inválido\n               </span>\n               <div class=\"form-group\">\n                  <label for=\"userPassword\">Password</label>\n                  <input type=\"password\"\n                         class=\"form-control\"\n                         ng-model=\"$ctrl.user.password\"\n                         id=\"userPassword\"\n                         placeholder=\"Password\">\n               </div>\n               <button type=\"button\"\n                       ui-sref=\"login.register\"\n                       class=\"btn btn-default\">\n                  Need account?\n               </button>\n               <button type=\"submit\"\n                       ng-click=\"$ctrl.login()\"\n                       ng-disabled=\"loginForm.$invalid\"\n                       class=\"btn btn-default\">Login</button>\n            </form>\n            <div class=\"bg-danger\"\n                  ng-if=\"$ctrl.error\">\n               <span ng-bind=\"$ctrl.error\"></span>\n            </div>\n         </ui-view>\n      </div>\n      <div class=\"col-md-3\"></div>\n   </div>\n   <!--<p ng-if=\"$ctrl.message\">Message: <strong>{{ $ctrl.message }}</strong></p>-->\n</section>\n";
 
 /***/ },
 /* 207 */
@@ -21335,7 +21335,9 @@
 	            console.log(authData);
 	            _this.authData = authData;
 	         }).catch(function (error) {
-	            this.error = error;
+	            console.log('error');
+	            console.log(error);
+	            _this.error = error;
 	         });
 	      }
 	   }]);
@@ -21403,7 +21405,7 @@
 /* 215 */
 /***/ function(module, exports) {
 
-	module.exports = "<form name=\"registerForm\">\n   <!--<pre>{{registerForm | json }}</pre>-->\n   <div class=\"form-group\">\n      <label for=\"userEmail\">Email address</label>\n      <input type=\"email\"\n             class=\"form-control\"\n             ng-model=\"$ctrl.user.email\"\n             name=\"userEmail\"\n             id=\"userEmail\"\n             placeholder=\"Email\">\n   </div>\n   <span class=\"text-warning\"\n         ng-if=\"registerForm.userEmail.$error.email\">\n      Escribe un correo válido\n   </span>\n   <div class=\"form-group\">\n      <label for=\"userPassword\">Password</label>\n      <input type=\"password\"\n             class=\"form-control\"\n             ng-model=\"$ctrl.user.password\"\n             name=\"userPassword\"\n             ng-minlength=\"7\"\n             id=\"userPassword\"\n             placeholder=\"Password\">\n   </div>\n   <span class=\"text-warning\"\n         ng-if=\"registerForm.userPassword.$error.minlength\">\n       7 carácteres mínimo\n   </span>\n   <div class=\"form-group\">\n      <label for=\"userRetypePassword\">Retype Password</label>\n      <input type=\"password\"\n             class=\"form-control\"\n             ng-model=\"$ctrl.user.newPassword\"\n             name=\"userNewPassword\"\n             ng-minlength=\"7\"\n             password-match=\"$ctrl.user.password\"\n             id=\"userRetypePassword\"\n             placeholder=\"Password\">\n   </div>\n   <span class=\"text-warning\"\n         ng-if=\"registerForm.userNewPassword.$error.minlength\">\n       7 carácteres mínimo\n   </span>\n   <span class=\"text-warning\"\n         ng-if=\"registerForm.userNewPassword.$error.unique\">\n       Contraseñas no coinciden\n   </span>\n   <button type=\"button\"\n           ng-disabled=\"registerForm.$invalid\"\n           ng-click=\"$ctrl.createUser()\"\n           class=\"btn btn-default\">\n      Register\n   </button>\n</form>";
+	module.exports = "<form name=\"registerForm\">\n   <!--<pre>{{registerForm | json }}</pre>-->\n   <div class=\"form-group\">\n      <label for=\"userEmail\">Email address</label>\n      <input type=\"email\"\n             class=\"form-control\"\n             ng-model=\"$ctrl.user.email\"\n             ng-keyup=\"$ctrl.hideErrors()\"\n             name=\"userEmail\"\n             id=\"userEmail\"\n             placeholder=\"Email\">\n   </div>\n   <span class=\"text-danger\"\n         ng-if=\"registerForm.userEmail.$error.email\">\n      Escribe un correo válido\n   </span>\n   <div class=\"form-group\">\n      <label for=\"userPassword\">Password</label>\n      <input type=\"password\"\n             class=\"form-control\"\n             ng-model=\"$ctrl.user.password\"\n             name=\"userPassword\"\n             ng-minlength=\"7\"\n             id=\"userPassword\"\n             placeholder=\"Password\">\n   </div>\n   <span class=\"text-danger\"\n         ng-if=\"registerForm.userPassword.$error.minlength\">\n       La contraseña de tener 7 carácteres mínimo\n   </span>\n   <div class=\"form-group\">\n      <label for=\"userRetypePassword\">Retype Password</label>\n      <input type=\"password\"\n             class=\"form-control\"\n             ng-model=\"$ctrl.user.newPassword\"\n             name=\"userNewPassword\"\n             ng-minlength=\"7\"\n             password-match=\"$ctrl.user.password\"\n             id=\"userRetypePassword\"\n             placeholder=\"Password\">\n   </div>\n   <span class=\"text-danger\"\n         ng-if=\"registerForm.userNewPassword.$error.minlength\">\n      La contraseña de tener 7 carácteres mínimo\n   </span>\n   <span class=\"text-danger\"\n         ng-if=\"registerForm.userNewPassword.$error.unique\">\n       Contraseñas no coinciden\n   </span>\n   <button type=\"button\"\n           ng-disabled=\"registerForm.$invalid\"\n           ng-click=\"$ctrl.createUser()\"\n           class=\"btn btn-default\">\n      Register\n   </button>\n   <button type=\"button\"\n           ng-disabled=\"registerForm.$invalid\"\n           ng-click=\"$ctrl.goBack()\"\n           class=\"btn btn-default\">\n      Back\n   </button>\n   <p class=\"bg-danger\" ng-if=\"$ctrl.error\">\n      <span ng-bind=\"$ctrl.error\"></span>\n   </p>\n</form>";
 
 /***/ },
 /* 216 */
@@ -21420,10 +21422,12 @@
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	var LoginRegisterController = (function () {
-	   function LoginRegisterController(LoginService) {
+	   function LoginRegisterController(LoginService, $state, $timeout) {
 	      _classCallCheck(this, LoginRegisterController);
 
 	      this.LoginService = LoginService;
+	      this.$state = $state;
+	      this.$timeout = $timeout;
 	      this.name = 'login';
 	   }
 
@@ -21444,12 +21448,24 @@
 	            _this.error = error;
 	         });
 	      }
+	   }, {
+	      key: 'goBack',
+	      value: function goBack() {
+	         this.$state.go('^');
+	      }
+	   }, {
+	      key: 'hideErrors',
+	      value: function hideErrors() {
+	         if (this.error) {
+	            this.error = '';
+	         }
+	      }
 	   }]);
 
 	   return LoginRegisterController;
 	})();
 
-	LoginRegisterController.$inject = ['LoginService'];
+	LoginRegisterController.$inject = ['LoginService', '$state', '$timeout'];
 
 	exports.default = LoginRegisterController;
 
@@ -21867,7 +21883,7 @@
 /* 230 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"site-wrapper\">\n\n   <nav>\n      <ul class=\"nav masthead-nav\">\n         <!--<li class=\"active\"><a href=\"#\">Home</a></li>-->\n         <li><a ui-sref=\"students\">Students</a></li>\n         <!--<li><a href=\"#\">Contact</a></li>-->\n      </ul>\n   </nav>\n\n   <ui-view></ui-view>\n\n\n   <footer id=\"olgahFooter\">\n      All rights Reserved, Coco Interactivo 2016\n   </footer>\n\n\n</div>";
+	module.exports = "<div class=\"site-wrapper\">\n\n   <nav>\n      <ul class=\"nav masthead-nav\">\n         <!--<li class=\"active\"><a href=\"#\">Home</a></li>-->\n         <li><a ui-sref=\"students\">Students</a></li>\n         <!--<li><a href=\"#\">Contact</a></li>-->\n      </ul>\n   </nav>\n\n   <ui-view></ui-view>\n\n   <footer id=\"olgahFooter\">\n      All rights Reserved, Coco Interactivo 2016\n   </footer>\n\n</div>";
 
 /***/ },
 /* 231 */
