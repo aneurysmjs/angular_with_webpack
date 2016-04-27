@@ -34,7 +34,7 @@
 /******/ 	__webpack_require__.c = installedModules;
 
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "http://localhost:3000/assets/f16a9df47eaffd62cb3b";
+/******/ 	__webpack_require__.p = "http://localhost:3000/assets/63ab600c16f8a5f39036";
 
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
@@ -25674,7 +25674,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var studentsModule = _angular2.default.module('students', []).config(_students2.default).value('studentsSetup', _students4.default).component('students', _students6.default).directive('studentsForm', function () {
+	var studentsModule = _angular2.default.module('students', []).config(_students2.default).value('studentsSetup', _students4.default).component('ciStudents', _students6.default).directive('studentsForm', function () {
 	   return new _studentsForm2.default();
 	}).controller('StudentsController', _students8.default).service('StudentsService', _students10.default);
 
@@ -25695,7 +25695,19 @@
 
 	   $stateProvider.state('students', {
 	      url: '/students',
-	      template: '<students></students>'
+	      controller: ['students', function (students) {
+	         var self = this;
+	         self.students = students;
+	      }],
+	      controllerAs: '$ctrl',
+	      template: '<ci-students students="$ctrl.students"></ci-students>',
+	      resolve: {
+	         students: ['StudentsService', function (StudentsService) {
+	            return StudentsService.getStudents().then(function (response) {
+	               return response;
+	            });
+	         }]
+	      }
 	   }).state('students.create', {
 	      url: '/create',
 	      template: '<students-form ctrl="StudentsController"></students-form>'
@@ -25763,7 +25775,9 @@
 	var studentsComponent = {
 	  template: _students2.default,
 	  controller: 'StudentsController',
-	  bindings: {}
+	  bindings: {
+	    students: '='
+	  }
 	};
 
 	exports.default = studentsComponent;
@@ -25772,7 +25786,7 @@
 /* 223 */
 /***/ function(module, exports) {
 
-	module.exports = "<ui-view>\n\n   <button type=\"button\" ui-sref=\"students.create\">\n      crear\n   </button>\n\n   <form class=\"form-inline\">\n      <div class=\"form-group\">\n         <label for=\"exampleInputName2\">Filter</label>\n         <input type=\"text\"\n                class=\"form-control\"\n                id=\"exampleInputName2\"\n                ng-model=\"myFilter\"\n                placeholder=\"Jane Doe\">\n      </div>\n      <button type=\"submit\" class=\"btn btn-default\">Send invitation</button>\n   </form>\n\n   <table class=\"table table-hover\">\n      <thead>\n      <tr>\n         <th>First Name</th>\n         <th>Last Name</th>\n         <th>Email</th>\n         <th>Celular</th>\n         <th>Profession</th>\n         <th>Plan</th>\n         <th>&nbsp;</th>\n      </tr>\n      </thead>\n      <tbody>\n      <tr ng-repeat=\"student in $ctrl.students | filter: myFilter track by $index\"\n          ng-dblclick=\"$ctrl.studentProfile(student)\" >\n         <th ng-bind=\"student.name\"></th>\n         <td ng-bind=\"student.lastName\"></td>\n         <td ng-bind=\"student.email\"></td>\n         <td ng-bind=\"student.mobile\"></td>\n         <td ng-bind=\"student.profession\"></td>\n         <td ng-bind=\"student.plan\"></td>\n         <td ng-click=\"$ctrl.deleteStudent(student)\">\n             <span class=\"glyphicon glyphicon-remove\"\n                   tooltip-placement=\"top\"\n                   uib-tooltip=\"Eliminar\">\n             </span>\n         </td>\n      </tr>\n      </tbody>\n   </table>\n\n</ui-view>";
+	module.exports = "<ui-view>\n\n   <button type=\"button\" ui-sref=\"students.create\">\n      crear\n   </button>\n\n   <form class=\"form-inline\">\n      <div class=\"form-group\">\n         <label for=\"exampleInputName2\">Filter</label>\n         <input type=\"text\"\n                class=\"form-control\"\n                id=\"exampleInputName2\"\n                ng-model=\"myFilter\"\n                placeholder=\"Jane Doe\">\n      </div>\n      <button type=\"submit\" class=\"btn btn-default\">Send invitation</button>\n   </form>\n\n   <table class=\"table table-hover\">\n      <thead>\n      <tr>\n         <th>First Name</th>\n         <th>Last Name</th>\n         <th>Email</th>\n         <th>Celular</th>\n         <th>Profession</th>\n         <th>Plan</th>\n         <th>&nbsp;</th>\n      </tr>\n      </thead>\n      <tbody>\n      <tr ng-repeat=\"student in $ctrl.students | filter: myFilter track by $index\"\n          ng-dblclick=\"$ctrl.studentProfile(student)\">\n         <th ng-bind=\"student.name\"></th>\n         <td ng-bind=\"student.lastName\"></td>\n         <td ng-bind=\"student.email\"></td>\n         <td ng-bind=\"student.mobile\"></td>\n         <td ng-bind=\"student.profession\"></td>\n         <td ng-bind=\"student.plan\"></td>\n         <td ng-click=\"$ctrl.deleteStudent(student)\">\n             <span class=\"glyphicon glyphicon-remove\"\n                   tooltip-placement=\"top\"\n                   uib-tooltip=\"Eliminar\">\n             </span>\n         </td>\n      </tr>\n      </tbody>\n   </table>\n\n</ui-view>";
 
 /***/ },
 /* 224 */
@@ -25809,7 +25823,7 @@
 
 
 	// module
-	exports.push([module.id, ".fade {\n  transition: 1s linear all;\n  -webkit-transition: 1s linear all;\n}\n.fade.ng-enter {\n  opacity: 0;\n}\n.fade.ng-enter.ng-enter-active {\n  opacity: 1;\n}\n.fade.ng-leave {\n  opacity: 1;\n}\n.fade.ng-leave.ng-leave-active {\n  opacity: 1;\n}\n", ""]);
+	exports.push([module.id, ".fade {\n  transition: 1s linear all;\n  -webkit-transition: 1s linear all;\n}\n.fade.ng-enter,\n.fade.ng-leave {\n  opacity: 0;\n}\n.fade.ng-enter.ng-enter-active {\n  opacity: 1;\n}\n.fade.ng-leave {\n  opacity: 1;\n}\n.fade.ng-leave.ng-leave-active {\n  opacity: 1;\n}\n", ""]);
 
 	// exports
 
@@ -25830,18 +25844,12 @@
 
 	var StudentsController = (function () {
 	   function StudentsController(StudentsService, $stateParams, $state, studentsSetup) {
-	      var _this = this;
-
 	      _classCallCheck(this, StudentsController);
 
 	      this.StudentsService = StudentsService;
 	      this.$state = $state;
 	      this.setup = studentsSetup;
 	      this.buttonText = 'Guardar';
-
-	      StudentsService.getStudents().then(function (response) {
-	         _this.students = response;
-	      });
 
 	      if ($stateParams.id) {
 	         this.getStudent($stateParams.id);
@@ -25856,6 +25864,9 @@
 	         this.setup.altInputFormats = studentsSetup.altInputFormats;
 	         this.setup.dateOptions = studentsSetup.dateOptions;
 	      }
+
+	      console.log('this');
+	      console.log(this);
 	   }
 
 	   _createClass(StudentsController, [{
@@ -25883,25 +25894,25 @@
 	   }, {
 	      key: 'getStudent',
 	      value: function getStudent(id) {
-	         var _this2 = this;
+	         var _this = this;
 
 	         this.StudentsService.getStudent(id).then(function (response) {
-	            return _this2.student = response;
+	            return _this.student = response;
 	         });
 	      }
 	   }, {
 	      key: 'save',
 	      value: function save() {
-	         var _this3 = this;
+	         var _this2 = this;
 
 	         //this.student.inscriptionDate.toString();
 	         if (this.isUpdate) {
 	            this.students.$save(this.student).then(function (ref) {
-	               return _this3.$state.go('^');
+	               return _this2.$state.go('^');
 	            });
 	         } else {
 	            this.students.$add(this.student).then(function (res) {
-	               return _this3.$state.go('^');
+	               return _this2.$state.go('^');
 	            });
 	         }
 	      }

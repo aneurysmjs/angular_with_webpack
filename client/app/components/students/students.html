@@ -30,7 +30,7 @@
       </thead>
       <tbody>
       <tr ng-repeat="student in $ctrl.students | filter: myFilter track by $index"
-          ng-dblclick="$ctrl.studentProfile(student)" >
+          ng-dblclick="$ctrl.studentProfile(student)">
          <th ng-bind="student.name"></th>
          <td ng-bind="student.lastName"></td>
          <td ng-bind="student.email"></td>

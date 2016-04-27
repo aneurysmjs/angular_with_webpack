@@ -4,7 +4,9 @@ import './students.styl';
 let studentsComponent = {
   template,
   controller: 'StudentsController',
-  bindings: {}
+  bindings: {
+    students: '='
+  }
 };
 
 export default studentsComponent;

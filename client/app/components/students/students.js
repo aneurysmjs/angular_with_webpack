@@ -10,7 +10,7 @@ import studentsForm from './components/studentsForm/studentsForm';
 let studentsModule = angular.module('students', [])
    .config(studentsRoutes)
    .value('studentsSetup', studentsSetup)
-   .component('students', studentsComponent)
+   .component('ciStudents', studentsComponent)
    .directive('studentsForm', () => new studentsForm())
    .controller('StudentsController', StudentsController)
    .service('StudentsService', StudentsService);

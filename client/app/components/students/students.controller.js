@@ -6,10 +6,6 @@ class StudentsController {
       this.setup = studentsSetup;
       this.buttonText = 'Guardar';
 
-      StudentsService.getStudents().then(response => {
-         this.students = response;
-      });
-
       if ($stateParams.id) {
          this.getStudent($stateParams.id);
          this.isUpdate = true;
@@ -19,10 +15,13 @@ class StudentsController {
          this.student.documentType  = studentsSetup.documentTypes[0];
          this.student.occupation    = studentsSetup.occupations[0];
          this.student.plan          = studentsSetup.plans[0];
-         this.format          = studentsSetup.format(0);
+         this.format                = studentsSetup.format(0);
          this.setup.altInputFormats = studentsSetup.altInputFormats;
          this.setup.dateOptions     = studentsSetup.dateOptions;
       }
+
+      console.log('this');
+      console.log(this);
 
    }
 
