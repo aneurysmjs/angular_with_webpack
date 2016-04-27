@@ -1,11 +1,11 @@
 'use strict';
-import JentooModule from './../students';
+import StudentModule from '../students';
 import uiRouter from 'angular-ui-router';
 
-describe('JentooController', () => {
+describe('StudentController', () => {
 
    beforeEach(window.module(uiRouter));
-   beforeEach(window.module(JentooModule.name));
+   beforeEach(window.module(StudentModule.name));
 
    let studentsCtrl, $rootScope, $scope, $controller;
 
@@ -13,7 +13,7 @@ describe('JentooController', () => {
       $rootScope = _$rootScope_;
       $controller = _$controller_;
       $scope = $rootScope.$new();
-      studentsCtrl = $controller('JentooController', {$scope});
+      studentsCtrl = $controller('StudentController', {$scope});
    }));
 
    it('should have name defined', () => {

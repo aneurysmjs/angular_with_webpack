@@ -34,7 +34,7 @@
 /******/ 	__webpack_require__.c = installedModules;
 
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "http://localhost:3000/assets/d221a999e3002b9b1b6b";
+/******/ 	__webpack_require__.p = "http://localhost:3000/assets/008c2fe9cbabb482bce5";
 
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
@@ -21883,7 +21883,7 @@
 /* 230 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"site-wrapper\">\n\n   <nav>\n      <ul class=\"nav masthead-nav\">\n         <!--<li class=\"active\"><a href=\"#\">Home</a></li>-->\n         <li><a ui-sref=\"students\">Students</a></li>\n         <!--<li><a href=\"#\">Contact</a></li>-->\n      </ul>\n   </nav>\n\n   <ui-view></ui-view>\n\n   <footer id=\"olgahFooter\">\n      All rights Reserved, Coco Interactivo 2016\n   </footer>\n\n</div>";
+	module.exports = "<section>\n   <nav class=\"navbar navbar-default\">\n      <div class=\"container-fluid\">\n         <!-- Brand and toggle get grouped for better mobile display -->\n         <div class=\"navbar-header\">\n            <button class=\"btn btn-default navbar-btn\"\n                    type=\"button\"\n                    ui-sref=\"students\">\n               Students\n            </button>\n            <a class=\"navbar-brand\" ui-sref=\"login\">Coco</a>\n         </div>\n      </div><!-- /.container-fluid -->\n   </nav>\n\n   <ui-view></ui-view>\n\n   <footer id=\"olgahFooter\">\n      All rights Reserved, Coco Interactivo 2016\n   </footer>\n\n</section>";
 
 /***/ },
 /* 231 */

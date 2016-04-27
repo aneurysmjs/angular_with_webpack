@@ -1,11 +1,16 @@
-<div class="site-wrapper">
-
-   <nav>
-      <ul class="nav masthead-nav">
-         <!--<li class="active"><a href="#">Home</a></li>-->
-         <li><a ui-sref="students">Students</a></li>
-         <!--<li><a href="#">Contact</a></li>-->
-      </ul>
+<section>
+   <nav class="navbar navbar-default">
+      <div class="container-fluid">
+         <!-- Brand and toggle get grouped for better mobile display -->
+         <div class="navbar-header">
+            <button class="btn btn-default navbar-btn"
+                    type="button"
+                    ui-sref="students">
+               Students
+            </button>
+            <a class="navbar-brand" ui-sref="login">Coco</a>
+         </div>
+      </div><!-- /.container-fluid -->
    </nav>
 
    <ui-view></ui-view>
@@ -14,4 +19,4 @@
       All rights Reserved, Coco Interactivo 2016
    </footer>
 
-</div>
+</section>
