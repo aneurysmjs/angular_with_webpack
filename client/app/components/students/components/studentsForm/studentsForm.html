@@ -35,7 +35,7 @@
                       name="inscriptionDate"
                       class="form-control"
                       uib-datepicker-popup="{{$ctrl.format}}"
-                      ng-model="$ctrl.setup.inscriptionDate"
+                      ng-model="$ctrl.student.inscriptionDate"
                       is-open="$ctrl.setup.popup.opened"
                       datepicker-options="$ctrl.setup.dateOptions"
                       clear-text="Limpiar"
@@ -227,8 +227,8 @@
             </select>
          </div>
          <div class="col-md-6">
-            <div>
-               <label class=""
+            <div class="text-center">
+               <label
                       for="inCaseOfEmergencyName">
                   En caso de emergencia comunicarse con
                </label>
@@ -260,6 +260,8 @@
             </button>
          </div>
       </div>
+
+      <pre>{{$ctrl.student | json}}</pre>
 
    </form>
 </section>

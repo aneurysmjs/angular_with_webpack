@@ -4,6 +4,18 @@
       crear
    </button>
 
+   <form class="form-inline">
+      <div class="form-group">
+         <label for="exampleInputName2">Filter</label>
+         <input type="text"
+                class="form-control"
+                id="exampleInputName2"
+                ng-model="myFilter"
+                placeholder="Jane Doe">
+      </div>
+      <button type="submit" class="btn btn-default">Send invitation</button>
+   </form>
+
    <table class="table table-hover">
       <thead>
       <tr>
@@ -17,8 +29,8 @@
       </tr>
       </thead>
       <tbody>
-      <tr ng-repeat="student in $ctrl.students track by $index"
-          ng-dblclick="$ctrl.studentProfile(student)">
+      <tr ng-repeat="student in $ctrl.students | filter: myFilter track by $index"
+          ng-dblclick="$ctrl.studentProfile(student)" >
          <th ng-bind="student.name"></th>
          <td ng-bind="student.lastName"></td>
          <td ng-bind="student.email"></td>

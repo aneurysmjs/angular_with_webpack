@@ -34,7 +34,7 @@
 /******/ 	__webpack_require__.c = installedModules;
 
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "http://localhost:3000/assets/008c2fe9cbabb482bce5";
+/******/ 	__webpack_require__.p = "http://localhost:3000/assets/f16a9df47eaffd62cb3b";
 
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
@@ -5329,19 +5329,19 @@
 
 	var _app4 = _interopRequireDefault(_app3);
 
-	var _app5 = __webpack_require__(201);
+	var _app5 = __webpack_require__(203);
 
 	var _app6 = _interopRequireDefault(_app5);
 
-	var _components = __webpack_require__(202);
+	var _components = __webpack_require__(204);
 
 	var _components2 = _interopRequireDefault(_components);
 
-	var _app7 = __webpack_require__(229);
+	var _app7 = __webpack_require__(231);
 
 	var _app8 = _interopRequireDefault(_app7);
 
-	var _shared = __webpack_require__(233);
+	var _shared = __webpack_require__(235);
 
 	var _shared2 = _interopRequireDefault(_shared);
 
@@ -5391,30 +5391,4195 @@
 
 	var _angular2 = _interopRequireDefault(_angular);
 
-	var _angularUiRouter = __webpack_require__(195);
+	var _angularAnimate = __webpack_require__(195);
+
+	var _angularAnimate2 = _interopRequireDefault(_angularAnimate);
+
+	var _angularUiRouter = __webpack_require__(197);
 
 	var _angularUiRouter2 = _interopRequireDefault(_angularUiRouter);
 
-	var _angularUiBootstrap = __webpack_require__(196);
+	var _angularUiBootstrap = __webpack_require__(198);
 
 	var _angularUiBootstrap2 = _interopRequireDefault(_angularUiBootstrap);
 
-	var _dragular = __webpack_require__(198);
+	var _dragular = __webpack_require__(200);
 
 	var _dragular2 = _interopRequireDefault(_dragular);
 
-	var _angularfire = __webpack_require__(199);
+	var _angularfire = __webpack_require__(201);
 
 	var _angularfire2 = _interopRequireDefault(_angularfire);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var appLibraries = _angular2.default.module('app.libraries', [_angularUiRouter2.default, _angularUiBootstrap2.default, _angularfire2.default]);
+	var appLibraries = _angular2.default.module('app.libraries', [_angularAnimate2.default, _angularUiRouter2.default, _angularUiBootstrap2.default, _angularfire2.default]);
 
 	exports.default = appLibraries;
 
 /***/ },
 /* 195 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(196);
+	module.exports = 'ngAnimate';
+
+
+/***/ },
+/* 196 */
+/***/ function(module, exports) {
+
+	/**
+	 * @license AngularJS v1.5.5
+	 * (c) 2010-2016 Google, Inc. http://angularjs.org
+	 * License: MIT
+	 */
+	(function(window, angular) {'use strict';
+
+	/* jshint ignore:start */
+	var noop        = angular.noop;
+	var copy        = angular.copy;
+	var extend      = angular.extend;
+	var jqLite      = angular.element;
+	var forEach     = angular.forEach;
+	var isArray     = angular.isArray;
+	var isString    = angular.isString;
+	var isObject    = angular.isObject;
+	var isUndefined = angular.isUndefined;
+	var isDefined   = angular.isDefined;
+	var isFunction  = angular.isFunction;
+	var isElement   = angular.isElement;
+
+	var ELEMENT_NODE = 1;
+	var COMMENT_NODE = 8;
+
+	var ADD_CLASS_SUFFIX = '-add';
+	var REMOVE_CLASS_SUFFIX = '-remove';
+	var EVENT_CLASS_PREFIX = 'ng-';
+	var ACTIVE_CLASS_SUFFIX = '-active';
+	var PREPARE_CLASS_SUFFIX = '-prepare';
+
+	var NG_ANIMATE_CLASSNAME = 'ng-animate';
+	var NG_ANIMATE_CHILDREN_DATA = '$$ngAnimateChildren';
+
+	// Detect proper transitionend/animationend event names.
+	var CSS_PREFIX = '', TRANSITION_PROP, TRANSITIONEND_EVENT, ANIMATION_PROP, ANIMATIONEND_EVENT;
+
+	// If unprefixed events are not supported but webkit-prefixed are, use the latter.
+	// Otherwise, just use W3C names, browsers not supporting them at all will just ignore them.
+	// Note: Chrome implements `window.onwebkitanimationend` and doesn't implement `window.onanimationend`
+	// but at the same time dispatches the `animationend` event and not `webkitAnimationEnd`.
+	// Register both events in case `window.onanimationend` is not supported because of that,
+	// do the same for `transitionend` as Safari is likely to exhibit similar behavior.
+	// Also, the only modern browser that uses vendor prefixes for transitions/keyframes is webkit
+	// therefore there is no reason to test anymore for other vendor prefixes:
+	// http://caniuse.com/#search=transition
+	if (isUndefined(window.ontransitionend) && isDefined(window.onwebkittransitionend)) {
+	  CSS_PREFIX = '-webkit-';
+	  TRANSITION_PROP = 'WebkitTransition';
+	  TRANSITIONEND_EVENT = 'webkitTransitionEnd transitionend';
+	} else {
+	  TRANSITION_PROP = 'transition';
+	  TRANSITIONEND_EVENT = 'transitionend';
+	}
+
+	if (isUndefined(window.onanimationend) && isDefined(window.onwebkitanimationend)) {
+	  CSS_PREFIX = '-webkit-';
+	  ANIMATION_PROP = 'WebkitAnimation';
+	  ANIMATIONEND_EVENT = 'webkitAnimationEnd animationend';
+	} else {
+	  ANIMATION_PROP = 'animation';
+	  ANIMATIONEND_EVENT = 'animationend';
+	}
+
+	var DURATION_KEY = 'Duration';
+	var PROPERTY_KEY = 'Property';
+	var DELAY_KEY = 'Delay';
+	var TIMING_KEY = 'TimingFunction';
+	var ANIMATION_ITERATION_COUNT_KEY = 'IterationCount';
+	var ANIMATION_PLAYSTATE_KEY = 'PlayState';
+	var SAFE_FAST_FORWARD_DURATION_VALUE = 9999;
+
+	var ANIMATION_DELAY_PROP = ANIMATION_PROP + DELAY_KEY;
+	var ANIMATION_DURATION_PROP = ANIMATION_PROP + DURATION_KEY;
+	var TRANSITION_DELAY_PROP = TRANSITION_PROP + DELAY_KEY;
+	var TRANSITION_DURATION_PROP = TRANSITION_PROP + DURATION_KEY;
+
+	var isPromiseLike = function(p) {
+	  return p && p.then ? true : false;
+	};
+
+	var ngMinErr = angular.$$minErr('ng');
+	function assertArg(arg, name, reason) {
+	  if (!arg) {
+	    throw ngMinErr('areq', "Argument '{0}' is {1}", (name || '?'), (reason || "required"));
+	  }
+	  return arg;
+	}
+
+	function mergeClasses(a,b) {
+	  if (!a && !b) return '';
+	  if (!a) return b;
+	  if (!b) return a;
+	  if (isArray(a)) a = a.join(' ');
+	  if (isArray(b)) b = b.join(' ');
+	  return a + ' ' + b;
+	}
+
+	function packageStyles(options) {
+	  var styles = {};
+	  if (options && (options.to || options.from)) {
+	    styles.to = options.to;
+	    styles.from = options.from;
+	  }
+	  return styles;
+	}
+
+	function pendClasses(classes, fix, isPrefix) {
+	  var className = '';
+	  classes = isArray(classes)
+	      ? classes
+	      : classes && isString(classes) && classes.length
+	          ? classes.split(/\s+/)
+	          : [];
+	  forEach(classes, function(klass, i) {
+	    if (klass && klass.length > 0) {
+	      className += (i > 0) ? ' ' : '';
+	      className += isPrefix ? fix + klass
+	                            : klass + fix;
+	    }
+	  });
+	  return className;
+	}
+
+	function removeFromArray(arr, val) {
+	  var index = arr.indexOf(val);
+	  if (val >= 0) {
+	    arr.splice(index, 1);
+	  }
+	}
+
+	function stripCommentsFromElement(element) {
+	  if (element instanceof jqLite) {
+	    switch (element.length) {
+	      case 0:
+	        return [];
+	        break;
+
+	      case 1:
+	        // there is no point of stripping anything if the element
+	        // is the only element within the jqLite wrapper.
+	        // (it's important that we retain the element instance.)
+	        if (element[0].nodeType === ELEMENT_NODE) {
+	          return element;
+	        }
+	        break;
+
+	      default:
+	        return jqLite(extractElementNode(element));
+	        break;
+	    }
+	  }
+
+	  if (element.nodeType === ELEMENT_NODE) {
+	    return jqLite(element);
+	  }
+	}
+
+	function extractElementNode(element) {
+	  if (!element[0]) return element;
+	  for (var i = 0; i < element.length; i++) {
+	    var elm = element[i];
+	    if (elm.nodeType == ELEMENT_NODE) {
+	      return elm;
+	    }
+	  }
+	}
+
+	function $$addClass($$jqLite, element, className) {
+	  forEach(element, function(elm) {
+	    $$jqLite.addClass(elm, className);
+	  });
+	}
+
+	function $$removeClass($$jqLite, element, className) {
+	  forEach(element, function(elm) {
+	    $$jqLite.removeClass(elm, className);
+	  });
+	}
+
+	function applyAnimationClassesFactory($$jqLite) {
+	  return function(element, options) {
+	    if (options.addClass) {
+	      $$addClass($$jqLite, element, options.addClass);
+	      options.addClass = null;
+	    }
+	    if (options.removeClass) {
+	      $$removeClass($$jqLite, element, options.removeClass);
+	      options.removeClass = null;
+	    }
+	  }
+	}
+
+	function prepareAnimationOptions(options) {
+	  options = options || {};
+	  if (!options.$$prepared) {
+	    var domOperation = options.domOperation || noop;
+	    options.domOperation = function() {
+	      options.$$domOperationFired = true;
+	      domOperation();
+	      domOperation = noop;
+	    };
+	    options.$$prepared = true;
+	  }
+	  return options;
+	}
+
+	function applyAnimationStyles(element, options) {
+	  applyAnimationFromStyles(element, options);
+	  applyAnimationToStyles(element, options);
+	}
+
+	function applyAnimationFromStyles(element, options) {
+	  if (options.from) {
+	    element.css(options.from);
+	    options.from = null;
+	  }
+	}
+
+	function applyAnimationToStyles(element, options) {
+	  if (options.to) {
+	    element.css(options.to);
+	    options.to = null;
+	  }
+	}
+
+	function mergeAnimationDetails(element, oldAnimation, newAnimation) {
+	  var target = oldAnimation.options || {};
+	  var newOptions = newAnimation.options || {};
+
+	  var toAdd = (target.addClass || '') + ' ' + (newOptions.addClass || '');
+	  var toRemove = (target.removeClass || '') + ' ' + (newOptions.removeClass || '');
+	  var classes = resolveElementClasses(element.attr('class'), toAdd, toRemove);
+
+	  if (newOptions.preparationClasses) {
+	    target.preparationClasses = concatWithSpace(newOptions.preparationClasses, target.preparationClasses);
+	    delete newOptions.preparationClasses;
+	  }
+
+	  // noop is basically when there is no callback; otherwise something has been set
+	  var realDomOperation = target.domOperation !== noop ? target.domOperation : null;
+
+	  extend(target, newOptions);
+
+	  // TODO(matsko or sreeramu): proper fix is to maintain all animation callback in array and call at last,but now only leave has the callback so no issue with this.
+	  if (realDomOperation) {
+	    target.domOperation = realDomOperation;
+	  }
+
+	  if (classes.addClass) {
+	    target.addClass = classes.addClass;
+	  } else {
+	    target.addClass = null;
+	  }
+
+	  if (classes.removeClass) {
+	    target.removeClass = classes.removeClass;
+	  } else {
+	    target.removeClass = null;
+	  }
+
+	  oldAnimation.addClass = target.addClass;
+	  oldAnimation.removeClass = target.removeClass;
+
+	  return target;
+	}
+
+	function resolveElementClasses(existing, toAdd, toRemove) {
+	  var ADD_CLASS = 1;
+	  var REMOVE_CLASS = -1;
+
+	  var flags = {};
+	  existing = splitClassesToLookup(existing);
+
+	  toAdd = splitClassesToLookup(toAdd);
+	  forEach(toAdd, function(value, key) {
+	    flags[key] = ADD_CLASS;
+	  });
+
+	  toRemove = splitClassesToLookup(toRemove);
+	  forEach(toRemove, function(value, key) {
+	    flags[key] = flags[key] === ADD_CLASS ? null : REMOVE_CLASS;
+	  });
+
+	  var classes = {
+	    addClass: '',
+	    removeClass: ''
+	  };
+
+	  forEach(flags, function(val, klass) {
+	    var prop, allow;
+	    if (val === ADD_CLASS) {
+	      prop = 'addClass';
+	      allow = !existing[klass];
+	    } else if (val === REMOVE_CLASS) {
+	      prop = 'removeClass';
+	      allow = existing[klass];
+	    }
+	    if (allow) {
+	      if (classes[prop].length) {
+	        classes[prop] += ' ';
+	      }
+	      classes[prop] += klass;
+	    }
+	  });
+
+	  function splitClassesToLookup(classes) {
+	    if (isString(classes)) {
+	      classes = classes.split(' ');
+	    }
+
+	    var obj = {};
+	    forEach(classes, function(klass) {
+	      // sometimes the split leaves empty string values
+	      // incase extra spaces were applied to the options
+	      if (klass.length) {
+	        obj[klass] = true;
+	      }
+	    });
+	    return obj;
+	  }
+
+	  return classes;
+	}
+
+	function getDomNode(element) {
+	  return (element instanceof angular.element) ? element[0] : element;
+	}
+
+	function applyGeneratedPreparationClasses(element, event, options) {
+	  var classes = '';
+	  if (event) {
+	    classes = pendClasses(event, EVENT_CLASS_PREFIX, true);
+	  }
+	  if (options.addClass) {
+	    classes = concatWithSpace(classes, pendClasses(options.addClass, ADD_CLASS_SUFFIX));
+	  }
+	  if (options.removeClass) {
+	    classes = concatWithSpace(classes, pendClasses(options.removeClass, REMOVE_CLASS_SUFFIX));
+	  }
+	  if (classes.length) {
+	    options.preparationClasses = classes;
+	    element.addClass(classes);
+	  }
+	}
+
+	function clearGeneratedClasses(element, options) {
+	  if (options.preparationClasses) {
+	    element.removeClass(options.preparationClasses);
+	    options.preparationClasses = null;
+	  }
+	  if (options.activeClasses) {
+	    element.removeClass(options.activeClasses);
+	    options.activeClasses = null;
+	  }
+	}
+
+	function blockTransitions(node, duration) {
+	  // we use a negative delay value since it performs blocking
+	  // yet it doesn't kill any existing transitions running on the
+	  // same element which makes this safe for class-based animations
+	  var value = duration ? '-' + duration + 's' : '';
+	  applyInlineStyle(node, [TRANSITION_DELAY_PROP, value]);
+	  return [TRANSITION_DELAY_PROP, value];
+	}
+
+	function blockKeyframeAnimations(node, applyBlock) {
+	  var value = applyBlock ? 'paused' : '';
+	  var key = ANIMATION_PROP + ANIMATION_PLAYSTATE_KEY;
+	  applyInlineStyle(node, [key, value]);
+	  return [key, value];
+	}
+
+	function applyInlineStyle(node, styleTuple) {
+	  var prop = styleTuple[0];
+	  var value = styleTuple[1];
+	  node.style[prop] = value;
+	}
+
+	function concatWithSpace(a,b) {
+	  if (!a) return b;
+	  if (!b) return a;
+	  return a + ' ' + b;
+	}
+
+	var $$rAFSchedulerFactory = ['$$rAF', function($$rAF) {
+	  var queue, cancelFn;
+
+	  function scheduler(tasks) {
+	    // we make a copy since RAFScheduler mutates the state
+	    // of the passed in array variable and this would be difficult
+	    // to track down on the outside code
+	    queue = queue.concat(tasks);
+	    nextTick();
+	  }
+
+	  queue = scheduler.queue = [];
+
+	  /* waitUntilQuiet does two things:
+	   * 1. It will run the FINAL `fn` value only when an uncanceled RAF has passed through
+	   * 2. It will delay the next wave of tasks from running until the quiet `fn` has run.
+	   *
+	   * The motivation here is that animation code can request more time from the scheduler
+	   * before the next wave runs. This allows for certain DOM properties such as classes to
+	   * be resolved in time for the next animation to run.
+	   */
+	  scheduler.waitUntilQuiet = function(fn) {
+	    if (cancelFn) cancelFn();
+
+	    cancelFn = $$rAF(function() {
+	      cancelFn = null;
+	      fn();
+	      nextTick();
+	    });
+	  };
+
+	  return scheduler;
+
+	  function nextTick() {
+	    if (!queue.length) return;
+
+	    var items = queue.shift();
+	    for (var i = 0; i < items.length; i++) {
+	      items[i]();
+	    }
+
+	    if (!cancelFn) {
+	      $$rAF(function() {
+	        if (!cancelFn) nextTick();
+	      });
+	    }
+	  }
+	}];
+
+	/**
+	 * @ngdoc directive
+	 * @name ngAnimateChildren
+	 * @restrict AE
+	 * @element ANY
+	 *
+	 * @description
+	 *
+	 * ngAnimateChildren allows you to specify that children of this element should animate even if any
+	 * of the children's parents are currently animating. By default, when an element has an active `enter`, `leave`, or `move`
+	 * (structural) animation, child elements that also have an active structural animation are not animated.
+	 *
+	 * Note that even if `ngAnimteChildren` is set, no child animations will run when the parent element is removed from the DOM (`leave` animation).
+	 *
+	 *
+	 * @param {string} ngAnimateChildren If the value is empty, `true` or `on`,
+	 *     then child animations are allowed. If the value is `false`, child animations are not allowed.
+	 *
+	 * @example
+	 * <example module="ngAnimateChildren" name="ngAnimateChildren" deps="angular-animate.js" animations="true">
+	     <file name="index.html">
+	       <div ng-controller="mainController as main">
+	         <label>Show container? <input type="checkbox" ng-model="main.enterElement" /></label>
+	         <label>Animate children? <input type="checkbox" ng-model="main.animateChildren" /></label>
+	         <hr>
+	         <div ng-animate-children="{{main.animateChildren}}">
+	           <div ng-if="main.enterElement" class="container">
+	             List of items:
+	             <div ng-repeat="item in [0, 1, 2, 3]" class="item">Item {{item}}</div>
+	           </div>
+	         </div>
+	       </div>
+	     </file>
+	     <file name="animations.css">
+
+	      .container.ng-enter,
+	      .container.ng-leave {
+	        transition: all ease 1.5s;
+	      }
+
+	      .container.ng-enter,
+	      .container.ng-leave-active {
+	        opacity: 0;
+	      }
+
+	      .container.ng-leave,
+	      .container.ng-enter-active {
+	        opacity: 1;
+	      }
+
+	      .item {
+	        background: firebrick;
+	        color: #FFF;
+	        margin-bottom: 10px;
+	      }
+
+	      .item.ng-enter,
+	      .item.ng-leave {
+	        transition: transform 1.5s ease;
+	      }
+
+	      .item.ng-enter {
+	        transform: translateX(50px);
+	      }
+
+	      .item.ng-enter-active {
+	        transform: translateX(0);
+	      }
+	    </file>
+	    <file name="script.js">
+	      angular.module('ngAnimateChildren', ['ngAnimate'])
+	        .controller('mainController', function() {
+	          this.animateChildren = false;
+	          this.enterElement = false;
+	        });
+	    </file>
+	  </example>
+	 */
+	var $$AnimateChildrenDirective = ['$interpolate', function($interpolate) {
+	  return {
+	    link: function(scope, element, attrs) {
+	      var val = attrs.ngAnimateChildren;
+	      if (angular.isString(val) && val.length === 0) { //empty attribute
+	        element.data(NG_ANIMATE_CHILDREN_DATA, true);
+	      } else {
+	        // Interpolate and set the value, so that it is available to
+	        // animations that run right after compilation
+	        setData($interpolate(val)(scope));
+	        attrs.$observe('ngAnimateChildren', setData);
+	      }
+
+	      function setData(value) {
+	        value = value === 'on' || value === 'true';
+	        element.data(NG_ANIMATE_CHILDREN_DATA, value);
+	      }
+	    }
+	  };
+	}];
+
+	var ANIMATE_TIMER_KEY = '$$animateCss';
+
+	/**
+	 * @ngdoc service
+	 * @name $animateCss
+	 * @kind object
+	 *
+	 * @description
+	 * The `$animateCss` service is a useful utility to trigger customized CSS-based transitions/keyframes
+	 * from a JavaScript-based animation or directly from a directive. The purpose of `$animateCss` is NOT
+	 * to side-step how `$animate` and ngAnimate work, but the goal is to allow pre-existing animations or
+	 * directives to create more complex animations that can be purely driven using CSS code.
+	 *
+	 * Note that only browsers that support CSS transitions and/or keyframe animations are capable of
+	 * rendering animations triggered via `$animateCss` (bad news for IE9 and lower).
+	 *
+	 * ## Usage
+	 * Once again, `$animateCss` is designed to be used inside of a registered JavaScript animation that
+	 * is powered by ngAnimate. It is possible to use `$animateCss` directly inside of a directive, however,
+	 * any automatic control over cancelling animations and/or preventing animations from being run on
+	 * child elements will not be handled by Angular. For this to work as expected, please use `$animate` to
+	 * trigger the animation and then setup a JavaScript animation that injects `$animateCss` to trigger
+	 * the CSS animation.
+	 *
+	 * The example below shows how we can create a folding animation on an element using `ng-if`:
+	 *
+	 * ```html
+	 * <!-- notice the `fold-animation` CSS class -->
+	 * <div ng-if="onOff" class="fold-animation">
+	 *   This element will go BOOM
+	 * </div>
+	 * <button ng-click="onOff=true">Fold In</button>
+	 * ```
+	 *
+	 * Now we create the **JavaScript animation** that will trigger the CSS transition:
+	 *
+	 * ```js
+	 * ngModule.animation('.fold-animation', ['$animateCss', function($animateCss) {
+	 *   return {
+	 *     enter: function(element, doneFn) {
+	 *       var height = element[0].offsetHeight;
+	 *       return $animateCss(element, {
+	 *         from: { height:'0px' },
+	 *         to: { height:height + 'px' },
+	 *         duration: 1 // one second
+	 *       });
+	 *     }
+	 *   }
+	 * }]);
+	 * ```
+	 *
+	 * ## More Advanced Uses
+	 *
+	 * `$animateCss` is the underlying code that ngAnimate uses to power **CSS-based animations** behind the scenes. Therefore CSS hooks
+	 * like `.ng-EVENT`, `.ng-EVENT-active`, `.ng-EVENT-stagger` are all features that can be triggered using `$animateCss` via JavaScript code.
+	 *
+	 * This also means that just about any combination of adding classes, removing classes, setting styles, dynamically setting a keyframe animation,
+	 * applying a hardcoded duration or delay value, changing the animation easing or applying a stagger animation are all options that work with
+	 * `$animateCss`. The service itself is smart enough to figure out the combination of options and examine the element styling properties in order
+	 * to provide a working animation that will run in CSS.
+	 *
+	 * The example below showcases a more advanced version of the `.fold-animation` from the example above:
+	 *
+	 * ```js
+	 * ngModule.animation('.fold-animation', ['$animateCss', function($animateCss) {
+	 *   return {
+	 *     enter: function(element, doneFn) {
+	 *       var height = element[0].offsetHeight;
+	 *       return $animateCss(element, {
+	 *         addClass: 'red large-text pulse-twice',
+	 *         easing: 'ease-out',
+	 *         from: { height:'0px' },
+	 *         to: { height:height + 'px' },
+	 *         duration: 1 // one second
+	 *       });
+	 *     }
+	 *   }
+	 * }]);
+	 * ```
+	 *
+	 * Since we're adding/removing CSS classes then the CSS transition will also pick those up:
+	 *
+	 * ```css
+	 * /&#42; since a hardcoded duration value of 1 was provided in the JavaScript animation code,
+	 * the CSS classes below will be transitioned despite them being defined as regular CSS classes &#42;/
+	 * .red { background:red; }
+	 * .large-text { font-size:20px; }
+	 *
+	 * /&#42; we can also use a keyframe animation and $animateCss will make it work alongside the transition &#42;/
+	 * .pulse-twice {
+	 *   animation: 0.5s pulse linear 2;
+	 *   -webkit-animation: 0.5s pulse linear 2;
+	 * }
+	 *
+	 * @keyframes pulse {
+	 *   from { transform: scale(0.5); }
+	 *   to { transform: scale(1.5); }
+	 * }
+	 *
+	 * @-webkit-keyframes pulse {
+	 *   from { -webkit-transform: scale(0.5); }
+	 *   to { -webkit-transform: scale(1.5); }
+	 * }
+	 * ```
+	 *
+	 * Given this complex combination of CSS classes, styles and options, `$animateCss` will figure everything out and make the animation happen.
+	 *
+	 * ## How the Options are handled
+	 *
+	 * `$animateCss` is very versatile and intelligent when it comes to figuring out what configurations to apply to the element to ensure the animation
+	 * works with the options provided. Say for example we were adding a class that contained a keyframe value and we wanted to also animate some inline
+	 * styles using the `from` and `to` properties.
+	 *
+	 * ```js
+	 * var animator = $animateCss(element, {
+	 *   from: { background:'red' },
+	 *   to: { background:'blue' }
+	 * });
+	 * animator.start();
+	 * ```
+	 *
+	 * ```css
+	 * .rotating-animation {
+	 *   animation:0.5s rotate linear;
+	 *   -webkit-animation:0.5s rotate linear;
+	 * }
+	 *
+	 * @keyframes rotate {
+	 *   from { transform: rotate(0deg); }
+	 *   to { transform: rotate(360deg); }
+	 * }
+	 *
+	 * @-webkit-keyframes rotate {
+	 *   from { -webkit-transform: rotate(0deg); }
+	 *   to { -webkit-transform: rotate(360deg); }
+	 * }
+	 * ```
+	 *
+	 * The missing pieces here are that we do not have a transition set (within the CSS code nor within the `$animateCss` options) and the duration of the animation is
+	 * going to be detected from what the keyframe styles on the CSS class are. In this event, `$animateCss` will automatically create an inline transition
+	 * style matching the duration detected from the keyframe style (which is present in the CSS class that is being added) and then prepare both the transition
+	 * and keyframe animations to run in parallel on the element. Then when the animation is underway the provided `from` and `to` CSS styles will be applied
+	 * and spread across the transition and keyframe animation.
+	 *
+	 * ## What is returned
+	 *
+	 * `$animateCss` works in two stages: a preparation phase and an animation phase. Therefore when `$animateCss` is first called it will NOT actually
+	 * start the animation. All that is going on here is that the element is being prepared for the animation (which means that the generated CSS classes are
+	 * added and removed on the element). Once `$animateCss` is called it will return an object with the following properties:
+	 *
+	 * ```js
+	 * var animator = $animateCss(element, { ... });
+	 * ```
+	 *
+	 * Now what do the contents of our `animator` variable look like:
+	 *
+	 * ```js
+	 * {
+	 *   // starts the animation
+	 *   start: Function,
+	 *
+	 *   // ends (aborts) the animation
+	 *   end: Function
+	 * }
+	 * ```
+	 *
+	 * To actually start the animation we need to run `animation.start()` which will then return a promise that we can hook into to detect when the animation ends.
+	 * If we choose not to run the animation then we MUST run `animation.end()` to perform a cleanup on the element (since some CSS classes and styles may have been
+	 * applied to the element during the preparation phase). Note that all other properties such as duration, delay, transitions and keyframes are just properties
+	 * and that changing them will not reconfigure the parameters of the animation.
+	 *
+	 * ### runner.done() vs runner.then()
+	 * It is documented that `animation.start()` will return a promise object and this is true, however, there is also an additional method available on the
+	 * runner called `.done(callbackFn)`. The done method works the same as `.finally(callbackFn)`, however, it does **not trigger a digest to occur**.
+	 * Therefore, for performance reasons, it's always best to use `runner.done(callback)` instead of `runner.then()`, `runner.catch()` or `runner.finally()`
+	 * unless you really need a digest to kick off afterwards.
+	 *
+	 * Keep in mind that, to make this easier, ngAnimate has tweaked the JS animations API to recognize when a runner instance is returned from $animateCss
+	 * (so there is no need to call `runner.done(doneFn)` inside of your JavaScript animation code).
+	 * Check the {@link ngAnimate.$animateCss#usage animation code above} to see how this works.
+	 *
+	 * @param {DOMElement} element the element that will be animated
+	 * @param {object} options the animation-related options that will be applied during the animation
+	 *
+	 * * `event` - The DOM event (e.g. enter, leave, move). When used, a generated CSS class of `ng-EVENT` and `ng-EVENT-active` will be applied
+	 * to the element during the animation. Multiple events can be provided when spaces are used as a separator. (Note that this will not perform any DOM operation.)
+	 * * `structural` - Indicates that the `ng-` prefix will be added to the event class. Setting to `false` or omitting will turn `ng-EVENT` and
+	 * `ng-EVENT-active` in `EVENT` and `EVENT-active`. Unused if `event` is omitted.
+	 * * `easing` - The CSS easing value that will be applied to the transition or keyframe animation (or both).
+	 * * `transitionStyle` - The raw CSS transition style that will be used (e.g. `1s linear all`).
+	 * * `keyframeStyle` - The raw CSS keyframe animation style that will be used (e.g. `1s my_animation linear`).
+	 * * `from` - The starting CSS styles (a key/value object) that will be applied at the start of the animation.
+	 * * `to` - The ending CSS styles (a key/value object) that will be applied across the animation via a CSS transition.
+	 * * `addClass` - A space separated list of CSS classes that will be added to the element and spread across the animation.
+	 * * `removeClass` - A space separated list of CSS classes that will be removed from the element and spread across the animation.
+	 * * `duration` - A number value representing the total duration of the transition and/or keyframe (note that a value of 1 is 1000ms). If a value of `0`
+	 * is provided then the animation will be skipped entirely.
+	 * * `delay` - A number value representing the total delay of the transition and/or keyframe (note that a value of 1 is 1000ms). If a value of `true` is
+	 * used then whatever delay value is detected from the CSS classes will be mirrored on the elements styles (e.g. by setting delay true then the style value
+	 * of the element will be `transition-delay: DETECTED_VALUE`). Using `true` is useful when you want the CSS classes and inline styles to all share the same
+	 * CSS delay value.
+	 * * `stagger` - A numeric time value representing the delay between successively animated elements
+	 * ({@link ngAnimate#css-staggering-animations Click here to learn how CSS-based staggering works in ngAnimate.})
+	 * * `staggerIndex` - The numeric index representing the stagger item (e.g. a value of 5 is equal to the sixth item in the stagger; therefore when a
+	 *   `stagger` option value of `0.1` is used then there will be a stagger delay of `600ms`)
+	 * * `applyClassesEarly` - Whether or not the classes being added or removed will be used when detecting the animation. This is set by `$animate` when enter/leave/move animations are fired to ensure that the CSS classes are resolved in time. (Note that this will prevent any transitions from occurring on the classes being added and removed.)
+	 * * `cleanupStyles` - Whether or not the provided `from` and `to` styles will be removed once
+	 *    the animation is closed. This is useful for when the styles are used purely for the sake of
+	 *    the animation and do not have a lasting visual effect on the element (e.g. a collapse and open animation).
+	 *    By default this value is set to `false`.
+	 *
+	 * @return {object} an object with start and end methods and details about the animation.
+	 *
+	 * * `start` - The method to start the animation. This will return a `Promise` when called.
+	 * * `end` - This method will cancel the animation and remove all applied CSS classes and styles.
+	 */
+	var ONE_SECOND = 1000;
+	var BASE_TEN = 10;
+
+	var ELAPSED_TIME_MAX_DECIMAL_PLACES = 3;
+	var CLOSING_TIME_BUFFER = 1.5;
+
+	var DETECT_CSS_PROPERTIES = {
+	  transitionDuration:      TRANSITION_DURATION_PROP,
+	  transitionDelay:         TRANSITION_DELAY_PROP,
+	  transitionProperty:      TRANSITION_PROP + PROPERTY_KEY,
+	  animationDuration:       ANIMATION_DURATION_PROP,
+	  animationDelay:          ANIMATION_DELAY_PROP,
+	  animationIterationCount: ANIMATION_PROP + ANIMATION_ITERATION_COUNT_KEY
+	};
+
+	var DETECT_STAGGER_CSS_PROPERTIES = {
+	  transitionDuration:      TRANSITION_DURATION_PROP,
+	  transitionDelay:         TRANSITION_DELAY_PROP,
+	  animationDuration:       ANIMATION_DURATION_PROP,
+	  animationDelay:          ANIMATION_DELAY_PROP
+	};
+
+	function getCssKeyframeDurationStyle(duration) {
+	  return [ANIMATION_DURATION_PROP, duration + 's'];
+	}
+
+	function getCssDelayStyle(delay, isKeyframeAnimation) {
+	  var prop = isKeyframeAnimation ? ANIMATION_DELAY_PROP : TRANSITION_DELAY_PROP;
+	  return [prop, delay + 's'];
+	}
+
+	function computeCssStyles($window, element, properties) {
+	  var styles = Object.create(null);
+	  var detectedStyles = $window.getComputedStyle(element) || {};
+	  forEach(properties, function(formalStyleName, actualStyleName) {
+	    var val = detectedStyles[formalStyleName];
+	    if (val) {
+	      var c = val.charAt(0);
+
+	      // only numerical-based values have a negative sign or digit as the first value
+	      if (c === '-' || c === '+' || c >= 0) {
+	        val = parseMaxTime(val);
+	      }
+
+	      // by setting this to null in the event that the delay is not set or is set directly as 0
+	      // then we can still allow for negative values to be used later on and not mistake this
+	      // value for being greater than any other negative value.
+	      if (val === 0) {
+	        val = null;
+	      }
+	      styles[actualStyleName] = val;
+	    }
+	  });
+
+	  return styles;
+	}
+
+	function parseMaxTime(str) {
+	  var maxValue = 0;
+	  var values = str.split(/\s*,\s*/);
+	  forEach(values, function(value) {
+	    // it's always safe to consider only second values and omit `ms` values since
+	    // getComputedStyle will always handle the conversion for us
+	    if (value.charAt(value.length - 1) == 's') {
+	      value = value.substring(0, value.length - 1);
+	    }
+	    value = parseFloat(value) || 0;
+	    maxValue = maxValue ? Math.max(value, maxValue) : value;
+	  });
+	  return maxValue;
+	}
+
+	function truthyTimingValue(val) {
+	  return val === 0 || val != null;
+	}
+
+	function getCssTransitionDurationStyle(duration, applyOnlyDuration) {
+	  var style = TRANSITION_PROP;
+	  var value = duration + 's';
+	  if (applyOnlyDuration) {
+	    style += DURATION_KEY;
+	  } else {
+	    value += ' linear all';
+	  }
+	  return [style, value];
+	}
+
+	function createLocalCacheLookup() {
+	  var cache = Object.create(null);
+	  return {
+	    flush: function() {
+	      cache = Object.create(null);
+	    },
+
+	    count: function(key) {
+	      var entry = cache[key];
+	      return entry ? entry.total : 0;
+	    },
+
+	    get: function(key) {
+	      var entry = cache[key];
+	      return entry && entry.value;
+	    },
+
+	    put: function(key, value) {
+	      if (!cache[key]) {
+	        cache[key] = { total: 1, value: value };
+	      } else {
+	        cache[key].total++;
+	      }
+	    }
+	  };
+	}
+
+	// we do not reassign an already present style value since
+	// if we detect the style property value again we may be
+	// detecting styles that were added via the `from` styles.
+	// We make use of `isDefined` here since an empty string
+	// or null value (which is what getPropertyValue will return
+	// for a non-existing style) will still be marked as a valid
+	// value for the style (a falsy value implies that the style
+	// is to be removed at the end of the animation). If we had a simple
+	// "OR" statement then it would not be enough to catch that.
+	function registerRestorableStyles(backup, node, properties) {
+	  forEach(properties, function(prop) {
+	    backup[prop] = isDefined(backup[prop])
+	        ? backup[prop]
+	        : node.style.getPropertyValue(prop);
+	  });
+	}
+
+	var $AnimateCssProvider = ['$animateProvider', function($animateProvider) {
+	  var gcsLookup = createLocalCacheLookup();
+	  var gcsStaggerLookup = createLocalCacheLookup();
+
+	  this.$get = ['$window', '$$jqLite', '$$AnimateRunner', '$timeout',
+	               '$$forceReflow', '$sniffer', '$$rAFScheduler', '$$animateQueue',
+	       function($window,   $$jqLite,   $$AnimateRunner,   $timeout,
+	                $$forceReflow,   $sniffer,   $$rAFScheduler, $$animateQueue) {
+
+	    var applyAnimationClasses = applyAnimationClassesFactory($$jqLite);
+
+	    var parentCounter = 0;
+	    function gcsHashFn(node, extraClasses) {
+	      var KEY = "$$ngAnimateParentKey";
+	      var parentNode = node.parentNode;
+	      var parentID = parentNode[KEY] || (parentNode[KEY] = ++parentCounter);
+	      return parentID + '-' + node.getAttribute('class') + '-' + extraClasses;
+	    }
+
+	    function computeCachedCssStyles(node, className, cacheKey, properties) {
+	      var timings = gcsLookup.get(cacheKey);
+
+	      if (!timings) {
+	        timings = computeCssStyles($window, node, properties);
+	        if (timings.animationIterationCount === 'infinite') {
+	          timings.animationIterationCount = 1;
+	        }
+	      }
+
+	      // we keep putting this in multiple times even though the value and the cacheKey are the same
+	      // because we're keeping an internal tally of how many duplicate animations are detected.
+	      gcsLookup.put(cacheKey, timings);
+	      return timings;
+	    }
+
+	    function computeCachedCssStaggerStyles(node, className, cacheKey, properties) {
+	      var stagger;
+
+	      // if we have one or more existing matches of matching elements
+	      // containing the same parent + CSS styles (which is how cacheKey works)
+	      // then staggering is possible
+	      if (gcsLookup.count(cacheKey) > 0) {
+	        stagger = gcsStaggerLookup.get(cacheKey);
+
+	        if (!stagger) {
+	          var staggerClassName = pendClasses(className, '-stagger');
+
+	          $$jqLite.addClass(node, staggerClassName);
+
+	          stagger = computeCssStyles($window, node, properties);
+
+	          // force the conversion of a null value to zero incase not set
+	          stagger.animationDuration = Math.max(stagger.animationDuration, 0);
+	          stagger.transitionDuration = Math.max(stagger.transitionDuration, 0);
+
+	          $$jqLite.removeClass(node, staggerClassName);
+
+	          gcsStaggerLookup.put(cacheKey, stagger);
+	        }
+	      }
+
+	      return stagger || {};
+	    }
+
+	    var cancelLastRAFRequest;
+	    var rafWaitQueue = [];
+	    function waitUntilQuiet(callback) {
+	      rafWaitQueue.push(callback);
+	      $$rAFScheduler.waitUntilQuiet(function() {
+	        gcsLookup.flush();
+	        gcsStaggerLookup.flush();
+
+	        // DO NOT REMOVE THIS LINE OR REFACTOR OUT THE `pageWidth` variable.
+	        // PLEASE EXAMINE THE `$$forceReflow` service to understand why.
+	        var pageWidth = $$forceReflow();
+
+	        // we use a for loop to ensure that if the queue is changed
+	        // during this looping then it will consider new requests
+	        for (var i = 0; i < rafWaitQueue.length; i++) {
+	          rafWaitQueue[i](pageWidth);
+	        }
+	        rafWaitQueue.length = 0;
+	      });
+	    }
+
+	    function computeTimings(node, className, cacheKey) {
+	      var timings = computeCachedCssStyles(node, className, cacheKey, DETECT_CSS_PROPERTIES);
+	      var aD = timings.animationDelay;
+	      var tD = timings.transitionDelay;
+	      timings.maxDelay = aD && tD
+	          ? Math.max(aD, tD)
+	          : (aD || tD);
+	      timings.maxDuration = Math.max(
+	          timings.animationDuration * timings.animationIterationCount,
+	          timings.transitionDuration);
+
+	      return timings;
+	    }
+
+	    return function init(element, initialOptions) {
+	      // all of the animation functions should create
+	      // a copy of the options data, however, if a
+	      // parent service has already created a copy then
+	      // we should stick to using that
+	      var options = initialOptions || {};
+	      if (!options.$$prepared) {
+	        options = prepareAnimationOptions(copy(options));
+	      }
+
+	      var restoreStyles = {};
+	      var node = getDomNode(element);
+	      if (!node
+	          || !node.parentNode
+	          || !$$animateQueue.enabled()) {
+	        return closeAndReturnNoopAnimator();
+	      }
+
+	      var temporaryStyles = [];
+	      var classes = element.attr('class');
+	      var styles = packageStyles(options);
+	      var animationClosed;
+	      var animationPaused;
+	      var animationCompleted;
+	      var runner;
+	      var runnerHost;
+	      var maxDelay;
+	      var maxDelayTime;
+	      var maxDuration;
+	      var maxDurationTime;
+	      var startTime;
+	      var events = [];
+
+	      if (options.duration === 0 || (!$sniffer.animations && !$sniffer.transitions)) {
+	        return closeAndReturnNoopAnimator();
+	      }
+
+	      var method = options.event && isArray(options.event)
+	            ? options.event.join(' ')
+	            : options.event;
+
+	      var isStructural = method && options.structural;
+	      var structuralClassName = '';
+	      var addRemoveClassName = '';
+
+	      if (isStructural) {
+	        structuralClassName = pendClasses(method, EVENT_CLASS_PREFIX, true);
+	      } else if (method) {
+	        structuralClassName = method;
+	      }
+
+	      if (options.addClass) {
+	        addRemoveClassName += pendClasses(options.addClass, ADD_CLASS_SUFFIX);
+	      }
+
+	      if (options.removeClass) {
+	        if (addRemoveClassName.length) {
+	          addRemoveClassName += ' ';
+	        }
+	        addRemoveClassName += pendClasses(options.removeClass, REMOVE_CLASS_SUFFIX);
+	      }
+
+	      // there may be a situation where a structural animation is combined together
+	      // with CSS classes that need to resolve before the animation is computed.
+	      // However this means that there is no explicit CSS code to block the animation
+	      // from happening (by setting 0s none in the class name). If this is the case
+	      // we need to apply the classes before the first rAF so we know to continue if
+	      // there actually is a detected transition or keyframe animation
+	      if (options.applyClassesEarly && addRemoveClassName.length) {
+	        applyAnimationClasses(element, options);
+	      }
+
+	      var preparationClasses = [structuralClassName, addRemoveClassName].join(' ').trim();
+	      var fullClassName = classes + ' ' + preparationClasses;
+	      var activeClasses = pendClasses(preparationClasses, ACTIVE_CLASS_SUFFIX);
+	      var hasToStyles = styles.to && Object.keys(styles.to).length > 0;
+	      var containsKeyframeAnimation = (options.keyframeStyle || '').length > 0;
+
+	      // there is no way we can trigger an animation if no styles and
+	      // no classes are being applied which would then trigger a transition,
+	      // unless there a is raw keyframe value that is applied to the element.
+	      if (!containsKeyframeAnimation
+	           && !hasToStyles
+	           && !preparationClasses) {
+	        return closeAndReturnNoopAnimator();
+	      }
+
+	      var cacheKey, stagger;
+	      if (options.stagger > 0) {
+	        var staggerVal = parseFloat(options.stagger);
+	        stagger = {
+	          transitionDelay: staggerVal,
+	          animationDelay: staggerVal,
+	          transitionDuration: 0,
+	          animationDuration: 0
+	        };
+	      } else {
+	        cacheKey = gcsHashFn(node, fullClassName);
+	        stagger = computeCachedCssStaggerStyles(node, preparationClasses, cacheKey, DETECT_STAGGER_CSS_PROPERTIES);
+	      }
+
+	      if (!options.$$skipPreparationClasses) {
+	        $$jqLite.addClass(element, preparationClasses);
+	      }
+
+	      var applyOnlyDuration;
+
+	      if (options.transitionStyle) {
+	        var transitionStyle = [TRANSITION_PROP, options.transitionStyle];
+	        applyInlineStyle(node, transitionStyle);
+	        temporaryStyles.push(transitionStyle);
+	      }
+
+	      if (options.duration >= 0) {
+	        applyOnlyDuration = node.style[TRANSITION_PROP].length > 0;
+	        var durationStyle = getCssTransitionDurationStyle(options.duration, applyOnlyDuration);
+
+	        // we set the duration so that it will be picked up by getComputedStyle later
+	        applyInlineStyle(node, durationStyle);
+	        temporaryStyles.push(durationStyle);
+	      }
+
+	      if (options.keyframeStyle) {
+	        var keyframeStyle = [ANIMATION_PROP, options.keyframeStyle];
+	        applyInlineStyle(node, keyframeStyle);
+	        temporaryStyles.push(keyframeStyle);
+	      }
+
+	      var itemIndex = stagger
+	          ? options.staggerIndex >= 0
+	              ? options.staggerIndex
+	              : gcsLookup.count(cacheKey)
+	          : 0;
+
+	      var isFirst = itemIndex === 0;
+
+	      // this is a pre-emptive way of forcing the setup classes to be added and applied INSTANTLY
+	      // without causing any combination of transitions to kick in. By adding a negative delay value
+	      // it forces the setup class' transition to end immediately. We later then remove the negative
+	      // transition delay to allow for the transition to naturally do it's thing. The beauty here is
+	      // that if there is no transition defined then nothing will happen and this will also allow
+	      // other transitions to be stacked on top of each other without any chopping them out.
+	      if (isFirst && !options.skipBlocking) {
+	        blockTransitions(node, SAFE_FAST_FORWARD_DURATION_VALUE);
+	      }
+
+	      var timings = computeTimings(node, fullClassName, cacheKey);
+	      var relativeDelay = timings.maxDelay;
+	      maxDelay = Math.max(relativeDelay, 0);
+	      maxDuration = timings.maxDuration;
+
+	      var flags = {};
+	      flags.hasTransitions          = timings.transitionDuration > 0;
+	      flags.hasAnimations           = timings.animationDuration > 0;
+	      flags.hasTransitionAll        = flags.hasTransitions && timings.transitionProperty == 'all';
+	      flags.applyTransitionDuration = hasToStyles && (
+	                                        (flags.hasTransitions && !flags.hasTransitionAll)
+	                                         || (flags.hasAnimations && !flags.hasTransitions));
+	      flags.applyAnimationDuration  = options.duration && flags.hasAnimations;
+	      flags.applyTransitionDelay    = truthyTimingValue(options.delay) && (flags.applyTransitionDuration || flags.hasTransitions);
+	      flags.applyAnimationDelay     = truthyTimingValue(options.delay) && flags.hasAnimations;
+	      flags.recalculateTimingStyles = addRemoveClassName.length > 0;
+
+	      if (flags.applyTransitionDuration || flags.applyAnimationDuration) {
+	        maxDuration = options.duration ? parseFloat(options.duration) : maxDuration;
+
+	        if (flags.applyTransitionDuration) {
+	          flags.hasTransitions = true;
+	          timings.transitionDuration = maxDuration;
+	          applyOnlyDuration = node.style[TRANSITION_PROP + PROPERTY_KEY].length > 0;
+	          temporaryStyles.push(getCssTransitionDurationStyle(maxDuration, applyOnlyDuration));
+	        }
+
+	        if (flags.applyAnimationDuration) {
+	          flags.hasAnimations = true;
+	          timings.animationDuration = maxDuration;
+	          temporaryStyles.push(getCssKeyframeDurationStyle(maxDuration));
+	        }
+	      }
+
+	      if (maxDuration === 0 && !flags.recalculateTimingStyles) {
+	        return closeAndReturnNoopAnimator();
+	      }
+
+	      if (options.delay != null) {
+	        var delayStyle;
+	        if (typeof options.delay !== "boolean") {
+	          delayStyle = parseFloat(options.delay);
+	          // number in options.delay means we have to recalculate the delay for the closing timeout
+	          maxDelay = Math.max(delayStyle, 0);
+	        }
+
+	        if (flags.applyTransitionDelay) {
+	          temporaryStyles.push(getCssDelayStyle(delayStyle));
+	        }
+
+	        if (flags.applyAnimationDelay) {
+	          temporaryStyles.push(getCssDelayStyle(delayStyle, true));
+	        }
+	      }
+
+	      // we need to recalculate the delay value since we used a pre-emptive negative
+	      // delay value and the delay value is required for the final event checking. This
+	      // property will ensure that this will happen after the RAF phase has passed.
+	      if (options.duration == null && timings.transitionDuration > 0) {
+	        flags.recalculateTimingStyles = flags.recalculateTimingStyles || isFirst;
+	      }
+
+	      maxDelayTime = maxDelay * ONE_SECOND;
+	      maxDurationTime = maxDuration * ONE_SECOND;
+	      if (!options.skipBlocking) {
+	        flags.blockTransition = timings.transitionDuration > 0;
+	        flags.blockKeyframeAnimation = timings.animationDuration > 0 &&
+	                                       stagger.animationDelay > 0 &&
+	                                       stagger.animationDuration === 0;
+	      }
+
+	      if (options.from) {
+	        if (options.cleanupStyles) {
+	          registerRestorableStyles(restoreStyles, node, Object.keys(options.from));
+	        }
+	        applyAnimationFromStyles(element, options);
+	      }
+
+	      if (flags.blockTransition || flags.blockKeyframeAnimation) {
+	        applyBlocking(maxDuration);
+	      } else if (!options.skipBlocking) {
+	        blockTransitions(node, false);
+	      }
+
+	      // TODO(matsko): for 1.5 change this code to have an animator object for better debugging
+	      return {
+	        $$willAnimate: true,
+	        end: endFn,
+	        start: function() {
+	          if (animationClosed) return;
+
+	          runnerHost = {
+	            end: endFn,
+	            cancel: cancelFn,
+	            resume: null, //this will be set during the start() phase
+	            pause: null
+	          };
+
+	          runner = new $$AnimateRunner(runnerHost);
+
+	          waitUntilQuiet(start);
+
+	          // we don't have access to pause/resume the animation
+	          // since it hasn't run yet. AnimateRunner will therefore
+	          // set noop functions for resume and pause and they will
+	          // later be overridden once the animation is triggered
+	          return runner;
+	        }
+	      };
+
+	      function endFn() {
+	        close();
+	      }
+
+	      function cancelFn() {
+	        close(true);
+	      }
+
+	      function close(rejected) { // jshint ignore:line
+	        // if the promise has been called already then we shouldn't close
+	        // the animation again
+	        if (animationClosed || (animationCompleted && animationPaused)) return;
+	        animationClosed = true;
+	        animationPaused = false;
+
+	        if (!options.$$skipPreparationClasses) {
+	          $$jqLite.removeClass(element, preparationClasses);
+	        }
+	        $$jqLite.removeClass(element, activeClasses);
+
+	        blockKeyframeAnimations(node, false);
+	        blockTransitions(node, false);
+
+	        forEach(temporaryStyles, function(entry) {
+	          // There is only one way to remove inline style properties entirely from elements.
+	          // By using `removeProperty` this works, but we need to convert camel-cased CSS
+	          // styles down to hyphenated values.
+	          node.style[entry[0]] = '';
+	        });
+
+	        applyAnimationClasses(element, options);
+	        applyAnimationStyles(element, options);
+
+	        if (Object.keys(restoreStyles).length) {
+	          forEach(restoreStyles, function(value, prop) {
+	            value ? node.style.setProperty(prop, value)
+	                  : node.style.removeProperty(prop);
+	          });
+	        }
+
+	        // the reason why we have this option is to allow a synchronous closing callback
+	        // that is fired as SOON as the animation ends (when the CSS is removed) or if
+	        // the animation never takes off at all. A good example is a leave animation since
+	        // the element must be removed just after the animation is over or else the element
+	        // will appear on screen for one animation frame causing an overbearing flicker.
+	        if (options.onDone) {
+	          options.onDone();
+	        }
+
+	        if (events && events.length) {
+	          // Remove the transitionend / animationend listener(s)
+	          element.off(events.join(' '), onAnimationProgress);
+	        }
+
+	        //Cancel the fallback closing timeout and remove the timer data
+	        var animationTimerData = element.data(ANIMATE_TIMER_KEY);
+	        if (animationTimerData) {
+	          $timeout.cancel(animationTimerData[0].timer);
+	          element.removeData(ANIMATE_TIMER_KEY);
+	        }
+
+	        // if the preparation function fails then the promise is not setup
+	        if (runner) {
+	          runner.complete(!rejected);
+	        }
+	      }
+
+	      function applyBlocking(duration) {
+	        if (flags.blockTransition) {
+	          blockTransitions(node, duration);
+	        }
+
+	        if (flags.blockKeyframeAnimation) {
+	          blockKeyframeAnimations(node, !!duration);
+	        }
+	      }
+
+	      function closeAndReturnNoopAnimator() {
+	        runner = new $$AnimateRunner({
+	          end: endFn,
+	          cancel: cancelFn
+	        });
+
+	        // should flush the cache animation
+	        waitUntilQuiet(noop);
+	        close();
+
+	        return {
+	          $$willAnimate: false,
+	          start: function() {
+	            return runner;
+	          },
+	          end: endFn
+	        };
+	      }
+
+	      function onAnimationProgress(event) {
+	        event.stopPropagation();
+	        var ev = event.originalEvent || event;
+
+	        // we now always use `Date.now()` due to the recent changes with
+	        // event.timeStamp in Firefox, Webkit and Chrome (see #13494 for more info)
+	        var timeStamp = ev.$manualTimeStamp || Date.now();
+
+	        /* Firefox (or possibly just Gecko) likes to not round values up
+	         * when a ms measurement is used for the animation */
+	        var elapsedTime = parseFloat(ev.elapsedTime.toFixed(ELAPSED_TIME_MAX_DECIMAL_PLACES));
+
+	        /* $manualTimeStamp is a mocked timeStamp value which is set
+	         * within browserTrigger(). This is only here so that tests can
+	         * mock animations properly. Real events fallback to event.timeStamp,
+	         * or, if they don't, then a timeStamp is automatically created for them.
+	         * We're checking to see if the timeStamp surpasses the expected delay,
+	         * but we're using elapsedTime instead of the timeStamp on the 2nd
+	         * pre-condition since animationPauseds sometimes close off early */
+	        if (Math.max(timeStamp - startTime, 0) >= maxDelayTime && elapsedTime >= maxDuration) {
+	          // we set this flag to ensure that if the transition is paused then, when resumed,
+	          // the animation will automatically close itself since transitions cannot be paused.
+	          animationCompleted = true;
+	          close();
+	        }
+	      }
+
+	      function start() {
+	        if (animationClosed) return;
+	        if (!node.parentNode) {
+	          close();
+	          return;
+	        }
+
+	        // even though we only pause keyframe animations here the pause flag
+	        // will still happen when transitions are used. Only the transition will
+	        // not be paused since that is not possible. If the animation ends when
+	        // paused then it will not complete until unpaused or cancelled.
+	        var playPause = function(playAnimation) {
+	          if (!animationCompleted) {
+	            animationPaused = !playAnimation;
+	            if (timings.animationDuration) {
+	              var value = blockKeyframeAnimations(node, animationPaused);
+	              animationPaused
+	                  ? temporaryStyles.push(value)
+	                  : removeFromArray(temporaryStyles, value);
+	            }
+	          } else if (animationPaused && playAnimation) {
+	            animationPaused = false;
+	            close();
+	          }
+	        };
+
+	        // checking the stagger duration prevents an accidentally cascade of the CSS delay style
+	        // being inherited from the parent. If the transition duration is zero then we can safely
+	        // rely that the delay value is an intentional stagger delay style.
+	        var maxStagger = itemIndex > 0
+	                         && ((timings.transitionDuration && stagger.transitionDuration === 0) ||
+	                            (timings.animationDuration && stagger.animationDuration === 0))
+	                         && Math.max(stagger.animationDelay, stagger.transitionDelay);
+	        if (maxStagger) {
+	          $timeout(triggerAnimationStart,
+	                   Math.floor(maxStagger * itemIndex * ONE_SECOND),
+	                   false);
+	        } else {
+	          triggerAnimationStart();
+	        }
+
+	        // this will decorate the existing promise runner with pause/resume methods
+	        runnerHost.resume = function() {
+	          playPause(true);
+	        };
+
+	        runnerHost.pause = function() {
+	          playPause(false);
+	        };
+
+	        function triggerAnimationStart() {
+	          // just incase a stagger animation kicks in when the animation
+	          // itself was cancelled entirely
+	          if (animationClosed) return;
+
+	          applyBlocking(false);
+
+	          forEach(temporaryStyles, function(entry) {
+	            var key = entry[0];
+	            var value = entry[1];
+	            node.style[key] = value;
+	          });
+
+	          applyAnimationClasses(element, options);
+	          $$jqLite.addClass(element, activeClasses);
+
+	          if (flags.recalculateTimingStyles) {
+	            fullClassName = node.className + ' ' + preparationClasses;
+	            cacheKey = gcsHashFn(node, fullClassName);
+
+	            timings = computeTimings(node, fullClassName, cacheKey);
+	            relativeDelay = timings.maxDelay;
+	            maxDelay = Math.max(relativeDelay, 0);
+	            maxDuration = timings.maxDuration;
+
+	            if (maxDuration === 0) {
+	              close();
+	              return;
+	            }
+
+	            flags.hasTransitions = timings.transitionDuration > 0;
+	            flags.hasAnimations = timings.animationDuration > 0;
+	          }
+
+	          if (flags.applyAnimationDelay) {
+	            relativeDelay = typeof options.delay !== "boolean" && truthyTimingValue(options.delay)
+	                  ? parseFloat(options.delay)
+	                  : relativeDelay;
+
+	            maxDelay = Math.max(relativeDelay, 0);
+	            timings.animationDelay = relativeDelay;
+	            delayStyle = getCssDelayStyle(relativeDelay, true);
+	            temporaryStyles.push(delayStyle);
+	            node.style[delayStyle[0]] = delayStyle[1];
+	          }
+
+	          maxDelayTime = maxDelay * ONE_SECOND;
+	          maxDurationTime = maxDuration * ONE_SECOND;
+
+	          if (options.easing) {
+	            var easeProp, easeVal = options.easing;
+	            if (flags.hasTransitions) {
+	              easeProp = TRANSITION_PROP + TIMING_KEY;
+	              temporaryStyles.push([easeProp, easeVal]);
+	              node.style[easeProp] = easeVal;
+	            }
+	            if (flags.hasAnimations) {
+	              easeProp = ANIMATION_PROP + TIMING_KEY;
+	              temporaryStyles.push([easeProp, easeVal]);
+	              node.style[easeProp] = easeVal;
+	            }
+	          }
+
+	          if (timings.transitionDuration) {
+	            events.push(TRANSITIONEND_EVENT);
+	          }
+
+	          if (timings.animationDuration) {
+	            events.push(ANIMATIONEND_EVENT);
+	          }
+
+	          startTime = Date.now();
+	          var timerTime = maxDelayTime + CLOSING_TIME_BUFFER * maxDurationTime;
+	          var endTime = startTime + timerTime;
+
+	          var animationsData = element.data(ANIMATE_TIMER_KEY) || [];
+	          var setupFallbackTimer = true;
+	          if (animationsData.length) {
+	            var currentTimerData = animationsData[0];
+	            setupFallbackTimer = endTime > currentTimerData.expectedEndTime;
+	            if (setupFallbackTimer) {
+	              $timeout.cancel(currentTimerData.timer);
+	            } else {
+	              animationsData.push(close);
+	            }
+	          }
+
+	          if (setupFallbackTimer) {
+	            var timer = $timeout(onAnimationExpired, timerTime, false);
+	            animationsData[0] = {
+	              timer: timer,
+	              expectedEndTime: endTime
+	            };
+	            animationsData.push(close);
+	            element.data(ANIMATE_TIMER_KEY, animationsData);
+	          }
+
+	          if (events.length) {
+	            element.on(events.join(' '), onAnimationProgress);
+	          }
+
+	          if (options.to) {
+	            if (options.cleanupStyles) {
+	              registerRestorableStyles(restoreStyles, node, Object.keys(options.to));
+	            }
+	            applyAnimationToStyles(element, options);
+	          }
+	        }
+
+	        function onAnimationExpired() {
+	          var animationsData = element.data(ANIMATE_TIMER_KEY);
+
+	          // this will be false in the event that the element was
+	          // removed from the DOM (via a leave animation or something
+	          // similar)
+	          if (animationsData) {
+	            for (var i = 1; i < animationsData.length; i++) {
+	              animationsData[i]();
+	            }
+	            element.removeData(ANIMATE_TIMER_KEY);
+	          }
+	        }
+	      }
+	    };
+	  }];
+	}];
+
+	var $$AnimateCssDriverProvider = ['$$animationProvider', function($$animationProvider) {
+	  $$animationProvider.drivers.push('$$animateCssDriver');
+
+	  var NG_ANIMATE_SHIM_CLASS_NAME = 'ng-animate-shim';
+	  var NG_ANIMATE_ANCHOR_CLASS_NAME = 'ng-anchor';
+
+	  var NG_OUT_ANCHOR_CLASS_NAME = 'ng-anchor-out';
+	  var NG_IN_ANCHOR_CLASS_NAME = 'ng-anchor-in';
+
+	  function isDocumentFragment(node) {
+	    return node.parentNode && node.parentNode.nodeType === 11;
+	  }
+
+	  this.$get = ['$animateCss', '$rootScope', '$$AnimateRunner', '$rootElement', '$sniffer', '$$jqLite', '$document',
+	       function($animateCss,   $rootScope,   $$AnimateRunner,   $rootElement,   $sniffer,   $$jqLite,   $document) {
+
+	    // only browsers that support these properties can render animations
+	    if (!$sniffer.animations && !$sniffer.transitions) return noop;
+
+	    var bodyNode = $document[0].body;
+	    var rootNode = getDomNode($rootElement);
+
+	    var rootBodyElement = jqLite(
+	      // this is to avoid using something that exists outside of the body
+	      // we also special case the doc fragment case because our unit test code
+	      // appends the $rootElement to the body after the app has been bootstrapped
+	      isDocumentFragment(rootNode) || bodyNode.contains(rootNode) ? rootNode : bodyNode
+	    );
+
+	    var applyAnimationClasses = applyAnimationClassesFactory($$jqLite);
+
+	    return function initDriverFn(animationDetails) {
+	      return animationDetails.from && animationDetails.to
+	          ? prepareFromToAnchorAnimation(animationDetails.from,
+	                                         animationDetails.to,
+	                                         animationDetails.classes,
+	                                         animationDetails.anchors)
+	          : prepareRegularAnimation(animationDetails);
+	    };
+
+	    function filterCssClasses(classes) {
+	      //remove all the `ng-` stuff
+	      return classes.replace(/\bng-\S+\b/g, '');
+	    }
+
+	    function getUniqueValues(a, b) {
+	      if (isString(a)) a = a.split(' ');
+	      if (isString(b)) b = b.split(' ');
+	      return a.filter(function(val) {
+	        return b.indexOf(val) === -1;
+	      }).join(' ');
+	    }
+
+	    function prepareAnchoredAnimation(classes, outAnchor, inAnchor) {
+	      var clone = jqLite(getDomNode(outAnchor).cloneNode(true));
+	      var startingClasses = filterCssClasses(getClassVal(clone));
+
+	      outAnchor.addClass(NG_ANIMATE_SHIM_CLASS_NAME);
+	      inAnchor.addClass(NG_ANIMATE_SHIM_CLASS_NAME);
+
+	      clone.addClass(NG_ANIMATE_ANCHOR_CLASS_NAME);
+
+	      rootBodyElement.append(clone);
+
+	      var animatorIn, animatorOut = prepareOutAnimation();
+
+	      // the user may not end up using the `out` animation and
+	      // only making use of the `in` animation or vice-versa.
+	      // In either case we should allow this and not assume the
+	      // animation is over unless both animations are not used.
+	      if (!animatorOut) {
+	        animatorIn = prepareInAnimation();
+	        if (!animatorIn) {
+	          return end();
+	        }
+	      }
+
+	      var startingAnimator = animatorOut || animatorIn;
+
+	      return {
+	        start: function() {
+	          var runner;
+
+	          var currentAnimation = startingAnimator.start();
+	          currentAnimation.done(function() {
+	            currentAnimation = null;
+	            if (!animatorIn) {
+	              animatorIn = prepareInAnimation();
+	              if (animatorIn) {
+	                currentAnimation = animatorIn.start();
+	                currentAnimation.done(function() {
+	                  currentAnimation = null;
+	                  end();
+	                  runner.complete();
+	                });
+	                return currentAnimation;
+	              }
+	            }
+	            // in the event that there is no `in` animation
+	            end();
+	            runner.complete();
+	          });
+
+	          runner = new $$AnimateRunner({
+	            end: endFn,
+	            cancel: endFn
+	          });
+
+	          return runner;
+
+	          function endFn() {
+	            if (currentAnimation) {
+	              currentAnimation.end();
+	            }
+	          }
+	        }
+	      };
+
+	      function calculateAnchorStyles(anchor) {
+	        var styles = {};
+
+	        var coords = getDomNode(anchor).getBoundingClientRect();
+
+	        // we iterate directly since safari messes up and doesn't return
+	        // all the keys for the coords object when iterated
+	        forEach(['width','height','top','left'], function(key) {
+	          var value = coords[key];
+	          switch (key) {
+	            case 'top':
+	              value += bodyNode.scrollTop;
+	              break;
+	            case 'left':
+	              value += bodyNode.scrollLeft;
+	              break;
+	          }
+	          styles[key] = Math.floor(value) + 'px';
+	        });
+	        return styles;
+	      }
+
+	      function prepareOutAnimation() {
+	        var animator = $animateCss(clone, {
+	          addClass: NG_OUT_ANCHOR_CLASS_NAME,
+	          delay: true,
+	          from: calculateAnchorStyles(outAnchor)
+	        });
+
+	        // read the comment within `prepareRegularAnimation` to understand
+	        // why this check is necessary
+	        return animator.$$willAnimate ? animator : null;
+	      }
+
+	      function getClassVal(element) {
+	        return element.attr('class') || '';
+	      }
+
+	      function prepareInAnimation() {
+	        var endingClasses = filterCssClasses(getClassVal(inAnchor));
+	        var toAdd = getUniqueValues(endingClasses, startingClasses);
+	        var toRemove = getUniqueValues(startingClasses, endingClasses);
+
+	        var animator = $animateCss(clone, {
+	          to: calculateAnchorStyles(inAnchor),
+	          addClass: NG_IN_ANCHOR_CLASS_NAME + ' ' + toAdd,
+	          removeClass: NG_OUT_ANCHOR_CLASS_NAME + ' ' + toRemove,
+	          delay: true
+	        });
+
+	        // read the comment within `prepareRegularAnimation` to understand
+	        // why this check is necessary
+	        return animator.$$willAnimate ? animator : null;
+	      }
+
+	      function end() {
+	        clone.remove();
+	        outAnchor.removeClass(NG_ANIMATE_SHIM_CLASS_NAME);
+	        inAnchor.removeClass(NG_ANIMATE_SHIM_CLASS_NAME);
+	      }
+	    }
+
+	    function prepareFromToAnchorAnimation(from, to, classes, anchors) {
+	      var fromAnimation = prepareRegularAnimation(from, noop);
+	      var toAnimation = prepareRegularAnimation(to, noop);
+
+	      var anchorAnimations = [];
+	      forEach(anchors, function(anchor) {
+	        var outElement = anchor['out'];
+	        var inElement = anchor['in'];
+	        var animator = prepareAnchoredAnimation(classes, outElement, inElement);
+	        if (animator) {
+	          anchorAnimations.push(animator);
+	        }
+	      });
+
+	      // no point in doing anything when there are no elements to animate
+	      if (!fromAnimation && !toAnimation && anchorAnimations.length === 0) return;
+
+	      return {
+	        start: function() {
+	          var animationRunners = [];
+
+	          if (fromAnimation) {
+	            animationRunners.push(fromAnimation.start());
+	          }
+
+	          if (toAnimation) {
+	            animationRunners.push(toAnimation.start());
+	          }
+
+	          forEach(anchorAnimations, function(animation) {
+	            animationRunners.push(animation.start());
+	          });
+
+	          var runner = new $$AnimateRunner({
+	            end: endFn,
+	            cancel: endFn // CSS-driven animations cannot be cancelled, only ended
+	          });
+
+	          $$AnimateRunner.all(animationRunners, function(status) {
+	            runner.complete(status);
+	          });
+
+	          return runner;
+
+	          function endFn() {
+	            forEach(animationRunners, function(runner) {
+	              runner.end();
+	            });
+	          }
+	        }
+	      };
+	    }
+
+	    function prepareRegularAnimation(animationDetails) {
+	      var element = animationDetails.element;
+	      var options = animationDetails.options || {};
+
+	      if (animationDetails.structural) {
+	        options.event = animationDetails.event;
+	        options.structural = true;
+	        options.applyClassesEarly = true;
+
+	        // we special case the leave animation since we want to ensure that
+	        // the element is removed as soon as the animation is over. Otherwise
+	        // a flicker might appear or the element may not be removed at all
+	        if (animationDetails.event === 'leave') {
+	          options.onDone = options.domOperation;
+	        }
+	      }
+
+	      // We assign the preparationClasses as the actual animation event since
+	      // the internals of $animateCss will just suffix the event token values
+	      // with `-active` to trigger the animation.
+	      if (options.preparationClasses) {
+	        options.event = concatWithSpace(options.event, options.preparationClasses);
+	      }
+
+	      var animator = $animateCss(element, options);
+
+	      // the driver lookup code inside of $$animation attempts to spawn a
+	      // driver one by one until a driver returns a.$$willAnimate animator object.
+	      // $animateCss will always return an object, however, it will pass in
+	      // a flag as a hint as to whether an animation was detected or not
+	      return animator.$$willAnimate ? animator : null;
+	    }
+	  }];
+	}];
+
+	// TODO(matsko): use caching here to speed things up for detection
+	// TODO(matsko): add documentation
+	//  by the time...
+
+	var $$AnimateJsProvider = ['$animateProvider', function($animateProvider) {
+	  this.$get = ['$injector', '$$AnimateRunner', '$$jqLite',
+	       function($injector,   $$AnimateRunner,   $$jqLite) {
+
+	    var applyAnimationClasses = applyAnimationClassesFactory($$jqLite);
+	         // $animateJs(element, 'enter');
+	    return function(element, event, classes, options) {
+	      var animationClosed = false;
+
+	      // the `classes` argument is optional and if it is not used
+	      // then the classes will be resolved from the element's className
+	      // property as well as options.addClass/options.removeClass.
+	      if (arguments.length === 3 && isObject(classes)) {
+	        options = classes;
+	        classes = null;
+	      }
+
+	      options = prepareAnimationOptions(options);
+	      if (!classes) {
+	        classes = element.attr('class') || '';
+	        if (options.addClass) {
+	          classes += ' ' + options.addClass;
+	        }
+	        if (options.removeClass) {
+	          classes += ' ' + options.removeClass;
+	        }
+	      }
+
+	      var classesToAdd = options.addClass;
+	      var classesToRemove = options.removeClass;
+
+	      // the lookupAnimations function returns a series of animation objects that are
+	      // matched up with one or more of the CSS classes. These animation objects are
+	      // defined via the module.animation factory function. If nothing is detected then
+	      // we don't return anything which then makes $animation query the next driver.
+	      var animations = lookupAnimations(classes);
+	      var before, after;
+	      if (animations.length) {
+	        var afterFn, beforeFn;
+	        if (event == 'leave') {
+	          beforeFn = 'leave';
+	          afterFn = 'afterLeave'; // TODO(matsko): get rid of this
+	        } else {
+	          beforeFn = 'before' + event.charAt(0).toUpperCase() + event.substr(1);
+	          afterFn = event;
+	        }
+
+	        if (event !== 'enter' && event !== 'move') {
+	          before = packageAnimations(element, event, options, animations, beforeFn);
+	        }
+	        after  = packageAnimations(element, event, options, animations, afterFn);
+	      }
+
+	      // no matching animations
+	      if (!before && !after) return;
+
+	      function applyOptions() {
+	        options.domOperation();
+	        applyAnimationClasses(element, options);
+	      }
+
+	      function close() {
+	        animationClosed = true;
+	        applyOptions();
+	        applyAnimationStyles(element, options);
+	      }
+
+	      var runner;
+
+	      return {
+	        $$willAnimate: true,
+	        end: function() {
+	          if (runner) {
+	            runner.end();
+	          } else {
+	            close();
+	            runner = new $$AnimateRunner();
+	            runner.complete(true);
+	          }
+	          return runner;
+	        },
+	        start: function() {
+	          if (runner) {
+	            return runner;
+	          }
+
+	          runner = new $$AnimateRunner();
+	          var closeActiveAnimations;
+	          var chain = [];
+
+	          if (before) {
+	            chain.push(function(fn) {
+	              closeActiveAnimations = before(fn);
+	            });
+	          }
+
+	          if (chain.length) {
+	            chain.push(function(fn) {
+	              applyOptions();
+	              fn(true);
+	            });
+	          } else {
+	            applyOptions();
+	          }
+
+	          if (after) {
+	            chain.push(function(fn) {
+	              closeActiveAnimations = after(fn);
+	            });
+	          }
+
+	          runner.setHost({
+	            end: function() {
+	              endAnimations();
+	            },
+	            cancel: function() {
+	              endAnimations(true);
+	            }
+	          });
+
+	          $$AnimateRunner.chain(chain, onComplete);
+	          return runner;
+
+	          function onComplete(success) {
+	            close(success);
+	            runner.complete(success);
+	          }
+
+	          function endAnimations(cancelled) {
+	            if (!animationClosed) {
+	              (closeActiveAnimations || noop)(cancelled);
+	              onComplete(cancelled);
+	            }
+	          }
+	        }
+	      };
+
+	      function executeAnimationFn(fn, element, event, options, onDone) {
+	        var args;
+	        switch (event) {
+	          case 'animate':
+	            args = [element, options.from, options.to, onDone];
+	            break;
+
+	          case 'setClass':
+	            args = [element, classesToAdd, classesToRemove, onDone];
+	            break;
+
+	          case 'addClass':
+	            args = [element, classesToAdd, onDone];
+	            break;
+
+	          case 'removeClass':
+	            args = [element, classesToRemove, onDone];
+	            break;
+
+	          default:
+	            args = [element, onDone];
+	            break;
+	        }
+
+	        args.push(options);
+
+	        var value = fn.apply(fn, args);
+	        if (value) {
+	          if (isFunction(value.start)) {
+	            value = value.start();
+	          }
+
+	          if (value instanceof $$AnimateRunner) {
+	            value.done(onDone);
+	          } else if (isFunction(value)) {
+	            // optional onEnd / onCancel callback
+	            return value;
+	          }
+	        }
+
+	        return noop;
+	      }
+
+	      function groupEventedAnimations(element, event, options, animations, fnName) {
+	        var operations = [];
+	        forEach(animations, function(ani) {
+	          var animation = ani[fnName];
+	          if (!animation) return;
+
+	          // note that all of these animations will run in parallel
+	          operations.push(function() {
+	            var runner;
+	            var endProgressCb;
+
+	            var resolved = false;
+	            var onAnimationComplete = function(rejected) {
+	              if (!resolved) {
+	                resolved = true;
+	                (endProgressCb || noop)(rejected);
+	                runner.complete(!rejected);
+	              }
+	            };
+
+	            runner = new $$AnimateRunner({
+	              end: function() {
+	                onAnimationComplete();
+	              },
+	              cancel: function() {
+	                onAnimationComplete(true);
+	              }
+	            });
+
+	            endProgressCb = executeAnimationFn(animation, element, event, options, function(result) {
+	              var cancelled = result === false;
+	              onAnimationComplete(cancelled);
+	            });
+
+	            return runner;
+	          });
+	        });
+
+	        return operations;
+	      }
+
+	      function packageAnimations(element, event, options, animations, fnName) {
+	        var operations = groupEventedAnimations(element, event, options, animations, fnName);
+	        if (operations.length === 0) {
+	          var a,b;
+	          if (fnName === 'beforeSetClass') {
+	            a = groupEventedAnimations(element, 'removeClass', options, animations, 'beforeRemoveClass');
+	            b = groupEventedAnimations(element, 'addClass', options, animations, 'beforeAddClass');
+	          } else if (fnName === 'setClass') {
+	            a = groupEventedAnimations(element, 'removeClass', options, animations, 'removeClass');
+	            b = groupEventedAnimations(element, 'addClass', options, animations, 'addClass');
+	          }
+
+	          if (a) {
+	            operations = operations.concat(a);
+	          }
+	          if (b) {
+	            operations = operations.concat(b);
+	          }
+	        }
+
+	        if (operations.length === 0) return;
+
+	        // TODO(matsko): add documentation
+	        return function startAnimation(callback) {
+	          var runners = [];
+	          if (operations.length) {
+	            forEach(operations, function(animateFn) {
+	              runners.push(animateFn());
+	            });
+	          }
+
+	          runners.length ? $$AnimateRunner.all(runners, callback) : callback();
+
+	          return function endFn(reject) {
+	            forEach(runners, function(runner) {
+	              reject ? runner.cancel() : runner.end();
+	            });
+	          };
+	        };
+	      }
+	    };
+
+	    function lookupAnimations(classes) {
+	      classes = isArray(classes) ? classes : classes.split(' ');
+	      var matches = [], flagMap = {};
+	      for (var i=0; i < classes.length; i++) {
+	        var klass = classes[i],
+	            animationFactory = $animateProvider.$$registeredAnimations[klass];
+	        if (animationFactory && !flagMap[klass]) {
+	          matches.push($injector.get(animationFactory));
+	          flagMap[klass] = true;
+	        }
+	      }
+	      return matches;
+	    }
+	  }];
+	}];
+
+	var $$AnimateJsDriverProvider = ['$$animationProvider', function($$animationProvider) {
+	  $$animationProvider.drivers.push('$$animateJsDriver');
+	  this.$get = ['$$animateJs', '$$AnimateRunner', function($$animateJs, $$AnimateRunner) {
+	    return function initDriverFn(animationDetails) {
+	      if (animationDetails.from && animationDetails.to) {
+	        var fromAnimation = prepareAnimation(animationDetails.from);
+	        var toAnimation = prepareAnimation(animationDetails.to);
+	        if (!fromAnimation && !toAnimation) return;
+
+	        return {
+	          start: function() {
+	            var animationRunners = [];
+
+	            if (fromAnimation) {
+	              animationRunners.push(fromAnimation.start());
+	            }
+
+	            if (toAnimation) {
+	              animationRunners.push(toAnimation.start());
+	            }
+
+	            $$AnimateRunner.all(animationRunners, done);
+
+	            var runner = new $$AnimateRunner({
+	              end: endFnFactory(),
+	              cancel: endFnFactory()
+	            });
+
+	            return runner;
+
+	            function endFnFactory() {
+	              return function() {
+	                forEach(animationRunners, function(runner) {
+	                  // at this point we cannot cancel animations for groups just yet. 1.5+
+	                  runner.end();
+	                });
+	              };
+	            }
+
+	            function done(status) {
+	              runner.complete(status);
+	            }
+	          }
+	        };
+	      } else {
+	        return prepareAnimation(animationDetails);
+	      }
+	    };
+
+	    function prepareAnimation(animationDetails) {
+	      // TODO(matsko): make sure to check for grouped animations and delegate down to normal animations
+	      var element = animationDetails.element;
+	      var event = animationDetails.event;
+	      var options = animationDetails.options;
+	      var classes = animationDetails.classes;
+	      return $$animateJs(element, event, classes, options);
+	    }
+	  }];
+	}];
+
+	var NG_ANIMATE_ATTR_NAME = 'data-ng-animate';
+	var NG_ANIMATE_PIN_DATA = '$ngAnimatePin';
+	var $$AnimateQueueProvider = ['$animateProvider', function($animateProvider) {
+	  var PRE_DIGEST_STATE = 1;
+	  var RUNNING_STATE = 2;
+	  var ONE_SPACE = ' ';
+
+	  var rules = this.rules = {
+	    skip: [],
+	    cancel: [],
+	    join: []
+	  };
+
+	  function makeTruthyCssClassMap(classString) {
+	    if (!classString) {
+	      return null;
+	    }
+
+	    var keys = classString.split(ONE_SPACE);
+	    var map = Object.create(null);
+
+	    forEach(keys, function(key) {
+	      map[key] = true;
+	    });
+	    return map;
+	  }
+
+	  function hasMatchingClasses(newClassString, currentClassString) {
+	    if (newClassString && currentClassString) {
+	      var currentClassMap = makeTruthyCssClassMap(currentClassString);
+	      return newClassString.split(ONE_SPACE).some(function(className) {
+	        return currentClassMap[className];
+	      });
+	    }
+	  }
+
+	  function isAllowed(ruleType, element, currentAnimation, previousAnimation) {
+	    return rules[ruleType].some(function(fn) {
+	      return fn(element, currentAnimation, previousAnimation);
+	    });
+	  }
+
+	  function hasAnimationClasses(animation, and) {
+	    var a = (animation.addClass || '').length > 0;
+	    var b = (animation.removeClass || '').length > 0;
+	    return and ? a && b : a || b;
+	  }
+
+	  rules.join.push(function(element, newAnimation, currentAnimation) {
+	    // if the new animation is class-based then we can just tack that on
+	    return !newAnimation.structural && hasAnimationClasses(newAnimation);
+	  });
+
+	  rules.skip.push(function(element, newAnimation, currentAnimation) {
+	    // there is no need to animate anything if no classes are being added and
+	    // there is no structural animation that will be triggered
+	    return !newAnimation.structural && !hasAnimationClasses(newAnimation);
+	  });
+
+	  rules.skip.push(function(element, newAnimation, currentAnimation) {
+	    // why should we trigger a new structural animation if the element will
+	    // be removed from the DOM anyway?
+	    return currentAnimation.event == 'leave' && newAnimation.structural;
+	  });
+
+	  rules.skip.push(function(element, newAnimation, currentAnimation) {
+	    // if there is an ongoing current animation then don't even bother running the class-based animation
+	    return currentAnimation.structural && currentAnimation.state === RUNNING_STATE && !newAnimation.structural;
+	  });
+
+	  rules.cancel.push(function(element, newAnimation, currentAnimation) {
+	    // there can never be two structural animations running at the same time
+	    return currentAnimation.structural && newAnimation.structural;
+	  });
+
+	  rules.cancel.push(function(element, newAnimation, currentAnimation) {
+	    // if the previous animation is already running, but the new animation will
+	    // be triggered, but the new animation is structural
+	    return currentAnimation.state === RUNNING_STATE && newAnimation.structural;
+	  });
+
+	  rules.cancel.push(function(element, newAnimation, currentAnimation) {
+	    // cancel the animation if classes added / removed in both animation cancel each other out,
+	    // but only if the current animation isn't structural
+
+	    if (currentAnimation.structural) return false;
+
+	    var nA = newAnimation.addClass;
+	    var nR = newAnimation.removeClass;
+	    var cA = currentAnimation.addClass;
+	    var cR = currentAnimation.removeClass;
+
+	    // early detection to save the global CPU shortage :)
+	    if ((isUndefined(nA) && isUndefined(nR)) || (isUndefined(cA) && isUndefined(cR))) {
+	      return false;
+	    }
+
+	    return hasMatchingClasses(nA, cR) || hasMatchingClasses(nR, cA);
+	  });
+
+	  this.$get = ['$$rAF', '$rootScope', '$rootElement', '$document', '$$HashMap',
+	               '$$animation', '$$AnimateRunner', '$templateRequest', '$$jqLite', '$$forceReflow',
+	       function($$rAF,   $rootScope,   $rootElement,   $document,   $$HashMap,
+	                $$animation,   $$AnimateRunner,   $templateRequest,   $$jqLite,   $$forceReflow) {
+
+	    var activeAnimationsLookup = new $$HashMap();
+	    var disabledElementsLookup = new $$HashMap();
+	    var animationsEnabled = null;
+
+	    function postDigestTaskFactory() {
+	      var postDigestCalled = false;
+	      return function(fn) {
+	        // we only issue a call to postDigest before
+	        // it has first passed. This prevents any callbacks
+	        // from not firing once the animation has completed
+	        // since it will be out of the digest cycle.
+	        if (postDigestCalled) {
+	          fn();
+	        } else {
+	          $rootScope.$$postDigest(function() {
+	            postDigestCalled = true;
+	            fn();
+	          });
+	        }
+	      };
+	    }
+
+	    // Wait until all directive and route-related templates are downloaded and
+	    // compiled. The $templateRequest.totalPendingRequests variable keeps track of
+	    // all of the remote templates being currently downloaded. If there are no
+	    // templates currently downloading then the watcher will still fire anyway.
+	    var deregisterWatch = $rootScope.$watch(
+	      function() { return $templateRequest.totalPendingRequests === 0; },
+	      function(isEmpty) {
+	        if (!isEmpty) return;
+	        deregisterWatch();
+
+	        // Now that all templates have been downloaded, $animate will wait until
+	        // the post digest queue is empty before enabling animations. By having two
+	        // calls to $postDigest calls we can ensure that the flag is enabled at the
+	        // very end of the post digest queue. Since all of the animations in $animate
+	        // use $postDigest, it's important that the code below executes at the end.
+	        // This basically means that the page is fully downloaded and compiled before
+	        // any animations are triggered.
+	        $rootScope.$$postDigest(function() {
+	          $rootScope.$$postDigest(function() {
+	            // we check for null directly in the event that the application already called
+	            // .enabled() with whatever arguments that it provided it with
+	            if (animationsEnabled === null) {
+	              animationsEnabled = true;
+	            }
+	          });
+	        });
+	      }
+	    );
+
+	    var callbackRegistry = {};
+
+	    // remember that the classNameFilter is set during the provider/config
+	    // stage therefore we can optimize here and setup a helper function
+	    var classNameFilter = $animateProvider.classNameFilter();
+	    var isAnimatableClassName = !classNameFilter
+	              ? function() { return true; }
+	              : function(className) {
+	                return classNameFilter.test(className);
+	              };
+
+	    var applyAnimationClasses = applyAnimationClassesFactory($$jqLite);
+
+	    function normalizeAnimationDetails(element, animation) {
+	      return mergeAnimationDetails(element, animation, {});
+	    }
+
+	    // IE9-11 has no method "contains" in SVG element and in Node.prototype. Bug #10259.
+	    var contains = window.Node.prototype.contains || function(arg) {
+	      // jshint bitwise: false
+	      return this === arg || !!(this.compareDocumentPosition(arg) & 16);
+	      // jshint bitwise: true
+	    };
+
+	    function findCallbacks(parent, element, event) {
+	      var targetNode = getDomNode(element);
+	      var targetParentNode = getDomNode(parent);
+
+	      var matches = [];
+	      var entries = callbackRegistry[event];
+	      if (entries) {
+	        forEach(entries, function(entry) {
+	          if (contains.call(entry.node, targetNode)) {
+	            matches.push(entry.callback);
+	          } else if (event === 'leave' && contains.call(entry.node, targetParentNode)) {
+	            matches.push(entry.callback);
+	          }
+	        });
+	      }
+
+	      return matches;
+	    }
+
+	    function filterFromRegistry(list, matchContainer, matchCallback) {
+	      var containerNode = extractElementNode(matchContainer);
+	      return list.filter(function(entry) {
+	        var isMatch = entry.node === containerNode &&
+	                        (!matchCallback || entry.callback === matchCallback);
+	        return !isMatch;
+	      });
+	    }
+
+	    function cleanupEventListeners(phase, element) {
+	      if (phase === 'close' && !element[0].parentNode) {
+	        // If the element is not attached to a parentNode, it has been removed by
+	        // the domOperation, and we can safely remove the event callbacks
+	        $animate.off(element);
+	      }
+	    }
+
+	    var $animate = {
+	      on: function(event, container, callback) {
+	        var node = extractElementNode(container);
+	        callbackRegistry[event] = callbackRegistry[event] || [];
+	        callbackRegistry[event].push({
+	          node: node,
+	          callback: callback
+	        });
+
+	        // Remove the callback when the element is removed from the DOM
+	        jqLite(container).on('$destroy', function() {
+	          var animationDetails = activeAnimationsLookup.get(node);
+
+	          if (!animationDetails) {
+	            // If there's an animation ongoing, the callback calling code will remove
+	            // the event listeners. If we'd remove here, the callbacks would be removed
+	            // before the animation ends
+	            $animate.off(event, container, callback);
+	          }
+	        });
+	      },
+
+	      off: function(event, container, callback) {
+	        if (arguments.length === 1 && !angular.isString(arguments[0])) {
+	          container = arguments[0];
+	          for (var eventType in callbackRegistry) {
+	            callbackRegistry[eventType] = filterFromRegistry(callbackRegistry[eventType], container);
+	          }
+
+	          return;
+	        }
+
+	        var entries = callbackRegistry[event];
+	        if (!entries) return;
+
+	        callbackRegistry[event] = arguments.length === 1
+	            ? null
+	            : filterFromRegistry(entries, container, callback);
+	      },
+
+	      pin: function(element, parentElement) {
+	        assertArg(isElement(element), 'element', 'not an element');
+	        assertArg(isElement(parentElement), 'parentElement', 'not an element');
+	        element.data(NG_ANIMATE_PIN_DATA, parentElement);
+	      },
+
+	      push: function(element, event, options, domOperation) {
+	        options = options || {};
+	        options.domOperation = domOperation;
+	        return queueAnimation(element, event, options);
+	      },
+
+	      // this method has four signatures:
+	      //  () - global getter
+	      //  (bool) - global setter
+	      //  (element) - element getter
+	      //  (element, bool) - element setter<F37>
+	      enabled: function(element, bool) {
+	        var argCount = arguments.length;
+
+	        if (argCount === 0) {
+	          // () - Global getter
+	          bool = !!animationsEnabled;
+	        } else {
+	          var hasElement = isElement(element);
+
+	          if (!hasElement) {
+	            // (bool) - Global setter
+	            bool = animationsEnabled = !!element;
+	          } else {
+	            var node = getDomNode(element);
+	            var recordExists = disabledElementsLookup.get(node);
+
+	            if (argCount === 1) {
+	              // (element) - Element getter
+	              bool = !recordExists;
+	            } else {
+	              // (element, bool) - Element setter
+	              disabledElementsLookup.put(node, !bool);
+	            }
+	          }
+	        }
+
+	        return bool;
+	      }
+	    };
+
+	    return $animate;
+
+	    function queueAnimation(element, event, initialOptions) {
+	      // we always make a copy of the options since
+	      // there should never be any side effects on
+	      // the input data when running `$animateCss`.
+	      var options = copy(initialOptions);
+
+	      var node, parent;
+	      element = stripCommentsFromElement(element);
+	      if (element) {
+	        node = getDomNode(element);
+	        parent = element.parent();
+	      }
+
+	      options = prepareAnimationOptions(options);
+
+	      // we create a fake runner with a working promise.
+	      // These methods will become available after the digest has passed
+	      var runner = new $$AnimateRunner();
+
+	      // this is used to trigger callbacks in postDigest mode
+	      var runInNextPostDigestOrNow = postDigestTaskFactory();
+
+	      if (isArray(options.addClass)) {
+	        options.addClass = options.addClass.join(' ');
+	      }
+
+	      if (options.addClass && !isString(options.addClass)) {
+	        options.addClass = null;
+	      }
+
+	      if (isArray(options.removeClass)) {
+	        options.removeClass = options.removeClass.join(' ');
+	      }
+
+	      if (options.removeClass && !isString(options.removeClass)) {
+	        options.removeClass = null;
+	      }
+
+	      if (options.from && !isObject(options.from)) {
+	        options.from = null;
+	      }
+
+	      if (options.to && !isObject(options.to)) {
+	        options.to = null;
+	      }
+
+	      // there are situations where a directive issues an animation for
+	      // a jqLite wrapper that contains only comment nodes... If this
+	      // happens then there is no way we can perform an animation
+	      if (!node) {
+	        close();
+	        return runner;
+	      }
+
+	      var className = [node.className, options.addClass, options.removeClass].join(' ');
+	      if (!isAnimatableClassName(className)) {
+	        close();
+	        return runner;
+	      }
+
+	      var isStructural = ['enter', 'move', 'leave'].indexOf(event) >= 0;
+
+	      var documentHidden = $document[0].hidden;
+
+	      // this is a hard disable of all animations for the application or on
+	      // the element itself, therefore  there is no need to continue further
+	      // past this point if not enabled
+	      // Animations are also disabled if the document is currently hidden (page is not visible
+	      // to the user), because browsers slow down or do not flush calls to requestAnimationFrame
+	      var skipAnimations = !animationsEnabled || documentHidden || disabledElementsLookup.get(node);
+	      var existingAnimation = (!skipAnimations && activeAnimationsLookup.get(node)) || {};
+	      var hasExistingAnimation = !!existingAnimation.state;
+
+	      // there is no point in traversing the same collection of parent ancestors if a followup
+	      // animation will be run on the same element that already did all that checking work
+	      if (!skipAnimations && (!hasExistingAnimation || existingAnimation.state != PRE_DIGEST_STATE)) {
+	        skipAnimations = !areAnimationsAllowed(element, parent, event);
+	      }
+
+	      if (skipAnimations) {
+	        // Callbacks should fire even if the document is hidden (regression fix for issue #14120)
+	        if (documentHidden) notifyProgress(runner, event, 'start');
+	        close();
+	        if (documentHidden) notifyProgress(runner, event, 'close');
+	        return runner;
+	      }
+
+	      if (isStructural) {
+	        closeChildAnimations(element);
+	      }
+
+	      var newAnimation = {
+	        structural: isStructural,
+	        element: element,
+	        event: event,
+	        addClass: options.addClass,
+	        removeClass: options.removeClass,
+	        close: close,
+	        options: options,
+	        runner: runner
+	      };
+
+	      if (hasExistingAnimation) {
+	        var skipAnimationFlag = isAllowed('skip', element, newAnimation, existingAnimation);
+	        if (skipAnimationFlag) {
+	          if (existingAnimation.state === RUNNING_STATE) {
+	            close();
+	            return runner;
+	          } else {
+	            mergeAnimationDetails(element, existingAnimation, newAnimation);
+	            return existingAnimation.runner;
+	          }
+	        }
+	        var cancelAnimationFlag = isAllowed('cancel', element, newAnimation, existingAnimation);
+	        if (cancelAnimationFlag) {
+	          if (existingAnimation.state === RUNNING_STATE) {
+	            // this will end the animation right away and it is safe
+	            // to do so since the animation is already running and the
+	            // runner callback code will run in async
+	            existingAnimation.runner.end();
+	          } else if (existingAnimation.structural) {
+	            // this means that the animation is queued into a digest, but
+	            // hasn't started yet. Therefore it is safe to run the close
+	            // method which will call the runner methods in async.
+	            existingAnimation.close();
+	          } else {
+	            // this will merge the new animation options into existing animation options
+	            mergeAnimationDetails(element, existingAnimation, newAnimation);
+
+	            return existingAnimation.runner;
+	          }
+	        } else {
+	          // a joined animation means that this animation will take over the existing one
+	          // so an example would involve a leave animation taking over an enter. Then when
+	          // the postDigest kicks in the enter will be ignored.
+	          var joinAnimationFlag = isAllowed('join', element, newAnimation, existingAnimation);
+	          if (joinAnimationFlag) {
+	            if (existingAnimation.state === RUNNING_STATE) {
+	              normalizeAnimationDetails(element, newAnimation);
+	            } else {
+	              applyGeneratedPreparationClasses(element, isStructural ? event : null, options);
+
+	              event = newAnimation.event = existingAnimation.event;
+	              options = mergeAnimationDetails(element, existingAnimation, newAnimation);
+
+	              //we return the same runner since only the option values of this animation will
+	              //be fed into the `existingAnimation`.
+	              return existingAnimation.runner;
+	            }
+	          }
+	        }
+	      } else {
+	        // normalization in this case means that it removes redundant CSS classes that
+	        // already exist (addClass) or do not exist (removeClass) on the element
+	        normalizeAnimationDetails(element, newAnimation);
+	      }
+
+	      // when the options are merged and cleaned up we may end up not having to do
+	      // an animation at all, therefore we should check this before issuing a post
+	      // digest callback. Structural animations will always run no matter what.
+	      var isValidAnimation = newAnimation.structural;
+	      if (!isValidAnimation) {
+	        // animate (from/to) can be quickly checked first, otherwise we check if any classes are present
+	        isValidAnimation = (newAnimation.event === 'animate' && Object.keys(newAnimation.options.to || {}).length > 0)
+	                            || hasAnimationClasses(newAnimation);
+	      }
+
+	      if (!isValidAnimation) {
+	        close();
+	        clearElementAnimationState(element);
+	        return runner;
+	      }
+
+	      // the counter keeps track of cancelled animations
+	      var counter = (existingAnimation.counter || 0) + 1;
+	      newAnimation.counter = counter;
+
+	      markElementAnimationState(element, PRE_DIGEST_STATE, newAnimation);
+
+	      $rootScope.$$postDigest(function() {
+	        var animationDetails = activeAnimationsLookup.get(node);
+	        var animationCancelled = !animationDetails;
+	        animationDetails = animationDetails || {};
+
+	        // if addClass/removeClass is called before something like enter then the
+	        // registered parent element may not be present. The code below will ensure
+	        // that a final value for parent element is obtained
+	        var parentElement = element.parent() || [];
+
+	        // animate/structural/class-based animations all have requirements. Otherwise there
+	        // is no point in performing an animation. The parent node must also be set.
+	        var isValidAnimation = parentElement.length > 0
+	                                && (animationDetails.event === 'animate'
+	                                    || animationDetails.structural
+	                                    || hasAnimationClasses(animationDetails));
+
+	        // this means that the previous animation was cancelled
+	        // even if the follow-up animation is the same event
+	        if (animationCancelled || animationDetails.counter !== counter || !isValidAnimation) {
+	          // if another animation did not take over then we need
+	          // to make sure that the domOperation and options are
+	          // handled accordingly
+	          if (animationCancelled) {
+	            applyAnimationClasses(element, options);
+	            applyAnimationStyles(element, options);
+	          }
+
+	          // if the event changed from something like enter to leave then we do
+	          // it, otherwise if it's the same then the end result will be the same too
+	          if (animationCancelled || (isStructural && animationDetails.event !== event)) {
+	            options.domOperation();
+	            runner.end();
+	          }
+
+	          // in the event that the element animation was not cancelled or a follow-up animation
+	          // isn't allowed to animate from here then we need to clear the state of the element
+	          // so that any future animations won't read the expired animation data.
+	          if (!isValidAnimation) {
+	            clearElementAnimationState(element);
+	          }
+
+	          return;
+	        }
+
+	        // this combined multiple class to addClass / removeClass into a setClass event
+	        // so long as a structural event did not take over the animation
+	        event = !animationDetails.structural && hasAnimationClasses(animationDetails, true)
+	            ? 'setClass'
+	            : animationDetails.event;
+
+	        markElementAnimationState(element, RUNNING_STATE);
+	        var realRunner = $$animation(element, event, animationDetails.options);
+
+	        // this will update the runner's flow-control events based on
+	        // the `realRunner` object.
+	        runner.setHost(realRunner);
+	        notifyProgress(runner, event, 'start', {});
+
+	        realRunner.done(function(status) {
+	          close(!status);
+	          var animationDetails = activeAnimationsLookup.get(node);
+	          if (animationDetails && animationDetails.counter === counter) {
+	            clearElementAnimationState(getDomNode(element));
+	          }
+	          notifyProgress(runner, event, 'close', {});
+	        });
+	      });
+
+	      return runner;
+
+	      function notifyProgress(runner, event, phase, data) {
+	        runInNextPostDigestOrNow(function() {
+	          var callbacks = findCallbacks(parent, element, event);
+	          if (callbacks.length) {
+	            // do not optimize this call here to RAF because
+	            // we don't know how heavy the callback code here will
+	            // be and if this code is buffered then this can
+	            // lead to a performance regression.
+	            $$rAF(function() {
+	              forEach(callbacks, function(callback) {
+	                callback(element, phase, data);
+	              });
+	              cleanupEventListeners(phase, element);
+	            });
+	          } else {
+	            cleanupEventListeners(phase, element);
+	          }
+	        });
+	        runner.progress(event, phase, data);
+	      }
+
+	      function close(reject) { // jshint ignore:line
+	        clearGeneratedClasses(element, options);
+	        applyAnimationClasses(element, options);
+	        applyAnimationStyles(element, options);
+	        options.domOperation();
+	        runner.complete(!reject);
+	      }
+	    }
+
+	    function closeChildAnimations(element) {
+	      var node = getDomNode(element);
+	      var children = node.querySelectorAll('[' + NG_ANIMATE_ATTR_NAME + ']');
+	      forEach(children, function(child) {
+	        var state = parseInt(child.getAttribute(NG_ANIMATE_ATTR_NAME));
+	        var animationDetails = activeAnimationsLookup.get(child);
+	        if (animationDetails) {
+	          switch (state) {
+	            case RUNNING_STATE:
+	              animationDetails.runner.end();
+	              /* falls through */
+	            case PRE_DIGEST_STATE:
+	              activeAnimationsLookup.remove(child);
+	              break;
+	          }
+	        }
+	      });
+	    }
+
+	    function clearElementAnimationState(element) {
+	      var node = getDomNode(element);
+	      node.removeAttribute(NG_ANIMATE_ATTR_NAME);
+	      activeAnimationsLookup.remove(node);
+	    }
+
+	    function isMatchingElement(nodeOrElmA, nodeOrElmB) {
+	      return getDomNode(nodeOrElmA) === getDomNode(nodeOrElmB);
+	    }
+
+	    /**
+	     * This fn returns false if any of the following is true:
+	     * a) animations on any parent element are disabled, and animations on the element aren't explicitly allowed
+	     * b) a parent element has an ongoing structural animation, and animateChildren is false
+	     * c) the element is not a child of the body
+	     * d) the element is not a child of the $rootElement
+	     */
+	    function areAnimationsAllowed(element, parentElement, event) {
+	      var bodyElement = jqLite($document[0].body);
+	      var bodyElementDetected = isMatchingElement(element, bodyElement) || element[0].nodeName === 'HTML';
+	      var rootElementDetected = isMatchingElement(element, $rootElement);
+	      var parentAnimationDetected = false;
+	      var animateChildren;
+	      var elementDisabled = disabledElementsLookup.get(getDomNode(element));
+
+	      var parentHost = jqLite.data(element[0], NG_ANIMATE_PIN_DATA);
+	      if (parentHost) {
+	        parentElement = parentHost;
+	      }
+
+	      parentElement = getDomNode(parentElement);
+
+	      while (parentElement) {
+	        if (!rootElementDetected) {
+	          // angular doesn't want to attempt to animate elements outside of the application
+	          // therefore we need to ensure that the rootElement is an ancestor of the current element
+	          rootElementDetected = isMatchingElement(parentElement, $rootElement);
+	        }
+
+	        if (parentElement.nodeType !== ELEMENT_NODE) {
+	          // no point in inspecting the #document element
+	          break;
+	        }
+
+	        var details = activeAnimationsLookup.get(parentElement) || {};
+	        // either an enter, leave or move animation will commence
+	        // therefore we can't allow any animations to take place
+	        // but if a parent animation is class-based then that's ok
+	        if (!parentAnimationDetected) {
+	          var parentElementDisabled = disabledElementsLookup.get(parentElement);
+
+	          if (parentElementDisabled === true && elementDisabled !== false) {
+	            // disable animations if the user hasn't explicitly enabled animations on the
+	            // current element
+	            elementDisabled = true;
+	            // element is disabled via parent element, no need to check anything else
+	            break;
+	          } else if (parentElementDisabled === false) {
+	            elementDisabled = false;
+	          }
+	          parentAnimationDetected = details.structural;
+	        }
+
+	        if (isUndefined(animateChildren) || animateChildren === true) {
+	          var value = jqLite.data(parentElement, NG_ANIMATE_CHILDREN_DATA);
+	          if (isDefined(value)) {
+	            animateChildren = value;
+	          }
+	        }
+
+	        // there is no need to continue traversing at this point
+	        if (parentAnimationDetected && animateChildren === false) break;
+
+	        if (!bodyElementDetected) {
+	          // we also need to ensure that the element is or will be a part of the body element
+	          // otherwise it is pointless to even issue an animation to be rendered
+	          bodyElementDetected = isMatchingElement(parentElement, bodyElement);
+	        }
+
+	        if (bodyElementDetected && rootElementDetected) {
+	          // If both body and root have been found, any other checks are pointless,
+	          // as no animation data should live outside the application
+	          break;
+	        }
+
+	        if (!rootElementDetected) {
+	          // If no rootElement is detected, check if the parentElement is pinned to another element
+	          parentHost = jqLite.data(parentElement, NG_ANIMATE_PIN_DATA);
+	          if (parentHost) {
+	            // The pin target element becomes the next parent element
+	            parentElement = getDomNode(parentHost);
+	            continue;
+	          }
+	        }
+
+	        parentElement = parentElement.parentNode;
+	      }
+
+	      var allowAnimation = (!parentAnimationDetected || animateChildren) && elementDisabled !== true;
+	      return allowAnimation && rootElementDetected && bodyElementDetected;
+	    }
+
+	    function markElementAnimationState(element, state, details) {
+	      details = details || {};
+	      details.state = state;
+
+	      var node = getDomNode(element);
+	      node.setAttribute(NG_ANIMATE_ATTR_NAME, state);
+
+	      var oldValue = activeAnimationsLookup.get(node);
+	      var newValue = oldValue
+	          ? extend(oldValue, details)
+	          : details;
+	      activeAnimationsLookup.put(node, newValue);
+	    }
+	  }];
+	}];
+
+	var $$AnimationProvider = ['$animateProvider', function($animateProvider) {
+	  var NG_ANIMATE_REF_ATTR = 'ng-animate-ref';
+
+	  var drivers = this.drivers = [];
+
+	  var RUNNER_STORAGE_KEY = '$$animationRunner';
+
+	  function setRunner(element, runner) {
+	    element.data(RUNNER_STORAGE_KEY, runner);
+	  }
+
+	  function removeRunner(element) {
+	    element.removeData(RUNNER_STORAGE_KEY);
+	  }
+
+	  function getRunner(element) {
+	    return element.data(RUNNER_STORAGE_KEY);
+	  }
+
+	  this.$get = ['$$jqLite', '$rootScope', '$injector', '$$AnimateRunner', '$$HashMap', '$$rAFScheduler',
+	       function($$jqLite,   $rootScope,   $injector,   $$AnimateRunner,   $$HashMap,   $$rAFScheduler) {
+
+	    var animationQueue = [];
+	    var applyAnimationClasses = applyAnimationClassesFactory($$jqLite);
+
+	    function sortAnimations(animations) {
+	      var tree = { children: [] };
+	      var i, lookup = new $$HashMap();
+
+	      // this is done first beforehand so that the hashmap
+	      // is filled with a list of the elements that will be animated
+	      for (i = 0; i < animations.length; i++) {
+	        var animation = animations[i];
+	        lookup.put(animation.domNode, animations[i] = {
+	          domNode: animation.domNode,
+	          fn: animation.fn,
+	          children: []
+	        });
+	      }
+
+	      for (i = 0; i < animations.length; i++) {
+	        processNode(animations[i]);
+	      }
+
+	      return flatten(tree);
+
+	      function processNode(entry) {
+	        if (entry.processed) return entry;
+	        entry.processed = true;
+
+	        var elementNode = entry.domNode;
+	        var parentNode = elementNode.parentNode;
+	        lookup.put(elementNode, entry);
+
+	        var parentEntry;
+	        while (parentNode) {
+	          parentEntry = lookup.get(parentNode);
+	          if (parentEntry) {
+	            if (!parentEntry.processed) {
+	              parentEntry = processNode(parentEntry);
+	            }
+	            break;
+	          }
+	          parentNode = parentNode.parentNode;
+	        }
+
+	        (parentEntry || tree).children.push(entry);
+	        return entry;
+	      }
+
+	      function flatten(tree) {
+	        var result = [];
+	        var queue = [];
+	        var i;
+
+	        for (i = 0; i < tree.children.length; i++) {
+	          queue.push(tree.children[i]);
+	        }
+
+	        var remainingLevelEntries = queue.length;
+	        var nextLevelEntries = 0;
+	        var row = [];
+
+	        for (i = 0; i < queue.length; i++) {
+	          var entry = queue[i];
+	          if (remainingLevelEntries <= 0) {
+	            remainingLevelEntries = nextLevelEntries;
+	            nextLevelEntries = 0;
+	            result.push(row);
+	            row = [];
+	          }
+	          row.push(entry.fn);
+	          entry.children.forEach(function(childEntry) {
+	            nextLevelEntries++;
+	            queue.push(childEntry);
+	          });
+	          remainingLevelEntries--;
+	        }
+
+	        if (row.length) {
+	          result.push(row);
+	        }
+
+	        return result;
+	      }
+	    }
+
+	    // TODO(matsko): document the signature in a better way
+	    return function(element, event, options) {
+	      options = prepareAnimationOptions(options);
+	      var isStructural = ['enter', 'move', 'leave'].indexOf(event) >= 0;
+
+	      // there is no animation at the current moment, however
+	      // these runner methods will get later updated with the
+	      // methods leading into the driver's end/cancel methods
+	      // for now they just stop the animation from starting
+	      var runner = new $$AnimateRunner({
+	        end: function() { close(); },
+	        cancel: function() { close(true); }
+	      });
+
+	      if (!drivers.length) {
+	        close();
+	        return runner;
+	      }
+
+	      setRunner(element, runner);
+
+	      var classes = mergeClasses(element.attr('class'), mergeClasses(options.addClass, options.removeClass));
+	      var tempClasses = options.tempClasses;
+	      if (tempClasses) {
+	        classes += ' ' + tempClasses;
+	        options.tempClasses = null;
+	      }
+
+	      var prepareClassName;
+	      if (isStructural) {
+	        prepareClassName = 'ng-' + event + PREPARE_CLASS_SUFFIX;
+	        $$jqLite.addClass(element, prepareClassName);
+	      }
+
+	      animationQueue.push({
+	        // this data is used by the postDigest code and passed into
+	        // the driver step function
+	        element: element,
+	        classes: classes,
+	        event: event,
+	        structural: isStructural,
+	        options: options,
+	        beforeStart: beforeStart,
+	        close: close
+	      });
+
+	      element.on('$destroy', handleDestroyedElement);
+
+	      // we only want there to be one function called within the post digest
+	      // block. This way we can group animations for all the animations that
+	      // were apart of the same postDigest flush call.
+	      if (animationQueue.length > 1) return runner;
+
+	      $rootScope.$$postDigest(function() {
+	        var animations = [];
+	        forEach(animationQueue, function(entry) {
+	          // the element was destroyed early on which removed the runner
+	          // form its storage. This means we can't animate this element
+	          // at all and it already has been closed due to destruction.
+	          if (getRunner(entry.element)) {
+	            animations.push(entry);
+	          } else {
+	            entry.close();
+	          }
+	        });
+
+	        // now any future animations will be in another postDigest
+	        animationQueue.length = 0;
+
+	        var groupedAnimations = groupAnimations(animations);
+	        var toBeSortedAnimations = [];
+
+	        forEach(groupedAnimations, function(animationEntry) {
+	          toBeSortedAnimations.push({
+	            domNode: getDomNode(animationEntry.from ? animationEntry.from.element : animationEntry.element),
+	            fn: function triggerAnimationStart() {
+	              // it's important that we apply the `ng-animate` CSS class and the
+	              // temporary classes before we do any driver invoking since these
+	              // CSS classes may be required for proper CSS detection.
+	              animationEntry.beforeStart();
+
+	              var startAnimationFn, closeFn = animationEntry.close;
+
+	              // in the event that the element was removed before the digest runs or
+	              // during the RAF sequencing then we should not trigger the animation.
+	              var targetElement = animationEntry.anchors
+	                  ? (animationEntry.from.element || animationEntry.to.element)
+	                  : animationEntry.element;
+
+	              if (getRunner(targetElement)) {
+	                var operation = invokeFirstDriver(animationEntry);
+	                if (operation) {
+	                  startAnimationFn = operation.start;
+	                }
+	              }
+
+	              if (!startAnimationFn) {
+	                closeFn();
+	              } else {
+	                var animationRunner = startAnimationFn();
+	                animationRunner.done(function(status) {
+	                  closeFn(!status);
+	                });
+	                updateAnimationRunners(animationEntry, animationRunner);
+	              }
+	            }
+	          });
+	        });
+
+	        // we need to sort each of the animations in order of parent to child
+	        // relationships. This ensures that the child classes are applied at the
+	        // right time.
+	        $$rAFScheduler(sortAnimations(toBeSortedAnimations));
+	      });
+
+	      return runner;
+
+	      // TODO(matsko): change to reference nodes
+	      function getAnchorNodes(node) {
+	        var SELECTOR = '[' + NG_ANIMATE_REF_ATTR + ']';
+	        var items = node.hasAttribute(NG_ANIMATE_REF_ATTR)
+	              ? [node]
+	              : node.querySelectorAll(SELECTOR);
+	        var anchors = [];
+	        forEach(items, function(node) {
+	          var attr = node.getAttribute(NG_ANIMATE_REF_ATTR);
+	          if (attr && attr.length) {
+	            anchors.push(node);
+	          }
+	        });
+	        return anchors;
+	      }
+
+	      function groupAnimations(animations) {
+	        var preparedAnimations = [];
+	        var refLookup = {};
+	        forEach(animations, function(animation, index) {
+	          var element = animation.element;
+	          var node = getDomNode(element);
+	          var event = animation.event;
+	          var enterOrMove = ['enter', 'move'].indexOf(event) >= 0;
+	          var anchorNodes = animation.structural ? getAnchorNodes(node) : [];
+
+	          if (anchorNodes.length) {
+	            var direction = enterOrMove ? 'to' : 'from';
+
+	            forEach(anchorNodes, function(anchor) {
+	              var key = anchor.getAttribute(NG_ANIMATE_REF_ATTR);
+	              refLookup[key] = refLookup[key] || {};
+	              refLookup[key][direction] = {
+	                animationID: index,
+	                element: jqLite(anchor)
+	              };
+	            });
+	          } else {
+	            preparedAnimations.push(animation);
+	          }
+	        });
+
+	        var usedIndicesLookup = {};
+	        var anchorGroups = {};
+	        forEach(refLookup, function(operations, key) {
+	          var from = operations.from;
+	          var to = operations.to;
+
+	          if (!from || !to) {
+	            // only one of these is set therefore we can't have an
+	            // anchor animation since all three pieces are required
+	            var index = from ? from.animationID : to.animationID;
+	            var indexKey = index.toString();
+	            if (!usedIndicesLookup[indexKey]) {
+	              usedIndicesLookup[indexKey] = true;
+	              preparedAnimations.push(animations[index]);
+	            }
+	            return;
+	          }
+
+	          var fromAnimation = animations[from.animationID];
+	          var toAnimation = animations[to.animationID];
+	          var lookupKey = from.animationID.toString();
+	          if (!anchorGroups[lookupKey]) {
+	            var group = anchorGroups[lookupKey] = {
+	              structural: true,
+	              beforeStart: function() {
+	                fromAnimation.beforeStart();
+	                toAnimation.beforeStart();
+	              },
+	              close: function() {
+	                fromAnimation.close();
+	                toAnimation.close();
+	              },
+	              classes: cssClassesIntersection(fromAnimation.classes, toAnimation.classes),
+	              from: fromAnimation,
+	              to: toAnimation,
+	              anchors: [] // TODO(matsko): change to reference nodes
+	            };
+
+	            // the anchor animations require that the from and to elements both have at least
+	            // one shared CSS class which effectively marries the two elements together to use
+	            // the same animation driver and to properly sequence the anchor animation.
+	            if (group.classes.length) {
+	              preparedAnimations.push(group);
+	            } else {
+	              preparedAnimations.push(fromAnimation);
+	              preparedAnimations.push(toAnimation);
+	            }
+	          }
+
+	          anchorGroups[lookupKey].anchors.push({
+	            'out': from.element, 'in': to.element
+	          });
+	        });
+
+	        return preparedAnimations;
+	      }
+
+	      function cssClassesIntersection(a,b) {
+	        a = a.split(' ');
+	        b = b.split(' ');
+	        var matches = [];
+
+	        for (var i = 0; i < a.length; i++) {
+	          var aa = a[i];
+	          if (aa.substring(0,3) === 'ng-') continue;
+
+	          for (var j = 0; j < b.length; j++) {
+	            if (aa === b[j]) {
+	              matches.push(aa);
+	              break;
+	            }
+	          }
+	        }
+
+	        return matches.join(' ');
+	      }
+
+	      function invokeFirstDriver(animationDetails) {
+	        // we loop in reverse order since the more general drivers (like CSS and JS)
+	        // may attempt more elements, but custom drivers are more particular
+	        for (var i = drivers.length - 1; i >= 0; i--) {
+	          var driverName = drivers[i];
+	          if (!$injector.has(driverName)) continue; // TODO(matsko): remove this check
+
+	          var factory = $injector.get(driverName);
+	          var driver = factory(animationDetails);
+	          if (driver) {
+	            return driver;
+	          }
+	        }
+	      }
+
+	      function beforeStart() {
+	        element.addClass(NG_ANIMATE_CLASSNAME);
+	        if (tempClasses) {
+	          $$jqLite.addClass(element, tempClasses);
+	        }
+	        if (prepareClassName) {
+	          $$jqLite.removeClass(element, prepareClassName);
+	          prepareClassName = null;
+	        }
+	      }
+
+	      function updateAnimationRunners(animation, newRunner) {
+	        if (animation.from && animation.to) {
+	          update(animation.from.element);
+	          update(animation.to.element);
+	        } else {
+	          update(animation.element);
+	        }
+
+	        function update(element) {
+	          getRunner(element).setHost(newRunner);
+	        }
+	      }
+
+	      function handleDestroyedElement() {
+	        var runner = getRunner(element);
+	        if (runner && (event !== 'leave' || !options.$$domOperationFired)) {
+	          runner.end();
+	        }
+	      }
+
+	      function close(rejected) { // jshint ignore:line
+	        element.off('$destroy', handleDestroyedElement);
+	        removeRunner(element);
+
+	        applyAnimationClasses(element, options);
+	        applyAnimationStyles(element, options);
+	        options.domOperation();
+
+	        if (tempClasses) {
+	          $$jqLite.removeClass(element, tempClasses);
+	        }
+
+	        element.removeClass(NG_ANIMATE_CLASSNAME);
+	        runner.complete(!rejected);
+	      }
+	    };
+	  }];
+	}];
+
+	/**
+	 * @ngdoc directive
+	 * @name ngAnimateSwap
+	 * @restrict A
+	 * @scope
+	 *
+	 * @description
+	 *
+	 * ngAnimateSwap is a animation-oriented directive that allows for the container to
+	 * be removed and entered in whenever the associated expression changes. A
+	 * common usecase for this directive is a rotating banner or slider component which
+	 * contains one image being present at a time. When the active image changes
+	 * then the old image will perform a `leave` animation and the new element
+	 * will be inserted via an `enter` animation.
+	 *
+	 * @animations
+	 * | Animation                        | Occurs                               |
+	 * |----------------------------------|--------------------------------------|
+	 * | {@link ng.$animate#enter enter}  | when the new element is inserted to the DOM  |
+	 * | {@link ng.$animate#leave leave}  | when the old element is removed from the DOM |
+	 *
+	 * @example
+	 * <example name="ngAnimateSwap-directive" module="ngAnimateSwapExample"
+	 *          deps="angular-animate.js"
+	 *          animations="true" fixBase="true">
+	 *   <file name="index.html">
+	 *     <div class="container" ng-controller="AppCtrl">
+	 *       <div ng-animate-swap="number" class="cell swap-animation" ng-class="colorClass(number)">
+	 *         {{ number }}
+	 *       </div>
+	 *     </div>
+	 *   </file>
+	 *   <file name="script.js">
+	 *     angular.module('ngAnimateSwapExample', ['ngAnimate'])
+	 *       .controller('AppCtrl', ['$scope', '$interval', function($scope, $interval) {
+	 *         $scope.number = 0;
+	 *         $interval(function() {
+	 *           $scope.number++;
+	 *         }, 1000);
+	 *
+	 *         var colors = ['red','blue','green','yellow','orange'];
+	 *         $scope.colorClass = function(number) {
+	 *           return colors[number % colors.length];
+	 *         };
+	 *       }]);
+	 *   </file>
+	 *  <file name="animations.css">
+	 *  .container {
+	 *    height:250px;
+	 *    width:250px;
+	 *    position:relative;
+	 *    overflow:hidden;
+	 *    border:2px solid black;
+	 *  }
+	 *  .container .cell {
+	 *    font-size:150px;
+	 *    text-align:center;
+	 *    line-height:250px;
+	 *    position:absolute;
+	 *    top:0;
+	 *    left:0;
+	 *    right:0;
+	 *    border-bottom:2px solid black;
+	 *  }
+	 *  .swap-animation.ng-enter, .swap-animation.ng-leave {
+	 *    transition:0.5s linear all;
+	 *  }
+	 *  .swap-animation.ng-enter {
+	 *    top:-250px;
+	 *  }
+	 *  .swap-animation.ng-enter-active {
+	 *    top:0px;
+	 *  }
+	 *  .swap-animation.ng-leave {
+	 *    top:0px;
+	 *  }
+	 *  .swap-animation.ng-leave-active {
+	 *    top:250px;
+	 *  }
+	 *  .red { background:red; }
+	 *  .green { background:green; }
+	 *  .blue { background:blue; }
+	 *  .yellow { background:yellow; }
+	 *  .orange { background:orange; }
+	 *  </file>
+	 * </example>
+	 */
+	var ngAnimateSwapDirective = ['$animate', '$rootScope', function($animate, $rootScope) {
+	  return {
+	    restrict: 'A',
+	    transclude: 'element',
+	    terminal: true,
+	    priority: 600, // we use 600 here to ensure that the directive is caught before others
+	    link: function(scope, $element, attrs, ctrl, $transclude) {
+	      var previousElement, previousScope;
+	      scope.$watchCollection(attrs.ngAnimateSwap || attrs['for'], function(value) {
+	        if (previousElement) {
+	          $animate.leave(previousElement);
+	        }
+	        if (previousScope) {
+	          previousScope.$destroy();
+	          previousScope = null;
+	        }
+	        if (value || value === 0) {
+	          previousScope = scope.$new();
+	          $transclude(previousScope, function(element) {
+	            previousElement = element;
+	            $animate.enter(element, null, $element);
+	          });
+	        }
+	      });
+	    }
+	  };
+	}];
+
+	/* global angularAnimateModule: true,
+
+	   ngAnimateSwapDirective,
+	   $$AnimateAsyncRunFactory,
+	   $$rAFSchedulerFactory,
+	   $$AnimateChildrenDirective,
+	   $$AnimateQueueProvider,
+	   $$AnimationProvider,
+	   $AnimateCssProvider,
+	   $$AnimateCssDriverProvider,
+	   $$AnimateJsProvider,
+	   $$AnimateJsDriverProvider,
+	*/
+
+	/**
+	 * @ngdoc module
+	 * @name ngAnimate
+	 * @description
+	 *
+	 * The `ngAnimate` module provides support for CSS-based animations (keyframes and transitions) as well as JavaScript-based animations via
+	 * callback hooks. Animations are not enabled by default, however, by including `ngAnimate` the animation hooks are enabled for an Angular app.
+	 *
+	 * <div doc-module-components="ngAnimate"></div>
+	 *
+	 * # Usage
+	 * Simply put, there are two ways to make use of animations when ngAnimate is used: by using **CSS** and **JavaScript**. The former works purely based
+	 * using CSS (by using matching CSS selectors/styles) and the latter triggers animations that are registered via `module.animation()`. For
+	 * both CSS and JS animations the sole requirement is to have a matching `CSS class` that exists both in the registered animation and within
+	 * the HTML element that the animation will be triggered on.
+	 *
+	 * ## Directive Support
+	 * The following directives are "animation aware":
+	 *
+	 * | Directive                                                                                                | Supported Animations                                                     |
+	 * |----------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------|
+	 * | {@link ng.directive:ngRepeat#animations ngRepeat}                                                        | enter, leave and move                                                    |
+	 * | {@link ngRoute.directive:ngView#animations ngView}                                                       | enter and leave                                                          |
+	 * | {@link ng.directive:ngInclude#animations ngInclude}                                                      | enter and leave                                                          |
+	 * | {@link ng.directive:ngSwitch#animations ngSwitch}                                                        | enter and leave                                                          |
+	 * | {@link ng.directive:ngIf#animations ngIf}                                                                | enter and leave                                                          |
+	 * | {@link ng.directive:ngClass#animations ngClass}                                                          | add and remove (the CSS class(es) present)                               |
+	 * | {@link ng.directive:ngShow#animations ngShow} & {@link ng.directive:ngHide#animations ngHide}            | add and remove (the ng-hide class value)                                 |
+	 * | {@link ng.directive:form#animation-hooks form} & {@link ng.directive:ngModel#animation-hooks ngModel}    | add and remove (dirty, pristine, valid, invalid & all other validations) |
+	 * | {@link module:ngMessages#animations ngMessages}                                                          | add and remove (ng-active & ng-inactive)                                 |
+	 * | {@link module:ngMessages#animations ngMessage}                                                           | enter and leave                                                          |
+	 *
+	 * (More information can be found by visiting each the documentation associated with each directive.)
+	 *
+	 * ## CSS-based Animations
+	 *
+	 * CSS-based animations with ngAnimate are unique since they require no JavaScript code at all. By using a CSS class that we reference between our HTML
+	 * and CSS code we can create an animation that will be picked up by Angular when an the underlying directive performs an operation.
+	 *
+	 * The example below shows how an `enter` animation can be made possible on an element using `ng-if`:
+	 *
+	 * ```html
+	 * <div ng-if="bool" class="fade">
+	 *    Fade me in out
+	 * </div>
+	 * <button ng-click="bool=true">Fade In!</button>
+	 * <button ng-click="bool=false">Fade Out!</button>
+	 * ```
+	 *
+	 * Notice the CSS class **fade**? We can now create the CSS transition code that references this class:
+	 *
+	 * ```css
+	 * /&#42; The starting CSS styles for the enter animation &#42;/
+	 * .fade.ng-enter {
+	 *   transition:0.5s linear all;
+	 *   opacity:0;
+	 * }
+	 *
+	 * /&#42; The finishing CSS styles for the enter animation &#42;/
+	 * .fade.ng-enter.ng-enter-active {
+	 *   opacity:1;
+	 * }
+	 * ```
+	 *
+	 * The key thing to remember here is that, depending on the animation event (which each of the directives above trigger depending on what's going on) two
+	 * generated CSS classes will be applied to the element; in the example above we have `.ng-enter` and `.ng-enter-active`. For CSS transitions, the transition
+	 * code **must** be defined within the starting CSS class (in this case `.ng-enter`). The destination class is what the transition will animate towards.
+	 *
+	 * If for example we wanted to create animations for `leave` and `move` (ngRepeat triggers move) then we can do so using the same CSS naming conventions:
+	 *
+	 * ```css
+	 * /&#42; now the element will fade out before it is removed from the DOM &#42;/
+	 * .fade.ng-leave {
+	 *   transition:0.5s linear all;
+	 *   opacity:1;
+	 * }
+	 * .fade.ng-leave.ng-leave-active {
+	 *   opacity:0;
+	 * }
+	 * ```
+	 *
+	 * We can also make use of **CSS Keyframes** by referencing the keyframe animation within the starting CSS class:
+	 *
+	 * ```css
+	 * /&#42; there is no need to define anything inside of the destination
+	 * CSS class since the keyframe will take charge of the animation &#42;/
+	 * .fade.ng-leave {
+	 *   animation: my_fade_animation 0.5s linear;
+	 *   -webkit-animation: my_fade_animation 0.5s linear;
+	 * }
+	 *
+	 * @keyframes my_fade_animation {
+	 *   from { opacity:1; }
+	 *   to { opacity:0; }
+	 * }
+	 *
+	 * @-webkit-keyframes my_fade_animation {
+	 *   from { opacity:1; }
+	 *   to { opacity:0; }
+	 * }
+	 * ```
+	 *
+	 * Feel free also mix transitions and keyframes together as well as any other CSS classes on the same element.
+	 *
+	 * ### CSS Class-based Animations
+	 *
+	 * Class-based animations (animations that are triggered via `ngClass`, `ngShow`, `ngHide` and some other directives) have a slightly different
+	 * naming convention. Class-based animations are basic enough that a standard transition or keyframe can be referenced on the class being added
+	 * and removed.
+	 *
+	 * For example if we wanted to do a CSS animation for `ngHide` then we place an animation on the `.ng-hide` CSS class:
+	 *
+	 * ```html
+	 * <div ng-show="bool" class="fade">
+	 *   Show and hide me
+	 * </div>
+	 * <button ng-click="bool=!bool">Toggle</button>
+	 *
+	 * <style>
+	 * .fade.ng-hide {
+	 *   transition:0.5s linear all;
+	 *   opacity:0;
+	 * }
+	 * </style>
+	 * ```
+	 *
+	 * All that is going on here with ngShow/ngHide behind the scenes is the `.ng-hide` class is added/removed (when the hidden state is valid). Since
+	 * ngShow and ngHide are animation aware then we can match up a transition and ngAnimate handles the rest.
+	 *
+	 * In addition the addition and removal of the CSS class, ngAnimate also provides two helper methods that we can use to further decorate the animation
+	 * with CSS styles.
+	 *
+	 * ```html
+	 * <div ng-class="{on:onOff}" class="highlight">
+	 *   Highlight this box
+	 * </div>
+	 * <button ng-click="onOff=!onOff">Toggle</button>
+	 *
+	 * <style>
+	 * .highlight {
+	 *   transition:0.5s linear all;
+	 * }
+	 * .highlight.on-add {
+	 *   background:white;
+	 * }
+	 * .highlight.on {
+	 *   background:yellow;
+	 * }
+	 * .highlight.on-remove {
+	 *   background:black;
+	 * }
+	 * </style>
+	 * ```
+	 *
+	 * We can also make use of CSS keyframes by placing them within the CSS classes.
+	 *
+	 *
+	 * ### CSS Staggering Animations
+	 * A Staggering animation is a collection of animations that are issued with a slight delay in between each successive operation resulting in a
+	 * curtain-like effect. The ngAnimate module (versions >=1.2) supports staggering animations and the stagger effect can be
+	 * performed by creating a **ng-EVENT-stagger** CSS class and attaching that class to the base CSS class used for
+	 * the animation. The style property expected within the stagger class can either be a **transition-delay** or an
+	 * **animation-delay** property (or both if your animation contains both transitions and keyframe animations).
+	 *
+	 * ```css
+	 * .my-animation.ng-enter {
+	 *   /&#42; standard transition code &#42;/
+	 *   transition: 1s linear all;
+	 *   opacity:0;
+	 * }
+	 * .my-animation.ng-enter-stagger {
+	 *   /&#42; this will have a 100ms delay between each successive leave animation &#42;/
+	 *   transition-delay: 0.1s;
+	 *
+	 *   /&#42; As of 1.4.4, this must always be set: it signals ngAnimate
+	 *     to not accidentally inherit a delay property from another CSS class &#42;/
+	 *   transition-duration: 0s;
+	 * }
+	 * .my-animation.ng-enter.ng-enter-active {
+	 *   /&#42; standard transition styles &#42;/
+	 *   opacity:1;
+	 * }
+	 * ```
+	 *
+	 * Staggering animations work by default in ngRepeat (so long as the CSS class is defined). Outside of ngRepeat, to use staggering animations
+	 * on your own, they can be triggered by firing multiple calls to the same event on $animate. However, the restrictions surrounding this
+	 * are that each of the elements must have the same CSS className value as well as the same parent element. A stagger operation
+	 * will also be reset if one or more animation frames have passed since the multiple calls to `$animate` were fired.
+	 *
+	 * The following code will issue the **ng-leave-stagger** event on the element provided:
+	 *
+	 * ```js
+	 * var kids = parent.children();
+	 *
+	 * $animate.leave(kids[0]); //stagger index=0
+	 * $animate.leave(kids[1]); //stagger index=1
+	 * $animate.leave(kids[2]); //stagger index=2
+	 * $animate.leave(kids[3]); //stagger index=3
+	 * $animate.leave(kids[4]); //stagger index=4
+	 *
+	 * window.requestAnimationFrame(function() {
+	 *   //stagger has reset itself
+	 *   $animate.leave(kids[5]); //stagger index=0
+	 *   $animate.leave(kids[6]); //stagger index=1
+	 *
+	 *   $scope.$digest();
+	 * });
+	 * ```
+	 *
+	 * Stagger animations are currently only supported within CSS-defined animations.
+	 *
+	 * ### The `ng-animate` CSS class
+	 *
+	 * When ngAnimate is animating an element it will apply the `ng-animate` CSS class to the element for the duration of the animation.
+	 * This is a temporary CSS class and it will be removed once the animation is over (for both JavaScript and CSS-based animations).
+	 *
+	 * Therefore, animations can be applied to an element using this temporary class directly via CSS.
+	 *
+	 * ```css
+	 * .zipper.ng-animate {
+	 *   transition:0.5s linear all;
+	 * }
+	 * .zipper.ng-enter {
+	 *   opacity:0;
+	 * }
+	 * .zipper.ng-enter.ng-enter-active {
+	 *   opacity:1;
+	 * }
+	 * .zipper.ng-leave {
+	 *   opacity:1;
+	 * }
+	 * .zipper.ng-leave.ng-leave-active {
+	 *   opacity:0;
+	 * }
+	 * ```
+	 *
+	 * (Note that the `ng-animate` CSS class is reserved and it cannot be applied on an element directly since ngAnimate will always remove
+	 * the CSS class once an animation has completed.)
+	 *
+	 *
+	 * ### The `ng-[event]-prepare` class
+	 *
+	 * This is a special class that can be used to prevent unwanted flickering / flash of content before
+	 * the actual animation starts. The class is added as soon as an animation is initialized, but removed
+	 * before the actual animation starts (after waiting for a $digest).
+	 * It is also only added for *structural* animations (`enter`, `move`, and `leave`).
+	 *
+	 * In practice, flickering can appear when nesting elements with structural animations such as `ngIf`
+	 * into elements that have class-based animations such as `ngClass`.
+	 *
+	 * ```html
+	 * <div ng-class="{red: myProp}">
+	 *   <div ng-class="{blue: myProp}">
+	 *     <div class="message" ng-if="myProp"></div>
+	 *   </div>
+	 * </div>
+	 * ```
+	 *
+	 * It is possible that during the `enter` animation, the `.message` div will be briefly visible before it starts animating.
+	 * In that case, you can add styles to the CSS that make sure the element stays hidden before the animation starts:
+	 *
+	 * ```css
+	 * .message.ng-enter-prepare {
+	 *   opacity: 0;
+	 * }
+	 *
+	 * ```
+	 *
+	 * ## JavaScript-based Animations
+	 *
+	 * ngAnimate also allows for animations to be consumed by JavaScript code. The approach is similar to CSS-based animations (where there is a shared
+	 * CSS class that is referenced in our HTML code) but in addition we need to register the JavaScript animation on the module. By making use of the
+	 * `module.animation()` module function we can register the animation.
+	 *
+	 * Let's see an example of a enter/leave animation using `ngRepeat`:
+	 *
+	 * ```html
+	 * <div ng-repeat="item in items" class="slide">
+	 *   {{ item }}
+	 * </div>
+	 * ```
+	 *
+	 * See the **slide** CSS class? Let's use that class to define an animation that we'll structure in our module code by using `module.animation`:
+	 *
+	 * ```js
+	 * myModule.animation('.slide', [function() {
+	 *   return {
+	 *     // make note that other events (like addClass/removeClass)
+	 *     // have different function input parameters
+	 *     enter: function(element, doneFn) {
+	 *       jQuery(element).fadeIn(1000, doneFn);
+	 *
+	 *       // remember to call doneFn so that angular
+	 *       // knows that the animation has concluded
+	 *     },
+	 *
+	 *     move: function(element, doneFn) {
+	 *       jQuery(element).fadeIn(1000, doneFn);
+	 *     },
+	 *
+	 *     leave: function(element, doneFn) {
+	 *       jQuery(element).fadeOut(1000, doneFn);
+	 *     }
+	 *   }
+	 * }]);
+	 * ```
+	 *
+	 * The nice thing about JS-based animations is that we can inject other services and make use of advanced animation libraries such as
+	 * greensock.js and velocity.js.
+	 *
+	 * If our animation code class-based (meaning that something like `ngClass`, `ngHide` and `ngShow` triggers it) then we can still define
+	 * our animations inside of the same registered animation, however, the function input arguments are a bit different:
+	 *
+	 * ```html
+	 * <div ng-class="color" class="colorful">
+	 *   this box is moody
+	 * </div>
+	 * <button ng-click="color='red'">Change to red</button>
+	 * <button ng-click="color='blue'">Change to blue</button>
+	 * <button ng-click="color='green'">Change to green</button>
+	 * ```
+	 *
+	 * ```js
+	 * myModule.animation('.colorful', [function() {
+	 *   return {
+	 *     addClass: function(element, className, doneFn) {
+	 *       // do some cool animation and call the doneFn
+	 *     },
+	 *     removeClass: function(element, className, doneFn) {
+	 *       // do some cool animation and call the doneFn
+	 *     },
+	 *     setClass: function(element, addedClass, removedClass, doneFn) {
+	 *       // do some cool animation and call the doneFn
+	 *     }
+	 *   }
+	 * }]);
+	 * ```
+	 *
+	 * ## CSS + JS Animations Together
+	 *
+	 * AngularJS 1.4 and higher has taken steps to make the amalgamation of CSS and JS animations more flexible. However, unlike earlier versions of Angular,
+	 * defining CSS and JS animations to work off of the same CSS class will not work anymore. Therefore the example below will only result in **JS animations taking
+	 * charge of the animation**:
+	 *
+	 * ```html
+	 * <div ng-if="bool" class="slide">
+	 *   Slide in and out
+	 * </div>
+	 * ```
+	 *
+	 * ```js
+	 * myModule.animation('.slide', [function() {
+	 *   return {
+	 *     enter: function(element, doneFn) {
+	 *       jQuery(element).slideIn(1000, doneFn);
+	 *     }
+	 *   }
+	 * }]);
+	 * ```
+	 *
+	 * ```css
+	 * .slide.ng-enter {
+	 *   transition:0.5s linear all;
+	 *   transform:translateY(-100px);
+	 * }
+	 * .slide.ng-enter.ng-enter-active {
+	 *   transform:translateY(0);
+	 * }
+	 * ```
+	 *
+	 * Does this mean that CSS and JS animations cannot be used together? Do JS-based animations always have higher priority? We can make up for the
+	 * lack of CSS animations by using the `$animateCss` service to trigger our own tweaked-out, CSS-based animations directly from
+	 * our own JS-based animation code:
+	 *
+	 * ```js
+	 * myModule.animation('.slide', ['$animateCss', function($animateCss) {
+	 *   return {
+	 *     enter: function(element) {
+	*        // this will trigger `.slide.ng-enter` and `.slide.ng-enter-active`.
+	 *       return $animateCss(element, {
+	 *         event: 'enter',
+	 *         structural: true
+	 *       });
+	 *     }
+	 *   }
+	 * }]);
+	 * ```
+	 *
+	 * The nice thing here is that we can save bandwidth by sticking to our CSS-based animation code and we don't need to rely on a 3rd-party animation framework.
+	 *
+	 * The `$animateCss` service is very powerful since we can feed in all kinds of extra properties that will be evaluated and fed into a CSS transition or
+	 * keyframe animation. For example if we wanted to animate the height of an element while adding and removing classes then we can do so by providing that
+	 * data into `$animateCss` directly:
+	 *
+	 * ```js
+	 * myModule.animation('.slide', ['$animateCss', function($animateCss) {
+	 *   return {
+	 *     enter: function(element) {
+	 *       return $animateCss(element, {
+	 *         event: 'enter',
+	 *         structural: true,
+	 *         addClass: 'maroon-setting',
+	 *         from: { height:0 },
+	 *         to: { height: 200 }
+	 *       });
+	 *     }
+	 *   }
+	 * }]);
+	 * ```
+	 *
+	 * Now we can fill in the rest via our transition CSS code:
+	 *
+	 * ```css
+	 * /&#42; the transition tells ngAnimate to make the animation happen &#42;/
+	 * .slide.ng-enter { transition:0.5s linear all; }
+	 *
+	 * /&#42; this extra CSS class will be absorbed into the transition
+	 * since the $animateCss code is adding the class &#42;/
+	 * .maroon-setting { background:red; }
+	 * ```
+	 *
+	 * And `$animateCss` will figure out the rest. Just make sure to have the `done()` callback fire the `doneFn` function to signal when the animation is over.
+	 *
+	 * To learn more about what's possible be sure to visit the {@link ngAnimate.$animateCss $animateCss service}.
+	 *
+	 * ## Animation Anchoring (via `ng-animate-ref`)
+	 *
+	 * ngAnimate in AngularJS 1.4 comes packed with the ability to cross-animate elements between
+	 * structural areas of an application (like views) by pairing up elements using an attribute
+	 * called `ng-animate-ref`.
+	 *
+	 * Let's say for example we have two views that are managed by `ng-view` and we want to show
+	 * that there is a relationship between two components situated in within these views. By using the
+	 * `ng-animate-ref` attribute we can identify that the two components are paired together and we
+	 * can then attach an animation, which is triggered when the view changes.
+	 *
+	 * Say for example we have the following template code:
+	 *
+	 * ```html
+	 * <!-- index.html -->
+	 * <div ng-view class="view-animation">
+	 * </div>
+	 *
+	 * <!-- home.html -->
+	 * <a href="#/banner-page">
+	 *   <img src="./banner.jpg" class="banner" ng-animate-ref="banner">
+	 * </a>
+	 *
+	 * <!-- banner-page.html -->
+	 * <img src="./banner.jpg" class="banner" ng-animate-ref="banner">
+	 * ```
+	 *
+	 * Now, when the view changes (once the link is clicked), ngAnimate will examine the
+	 * HTML contents to see if there is a match reference between any components in the view
+	 * that is leaving and the view that is entering. It will scan both the view which is being
+	 * removed (leave) and inserted (enter) to see if there are any paired DOM elements that
+	 * contain a matching ref value.
+	 *
+	 * The two images match since they share the same ref value. ngAnimate will now create a
+	 * transport element (which is a clone of the first image element) and it will then attempt
+	 * to animate to the position of the second image element in the next view. For the animation to
+	 * work a special CSS class called `ng-anchor` will be added to the transported element.
+	 *
+	 * We can now attach a transition onto the `.banner.ng-anchor` CSS class and then
+	 * ngAnimate will handle the entire transition for us as well as the addition and removal of
+	 * any changes of CSS classes between the elements:
+	 *
+	 * ```css
+	 * .banner.ng-anchor {
+	 *   /&#42; this animation will last for 1 second since there are
+	 *          two phases to the animation (an `in` and an `out` phase) &#42;/
+	 *   transition:0.5s linear all;
+	 * }
+	 * ```
+	 *
+	 * We also **must** include animations for the views that are being entered and removed
+	 * (otherwise anchoring wouldn't be possible since the new view would be inserted right away).
+	 *
+	 * ```css
+	 * .view-animation.ng-enter, .view-animation.ng-leave {
+	 *   transition:0.5s linear all;
+	 *   position:fixed;
+	 *   left:0;
+	 *   top:0;
+	 *   width:100%;
+	 * }
+	 * .view-animation.ng-enter {
+	 *   transform:translateX(100%);
+	 * }
+	 * .view-animation.ng-leave,
+	 * .view-animation.ng-enter.ng-enter-active {
+	 *   transform:translateX(0%);
+	 * }
+	 * .view-animation.ng-leave.ng-leave-active {
+	 *   transform:translateX(-100%);
+	 * }
+	 * ```
+	 *
+	 * Now we can jump back to the anchor animation. When the animation happens, there are two stages that occur:
+	 * an `out` and an `in` stage. The `out` stage happens first and that is when the element is animated away
+	 * from its origin. Once that animation is over then the `in` stage occurs which animates the
+	 * element to its destination. The reason why there are two animations is to give enough time
+	 * for the enter animation on the new element to be ready.
+	 *
+	 * The example above sets up a transition for both the in and out phases, but we can also target the out or
+	 * in phases directly via `ng-anchor-out` and `ng-anchor-in`.
+	 *
+	 * ```css
+	 * .banner.ng-anchor-out {
+	 *   transition: 0.5s linear all;
+	 *
+	 *   /&#42; the scale will be applied during the out animation,
+	 *          but will be animated away when the in animation runs &#42;/
+	 *   transform: scale(1.2);
+	 * }
+	 *
+	 * .banner.ng-anchor-in {
+	 *   transition: 1s linear all;
+	 * }
+	 * ```
+	 *
+	 *
+	 *
+	 *
+	 * ### Anchoring Demo
+	 *
+	  <example module="anchoringExample"
+	           name="anchoringExample"
+	           id="anchoringExample"
+	           deps="angular-animate.js;angular-route.js"
+	           animations="true">
+	    <file name="index.html">
+	      <a href="#/">Home</a>
+	      <hr />
+	      <div class="view-container">
+	        <div ng-view class="view"></div>
+	      </div>
+	    </file>
+	    <file name="script.js">
+	      angular.module('anchoringExample', ['ngAnimate', 'ngRoute'])
+	        .config(['$routeProvider', function($routeProvider) {
+	          $routeProvider.when('/', {
+	            templateUrl: 'home.html',
+	            controller: 'HomeController as home'
+	          });
+	          $routeProvider.when('/profile/:id', {
+	            templateUrl: 'profile.html',
+	            controller: 'ProfileController as profile'
+	          });
+	        }])
+	        .run(['$rootScope', function($rootScope) {
+	          $rootScope.records = [
+	            { id:1, title: "Miss Beulah Roob" },
+	            { id:2, title: "Trent Morissette" },
+	            { id:3, title: "Miss Ava Pouros" },
+	            { id:4, title: "Rod Pouros" },
+	            { id:5, title: "Abdul Rice" },
+	            { id:6, title: "Laurie Rutherford Sr." },
+	            { id:7, title: "Nakia McLaughlin" },
+	            { id:8, title: "Jordon Blanda DVM" },
+	            { id:9, title: "Rhoda Hand" },
+	            { id:10, title: "Alexandrea Sauer" }
+	          ];
+	        }])
+	        .controller('HomeController', [function() {
+	          //empty
+	        }])
+	        .controller('ProfileController', ['$rootScope', '$routeParams', function($rootScope, $routeParams) {
+	          var index = parseInt($routeParams.id, 10);
+	          var record = $rootScope.records[index - 1];
+
+	          this.title = record.title;
+	          this.id = record.id;
+	        }]);
+	    </file>
+	    <file name="home.html">
+	      <h2>Welcome to the home page</h1>
+	      <p>Please click on an element</p>
+	      <a class="record"
+	         ng-href="#/profile/{{ record.id }}"
+	         ng-animate-ref="{{ record.id }}"
+	         ng-repeat="record in records">
+	        {{ record.title }}
+	      </a>
+	    </file>
+	    <file name="profile.html">
+	      <div class="profile record" ng-animate-ref="{{ profile.id }}">
+	        {{ profile.title }}
+	      </div>
+	    </file>
+	    <file name="animations.css">
+	      .record {
+	        display:block;
+	        font-size:20px;
+	      }
+	      .profile {
+	        background:black;
+	        color:white;
+	        font-size:100px;
+	      }
+	      .view-container {
+	        position:relative;
+	      }
+	      .view-container > .view.ng-animate {
+	        position:absolute;
+	        top:0;
+	        left:0;
+	        width:100%;
+	        min-height:500px;
+	      }
+	      .view.ng-enter, .view.ng-leave,
+	      .record.ng-anchor {
+	        transition:0.5s linear all;
+	      }
+	      .view.ng-enter {
+	        transform:translateX(100%);
+	      }
+	      .view.ng-enter.ng-enter-active, .view.ng-leave {
+	        transform:translateX(0%);
+	      }
+	      .view.ng-leave.ng-leave-active {
+	        transform:translateX(-100%);
+	      }
+	      .record.ng-anchor-out {
+	        background:red;
+	      }
+	    </file>
+	  </example>
+	 *
+	 * ### How is the element transported?
+	 *
+	 * When an anchor animation occurs, ngAnimate will clone the starting element and position it exactly where the starting
+	 * element is located on screen via absolute positioning. The cloned element will be placed inside of the root element
+	 * of the application (where ng-app was defined) and all of the CSS classes of the starting element will be applied. The
+	 * element will then animate into the `out` and `in` animations and will eventually reach the coordinates and match
+	 * the dimensions of the destination element. During the entire animation a CSS class of `.ng-animate-shim` will be applied
+	 * to both the starting and destination elements in order to hide them from being visible (the CSS styling for the class
+	 * is: `visibility:hidden`). Once the anchor reaches its destination then it will be removed and the destination element
+	 * will become visible since the shim class will be removed.
+	 *
+	 * ### How is the morphing handled?
+	 *
+	 * CSS Anchoring relies on transitions and keyframes and the internal code is intelligent enough to figure out
+	 * what CSS classes differ between the starting element and the destination element. These different CSS classes
+	 * will be added/removed on the anchor element and a transition will be applied (the transition that is provided
+	 * in the anchor class). Long story short, ngAnimate will figure out what classes to add and remove which will
+	 * make the transition of the element as smooth and automatic as possible. Be sure to use simple CSS classes that
+	 * do not rely on DOM nesting structure so that the anchor element appears the same as the starting element (since
+	 * the cloned element is placed inside of root element which is likely close to the body element).
+	 *
+	 * Note that if the root element is on the `<html>` element then the cloned node will be placed inside of body.
+	 *
+	 *
+	 * ## Using $animate in your directive code
+	 *
+	 * So far we've explored how to feed in animations into an Angular application, but how do we trigger animations within our own directives in our application?
+	 * By injecting the `$animate` service into our directive code, we can trigger structural and class-based hooks which can then be consumed by animations. Let's
+	 * imagine we have a greeting box that shows and hides itself when the data changes
+	 *
+	 * ```html
+	 * <greeting-box active="onOrOff">Hi there</greeting-box>
+	 * ```
+	 *
+	 * ```js
+	 * ngModule.directive('greetingBox', ['$animate', function($animate) {
+	 *   return function(scope, element, attrs) {
+	 *     attrs.$observe('active', function(value) {
+	 *       value ? $animate.addClass(element, 'on') : $animate.removeClass(element, 'on');
+	 *     });
+	 *   });
+	 * }]);
+	 * ```
+	 *
+	 * Now the `on` CSS class is added and removed on the greeting box component. Now if we add a CSS class on top of the greeting box element
+	 * in our HTML code then we can trigger a CSS or JS animation to happen.
+	 *
+	 * ```css
+	 * /&#42; normally we would create a CSS class to reference on the element &#42;/
+	 * greeting-box.on { transition:0.5s linear all; background:green; color:white; }
+	 * ```
+	 *
+	 * The `$animate` service contains a variety of other methods like `enter`, `leave`, `animate` and `setClass`. To learn more about what's
+	 * possible be sure to visit the {@link ng.$animate $animate service API page}.
+	 *
+	 *
+	 * ## Callbacks and Promises
+	 *
+	 * When `$animate` is called it returns a promise that can be used to capture when the animation has ended. Therefore if we were to trigger
+	 * an animation (within our directive code) then we can continue performing directive and scope related activities after the animation has
+	 * ended by chaining onto the returned promise that animation method returns.
+	 *
+	 * ```js
+	 * // somewhere within the depths of the directive
+	 * $animate.enter(element, parent).then(function() {
+	 *   //the animation has completed
+	 * });
+	 * ```
+	 *
+	 * (Note that earlier versions of Angular prior to v1.4 required the promise code to be wrapped using `$scope.$apply(...)`. This is not the case
+	 * anymore.)
+	 *
+	 * In addition to the animation promise, we can also make use of animation-related callbacks within our directives and controller code by registering
+	 * an event listener using the `$animate` service. Let's say for example that an animation was triggered on our view
+	 * routing controller to hook into that:
+	 *
+	 * ```js
+	 * ngModule.controller('HomePageController', ['$animate', function($animate) {
+	 *   $animate.on('enter', ngViewElement, function(element) {
+	 *     // the animation for this route has completed
+	 *   }]);
+	 * }])
+	 * ```
+	 *
+	 * (Note that you will need to trigger a digest within the callback to get angular to notice any scope-related changes.)
+	 */
+
+	/**
+	 * @ngdoc service
+	 * @name $animate
+	 * @kind object
+	 *
+	 * @description
+	 * The ngAnimate `$animate` service documentation is the same for the core `$animate` service.
+	 *
+	 * Click here {@link ng.$animate to learn more about animations with `$animate`}.
+	 */
+	angular.module('ngAnimate', [])
+	  .directive('ngAnimateSwap', ngAnimateSwapDirective)
+
+	  .directive('ngAnimateChildren', $$AnimateChildrenDirective)
+	  .factory('$$rAFScheduler', $$rAFSchedulerFactory)
+
+	  .provider('$$animateQueue', $$AnimateQueueProvider)
+	  .provider('$$animation', $$AnimationProvider)
+
+	  .provider('$animateCss', $AnimateCssProvider)
+	  .provider('$$animateCssDriver', $$AnimateCssDriverProvider)
+
+	  .provider('$$animateJs', $$AnimateJsProvider)
+	  .provider('$$animateJsDriver', $$AnimateJsDriverProvider);
+
+
+	})(window, window.angular);
+
+
+/***/ },
+/* 197 */
 /***/ function(module, exports) {
 
 	/**
@@ -9789,16 +13954,16 @@
 	})(window, window.angular);
 
 /***/ },
-/* 196 */
+/* 198 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(197);
+	__webpack_require__(199);
 
 	module.exports = 'ui.bootstrap';
 
 
 /***/ },
-/* 197 */
+/* 199 */
 /***/ function(module, exports) {
 
 	/*
@@ -17131,7 +21296,7 @@
 	angular.module('ui.bootstrap.typeahead').run(function() {!angular.$$csp().noInlineStyle && !angular.$$uibTypeaheadCss && angular.element(document).find('head').prepend('<style type="text/css">[uib-typeahead-popup].dropdown-menu{display:block;}</style>'); angular.$$uibTypeaheadCss = true; });
 
 /***/ },
-/* 198 */
+/* 200 */
 /***/ function(module, exports) {
 
 	/******/ (function(modules) { // webpackBootstrap
@@ -18444,15 +22609,15 @@
 	/******/ ]);
 
 /***/ },
-/* 199 */
+/* 201 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(200);
+	__webpack_require__(202);
 	module.exports = 'firebase';
 
 
 /***/ },
-/* 200 */
+/* 202 */
 /***/ function(module, exports) {
 
 	/*!
@@ -20796,7 +24961,7 @@
 
 
 /***/ },
-/* 201 */
+/* 203 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -20816,7 +24981,7 @@
 	exports.default = constantsModule;
 
 /***/ },
-/* 202 */
+/* 204 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -20829,11 +24994,11 @@
 
 	var _angular2 = _interopRequireDefault(_angular);
 
-	var _login = __webpack_require__(203);
+	var _login = __webpack_require__(205);
 
 	var _login2 = _interopRequireDefault(_login);
 
-	var _students = __webpack_require__(217);
+	var _students = __webpack_require__(219);
 
 	var _students2 = _interopRequireDefault(_students);
 
@@ -20844,7 +25009,7 @@
 	exports.default = componentModule;
 
 /***/ },
-/* 203 */
+/* 205 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -20857,23 +25022,23 @@
 
 	var _angular2 = _interopRequireDefault(_angular);
 
-	var _login = __webpack_require__(204);
+	var _login = __webpack_require__(206);
 
 	var _login2 = _interopRequireDefault(_login);
 
-	var _login3 = __webpack_require__(205);
+	var _login3 = __webpack_require__(207);
 
 	var _login4 = _interopRequireDefault(_login3);
 
-	var _login5 = __webpack_require__(212);
+	var _login5 = __webpack_require__(214);
 
 	var _login6 = _interopRequireDefault(_login5);
 
-	var _login7 = __webpack_require__(213);
+	var _login7 = __webpack_require__(215);
 
 	var _login8 = _interopRequireDefault(_login7);
 
-	var _register = __webpack_require__(214);
+	var _register = __webpack_require__(216);
 
 	var _register2 = _interopRequireDefault(_register);
 
@@ -20884,7 +25049,7 @@
 	exports.default = loginModule;
 
 /***/ },
-/* 204 */
+/* 206 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -20910,7 +25075,7 @@
 	exports.default = loginRoutes;
 
 /***/ },
-/* 205 */
+/* 207 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -20919,11 +25084,11 @@
 	   value: true
 	});
 
-	var _login = __webpack_require__(206);
+	var _login = __webpack_require__(208);
 
 	var _login2 = _interopRequireDefault(_login);
 
-	__webpack_require__(208);
+	__webpack_require__(210);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -20936,28 +25101,28 @@
 	exports.default = loginComponent;
 
 /***/ },
-/* 206 */
+/* 208 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<section>\n   <div class=\"row\">\n      <div class=\"col-md-3\"></div>\n      <div class=\"col-md-6\">\n         <figure>\n            <img class=\"img-responsive center-block\"\n                 width=\"150px\"\n                 src=\"" + __webpack_require__(207) + "\"\n                 alt=\"logo coco interactivo\">\n         </figure>\n         <ui-view>\n            <form name=\"loginForm\">\n               <div class=\"form-group\">\n                  <label for=\"userEmail\">Email address</label>\n                  <input type=\"email\"\n                         class=\"form-control\"\n                         ng-model=\"$ctrl.user.email\"\n                         name=\"userEmail\"\n                         id=\"userEmail\"\n                         placeholder=\"Email\">\n\n               </div>\n               <span class=\"text-danger\"\n                     ng-if=\"loginForm.userEmail.$error.email\">\n                  Correo Inválido\n               </span>\n               <div class=\"form-group\">\n                  <label for=\"userPassword\">Password</label>\n                  <input type=\"password\"\n                         class=\"form-control\"\n                         ng-model=\"$ctrl.user.password\"\n                         id=\"userPassword\"\n                         placeholder=\"Password\">\n               </div>\n               <button type=\"button\"\n                       ui-sref=\"login.register\"\n                       class=\"btn btn-default\">\n                  Need account?\n               </button>\n               <button type=\"submit\"\n                       ng-click=\"$ctrl.login()\"\n                       ng-disabled=\"loginForm.$invalid\"\n                       class=\"btn btn-default\">Login</button>\n            </form>\n            <div class=\"bg-danger\"\n                  ng-if=\"$ctrl.error\">\n               <span ng-bind=\"$ctrl.error\"></span>\n            </div>\n         </ui-view>\n      </div>\n      <div class=\"col-md-3\"></div>\n   </div>\n   <!--<p ng-if=\"$ctrl.message\">Message: <strong>{{ $ctrl.message }}</strong></p>-->\n</section>\n";
+	module.exports = "<section>\n   <div class=\"row\">\n      <div class=\"col-md-3\"></div>\n      <div class=\"col-md-6\">\n         <figure>\n            <img class=\"img-responsive center-block\"\n                 width=\"150px\"\n                 src=\"" + __webpack_require__(209) + "\"\n                 alt=\"logo coco interactivo\">\n         </figure>\n         <ui-view>\n            <form name=\"loginForm\">\n               <div class=\"form-group\">\n                  <label for=\"userEmail\">Email address</label>\n                  <input type=\"email\"\n                         class=\"form-control\"\n                         ng-model=\"$ctrl.user.email\"\n                         name=\"userEmail\"\n                         id=\"userEmail\"\n                         placeholder=\"Email\">\n\n               </div>\n               <span class=\"text-danger\"\n                     ng-if=\"loginForm.userEmail.$error.email\">\n                  Correo Inválido\n               </span>\n               <div class=\"form-group\">\n                  <label for=\"userPassword\">Password</label>\n                  <input type=\"password\"\n                         class=\"form-control\"\n                         ng-model=\"$ctrl.user.password\"\n                         id=\"userPassword\"\n                         placeholder=\"Password\">\n               </div>\n               <button type=\"button\"\n                       ui-sref=\"login.register\"\n                       class=\"btn btn-default\">\n                  Need account?\n               </button>\n               <button type=\"submit\"\n                       ng-click=\"$ctrl.login()\"\n                       ng-disabled=\"loginForm.$invalid\"\n                       class=\"btn btn-default\">Login</button>\n            </form>\n            <div class=\"bg-danger\"\n                  ng-if=\"$ctrl.error\">\n               <span ng-bind=\"$ctrl.error\"></span>\n            </div>\n         </ui-view>\n      </div>\n      <div class=\"col-md-3\"></div>\n   </div>\n   <!--<p ng-if=\"$ctrl.message\">Message: <strong>{{ $ctrl.message }}</strong></p>-->\n</section>\n";
 
 /***/ },
-/* 207 */
+/* 209 */
 /***/ function(module, exports) {
 
 	module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAgAAAAIACAYAAAD0eNT6AAAgAElEQVR4AezBCXyd9X3g6+//Pbv2fT3abMCA9401ISCWEAibQoCIHZOg6+lVm0mXuTNNm7Zppzdulaa3n5kmwUbCYAKFsEXsEIggbDZ4wQYDtmVJR/u+n+3933M+ve/Mqa5sydKRLUu/51E6AiGEEEIsKkpHIIQQQohFRekIhBBCCLGoKB2BEEIIIRYVpSMQQgghxKKidARCCCGEWFSUjkAIIYQQi4rSEQghhBBiUVE6AiGEEEIsKkpHIIQQQohFRekIhBBCCLGoKB2BEEIIIRYVpSMQQgghxKKidARCCCGEWFSUjkAIIYQQi4rSEQghhBBiUVE6AiGEEEIsKkpHIIQQQohFRekIhBBCCLGoKB2BEEIIIRYVpSMQQgghxKKidARCCCGEWFSUjkAIIYQQi4rSEQghhBBiUVE6AiGEEEIsKkpHIIQQQohFRekIhBDiNNDpO8zne97m43eep7u1kcH+Tn769FGEECdO6QiEEGIe6PQd5uDu33Fw9+/oaP6Sns4mBns7OZ4H3xxFCHHilI5ACDFvjPa3MtbbwvhgB+NDPYT8I4TGhwj5hwmODRJvymbH7kzA4UnB4UnF6UnFlZKNOyWHxMxSHJ5k4qXt6Gcc/WIPBz9+i46WQ3T6vqS/u43ZePDNUYQQJ07pCIQQJ81obwsj3Y0MdR5mfKiT0Z5mQHM6cCamk5BeSEJmMUnZS0jKXoJhs2Ppam3ky09+T8uhT2g+tI/WxgP0d7cRT2euupi8ojNZcs5GcovP4qxVFyOEOHFKRyCEiLuRnmaGO79koPVThtq/QOswp7v+gQH6+/vp7e2lraODvv5+hoeHiReXJ4n84rPIK15G8VmrKT5jNUuXX4DD6UIIEV9KRyCEmDGtTUZ7mxls/Yyexp2MD3RwOtJaMzg0xNDQEF1dXXT19ODz+fAHAsSLOyGZrPxSsvNLKVm2ljNXXMRZq7+CMgyEECeX0hEIIaYt5B9muPso7QdeZ7jjS04XWmuGh4cZHRuju7ubltZWWnw+gsEg8eJ0OvF4PCQmJJCXm0tJcTG5OTnESi9ZS+7ZXyMhowjD5kAIcWooHYEQ4pjCgTGGOr6k6cN/IzDaz3xlmibj4+P4AwHa2ttp8fk4fOQI8eRwOHA5nbjcbkqKilhSVkZWZiazkVa0isI11+JOyUUpAyHEyaF0BEKI/0WbYYJjg3z+xv9kfKCdUykcDhNlmibhcJiosGnS0dHBgU8/paW1lXiy2WzY7XbsNhsrli+nID+f3JwcTqbijd8mc8l52BwuhBBzR+kIhFjktDZp3/86vt3PczJordFa09reTnt7O762Ntra2jiVvIWFlJaUcO7ZZ4NSKEApxamUkn82Z5ZXoZSBECK+lI5AiEXq89f/B0MdX6DNMHNh3O/n008/5cDBg4yNjWGaJqZpcjqx2WzYbDZyc3JYuXw5xUVFnHRK4UzIYOUNf44ybAghZk/pCIRYJMLBcQ6+8jPGBtrRZph4MU2TTw4cYP+BA4yNjxMIBDiZsjIzCYfD9PX3c7IYhoHH48FbWMjyc84hJzubk0Epg4TMEpZd+QcYNgdCiJlROgIhFjAzHOTLN3/JUPvnaG0yW8FgkE8OHOCLL79kcGiIUChEvGVlZlLk9VJSXIzb5SIhIQGn00m8aK0JBoMEAgH8gQCjo6N0dHbi8/lo6+hgNlJSUiguLGTDhg24XS7mkmF3kVm2kZLzb0EIcWKUjkCIBUabYZp3/ZquL99Fh0PMRk9PD7t276ajo4OR0VHiISszk+KiIrKzskhJSSExIQG32818Ew6HGRoeZmBggKbmZhqbmhgZGeFEuN1uCvLzWbt6NdlZWcwVV3I2RRsqSCtcjhBiakpHIMQC0XP4A3x76gmM9DFTPb297Nm3j6amJsb9fmYiJzub3JwcsrOySE1NJTU1FbfLxUKhtaajo4ujjU20dbbT3tnOdHk8HpaUlrJ29WqSkpKIP0XW0vMovfB2hBDHpnQEQpzG/MM9tHz0DH1Ne5iJYDDIJwcO8OlnnzE4NMR0ZGVmkpOdTUZ6OlmZmaSlpeF2u1mMAv4Avd39BAIB/H4/Hd2dtHW209Pbw3QU5OWxYvlylpSVEW/u5GxKL7qTpOxShBD/kdIRCHEa6jn8AY3vPYY2w5yoru5u9h84wGeff850lBQXc+bSpSxdsgSlFOL/T2tNT1cvoyNjxOro6qSlrYWu7m5MbXI8iQkJrF2zhnOWLcNmsxFPxefdQs5ZX0EI8e+UjkCI00TIP0LzrmfoOfw+J6qtvZ33PviAjs5OjkcpRX5eHiuWL2dJaSnixPV29zE8NMJkOns6afI109nVxfHY7XYuvvBCzjzjDOw2G/GSs+xreNdeh2F3IsRipnQEQsxzo30tHHz1XwgHRjkRnV1dNLzzDl3d3RxPcnIyZy5dynkbNiDip793gKHBYbTWTJSdmwmG4q3f/Q5fWxvBYJBjMQyD6665hvy8POIlKecMzrz0fmzOBIRYjJSOQIj5SGv6mvdw6HfbOBGDg4O89tvf0tnVxbEopUhNSeGKyy8nKyMDMbcG+4fo7xtgMvmFuTicDqLe/+ADDhw8iN/v51hSkpP55je+QUpKCvHgSsrmnG/8Z+yuRIRYTJSOQIh5RJthWve9RNu+l5muYDDIG2+9xZHGRo7FMAwyMjK46brrsNlsiJOvv3eAwYEhJlJK4S0pQCmF5cNdu9i7bx/BUIhj2bB2LWvXrMFmszFbDncKK2/8IYbdhRCLgdIRCDEvaA68+I+M9jQxXYcOH+bVN97geArz87nu2msR80dnWxfj434m8iS4yc7NYqKGd95h/6efcixOp5Pv3HILHreb2bI53Ky55e9RykCIhUzpCIQ4pTT7nv5r/CM9TEfYNHn40Ufx+/0cS0Z6Ojdedx1OpxMxP2mtaW1uJxwOM1F2XhYej5uJAoEAv37uOfr7+5mMYRhceP75rFy+nNlypeSw8vo/R4iFSukIhDgFtDY5UP8TxvpbmY79n37Kex98QDAYZDIul4vrrrmGzIwMlFKIE9Pm6yCvIAelFCdTOBymtbkdrTWxbDYbhcX5TMbUmubmZl585RWOpcjr5dqrr2a2UvKXcdbl/wkhFhqlIxDiJGt8dwfdh95jKqZp8sLLL9Pi83EsF51/Pueecw52ux0xM+FwGF9TG1FKKVLSUkhNS+ZkGh0Zpbuzl4kSkxLIzM7gWIaHh3njrbdobWtjMhnp6VTccAN2u53ZyFl2CcUbb0aIhULpCIQ4SQZaD/Dlmw+izRDH09PbyyuvvcbA4CCTycjIoPxrXyMrMxMxe/19Awz2DzGR2+MiOzcLpRQng9aa7s4exkbHiaWUoqAoH5vN4FhM02Tf/v28+/77TCY1JYVrrr6a1JQUZsqw2Sm7+C7Si9cgxOlO6QiEmGPhkJ9PX/xHxgfaOZ5PDx7knXffJRQKMZFSio3r17NuzRpEfAX8Qfp6+/GP+5mMw+kgOycTu8POyRAMhmj3daC1JpYn0UN2TiZTaWpu5pXXXiMUDjNRcnIyV1x2Gbk5OcyUw5PCudf8KQ5PCkKcrpSOQIg55NvzAm37XuJ4dn70Ebs+/hitNRMlJSZy6SWX4C0sRMy9oYFh+nr7mYzNZiM7NxOny8nJ0N87wODAEBMVFOVht9uZSk9vL6++/jr9AwNM5Ha7ufrKK8nLzWWmUgvP5czLHgAUQpxulI5AiDkQGOnjk+f/DjPkZzKmafLBrl3s3rOHyXgLC7n80kvxeDyIk2983E9vVy+hUJiJDEORlZOF2+NirpmmprW5DdM0iZWckkR6ZhrTMTY2xouvvkpnZycTJSYkcM3VV5OZkcFMlV54O1lLz0eI04nSEQgRZy0fP0f7/teYTDgc5u3f/55PDx5kMmedeSaXXXIJSinEqWeamo62ToKBIBMppcjNz8HpcjDX+nsHGBwYIpZhGBR48zBsBtMRCAZ5vr6eru5uJkpKSuKm668nMSGBmTBsDlZc/+c4E9MR4nSgdARCxElgbIC9T/2QyWitef/DD9m9dy8TGYbBurVr2bB2LWJ+0lrT0dZFwB9gIsMwyCvMxW63MddajrZimiaxsnIySUj0MF3BUIinn32W3r4+JspIT6fihhuw2+3MRNYZF1F6/q2gFELMZ0pHIEQctHz8PO37X2UyzS0t1L/0EhPZ7XYuvvBCzlm2DHF60FrT3tpJMBBkIqfTQW5BDkop5lJ3Zy+jI6PEcjgd5BfmciJC4TCPPfEEIyMjTLRi+XIuvuAClFLMxPJv/l940vIRYr5SOgIhZsEMB/nosR8wmWAoRO327YTDYWIZhsE1V1+Nt6AAcfryNbcRDoWZKDE5kcysdOZSKBSmtbmNiYpKClGG4kQEg0Ee3rGDYDDIRFdfeSWlJSXMhCe9kHOv+ROUMhBivlE6AiFmqPfoxxxueIjJvPLaaxxubGSiiy+6iJXnnotYGLTWNDf6mExOXhZuj5u51NrcRigUJlZWbiYJCR5OlN/v56Ht25nMvXfeicvlYiZWXP9D3CnZCDGfKB2BEDOw79m/wT/UxUR+v5/aRx5Ba02s3JwcbvjmNzEMA7HwhEIhWpvbmUgphbekAKUUc2V4aITe7j5iORwO8r25zMTBL77gt2+9xURpaWncdvPNzIQ7OZsVN/wQIeYLpSMQ4gQERvvZ98xfoc0wE/3br39NT28vE93xne+QlJiIWPhGh0fp7uplIrfHTU5eFnMlHA7ja2ojljIU3uJClOKEmabJ62++yaHDh4mllOK8DRtYu3o1J0wpVt30VzgT0hDiVFM6AiGmqeWjZ2k/8DoTdXR28szzz6O1JtbalavZuHE9hmEgFg+tNd2dPYyNjvMfKMjJzcLtcTMXtNa0tbQTCoWJVVCUh91uZybGxsd54qmnGBsbI5bL5eLO73wHu93OiUrJW8ZZV/wnhDiVlI5AiGn45LkfMz7YyUTP1dfT2tZGLLfbzZVfuxyHw0FOXhZicQqFwrT7OjBNk1hOp4O8wlzmSn/fAIP9Q8TKzM4gMSmBmWpuaaH+pZeYaElZGVddfjknyrA5WFXx19hdiQhxKigdgRDHERjtZ9/TP0Jrk1hd3d08/eyzmFoT68rLL8epnGitKSotRCmFWNyGh0bo7e5joszsDBKTEpgLY2PjdLV3EyspOZGMrHRmSmvNmw0NHPz8cyb61g03kJ2dzYnyrr+JvHMuQ4iTTekIhDiGjs/eonnnU0z0VkMDnx48SKy01FRuvO56Otu6iEpMSiAzOwMhorTWdLR1EvAHieVwOsgryEEpRbyZpsbX1IrWGovL7SQ3P4fZGB0d5VdPPkkgECBWcVER37jqKpRSnAhPeiHnXvMnKGUgxMmidARCTKQ1n7/xPxls+4xY4+Pj7HjiCQKBALEuvvBCvHmFDA0OYykqLUQphRCxxkbH6eroZqLsvCw8HjdzwdfURjgcxmKz2Sgszme2dn38MR/u2sVEN153HXm5uZyoc6/9MxLSCxHiZFA6AiFimCE/u//tv2KGg8T68vBhXnvjDWIlJiRQeeutdLR1EQqGsKSmp5KalowQx9Le2knAHyCWx+MmOy+LudDR2onfH8CilMJbUoBSitl69PHHGRoaIlZpSQlXX3klJyp/5dUUrr4GIeaa0hEI8f8ZH+jgk+f/lomefPppunt6iHXuOedw8QUX4mtqZaLiMi9CTGVsbJyu9m4mKizKx2a3EW893X2MDI0Qy1tcgGEzmK1P9u/n7XffZaLKW28lJTmZE+FMzGDljX+BUgZCzBWlIxAiovvLd2l87zFijY+PU/vII8QyDIPvfPvbuFxu2n0dTJSZk0FiYgJCTFdrczuhUIhYaemppKQlE2/Dg8P09vQTq7C4AJvNIB4efvRRRsfGiHXu2WdzyVe+wolQymD1zT/G7kpCiLmgdARi0TvUUEvf0Y+IdfjIEV55/XViJSYkcGdlJQN9gwz0DzKRUoqi0kKEOFGD/UP09w0Qy2azUVicT7yNjY7T1dFNrMKifGx2G/Gw95NP+P177xHLZrNx3113YbPZOBHLrqwmOfcMhIg3pSMQi9qep/6c4NggsX71b/9G/8AAscq/9jXOOvNM2ls7CfgDTCavIAeny4kQM6G1prnRx0TFZV7iLRgM0dbSTqy8wlycTgfx8q8PPshE377pJjIzMzkRnvRCll/7ZwgRT0pHIBatj371x5ihABbTNNlWV0coHCbWvXfeicvlwtfUSjhsMhnDMPCWFCDEbHW0duL3B4iVkZVOUnIi8RQOh/E1tRErtyAHl8tJvPzu7bc58NlnxEpJTqby1ls5EYbdybrb/gEh4kXpCMSiEw752f34n6G1iaW7p4ennnkGrTWWBI+Hu26/najmRh9aa46lsCgfm92GEPEwNjpGV0cPsZxOJ3mFOcSTaZq0HG0lVk5+Nm63i3jp6+/n8SefJJbdbufu22/H4XAwbUqx5lt/i92dhBCzpXQEYlEZ7WvlQP3fE2vXxx/z4a5dxFq3Zg3nbdiA1prmRh/HY7fbKSjKQ4h4CofD+JraiGXYDLzFBcSTaZq0HG0lVnZeFh6Pm3gxTZPtjz3G2NgYsa6+4gpKS0s5EWeW/x+kFpyDELOhdARi0eg8+BZNHz5FrOfq62ltayNWxfXXk5OTQyAQoN3XyVS8JQUYhoEQc6G1uY1QKEyswqJ8bHYb8WKampajPmJl52bhSXATT3v37eP3779PrLKSEr5+5ZWciNxzyilafyNCzJTSEYhFofmjZ+k48DqxHt6xg9HRUSx2u527KitxOp0MDY7Q19PHVJwuJ3kFOYjTVzhsok2TsGlimiZRoWCIKDNsYpomlnA4zEShUJgTYbfbmMiw2VD8O6UUNruNKJvNhjIU/T39BIMhYmXnZeHxuIkXrTXNjT5i5RXk4HQ5iaf+gQGeeOopTNPEkpCQwB233YZhGExXcu6ZLLvy/0SImVA6ArHgHW54iN6jH2MZHx/n4R07ME0TS3ZWFt+68Uai+nsHGBwYYjqKSgtRSiFOnXAoTCgUIhQKEw6FMU2TcDhMOBwmFAwTCoVYTOx2O3aHDaUUNpsNm92G3W7HZrNhs9uw2QwMw2AyWmuaG33EyivMxel0EG87nniCwcFBYt18001kZWYyXa6kTFbe+JcIcaKUjkAsaAdf+RlDnYewtLW38+xvfkOsFeeey1cuuoionq5eRoZHmQ5Pgofs3EzEqeNrbiMcCiNmx2az4XDYcbgc2G02+noHiFVQlIfdbifeGt55h/2ffkqsSy6+mHPPOYfpMmwOVt/8Y2wOD0JMl9IRiAVJa83+3/x3xgfasRz47DN+9/bbxPr6FVdQVlpKVGd7F+NjfqaruMyLOLXaWzsJ+APMhlIKw1CAwrAZRBmGQZRSYBgGFofDwUQOp4MTYZom4VCYWOFwGNM0idIaTNMkSmuN1ho0mGaYqHDY5FSx2+243E5cbhcOhx2b3Y7dbmM2mn0+6l98kVgFeXlc/81vciJW3fRXOBPTEWI6lI5ALDjaDLPnqR8S8g9jefvdd/lk/35i3X7bbSQnJRHV2tJOKBhiupJTk0jPSEOcWt2dPYyNjmMYBoahUIaBYRg4HHacLgdOpxOb3YZhGCw0rc3thEIhLIbNwFtcQDAQJBAIEA6ZhMNhAoEgpmmiTRPT1JimyVyxO+x4Etx4EjzYbTZsdhtKKaYSDAZ5eMcOgsEgFofDwX133YVSiuk6++vfJym7DCGmonQEYkHRZpiPfvUnaDNElNaax554gsGhISw2m4377roLm81GVGtLO6FgiBNRXOZFiFOts62L8XE/FqUU3pJClOKEBPwB/P4AAX+AgD+AaWq0NjFNTby4XE4SkxJwJ7gxDAPDMJhox+OPMzg0RKx777oLl9PJdJ1x6XdJ865EiONROgKxYGgzzEe/+mO0GSZKa822ujqCoRAWu93O/ffcg6XlaCumaXIi0jPTSE5JQoj5oLe7j+GhEWIVl3mJl+HBYXp7+ollGAYaDRq01syGw2EnJS0ZT4IHwzB4/be/5YtDh4h1+223kZyUxHR5195A3vLLEeJYlI5ALBg7H6km1r8++CCxPG43d99xB5aWo62YpsmJKi7zIsR8MjgwTH9vP7GKy7zES3/vAIMDQ1g8CW6yc7OYaGx0jOGhUcZGx5iNvoF+3t35HrEuu+QSlp11FtOVXryapZdsQojJKB2BWBB2PfpHaG0SFQ6H2VpXh2maWM5YsoQrysuxNDf60FpzorJzMvEkehBivhkdGaW7s5dYRaWFKKWIh86ObsZHx7Fk52biSfAwFa01pqkZHRllaGCYUCjEdPj9fl5/+7fEKist5etXXMF0JWQWc+43/hghJlI6AnHa27Xj+2gzTNTY2BjbH3sM0zSxfPXii1l+zjlYmht9aK2ZieIyL0LMV/7xAB1tncTylhRgGAbx0HK0FdM0sXhLCjAMg5kwTZNw2GRsZIyhwWHC4TATmabJS799hViJCYl87cKvYhgGTpeD9Iw0HE4Hx+JKymLljX+BELGUjkCc1nY9+kdobRLV09vLk08/jdYayzVXXUVxcTGW5kYfWmtmIrcgB5fLiRDzmX/cT0dbF7G8JQUYhsFsaa1pbvQRq6i0EKUU8RIKhggEAgwODBPwB4h65c3XCIVDWFxOF5d/9TJiKaVwupykpqXg9riI5UrKYuWNf4EQFqUjEKclbYbZteP7WHp6e/m3X/+aWBXXX09OTg6W5kYfWmtmQilFUWkhQpwOgsEQbS3txPIWF2DYDGbLNE1ajrZiMQwDb0kBcykYDFL/0ku0d3RgcdgdXP7VyzAMg8kopXB7XKSkJuNyu3AmprPqpr9CiCilIxCnHTMc5KPHfoDlaHMzL778MrFu+/a3SUtNxdJytBXTNJmpgqI87HY7QpwugsEQbS3txCoqLUQpxWz5xwN0tHVicXvc5ORlMdfeefdd9u3fj0UpxRVfLcfhcDAVm81Gem4h59/2I1yJaYjFTekIxGlFm2F27fg+lmafj/oXXyTW7bfeSnJyMpaWo62YpslMGYaBt6QAIU43fn+AjtZOLEopvCUFKKWYrf7eAQYHhrBk5WSSkOhhru0/cICG3/+eWJW33orL4WR4eJTR4VG01kwl94x1LD3vWvKWrkUsPkpHIE4b2gzz0a/+BG2GiPriyy95/c03iXXX7beT4PFg8TW1Eg6bzEZRSSHKUAhxOhobHaeroxuLYSi8JYXEg6+plXDYxFJYnI/NZmOuNR49ykuvvkqsb914I9lZWVjGx8YZGhxmfMyP1prj8SRnsrz8DopWfAVl2BALn9IRiNOD1ux67AdoM0TUocOHefWNN7AYSnHf3Xdjt9uxtLV0EAwGmQ2b3UZhUT5CnM5Ghkfp6erFYrPZKCzOJx6aG31orYlSSlFUWsjJ0NnVxa+ffZZY3/zGN/AWFjKZocFhhodGCAaCHI9hc7D2mgcoXH4xdocLsTApHYE4Lex+8r8RGh8i6vCRI7zy+utYlFJsuvtu7HY7ls72bsbHxpmt4jIvQiwEQ4PD9PX0Y3E4HOR7c5ktrTXNjT4sngQ32blZnAzDw8M8+vjjaK2xXHfNNRQWFHA8oVCY3q5e/P4AWmuOxe50s/Gm75N7xjoMw4ZYOJSOQMx7+5//O8YG2ok6fOQIr7z+OhalFPffcw82mw1Ld2cvoyOjzJbb7SInPxshFor+3gEGB4awuNwucvOzma2B/iEG+gawZOdm4knwcDIEg0G2PfwwWmssV152GUuXLmValMKeuYKmPW8SCoxxLA53Il+9629Iyy1FnP6UjkDMawdf+xeG2j8nqr2jg2eef55Y37vvPgzDwNLb3cfw0AjxUFzmRYiFpruzl9GRUSwpqcmkZaQyW20t7QSDISzFZV5OFq01v9i2Da01livLy1m6ZAnTteGOfybqwJuP8fm7z2CGghxLSk4Jl97737E73YjTk9IRiHnrcEMdvUd3EdXW3s6zv/kNsR7YtAmlFJbBgSH6eweIh8SkBDKzMxBiIfI1tREOh7Hke/NwOOzMVtORFiw2m43C4nxOFq01P9+6lVjr165l4/r1TIdSButv/ycsWpvsf/0RPn/3GY5FKcXaa6ooXXcl4vSidARiXmrZ/RvaP3mFqM6uLn797LNYlFJ89957MQwDi3/cT0dbF/FSXOZFiIWsudGH1hpLcZmX2QoGgrT5OrCkpqWQmp7CyaK15udbtxJr3Zo1nLdhA9Nhc7hZe+tPmCjoH2XXc/9C62fvcSzJWV7Kv/eP2GwOxPyndARi3hloPcAXb/wrUX19fTz+1FPE+u6992Kz2bCEQmFam9uIl7SMVFJSkxFiIdNa09zoI1ZxmZfZ6u7sYXRkDEtxmZeT7RfbtmGaJpa1q1dz/saNTIc7OYcVN/w5xzLU46Ph4b9gfLiPyTg9Say/oZr8Mzcg5i+lIxDzSmCkl71P/4iosbExHt6xA601lnvuuAO3202spiMtxItSiqLSQoRYDMLhML6mNiyGofCWFDJbzY0+tNZE2Ww2CovzOdkerK0lFAphWbt6Nedv3Mh0JOedxbIr/oDjMc0wR3a9zJ6XHmQyhmFjyYZvsOrr9yHmH6UjEPPKzkf/ELQmHA7zYG0tWmssd91+OwkeD7GaGltAEzdZOZkkJHoQYrHwj/vpaOvC4va4yMnLZjaCgSBtvg4sqekppKalcLJte/hhAoEAljWrV3PBxo1MR0bZBpZcfBfT0d92mA9+XcNwbyuTKTj7Ai64+U9AKcT8oHQEYn7Qml07vo/WJlG/3LaNsGliufVb3yI9PZ1YzY0+tNbEi2EYeEsKEGKx6e8dYHBgCEtmdgaJSQnMRk9XLyPDo1iKy7ycCg9t347f78dy8QUXsHLFCqYj95xyitbfyHSFAuPse/1hjux8iclkl67gotv+GzaHC3FqKR2BmAc0Hz32x/iLNi0AACAASURBVJjhIFFb6+oIBoNYrr/2Wgry84nV5usgGAgST7n5ObjcToRYjFqb2wiFwlgKivKx223MRnOjD601UTabjcLifE6Fh7Zvx+/3Y/nqRRex/NxzmY6iDd8i9+yvcaIOffgCe156kMlkl6zgglv+DIc7EXFqKB2BOOU+e+VnDHceIuqh7dvx+/1YrrjsMs5YupRYfb0DDA0MEU82u43ConyEWMyaGltA878Ul3mZjUAgSLuvA0teYS5Op4NT4aHt2/H7/VjKL72Us844g+k449LvkeZdwUy0ff4hHz79U0KBcSbKKlnOhbf8FxzuRMTJpXQE4pRq3fsSrXtfIOrxJ5+kr78fywXnnceaVauINToyRndnD/FWUJSH3W5HiMVMa01zow+L0+UkryCH2eho7cTvD2ApLvNyqjxYW0soFMJy/TXXUFBQwHSsuOGHuJOzmanBrmbefuQvGR/uZ6L8Zedx/rd+gGFzIE4OpSMQp8xQ5yEOvvIzol59/XUOHTmC5exly7j0q18lVigUprW5jXhzOp3kFeYghICRoRF6uvuwpGemkZySxExprWlu9GFJTEogMzuDU8E0TbbW1REOh7FU3norKcnJTMeaW/4euzOB2RjqbuF3D/8Q/8gAEy37yrdYftntiLmndATilAiOD7Hnyf9G1OdffMEbb72FJTcnh5uuv55YWmuaG33MhcLifGw2G0KIf9fe2knAH8DiLS7AsBnM1OjIKN2dvViKSgpRhuJUME2TXz70EFprLPfeeScul4spKcX6yn9CKcVsDfe28cYvf0AoMM5El9zzt2QVnYOYO0pHsIDVbdlMQ30tUeUVVVRW1zAvaM3OR/+QqN6+Pp546iksNpuN7957LxM1N/rQWhNvbreLnPxshBD/UXOjD601UUopikoLmY2mIy1YDMPAW1LAqRIMBtlaV0esTXffjcPhYCrKsLO+soZ46Tyyl3d2/DXaNJno+j/bgd3pRsSf0hEsYHVbNtNQX0tUeUUVldU1zAd7n/5LAiN9jI6O8vCOHcSquv9+Jupo68I/7mcuFJUWopRCCPEfmaZJy9FWLJ5ED9k5mcyUGTZpaWrFkl+Yi8Pp4FQZGxuj7tFHifXApk0opZiKMmysr/wp8fTlB/XsfXkrE2UWnc3X7vk7RHwpHcECVrdlMw31tUSVV1RRWV3DqXb0/cfp+uIdTNPkl9u2ofnfvnfffRiGQazBgSH6eweYC0kpSWRkpiGEmFx/7wCDA0NYCrx52B12ZqrlaCumaWIpLvNyKg0ODbHj8cexGIbB9+67j+lIyjmDs6+qJp60afLOr35M56HdxFLK4JK7f0xm0dmI+FA6ggWsbstmGupriSqvqKKyuoZTqb9lH1+++Uuitj38MIFAAMu9d96Jy+UiVjAYpK2lg7lSXOZFCHF8vqY2wuEwUUopikoLmY2mIy1YMnMySUz0cCq1d3TwzPPPY3E5ndx7111MR9H6m8g95zLibXy4jxd+uomJkjILuGrzvyBmT+kIFrC6LZtpqK8lqryiisrqGk4VMxzko8d+QNTTzz1HR2cnlhu++U3y8/KYqLnRh9aauZCekUZyahJCiOPTpqb5qA+L2+MmJy+Lmerq6GFsdAxLcZmXU+2zgwd5s6EBS2ZGBt+uqGA6zvnGH5OYWcxcaPtiJ+/+6u+YaMMN1RSvuhQxc0pHsIDVbdlMQ30tUeUVVVRW13CqfPz4nxIOjvPBzp18tHs3ljUrV3LB+eczka+5jXAozFwpLvMihJieocFh+nr6sRQU5WG325mppiMtWNIzUklOTeZUe/f999mzbx+WstJSvn7FFUzHqoq/xpmQxlwwzTBvPfRf6Wv9Asv66/+AktXliJlTOoIFrG7LZhrqa4kqr6iisrqGU+HTl3/KSNcRfK2tPP/CC1iyMjO5+aabmKinq5eR4VHmSmZOBomJCQghps/X1EY4HCZKKUVRaSEzNdA3yED/IJbiMi/zwXP19bS2tWHZsG4dG9atYzrWfacGw2ZnrnQc2s07O/6alJwSrnjgp4jZUTqCBaxuy2Ya6muJKq+oorK6hpOt8/O3afrgCQKBANsefhiL2+XinjvvZKKAP0B7aydzqbjMixDixJimScvRViyJSQlkZmcwU82NPrTWRKWkJZOWnsp8sOPxxxkcGsJy9ZVXUlpSwlSciemsuumvmGumGcYwbIjZUTqCBaxuy2Ya6muJKq+oorK6hpMpFBhl9xP/haitdXUEg0GilFJ89957MQyDiZqOtDCX8gtzcTgdCCFO3ODAEP29A1iKSgtRSjETQ4PD9PX0Yyku8zJfPLR9O36/H8t3brmF1JQUppLmXckZl34XMf8pHcECVrdlMw31tUSVV1RRWV3DybRrx/fRZpgnn36a7p4eLN+68Uays7KYqLnRh9aaOaOguNSLEGLmmht9aK2xFJd5manmRh9aa6JSUpNJy0hlvvjltm2ETRPL/ffcg91uZyredTeQd+7liPlN6QgWsLotm2moryWqvKKKyuoaTpZ9z/0Y/2AnH+/ezfs7d2K5YONG1qxezUR9Pf0MDQ4zl7wlBRiGgRBi5kKhMK3NbVhy87NxuV3MxNDAMH29/ViKy7zMF2NjY9Q9+igWu93O/ffcw3SsuOGHuJOzEfOX0hEsYHVbNtNQX0tUeUUVldU1nAzD3Y189lINfr+fh7Zvx5KTnU3FDTcwUSgUprW5jblk2Ay8xQUIIWavo7UTvz+ApbjMy0w1HWnBkpqWQmp6CvNFS2srv3nhBSyJCQncWVnJdKyv/CnKsCHmJ6UjWMDqtmymob6WqPKKKiqra5hrZjjIR4/9gKifP/ggmn+nlOKBTZuYTNORFuZacZkXIUT8NB1pwZKUnEhGVjoz0d83yGD/IJbiMi/zyce7d/P+zp1YCvLzuf7aa5mK4XCx7tYtiPlJ6QgWsLotm2moryWqvKKKyuoa5tquR/8IrU1+sW0bpmliuffOO3G5XEzU2txOKBRiLtkddgq8eQgh4mdsdIyujh4s3pJCDEMxE01HWrCkZ6aRnJLEfPLCyy/T1NyM5RtXXUVJcTFTSUgv5Nxr/wwx/ygdwQJWt2UzDfW1RJVXVFFZXcNc8u1+nrZPXuX9Dz/k4z17sFx3zTUUFhQw0ejoON0d3cy14jIvQoj4azrSgsXusFPgzWMm+nr7CQVCZOVmopRiPtpaW0swFMKy6e67cTgcTKXkgu+QfcaFiPlF6QgWsLotm2moryWqvKKKyuoa5op/uJd9z/yIkdFRtu/YgaW4qIhrvv51JjJNTctRH3PN7XGRk5eNECL+TNOk5WgrlgJvHnaHnYXINE1+sW0bsb53330YhsFU1t76E2wON2L+UDqCBaxuy2Ya6muJKq+oorK6hrmya8d/xgwH+fnWrcR6YNMmlFJM1NLUihk2iTracoQSbxlzobjMixBi7rQcbcU0TaIMw8BbUsBCNT4+Tu0jj2BxOBxsuvtupqQUG27/J0Ah5gelI1jA6rZspqG+lqjyiioqq2uYC4caHqLv6Mc8/uST9PX3Y/nuvfdis9mYaKB/kIG+QaK6e7o40nwIwzBYt2ojCkW8JCUlkpGdjhBi7mitaW70YcnNz8bldrFQtbW38+xvfoPFW1DAN6+5hqk4E9JYVfHXiPlB6QgWsLotm2moryWqvKKKyuoa4m20t4UDL/yEg198wW/fegvL16+4grLSUiYKh8P4mtqIGh0bZf/BvVjsNjtrV24gXorLvAgh5l67r5NAIECUYRh4SwpYyN5591327d+P5dKvfpWzly1jKgWrvkHBqm8gTj2lI1jA6rZspqG+lqjyiioqq2uIt12Pfp/R0WHqHn0US1ZmJjffdBOTaWlqxQybBENBdn+yi/9NsXHN+cRLaloKqekpCCFOjqYjLViyc7PwJLhZyB59/HGGhoawVN5yCykpKUxl5Y1/gSspC3FqKR3BAla3ZTMN9bVElVdUUVldQzx9+eYv6G/5hNrt2xn3+4my2Wx89957mUx/7wCDA0NE7dzzAVqbWDauuYB4Ki7zIoQ4ebrauxkbGydKKUVRaSEL3S8feohwOIzle/fdh2EYTGV9ZQ3KsCNOHaUjWMDqtmymob6WqPKKKiqra4iX8YEOPnn+b3n797/nkwMHsNz5ne+QmJjIRKZp0nK0lah9n+5m3D+OZfW563A6ncRLZnYGiUkJCCFOrqYjLViyc7PwJLhZyEKhEA/W1mJJTUnhO7fcwlRcSRmsvPFHiFNH6QgWsLotm2moryWqvKKKyuoa4mXXo9+nf6CPx554AsuyM8/ksq99jcm0NLVihk2Othyhs7sDS1FBCXk5+cSLUoqi0kKEECdfd0cPo6NjRCmlKCotZKE7dPgwr77xBpYV557LVy66iKl4199E3jmXIU4NpSNYwOq2bKahvpao8ooqKqtriIdDv9tKX9MefrltG2HTJMrldHLvXXcxmcH+Ifr7BhgYGuDzQ59iSUlOZdnSc4innLws3B43QohTo+lIC5a8ghycLicL3Qsvv0xTczOWWyoqyMjIYCqrbvoRzsQMxMmndAQLWN2WzTTU1xJVXlFFZXUNs6W1ya5H/4gXXn6ZpuZmLFX338+xNB1pQWvNzj3vY7Hb7axdsYF4Ky7zIoQ4dTrbuxkfGyfKbrdTUJTHYrDt4YcJBAJYHti0CaUUU9lwxz8jTj6lI1jA6rZspqG+lqjyiioqq2uYrY8f/1P6e7t49PHHsWxYt44N69YxGV9zG+FQmI/2fkjYDGPZuOYC4i2/MBeH04EQ4tRqOtKCpai0EKUUC53Wmp9v3YrF43Zz9x13MJXk3LNYduUfIE4upSNYwOq2bKahvpao8ooqKqtrmI3WfS/TuqeeX2zbhmmaRCUmJHBnZSWT8Y/76Wjr4uChTxkcGsCy4uzVeNwe4slms1FYnI8Q4tRr93Vgmpq8whwMw2CxaG1r47n6eixlJSV8/cormcrSS+4jvXgN4uRROoIFrG7LZhrqa4kqr6iisrqG2dj5SDUvvfoqjUePYtl09904HA4m03SkhZHREQ58vg9Lfk4B3oJi4q2wOB+bzYYQQpxKv3v7bQ589hmW22+9leTkZI5PseGOnyFOHqUjWMDqtmymob6WqPKKKiqra5ipvb/+Cwb7Oqjdvh3LRRdcwKoVK5hMR2snfn+AnXveR2tNlMPhZM3ydcSb0+UkryAHIYSYD+oeeYSx8XGilFI8sGkTU3EmZrDqph8hTg6lI1jA6rZspqG+lqjyiioqq2uYifGhLj559m94sLaWUChElNvl4p4772QyWmuaG33sOfAxgYAfy/pV52EYBvHmLSnEMBRCCDEfBAIBtj38MJaEhATuqqxkKnnLr8K79puIuad0BAtY3ZbNNNTXElVeUUVldQ0nTrPzkT/k9++9x95PPsFy9+234/F4mExzo4/O7g4amw9jOWvpOaQmpzIVv38cl8vNdLk9bnLyshBCiPmkxefjNy++iOWi889n1cqVTGXtrT/B5nAj5pbSESxgdVs201BfS1R5RRWV1TWcqNY9L9Cy5wV+sW0blvVr17Jx/XomMzY6Tmd7Fzv3vI8lJTmVZUvPYSqjY6PsP7iXtNQMzig9E6UUUykq9aIUQggx79S/+CLNPh+We+64A7fbzfHYHG7W3voTxNxSOoIFrG7LZhrqa4kqr6iisrqGE2GG/Hz0qz/hwdpaQqEQUYZh8L377mMyWmuaG33s2vsBpmli2bjmAqZj5+730Wii3G4PK89ezfEkpySRnpmGEELMR1prfvnQQ5imieWBTZtQSnE8mWUbKbv4TsTcUTqCBaxuy2Ya6muJKq+oorK6hhOx79m/4dBnu/nNiy9iuf2220hOSmIyPV29tLa28vnhz7CsOHs1HreHqXxx5CD9A31Y1q86D8MwOJ7iMi9CCDGf+f1+Htq+HcuS0lKuuuIKprLm23+P3ZWAmBtKR7CA1W3ZTEN9LVHlFVVUVtcwXeMDHex97sf8YutWLDnZ2VTccAOTMU2T5kYfO/e8j8XjTmDF2auYSjAUZPcnu7CUFi0hOzOH40nPSCM5NQkhhJjvPt6zh/c//BBLxQ03kJOdzVQ23PEzQCHiT+kIFrC6LZtpqK8lqryiisrqGqZr5yPVvPzqqxw5ehTLA5s2oZRiMq3Nbew9sIeR0WEsG9acj0IxlQ93v4dFKcWG1edzPEopikoLEUKI08XWujqCwSCWBzZtQinF8WSUbWDJxXch4k/pCBawui2baaivJaq8oorK6hqmo69pD3tf/Ge2P/YYlmuvvpoir5fJBPwBjhw+yief7cGyfNkqEjwJTKWru4PGliNY1q3ciM1m43iyc7PwJLgRQojTyb8++CCWtLQ0brv5Zqay+ls/xuFJQcSX0hEsYHVbNtNQX0tUeUUVldU1TMfOR6r5xbZtmKZJlGEYfO+++ziWpiMt7NzzPlpromyGjXWrNjKVsBnmo70fYslIy2Rp6Zkcj2EYeEsKEEKI001rWxvP1ddjubK8nKVLlnB8ig13/AwRX0pHsIDVbdlMQ30tUeUVVVRW1zCVlo+e490XHuTl117D8t1778VmszGZkeFRDh78nCNNX2LZsPp8lFJMZff+jwgGA1g2rrmAqeR783A47AghxOnosSeeYGBwEEvV/fczlZxll1C88WZE/CgdwQJWt2UzDfW1RJVXVFFZXcNUdj5Szc+3bkVrTVRmZibfvukmjqXpSAsf7n4PS1pqOmeWLWMqA4P9fH74MyxrVqzHYXdwPHa7nYKiPIQQ4nT2861b0VoTlZKSQuUttzCVlTf9CFdiBiI+lI5gAavbspmG+lqiyiuqqKyu4Xi+fOtBXnjyl+zdtw9L1f33cyz9vQMc+Gw/bR2tWDauuYDp+HD3e1g8bg8rzl7NVAqK8rDb7QghxOmsvaODZ55/HstXLrqIFeeey/HYHG7W3voTRHwoHcECVrdlMw31tUSVV1RRWV3DsYRDfj585Ps8WFuL5YLzzmPNqlUcS9ORFj7c/R6WwvwiCnILmcrnhz9jYLAfy8Y1FzAVp9NBXmEuQgixEDxXX09rWxuW7913H4ZhcDyFa64jf8WViNlTOoIFrG7LZhrqa4kqr6iisrqGY/n0xX/g0br/QXt7O1FKKR7YtIlj6e7s5ZMDe+np6ybKMAzWrzqPqYyOjbL/4F4sS0vPJCMtk6l4SwowDAMhhFgofrF1K6bWRKWkpFB5yy1MZe0t/zc2pwcxO0pHsIDVbdlMQ30tUeUVVVRW1zCZkH+E3237A3Y8/jiWJaXFXHXFVUxGa03TkRZ27nkfy5KSM8hMz2Iqu/Z+gGmaRDkdTlYvX8dU3B43OXlZCCHEQtLe0cEzzz+P5YrLLuOMpUs5HmdSJqtu/EvE7CgdwQJWt2UzDfW1RJVXVFFZXcNk9j37N2z9xT8zPDJClM1mcOu3biYlJYXJdLZ18cmn++gb6CXKMGysX7WRqTT5jtLR1YZlw+rzUUoxlaLSQpRSCCHEQlP/4os0+3xYqu6/n6mUXXQnmUs2ImZO6QjmudGhfrTWRHmSUjEMg+mq27KZhvpaosorqqisrmGikH+Y+p/dw/MvvIAlKzONm2+6mclorWlu9PHh7vewlBUvJSsjm+MJh8N8tO9DLHk5BRQVFDOVpOREMrLSEUKIhernW7eitSYqLTWV2779baay/vZ/QikDMTNKRzDPff/GYob6u4n6u0f2keNdynTVbdlMQ30tUeUVVVRW1zDRvmf+in/5f/6BcDhMlNNh56wzlvKVi7/KZNpaOvj80EG6ezuJUkqxYfX5TGXPgY8JBPxEGYbB+lXnMR3F/y978AIX5X0gev/3PHNluMzAwCAwjiLeb6CCkmuNMTEao4OYJhoTE51UmrPNKXtOT8/uvrvbvZTtbrbpW/ezu7ZLUk1JmzQi5mKae4ymqYoXFO9RUQRvDDAw3GHmeed5+3k+ZS0giSCD/L/fVCeCIAi3s+pLl3j73XfRrFi+HEdCAn2JTpzApAe+g/D1SEoIYS7f7cLv86IqKCrH4Uyjv7a88By7d2xGtWBFHquff5HuOlsbeeNHj/HJZ5+hSbDbWHj/A1hjrPSksqKK0rI9aMaOHkeC3UFfrnmvcqGqAs3MqbMwGU3ciDU2BqstBkEQhNvdb4qLqauvRyUBGzwebiR95T9iMMcgfHWSEkKYy3e78Pu8qAqKynE40+ivLS88x+4dm1EtWJHH6udfpLuyN/6S//iPnxJUFFRmk5HoKAu5OSvpSfXFy1y5eonzFyvQZGVkcyOlZXvQ2GJimTBuEv3hSnUiCIIwEgSDQX7+8stooqOjeeKxx+iLrDMwe9WPEb46SQkhzOW7Xfh9XlQFReU4nGn015YXnmP3js2oFqzIY/XzL9Ldpv91D/sPHECTYLcxatQo7rrjbnpSWVHFwfJSAoEAqqTEZJxJLvpSfqKMtvY2NFkZ2fRHvMOOJTICQRCEkeJCZSW//eADNOvWrsVoMNCXpOkPkpKxFOGrkZQQwly+24Xf50VVUFSOw5lGf2154Tl279iMasGKPFY//yKasjf+gn//j40oioLKEmEm0mJmwX33E2uL5XrVlZfp7OzkwJF9aDLT5yFJEr1pa2+j/EQZmolpU7BGW+kPV6oTQRCEkealzZvp7OpCJUkSG9avp28SmWt+ivDVSEoIYS7f7cLv86IqKCrH4Uyjv7a88By7d2xGtWBFHquffxHNxj+by5GjR9Ek2G2ocnNW0pPKiirKT5TR1t6GyhIRybRJM+jL/sN7URQFVYQ5gumT0+mPxCQHJrMRQRCEkaajo4OXX3kFTdacOcyZNYu+mKITmLH8rxH6T1JCCHP5bhd+nxdVQVE5Dmca/bXlhefYvWMzqgUr8lj9/IuoDr72v/nPn/0niqKgioqMIMJsItGRyN133cP1rlRfo6Ojg9KyPWimTZqJJcJCb76sOIWvoR7NnJlzkWWZ/nClOhEEQRip9paWcujwYTTrnnoKo9FIX9JXFmAwRyH0j6SEEOby3S78Pi+qgqJyHM40+mvLC8+xe8dmVAtW5LH6+RcJdnXw7/n3cLi8HE2C3YbqG/fMJz4+nu4UReHi+Woa/Q2cOnsCTVZGNr0JBoMcOLIPzdjR40iwO+iPZOco9AY9giAII9mmwkI0MdHRrH7sMfoiyTrmrP4JQv9ISghhLt/twu/zoiooKsfhTKO/trzwHLt3bEa1YEUeq59/kfK3fshPX/whmugoC2aTEVVuzkquV+etp8nfzIEj+wgGg6hSkkaTnJhCb/Yf3oeiBFFJkkxm+lz6Q5IkRo9NQRAEYaTz+/28+vrraJYvXUrSqFH0Zewdq4lPy0a4MUkJIczlu134fV5UBUXlOJxp9NeWF55j947NqBasyOPx537EK3+zhM+/+AJNgt2GyhpjZeH9D9CdosDF81UoisL+w3vRzJqRiV6npydXa65QWX0ezazpmej1evpj9NgUJElCEARBgNe2bsXn86HJ83i4kTmrf4Ik6xD6JikhhLl8twu/z4uqoKgchzON/trywnPs3rEZ1YIVecybNYN/+uv/gSYqMoIIswlV9rw7SElOoTt/YxP1tT7qG+o4U3EaTVZGNj0JBAMcPFKKxh4bz7gx4+kPvV5H8ugkBEEQhD/aVFiIZlZ6OvOysuhLTPIUJi74NkLfJCWEMJfvduH3eVEVFJXjcKbRX1teeI7dOzajWuD+Fkr9KT797DM0CXYbmtyclVyvsqIKVWnZHjSulLEkJoyiJ4ePHaSjswNNVkY2/ZWUkojBaEAQBEH4o9IDBzhw6BCadU89hdFopC8ZjxagN0Uh9E5SQghz+W4Xfp8XVUFROQ5nGv215YXn2L1jM6qMWXMpO7QPjSMhHiXYhUqWZXKWr6C7ttZ2rl2pQVEU9h/ei2bW9Ez0ej3Xa/Q3cOrsCTTp02ZjNBjpL1eqE0EQBOFPFW7eTFdXF6pYm43HVq6kL7LOyOxV/4rQO0kJIczlu134fV5UBUXlOJxp9NeWF55j947NqOxxcdTW1aFJSoynq6sLVfrMdManTaC7yooqVB0d7Rw+fghNVkY211NQ2F+2F43RYCR92my+CleqE0EQBOFP+f1+Xn39dTTLly4ladQo+jJl8feItI9G6JmkhBDm8t0u/D4vqoKichzONPprywvPsXvHZq43aeJE6mqvoXl48VLMZjOazo5OLldfRXX67Eka/D5U1mgbE9Mmc70vz53C11iPJisjm69CkiRGj01BEARB6Nkb27ZRW1eHJs/j4UYy12xE6JmkhBDm8t0u/D4vqoKichzONPprywvPsXvHZq63fu1a3nrnTTS5OSvp7kr1VTo6OlGVlu1Bkz51Fkajie5a21o5evIwmnFjxmOPjeer0Ol0pLiSEARBEHqmKAo/e+klNLMyMpiXmUlfUu98Evu4LIQ/JSkhhLl8twu/z4uqoKgchzON/trywnPs3rGZ7mJjY4m1RuP3N6JKGpXEnXfchUZRFC6er0YVDAY5cGQfmsz0eUiSRHf7D+9FURRUBoORjGmz+apscVZirNEIgiAIvdv9u99x7MQJNHkeDzeSuWYjwp+SlBDCXL7bhd/nRVVQVI7DmUZ/bXnhOXbv2Ex3G9avZ9v2YjQLFzyA1WpFU1/rw9/YhKq1rYWjJ4+gycrIpruL1Re4UnMZzZyZWciyjq9q9JgUJFlCEARB6NumwkI0zpQUli5eTF8ck76BKysX4b+TlBDCXL7bhd/nRVVQVI7DmUZ/bXnhOXbv2IwmKjKSVd/8JtvfKkGzwp2LJEloKiuq0Jy/WEFN7VVUUZHRTJkwDU0gEOBgeSmaxIRRuFLG8nW4Up0IgiAIN3bm7Fk++vRTNM8+8ww6nY6+zFn9IpKsR/gjSQkhzOW7Xfh9XlQFReU4nGn015YXnmP3js1o1q5ZQ03NNUr370OTqwo2qgAAIABJREFUm7MSTUtzK95rtWhKy/agmT5pJhERFjSHjx+io6MdlU6nY/aMLL4uV6oTQRDCT1dXF5cuX8Lnq6crECA6KoqYGCuJjkSEobOlqIjWtjZUUZGRrFm1ir5Yk6cyYUEewh9JSghhLt/twu/zoiooKsfhTKO//uXZDE5/eRqVyWTimSefpOTNbQSDQVSzZ80hdWwqmurKywQCATSlZXvQZKbPRZJkVN66Gioqz6KZPjmdCHMEX4dOpyPFlYQgCOHj6LGjnP7yFIqi0Je0ceOZOWMmsiwj3Dr1Ph+vb92K5rHcXGJjY+lLxqP/hN4UifAHkhJCmMt3u/D7vKgKispxONPoj2bvBf7nyilopk+bxt133EFxyVY0S5c8gslkQhUMBKmqvIQmGAxy4Mg+NFkZ2WhKy/agsVljmZA6ia/LaDIyKtmBIAhD7/LlS3yx5wtUiqLQ2tZOW3sHgUAQjV6vw2wyYjYZkSQJVXx8PHfMuxOj0Yhwa2wtKcFbW4tKr9fjefpp+mKJczJ1yf9B+ANJCSHM5btd+H1eVAVF5TicafTHm//2bd4u3oJm+rRpzMnI4N33dqDJzVmJpuZqLa0trWha21o4evIIKkmSyEyfh+rYqXJaWptRSZJEZvo8boY9IY7IKAuCIAytQ2UHOVdxDlV9g5+urgA3IkkS1uhIDAY9qtTUcczOmI0w+Do6Onj5lVfQPPzQQ4x2OulL+sofYjBHI4CkhBDm8t0u/D4vqoKichzONG5EUYL82aI42js6UE2cMIEF3/gGR48d5dTpk6iMRiOPPLwMTWVFFd35Gur5suIUKlmWmTNzLq1trRw9eRjNhHGTscXYuBmuVCeCIAytssOHOHvuLIFAkDpfI1+VJEnE2aKRZRlZlln80BLMJjPC4Prks884/eWXqCRJYsP69fTFGBnHzJwfIICkhBDm8t0u/D4vqoKichzONG7ky9/9mn/+q/Vo8jweVMUlW9HM/8Z92OPsqFqaW/Beq6O78xcrqKm9iirWGsf41InsP7wXRVFQmU1mZkzJ4Ga5Up0IgjB06upq+fSzTwkqCrV1DdyMCLOJqMgIVPfe8w0S4hMQBo+iKPzspZfQzM3MZHZGBn2ZmfN3GCNjGekkJYQwl+924fd5URUUleNwpnEjP1gziaqqi6ji7XZW5uSgKi7ZiiZn+QpkWUZVffEyga4A3R09eYTWthZUk8dP5dLVahr9DWjmzJyLLMvcLFeqE0EQhoaiKGzbXoyqptbHQJAkifg4K6oZ02YyceJEhMFz6PBh9paWotmwfj2SJNEbvTmKjJUFjHSSEkKYy3e78Pu8qAqKynE40+hLZ2sj3148Cs2jOTnY7XYaGhv46OMP0eTmrERTWVHF9UrL9qDJTJ/H/sN70YxxpuKIT+RmGQx6kpyjEARhaOw/UMqFygvU1TcSCAYZSAl2G6rp02YwaeIkhMGzqbAQzbjUVB68/376MnPF32O02BjJJCWEMJfvduH3eVEVFJXjcKbRl9deWMdHO15Dk+fxoDpYdoCKigpUEREWljy0BFVtTR3NTS1cr7RsDxoJCQUFTVZGNgPBYokgPtGOIAhDo7hkK0FFobaugcEQH2dFkiQyZ2cyZsxYhMFRdekS77z7Lpr1a9diMBjojc5gZtZj/8JIJikhhLl8twu/z4uqoKgchzONvjz3oI2Ojg5UWXPmMGfWLFTFJVvRPLDwQWKiY1BdPF+Noihcr7RsDz1JnzYbo8HIQHCMisccYUYQhFvvYtVF9pXupd7npysQYLAk2G2oFj34EFGRUQiDY1NhIRpnSgpLFy+mL1OW/B8i45yMVJISQpjLd7vw+7yoCorKcTjT6E3thcN8f+0daL61bh2yLKMqLtmKJjdnJapAIEh15SV6Ulq2h+vZY+2MGzOBgeJKdSIIwtB48+3tdHV1UVPrYzBJkkR8nBVVbs5KhMHh8/l4betWNE+vWYPZbKY3ss7A7FU/ZqSSlBDCXL7bhd/nRVVQVI7DmUZvfvB0BlXnT6NyJCSwYvlyVD6fj48//QiVLMvkLF+B6nL1VTo7OulJadkerpeZMQ8JiYHiSnUiCMLQKC7ZSldXgPoGP4NNJ8vExcYgyzI5y1cgDI6fv/wywWAQlSMhgRXLl9OXaUv/gghbEiORpIQQ5vLdLvw+L6qConIczjR68+x8Cwp/kLNsGYkOB6ryo0c4/eVpVJGRUTz04EOoKiuq6E1p2R66mz45nQhzBANFliWcY1IQBOHWa/Q38uFHH+BvaqGtvYNbIcJsIioygnHj0piVPgth4LW0tPDKr36FZs2qVURFRtKXzDUbGYkkJYQwl+924fd5URUUleNwptGT0vc387N/eg5NnseDZvtb2wkEulDddefdjEocRUdHB1eqr9ETRVHYf3gvGrPJzIwpGQwkk9lEYlICgiDcehcqL7D/QCk1tT5upQS7DdUjDy/DaDQiDLyXX3mFjo4OVPa4OB5dsYK+TF/2V5hjEhlpJCWEMJfvduH3eVEVFJXjcKbRk//5SDLNfh+qjJkzyZ47F01xyVY0uTkrUVVduEQwGKQnZypOU99QhyYrI5uBFm2NJjbOiiAIt96hsoOcqzhHTa2PWy3BbkOWZXKWr0AYeH6/n1dffx3Nk6tWERkZSV8y12xkpJGUEMJcvtuF3+dFVVBUjsOZRk888y1onn7yScwmE6rm5mbe++C3qCRJYoU7F1VlRRU9aWtvo/xEGd1lZWQz0EYlOzCajAiCcOvt+vwzampqqKn1catFRUYQYTZx793fICEhgdtRW1sbHZ0dGA1GzGYzt9ovf/1rmpubUSXEx5PrdtOX6cv+CnNMIiOJpIQQ5vLdLvw+L6qConIczjSut/2lv+edX/4IlSzLfGvdOjTnKs5xqOwgKkuEhcUPLaGjvZMrl67Sk/2H96EoQbrLyshmoLlSnQiCMDTe//A9mpqaqKn1MRQS7DZUuTkruR10dHRQfrSc8xcq6I01xsrsWbOJi7Mz2Nra29n8y1+iWfvEE0RERNCXzDUbGUkkJYQwl+924fd5URUUleNwpnG9DffHEAh0oVq4YAHjx41D88nOT6ivr0M1ccJEZkyfSWVFFT2pulTJ5WuXuF5WRjYDzZXqRBCEofH+h+/R1NRETa2PoWA2GYmOspA97w5SklMYrhRFYeeundTV1aJSFIWurgDtHR10dgUw6PUY9DoMBj2yLKOZOmUakydNRpIkBsurr7+O3+9H5UhIYMXy5fRl+vK/xhydwEghKSGEuXy3C7/Pi6qgqByHM43uuro6yFtoQ/OtdeuQZRlNcclWNLk5K1FVVlRxPUVR2H94Lz3JyshmIOn1OpJHJyEIwtB4/8P3aGpqoqbWx1BJsNtQ5easZDgKBoNsf6sERVEIBoPU1jdyI0aDnpjoSCRJQjVvbjbOFCeDobWtjS1FRWjWPfUURqOR3ujN0WSs/CEjhaSEEOby3S78Pi+qgqJyHM40uiv84Xr2fPhrVEaDgXVr19JdcclWNLk5K+no6ORK9VWuV3bsIJ2dHagkSUJRFDRZGdkMJEtkBPEOO4IgDI33P3yPpqYmamp9DBVLhJlIi5lv3DOf+Ph4hpvikq2o6hv8dHUF+CpkScIeZ0VlMBhYtnQ5g+FXv/kNjY2NqJKTk1m2ZAl9mZnzdxgjYxkJJCWEMJfvduH3eVEVFJXjcKbRnWe+BU2u201CfDya2rpadn72KSqD3sCyR5ZTWVHF9Wpqr3H+4jk0M6ZkUH6iDE1WRjYDKdZuIzomCkEQhsYXv/8dl69cpqbWx1BKsNswmyN4ePHDDCfFJVtR1dY3EAwqfF1RkRFEmE1IksRDixZjibAwkLy1tWwtKUGT5/HQF0vcaKYu+R4jgaSEEOby3S78Pi+qgqJyHM40NE2NdXx3mRPNhvXrkSQJzdFjRzl1+iSq2Ng4FsxfQGVFFdcrLduDxhptY2LaZA4fO0RHZzuqqROnE2mJYqAkO0ehN+gRBGFoHC4/zJkzX1JT62Mo2WKiMBj05CxfgSzLDAfvf/g+TU1+6hv8dHUFuFl6vY5YazSq2bPmkDo2lYG05dVXaW1tRZU0ahTLly6lL7Mf/1dkvZHbnaSEEOby3S78Pi+qgqJyHM40ND/7+7WUfvIGqoiICNY+8QTdffjRBzT6G1HNSp+F0+niSvVVujt++ijNLU1osjKyUZ09/yV1vlpUSYkpOJNGM1BcqU4EQRg6VdVV7N23h5paH0NJlmXssTHMmD6TiRMmEu7a2tvY8e47BINBausbGSiSJBEfZ0U1Z1YmY8eOZaBcvnKFN995B02ex0Nf7KlZpN71JLc7SQkhzOW7Xfh9XlQFReU4nGloPPMtaB7LzSU2Npbuiku2olnhzuVy9VW6OrvQtLa1cvTkYTRpYycQZ7Ojqq3zcq7yDCq9Xs+s6ZkMFFeqE0EQho6/yc8HH75PY1Mz7e2dDKUEuw2D3sCyR5YT7t797Q5a21qpqfUxGOLjrEiSxJzZmYwdM5aBUrh5M11dXahco0ezZNEi+pK5ZiO3O0kJIczlu134fV5UBUXlOJxpqOprqvneoxPQbFi/HkmS6K64ZCua3JyVVFZU0d2Bw/sIKkFUZlMEM6ako2lpbebYqXJUkiSRmT6PgWAwGEhyJiIIwtAqLtlKZ2cXvsYmhpI1OhKj0UBuzkrCWWdXJ2+9/SaBQJA6XyODJcFuQ7XkoYeJiIhgIFScP8/7H32EJs/joS/JMx4iOX0JtzNJCSHM5btd+H1eVAVF5Ticaahe/tEGvnjvl6iMRiPrnnqK7urr6/lk58eo9Ho9Dz+0lEtVV9CcPf8ldb5aNLNnZqGTdWi6Al0cKt+PJisjm4EQHRNFrN2GIAhDq7hkK0FFobaugaFkNOixxkRx9133kOhIJFydqzjHobKD1NT6GEySJBEfZ0WVs3wFsiwzEH7+8ssEg0FUUyZN4hv33ENfMtds5HYmKSGEuXy3C7/Pi6qgqByHMw2VZ74FzapHH8VqtdLdsePHOHnqBCq7PZ4ZU9Np9jejUhSF/Yf3onEmu0hyJHO90rI9aDLT5yFJEjcrIdFOhCUCQRCG1u/3/p5Ll6qpqfUx1BLsNlyjx5CVmUW4KnlzG8FgkJpaH4NNliXssVZUuTkrGQgnT59m565dqCRJYsP69fRl3N1riRs7h9uVpIQQ5vLdLvw+L6qConIczjQaaq/wv3LHodmwfj2SJNHdrt2fUeOtQTVt6jQsxmg0pWV70MiSzJz0ufSktGwPmplTZ2EymrhZTlcysk5GEISh5fXW8Nnuz/A1NtHZ2cVQSrDbMJlMLF3yCOGquGQrgUCQOl8jt0KE2URUZATjUscxK2M2A2FTYSGa++69l0kTJ9IbvSmSjEf/iduVpIQQ5vLdLvw+L6qConIczjTeffVf2fZff4NKr9fjefpprlfy5jaCwSCqBxYuwudtQOWtq6Gi8iya9GmzMRqM9KTi4jm8tddQxURZmTR+CjfLlepEEITwUFyylUAgSJ2vkaFks0Zh0OvJzVlJOGpra2PHb9+hubWNlpY2bhV7bAyyLLN40RIsFgs3q/TgQQ4cPIhKJ8s8u24dfZm+/K8xRydwO5KUEMJcvtuF3+dFVVBUjsOZhme+Bc2iBx4gdcwYrldcshXN4geW4K2pIxgMcuDIPjTWGBsTx02mN61tLRw9eQRNVkY2N8uV6kQQhPDwzrtv097eTk2tj6EUZYkgIsJEbs5KwpHXW8Nnuz+jztdIIBDkVkqw21Dl5qzkZgWDQX7+8sto1jz+OFFRUfTGEjeaqUu+x+1IUkIIc/luF36fF1VBUTmxDifffjAWTZ7Hw/UUBbZt34ome85dBAIByo4doLOzE01WRjZ9CQaDHDiyD01m+jwkSeLrMplMJCYnIAhCeKirr+PTnZ/Q6G+mvaOToWI2GYmOsrD8ETd6vZ5wU11dxZ59e6ip9XGrRUSYiLJEkJU5F9doFzfrvY8+4vz582jyPB76kvnET0GSuN1ISghhLt/twu/zoiooKqfyzGE2/WANKoPBwPq1a7ne1WtX+fx3u1GZzWZmTM6gpbWFY6eOoJk5ZRYmk4kbKS3bgyZ96myMRiNfV2yclWhrNIIghI/ikq0oioK3roGhYtDrsVmjmH/vfdjtdsLNiZPHOX7iODW1PoZCvN2GBOTmrORmtXd08ItXXkGzfu1aDAYDvYl1ZZB27zpuN5ISQpjLd7vw+7yoCorK+cn3l1NTfQ7V9GnTuPuOO7jeobJDnKs4iyrOFkfa2ImUlu1Bo9PpmT0jk/44d+EstfU1qExGMzOnZvB1jUp2YDQZEQQhfBw+UsaZs2eoqfUxVHQ6mThbDHdk30lyUjLh5sTJ4xw/cZyaWh9DwaDXY7NGMXPGTCaMn8jNemnLFjo7O1FZIiJ46okn6J1E5pqfcruRlBDCXL7bhd/nRVVQVM5frpmBZsP69UiSxPU+27UTb60XlTPJRXNrE/W+OjRZGdn0V1dXJ4eOHkCTlZHN1zV6bAqSJCEIQvgIBAJsf6sERVHw1jUwVBLsNmZMn8nECRMJNydOHuf4iePU1PoYKvFxViRJIjdnJTfL39TEq6+9hubZZ55Bp9PRm/Hzv4XNOZ3biaSEEOby3S78Pi8qz//zCwr/8RlUsizzrXXr6MmO375DW1sbqlRXGhWVZ9GkutKIj0vgqygt24NmxpQMzCYzX4cr1YkgCOFn1+5d1Hiv4a1rQFEUbjVZlrDHWpk5I50J4ycQbk6cPM7xE8epqfUxVExGAzHRkcyZNYexY1O5WZsKC9HMSk9nXlYWvdGbo8hYWcDtRFJCCHP5bhd+nxfV5NnzOXlwJ6q42Fi+mZtLT4pLtqLRyToCwQAqvV7PrOmZfFWHjx+io6MdVXRUDJPHT+XrcKU6EQQh/ASDQUre3IaiKHjrGrjVdDqZOFsMd2TfSXJSMuGmquoie0v3UlPrYygl2G3odDrcy3K4WZcuXeKtd99Fk+fx0JfMNRu5nUhKCGEu3+3C7/NyPffSpYwaNYqeFJdspSezZ2ahk3V8VV1dXRw6uh9NVkY2X5UlMoJ4hx1BEMLTvtK9XKy6SH2Dn66uALeS0aDHGhPF/QsWYrPaCDc1NTXs+vwzamp9DKWoyAgizCYWL1qCxWLhZm0qLETzyJIlpCQn05tIu4spi/83twtJCSHM5btd+H1erpfn8dCb4pKtXC8+LoFUVxpf1/6yvSgoqCaOm4w1xsZXEe+IwxJpQRCE8LVtezGKolBT6+NWijCbiIqMIDdnJeGoqamJ9z98j0Z/M+0dnQylBLuN0U4Xc7PmcrPe+/BDzl+4gEonyzy7bh29k8hc81NuF5ISQpjLd7vw+7x0FxERwdonnqAntbVedu7aSXeyLDNn5lxuxpmKU9Q31KPS6XTMnpHFV5HsHIXeoEcQhPDlra3hs12f0dHRSYO/mVslJjoSk9FAbs5KwpGiKGzbXkxHRycN/maGUnycFUmSyM1ZyUDYVFiIZs3jjxMVFUVvxt+3AVvKNG4HkhJCmMt3u/D7vHQ3Pi2NhffdR09OnTrJ0eNH6W765JlEmC3crNKyPWjSp83GaDDSX65UJ4IghL8PP/6AxsZGfI1NdHZ2cSvEx1mRZR0r3CsIV8UlWwkGg9TWNzKUIi1mLBFmlj/iRq/Xc7M2//KXtLW3o3KNHs2SRYvojSTrmLP6J9wOJCWEMJfvduH3eenuqdWrsVgs9OTzLz7n6tUraKzRViamTWEglB07QGdnJ6roqBgmj59Kf7lSnQiCMDyUvLmNYDCIt64BRVEYbAl2G8lJydyRfSfhase779DW3kZNrY+hJMsS9lgrUyZNYerUadys1rY2thQVodmwfj2SJNGbOat/giTrGO4kJYQwl+924fd56S7P46E3H338IQ2NDWiyMrIZKJ1dnZQdPYAmM30ekiRxI5IkMXpsCoIgDA+BQIDtb5Wgqqn1MZjMJiPRURbuvvMeEhMTCVfnKs5xqOwgNbU+hlqC3UZMTAwP3P8gA+G/fvELAoEAqvn33svkiRPpTXTiBCY98B2GO0kJIczlu134fV401pgYVn3zm/SkubmZ9z74LZq0MROIi7UzkA6WlxIIBFDF2uIYP3YiNxJtjSI2zoYgCMNHZWUlpQf2oSgK3roGBos91oosS+TmrCSctba18u5vd9DS2k5zSytDKc4Wg04nk5uzkoHwxZ49HDl6FE2ex0NfMtdsZLiTlBDCXL7bhd/nRTNj+nTuys6mJ9u2F6MoCpqMaXMwGAwMJF9DPV9WnEKTlZHNjSQmOTCZjQiCMLwcPXaUU6dPEgwq1NY3MNBkScIeZyV1bCqzZ80h3BWXbEVRFLx1DQylqMgIIswmcnNWMlA2FRaiWfP440RFRdGbmSv+HqPFxnAmKSGEuXy3C7/Pi+apJ57AEhHB9fbu20tV9UW6y8rIZjAcOLKPYDCIyhYTy4Rxk+hLiisJnU6HIAjDz/ETxzlx8jiKouCta2Ag2WOtyLLECncukiQR7n73xedcuXqFmlofQ8loNGCNjuSBhQ8SEx3DQHjtjTfwNTSgSh0zhkUPPEBvJFnPnNUvMpxJSghhLt/twu/zosnzeOhJcclWrpeVkc1g8Dc1cvLMcTSzZ2Sh0+nojSvViSAIw9ep06c4eqwclbeuAUVRuFlRkRFEmE1MnzaDSRMnMRy0trby7ns7aGltp7mllaEiyzL22BjmZs5l9GgXA6GhoYFfv/EGmjyPh77MXvUisk7PcCUpIYS5fLcLv8+LKioykjWrVnG97W+VEAgEuF5WRjaDpezYQTo7O1CZjGZmTs2gN65UJ4IgDG81NdfY9fkuVC2t7TS3tPJ1mc1GoiMtmM1mHl68lOGkuGQrqppaH0MpwW5jfNp40mdmMFB+/tJLBBUF1YL585k4fjy9GXvHE8SnzWO4kpQQwly+24Xf50U1Y9o07rrjDrqrvHiB0v2l9CQrI5vB0t7ezpETh9BMHDcZa4yN6+n1epJHj0IQhOGvo6ODd9/bQSAQQFEU6huaCAQCfBWRFjOWCDOqnOUrkGWZ4aSyspLSA/uoq28kEAwyVBLsNkYljuKuO+9moOzctYuTp0+jioyM5MlVq+hL5pqNDFeSEkKYy3vARldnB6pct5uE+Hg0wWCQkje3oUlJcVJdXYUmKyObwXTyzHH8TY2oJEkiM30e14u124iOiUIQhNvH6S9PU370CKpgMIi/qZWOzk76otPpsMVEIcsSZpOZxYuXIEsyw42iKGzbXoyqptbHUEmw27Db7cy/9z4GSjAY5Ocvv4zmW+vWIcsyvclYWYDeHMVwJCkhhDnPfAuaJ1etIjIyEs37H7xHU3MTmgcXLuKDj95HpdcbmDV9DoNJURT2H96LJjoqhsnjp9JdsnMUeoMeQRBuL4qicKjsIBXnK9AEAkHaOzsJdAVQybKEXq/HZDSgmThhEjOmz2A4K91fSuXFC9T5GgkEggyFBLuNuNg47pu/gIH0y1//mubmZlRTp0zh3rvuojeJU+9n9OzlDEeSEkIYu3DqIP+w4W5UOp2OZ595Bk1tXS07P/sUzYL77kf1yacfozKZzMycksFgq6m9xvmL59BMmTCdqMgoNM4xKciyhCAIt6+qqirOnP2S2rpaemIwGEkdO5YZ02dyuygu2YqqptbHUEiw2xiVOIq77rybgXTy9Gl27tqFSqfT8ewzz9CXzDUbGY4kJYQw9rO/e4rST7eiSh07lkULF6JSFIVt24vRRERYWPLQEiovXqB0fymq6KgYJo+fyq1w5HgZ7R1taLIystG4Up0IgiDcbo6UH+HLM6dpaGyio7OLWy3BbiMl2Un2vGwG2qbCQjTPPPkkJpOJ3kxf9teYYxIYbiQlhDD2vUcnUF9TjWrhggWMHzcOVen+fVRerESzwp2LJElUnK/g4KEDqKzRNiamTeZWUBSF/Yf3opFlmTkz56JypToRBEG4HZW8uY1gMEhNrY9bSZYl7LFWZkyfwcQJkxho299+mytXr6JKTkpi2cMP05v48XcyNvtxhhtJCSGMeeZb0KxfuxaDwUBzSzPvvf9bNLMyZjEuNQ1VxfkKDh46gMoabWNi2mRulUZ/I6fOHkcTa41j+pQZOJISEARBuB01NDTw0Scf0tnZha+xiVvFaDBgjYnkwYWLiI6OZqBduXqV7W+/jSbP46EvmWs2MtxISghhzDPfgibP40FVXLIVjcFgYNnS5Wgqzldw8NABVNZoGxPTJnMrnak4TX1DHZp5c7NxpjgRBEG4XX386cf4fPU0NDbT0dnJrRAVGUGE2URuzkoGy6bCQjSP5eYSGxtLb6Yv/2vM0QkMJ5ISQpg6eXAn//rnS1CZzWaeXrOGU6dPcvTYUTQr3LlIkoTm+PETnDh1DJU12sbEtMncaqVle+guZ/kKZFlGEAThdlXy5jaCwSA1tT5uhfg4K5IkkZuzksHy0aefcubsWVRxsbF8MzeX3sSPv4Ox2asYTiQlhDD1o+/cz5ny36OaMW0ad8ybR8mb29CMGT2GzMwsujtcdpgzFV+iskbbmJg2mVtNQWF/2V5Uyx9xo9frEQRBuJ21t7fzzrtvowDeWh+DLcFuY1TiKO66824GS21dHW9s24Ymz+OhdxKZa37KcCIpIYSpP88ZQ2N9DaolixZx7Hg5LS0tqGRZJmf5Cq53cP9BKi6eQ2WNtjExbTJDQVEUFEVhbJoLQRCEkaD6UjV79v6eYDBIbX0jg8USYSbSYuaBhQ8SEx3DYNpUWIgmZ9kyEh0OepOxsgC9OYrhQlJCCFOe+yJBUVAtuv9+DpYdQPPgwkVER0dzvQP7D3L+4jlU1mgbE9MmM5RcqU4EQRBGiiPlh/nyzJd0dQWob/AzGBLsNmRZJmf5Cgbbzt27OXnqFKqoyEjWrFpFbxInf4PRmbkMF5ISQpjyzLegccTHoigD0WYLAAAgAElEQVQKqoQEB/fefS89OXnsFMdOl6MymczMnJLBULFYIohPtCMIgjCSlB0u4+y5MwSDQWrrGxlIlggTkZYIMtJnkTYujcHma2jgtTfeQJPn8dAbWWdg9qofM1xISghhqObyef5i1VQ0CXYbmtyclfSkqamZ6ouXOHryMCq93sCs6XMYKsnOUegNegRBEEaassNlnD13BkVR8NY1MFAS7DYMegPLHlnOrbKpsBDNU6tXY7FY6M2c1T9BknUMB5ISQhj65Y+/w2dvv4TKZDQQEx2JKitzLq7RLnpypfoqHR2dlJbtQZOVkc1QGT02BUmSEARBGInOX6jgwMEDqBr8zXR0dHIz4uOsSJLEogcfIioyilvl0127OHX6NKpIi4UnV6+mN85Zyxg1bSHDgaSEEIaefySZFr8PlTU6EqPRQGRkJA89uJjeVF24RDAYpLRsD5qsjGyGksFoID4hDoPRgCAIwkjT0trCb997F1UgEKS+wY+iKHxV8XFWJEkic04WY1xjuJXqfT5e37oVlQRs8HjojSkqnhnuv2E4kJQQwtCGhTYCXR2o4mwx6HQyy5Yux2Aw0JuL56tQFCgt24MmKyObcBHvsGOJjEAQBGGk2fX5LmpqrqHq6OzE39RCMKhwI0ajAWt0JKqM9FmkjUtjKGwqLESzfu1aDAYDvclcs5HhQFJCCEOe+RY0CXYb06ZOY/KkKfSlsqIKVWnZHjRZGdmEm+iYKKyxVmRZQhAEYSR5/4P3aGpuQtPS2kZbeyeKEkRR+P/pZBmz2UiE2YRKlmUeWPggUZFRDJWSt97i6rVrqJKTklj28MP0ZtID3yE6cQLhTlJCCEOe+RY0iQlx5CxfwY1UVlShOnBkH8FgENXMqRmYjGbCkU6nY1SKA51OhyAIwkjy+e92U+P1EgwG6I1er2fq5KlMmDCRoVZXX89viovR5Hk89CYmaRIT7/8fhDtJCSHMXDh9iH/41l1onnj8MaKjoulLe1s7Vy/XoCo/UUZbexuq8WMnEGuzE+4SkxIwmU0IgiCMNJ2dnVRVX6SjowOdToczZTRms5lws6mwEM26p57CaDTSE0nWMWf1T+hJZ0cber0RSZYZapISQpj5979ZxaFdb6Ia4xrN4gcXcSPea3W0NLegOn3uJA2NPlSO+ETGOFMZLiIsESQk2hEEQRDCy6bCQjR3Zmczc/p0epO5ZiM98cy3oJIkmf/6tImhJCkhhJln74tEURRUjyxZQkpyMjdy8Xw1iqKg8tbVUFF5FpUlwsK0STMZbnQ6HUnORGRZRhAEQRh658+f572PPkIlSRIb1q+nN845bkZNWUB3F06X8Q/fuhOVwWjmPz+oYyhJSghhxjPfgmb1Y48REx3NjVw8X42iKKgURWH/4b1osjKyGa5kWSbWbiMyyoIgCIIwdDo7O3lpyxY0G9avR5IkemK2jmL6I39Jd7/5z7/gg9d/imr63Af57r9sZyhJSghhxjPfgubZZ55Bp9NxI5UVVXRXWrYHTVZGNrcDS6SFeEccgiAIwtDYVFiI5rHcXGJjY+mZROaan9LdXz2ZztWLX6J67H/8Mw88+h2GkqSEEEY629v49qI4NHkeD/1RWVFFd4eOHqCrqxPV+NSJxFrjuF0YjUbiE+PQ6/UIgiAIt85bO3Zw6fJlVGNGj2bxokX0JnPNRrrLd4/B76tB9ec/foepcxYwlCQlhDDS4vfx/CPJaPI8Hm5EURQunq+mu3MXzlBb70UVE21lUtoUbjeSJBFrtxEVHYkgCIIw+FpaW3nl1VfR5Hk89CYl/WGSZixCs+H+GAKBLlT/8pvTxDmcDCVJCSGMlH5azM/+7klUFouFp1av5kYUReHi+Wq6a21r5ejJw2iyMrK5nUXHRGGLsyJJEoIgCMLgUBSFn730Epr1a9diMBjoiTEyjpk5P0DjmW9BU7izhaEmKSGEkU1/9yT7Py1GlTFzJtlz53IjzU0t1NbUcb3Ssj1oZk3PRK/Xc7szGg3YHXEYDAYEQRCEgffzl18mGAyiWrJoEa7Ro+mJJMnMeeL/ReOZb0FTuLOFoSYpIYQRz3wLmly3m4T4eG7k2uUa2traud7JM8fxNzWiiom2MiltCiOFJEnEO+xEWMwIgiAIA+ejTz/lzNmzqBIdDnKWLaM3mWs2oqq/Vs33vjkBld5gZNOHPoaapIQQRjzzLWjWPP44UVFR3EhlRRU9aWr2c+LLY2iyMrIZiWJs0VhtMUiShCAIgnDzNhUWosnzeOjNhPu+jTVlCm9u/iFvb/4hqoy7lvJnP/wNQ01SQggjnvkWNOvXrsVgMHAjlRVV9Ka0bA8qnU7PjCnpGPQGRiqdTkdSSiKyTkYQBEH4+jYVFqJ59pln0Ol09MQUaWdGzt/y3eWjaWqoRbXqO//K/bnPMdQkJYQwEejqZMNCK5o8j4f+qKyoojdXrl3CET8KWZYR/igx2YHJZEQQBEH46l5+5RU6OjpQLVm0CNfo0fRE1hmYverH/NliB22tTai+/28fMWHGnQw1SQkhTDQ11PLd5aPR5Hk89EdlRRXC1xMVHUlcfCyCIAhC/+147z0uVlWhGpeayoP3309vMtdsZMNCK4GuTlQ/2V5JtC2eoSYpIYQJ75UL/N/Hp6DJ83i4EUVRuHi+GuHm6PV6RqUkIssSgiAIQt8a/X5+9frrqCRgg8dDbzLXbMQz34KmcGcL4UBSQggTBz7bzn/+7WpUBr2e9U8/zY0Eg0GqLlxCGBiyLGNPiCPCYkYQBEHo3abCQjR5Hg+9GTP3m/zFtx5EU7izhXAgKSGEiV//2/f4uPjfUU2ZNIlv3HMPNxIIBKiuvIww8CKjI7HHxyIIgiD8qcJf/IKuQADVozk52O12etLepfCLzS+hKdzZQjiQlBDCxA+/fQ8VJw6gevD++xmXmsqNtLe1c/VyDcLgMZlNxDvs6HQygiAIwh+8tnUrPp8P1bysLGalp9OTg2Vl7Nu/H9X0uQ/w3X95k3AgKSGECc98C5q1a9YQYTZzI42+Rnz1jQiDT5Zl4uJjsURGIAiCMNIdOHSI0gMHUCXEx5PrdtOTLa++SmtrK6o1f76R+cs8hANJCSFMeOZb0Kx76imMRiM3cu2Kl7bWNoRbK8YWg9UWjSRJCIIgjESBQID/+sUv0OR5PPRkU2Ehmr/5ry9wTcggHEhKCGHCM9+CxvP00+j1em6k6sIlgsEgwtAYPTYFSZIQBEEYiTYVFqLJ83joyabCQjQ/Lj6H1T6KcCApIYQJz3wLmg3r1yNJEjdSWVGFMDRkWcY5JhlBEISR6qUtW+js7ET1aE4Odrud7hRF4WcvvYSmcGcL4UJSQggDLU0NPL80CU2ex0N/VFZUIQyNuPhYoqIjEQRBGKmKt2+nxutFNS8ri1np6XTX2dnJS1u2oCnc2UK4kJQQwkDt1Uq+/9hkNHkeD/1RWVGFMDRcqU4EQRBGsr2lpRw6fBhVSnIyjyxZQnctLS288qtfoSnc2UK4kJQQwkDVuaP8YN1cNHkeD/1RWVHFYGvvaAckTEYjwh8YjUZGpTgQBEEYyerq6/lNcTGaPI+H7g4eOsS+AwdQjZuaxV/+x2eEC0kJIQx8Wf4F//ydhWjyPB76o7KiisHU1t7OJ59/iur+exZgMhoRwDEqAXOECUEQhJFuU2EhmjyPh+7e2LaN2ro6VM98/2fctfhJwoWkhBAGfv/Br3ipwIPKaDCwbu1abkRRFC6er2awtHd08PHuT+hu0X0PopNlRjpXqhNBEHrX1dXF3n17qKuvI9AVIBAMoNPpkGUZo8HInDmZJMQnIAx/mwoL0eR5PHS3qbAQTcGrR3CkjCdcSEoIYeDNX/wjb28pQJWclMSyhx/mRoLBIFUXLjEYFEXhvU8/QFEUNAvuvg+zycRIZzKbSExKQBCEP+Vr8LH78110dHTQXVdXAL1ex/Wio6OZf+99GI1GhOHpl7/6Fc0tLageXryY0SkpaDYVFqL5v/+0mfF3fJNwISkhhIFf/GgDv3vvl6gyZ88mc/ZsbiQQCFBdeZnB8OGuj+ns7ESz4O75mE1mBEhMdmAyGREE4b/73Refc+XqFVQtrW20tLajKAo9Mej1REVFoNfpUEVHx7BwwUJkWUYYXt5+912qL11CNXPGDO6cNw9VMBjk5y+/jOb5736fme6/JVxISghh4O+fzabyyyOolj38MMlJSdxIV2cXl6quMNB+t+/3NPgb0MydlUV8nB3hD1ypTgRB+O/e//A9mpqa6OzqwtfQRH9JkkR0lAWT0YBq6pSpTJk8FWH4KD1wgAOHDqFKSUrikYcfRtXa2sqWV19Fk+fxkLlmI+FCUkIIA575FjTrnnoKo9HIjXR1dnGp6goD6dTZ05w9fw7NpLSJpI0dh/AHJpORxGQHgiD80Seffky9r56W1naaW1r5OmRZJs4WjSRJREZG8tCDixGGh2vXrrHtrbdQmU0mnn7ySVS+hgZee+MNNHkeD5lrNhIuJCWEMOCZb0GT5/HQHx0dnVypvspAaWhs5HelX6CJs8WSPWcewh+NSknEaDQgCMIfVFVXsXffHjo6u2hobOJmRUdaMJuNyLLM8kfcyLKMEP42FRaiyfN4UB06fJi9paWoEuLjyXW7yVyzkXAhKSGEAc98C5o8j4f+aG/r4OrlawwERVH47SfvozEajCy8dwHCf+dKdSIIwh8oisK27cWoamp9DBSj0YA1OhLVI0uXYTQYEcLbpsJCNHkeD6rfFBdTV1+P6p4772Ta1KlkPPoj9CYL4UBSQggDnvkWNHkeD/3R7G+m1lvPQNi153OamptQSUgsuu8BZFlG+COdXkfK6CQEQfiD/QdLuXDhArX1jQSDQQaSTqcjzhaNatnS5RgMBkYCRVFobmmms6MDWafDZDJhNpkJd5sKC9FsWL8eSZLYVFiI5uknn8RsMjH9kb/CbE0kHEhKCGHAM9+CJs/joT+a/M3Ueeu5WZXVFzl68hiarPQ5JMQnIPx3o5IdGE1GBEH4g+KSrahqan0MBlmWsMdaUeUsX4Esy9yOAoEAR4+Vc+bsGfoyc0Y6qWPHotcbCDevvvYa/qYmVEsXL8aZksKmwkI0nqf/P/bgBD7K+kD8/+f7zJlJMplkcpCDQARBFDkjIF7hCJeiXIJADBCeYrbd2l93u939td3d7m7bre223bLHL7aDtl6lCiKKHB6oVbyKR7VaFSUQcgC572My8/3P8+/reXWMASYamEn4vt8bsVqtXLbgaySkjyEWCBlCDNALXJhKdZ1INNQ30tbSzhchpWTfwQOY0lPTyJ88HeWzRo7OQQgURQlpb29n/1P7aGppw+/v5XzRNIE3OQnDyuWrGG7+8M4f+PiTIxiklPh7A7R3dNHb24tF07A7bMQ5HFgsGiZXnIv58wqx2WzEiif37+dEZSWG6VOnkj9tGndv24apVNcx5ExfzogJc4gFQoYQA/QCF6ZSXScSDfWNtLW080U8++JzdPd0Y1oybxFK/3LzclAU5c+eeuYAra2t1NY3cb45HXYSE1wke5KZO2cew8Vjjz9GINCLlJL6xhaklJxLiseNxaJhSEpKYv7cQmLBy6++yjt//COG0bm5XDN7Ng9u346pVNcxeC+ZQd7sImKBkCHEAL3AhalU14nEqerTdHf38HnVNdTz+lu/x3TtjNm4E90on+VNTSY+MR5FUf5s564dSCmpa2jmQkjxuLFYNK675nrS09MZ6nbt3kUwGKC9vZOOrm4GKsXjxmLREEKwoHAhCfEJRNMHH37I8y++iCE5OZk511/Po7t3YyrVdQyOxDSuvOUfiQVChhBlgd5e7pjvxlSq60TiZNVpenp6+Lz2PrsfU3pqGvmTp6P0b+TobIQQKIoCgUCAxx7fhd/fS1NLGxdKaooHIWD5LSvQNI2hat+BvXR0dNDc2k5Pj5/Py2q1kJyUiGH0qNFMn5ZPtDQ2NfHbHTswxDmdTJ86lZdeeQVDRno6y2++GVN+0VZigZAhRFlrUx1fX5aLQdM0tpSUEImTVafp6enh83jtzdepb2zAtHjuQoQQKP3LzctBUZQ/a+9oZ/+BfTS1tOH393KhaJrAm5yE251E4bxChqIjHx/hnXf/QGdXN23tnXxRQoA3OQkhBB6Ph3lz5hMNwWCQX9xzD6aM9HROnT6N4fprr+Xyyy7DlF+0lVggZAhR1tpUx9eX5WLQNI0tJSVE4mTVaXp6ehioQDDAgeeexjR90jQy0tJR+ueMc5I+IhVFUf6ssbGRg88/S219ExdakjsBu83K3IJ5JCcnM9Q8+thOpJTU1jcxmDxJCdisVpKSPMyfO59oKPP56M+WkhI0TcOUX7SVWCBkCFF28sQRvnP7ZAwWi4UvbdpEJCrKK/k8nn3xObp7ujFYNAsL5xSinNnI0dkIIVAU5c/Kj5Xz5ltvUFvfRDSkeT3YrDZuXnoLQ8m7f3yXj458SGNTK72BAIMtMcGF02EnJSWFOTfM5UIr8/noT6muEy6/aCuxQMgQoqzm+If844apGKxWK/rGjUSiorySgero6uT5Qy9gmnPNDcQ541DOLDcvB0VR/uJo+Se89fZb1NY3EQ3xLieuOCezZl5NdlY2Q8Wjj+1ESkltfRPniycpEZvVQt7oPKZNnc6FVObz0Z9SXSdcftFWYoGQIURZzfEP+ccNUzFYrVb0jRuJREV5JQO1/7mnCAaDGJwOB3OvnYNyZpqmkTMqC0VR/uJo+Se89fZb1NY3ES1pXg8Wi4VlNy9nKAgEAjz2+C5a2zro6u7hfErxuLFYNK6eNZuszCwulDKfj740TWNLSQnhpqz6AVZnAtEmZAhRVn3sT/zTxukYrFYr+saNRKKivJKBaG1v48VXX8K0sKAQi8WCcmbetGTiE+JRFOUvjpZ/wltvv0VtfRPREu9y4opzUnDDHLwpXmLdm2+9QfmxcuoampFScr6lpiQhhOCmJUtxOBxcCA/+9re0trYSzm63U1JcTLjJK7+HLc5NtAkZQpQdeecQd91ZiMFut1NSXEwkKsorGYgDzz1NIBjA4HQ4mHvtHJSzy83LQVGUT6s4UcHvD79ObX0T0ZTm9ZCYmMiC+QuJdTt37cBQW9/EhSCEIDUlCU3TWH7LCi6EJ/bupaq6mnBJbjdrV68m3BVLv01cUgbRJmQIUXbknUPcdWchBrvdTklxMZGoKK8kUi2tLbz0+suYlsxbhHJ2QghGjs5GUZRPa2xs5ODzz1Jb30Q0uRPjcdhtrFi2EiEEsWznrh0YauubuFBccU7iXU4uGz+BKy6/gvPt+Rdf5IMPPyTcNbNmceXEiYSbsPgbxHtziTYhQ4iyI+8c4q47CzHY7XZKiouJREV5JZF65ncH6fH3YHA6HMy9dg7K2dlsVjJzRqAoyqd1dHSw78Bemlra8Pt7iRaLRSPF4+bSMZcyadJkYlUgEOCxx3fR2dVNW3snF5I3OQlNEyy/ZQWapnE+/e6ll3j/gw8It3nDBmw2G+EuW/A1EtLHEG1ChhBlR945xF13FmKw2+2UFBcTiYrySiLR3d3Nsy89h2nJvEUo55aRmYbD6UBRlE8LBAI89vguurp7aG3rIJrSvB4sFivLbl5GrPL7/Ty+ZzdNLW34/b1cSEIIUlOSSHInMX9eIefTm2+/zeuHDxOuVNfp67IFXyMhfQzRJmQIUXbknUPcdWchBrvdTklxMZGoKK8kEq++8ToNTQ0YHHYH866bg3JuuXk5KIrSv527diClpK6hmWhKiI8jzulg5fJVxKquri6e3LeHuoYmpOSCcyfG47DbWLhgEQnxCZwvHx05wsEXXiBcqa7T19gbdDwjJxFtQoYQZUfeOcRddxZisNvtlBQXE4mK8koisffZ/ZjmXTcXh92OcnaaJsgZlY2iKP3buWsHhtr6JqLJarGQ7Elk0pWTuXTspcSirq4unty3h7qGJqQkKtK8HuLj41m0YDHny0cff8zB55/HZLVa0TdupK+xN+h4Rk4i2oQMIcqOvHOIu+4sxGC32ykpLiYSFeWVnMuR8o85cvRjDFarlQU3zEc5N4fDTkZWOoqi9O/9P73Pnz54n9r6JqItzevB7XZTOG8Bsairq4sn9+2hrqEJKYmKxHgXTqedRQsXE++K53yoOXmS3Xv2YIqPj+f2tWvpa+wNOp6Rk4g2IUOIsiPvHOKuOwsx2O12SoqLiURFeSXnsu/gAaSUGC4fN4HRI0ehnFtGZhoOpwNFUfrX3d3Nnr1P0NLaTnePn2hKTUlC0zRWLFtJLOrq6uLJfXuoa2hCSqImzeshKcnD/LnzOR9qTp5k9549mNJSU1m5bBl9jZqxhrRx1xBtQoYQZUfeOcRddxZisNvtlBQXE4mK8krOpqmlmZd//wqmJfMWoUQmNy8HRVHObueuHRhq65uIpoT4OOKcDlYuX0Us6vH38MSex2lqacPv7yVaPO4EbDYrK5ev4nyoOXmS3Xv2YJo1YwZTJk2ir6xJN5I1aSHRJmQIUXbknUPcdWchBrvdTklxMZE4WXWKnh4/Z3Lo96/Q3NKMITUllRlT81HOTQjByNHZKIpydk/u3UNXdxe19U1Ek91mJcmdwPJbVqBpGrEmEAjw2OO76Ojsor2ji2ixWCykeBIZM2YsUyZNYbC1trXx4PbtmIrXrcPlctFX1qQbyZq0kGgTMoQoO/LOIe66sxCD3W6npLiYSJysOk1PTw9nsvfZ/ZjmXTsHh8OBcm4Op4OMzDQURTm7zs5O9u5/kuaWdnr8fqLFYtFI8biZcdUMRubkEot27tpBMBikvrGFaErzerDZbNx80y0Mtta2Nh7cvh1Tqa7Tn6xJN5I1aSHRJmQIUXbknUPcdWchBrvdTklxMZE4WXWanp4e+lNecYw/HfkAg0XTWDhnAUpkUtNTcMW7UBTl3Hbu2oGhtr6JaErzehidO5rp0/OJRTt37cBQW99ENMW74nDFOVi5fBWDrbWtjQe3b8dUquv0J2fqLYy4Yh7RJmQIUXbswzf53h3XYrDZbGzesIFInKo+TXd3D/05+NLzdHV3Ybhk1CVcNnYcSmRy83JQFCUyr772ClXVVdQ3thAMBomWNK8Ht9tN4bwFxKLdTzxGb28vtfVNRJOmaXiT3YwfdxkTr5jIYGppaeGhhx/GYLFY+NKmTfRn7A06npGTiDYhQ4iymuMf8o8bpmKwWq3oGzcSiYb6Rtpa2ulLSsm+gwcwLZm3CCVyuXk5KIoSuZ27dhAIBGhoaiVa0rwe3G43hfMWEIuOVxzn8Bu/p66hGSkl0ZTm9eB0Orlx8U0Mpk+OHuXpgwcx2O12SoqL6c/YG3Q8IycRbUKGEGU1xz/kHzdMxWC1WtE3biQSDfWNtLW009dHR4/wcfknGGw2G4XXz0OJjN1hZ0RWOoqiRG7/gX20d7RT39hMMCiJhjSvh3hXPIsWLiYWBQIBHnt8F23tnXR2dRNNKcluLJrGyuWrGEyvHz7Mm2+/jcFut1NSXEx/xt6g4xk5iWgTMoQoqzn+If+4YSoGq9WKvnEjkWhtaaWxvpm+nnnxID09PRguGzueS0bloUTGnZSIJyUJRVEGZueuHfT2BmhsbiUa0rwe3G43hfMWEKt27tqBoba+iWhyOu0kxrtYuXwVg+mJvXupqq7GYLfbKSkupj+XzrmDpOwriDYhQ4iy1qY6vr4sF4OmaWwpKSES7a3t1Nc10tfeZ/djWjxvEQIlUpk5I7DZrCiKMjAHn3+WxsZGGpta6Q0EuNDSvB7cbjeF8xYQqx7bvYtAMEBtfRPRZLFopHjczCmYS0pyCoPl7m3bkFJisNvtlBQX05/LFnyNhPQxRJuQIURZa1MdX1+Wi0HTNLaUlBCJzo4uak/VEe545Qne+/A9DJqmsWjOApTI5ebloCjKwEkpefSxnUgJdQ1NXEhCCFJTkhidO5rp0/OJVZ2dnezd/yTNLW30+HuJFiEEqSlJ5GSPZOaMmQyWMp8Pk8vlonjdOvpz2YKvkZA+hmgTMoQoa22q4+vLcjFomsaWkhIi0dPj52TVKcI9d+gFOrs6MYwZPYbxYy5FiVxuXg6Konw+Hx35kHf/+C7tHZ10dHZzoVgsGikeN9dfez1paenEsp27diClpK6hmWhK83pwOBzctGQpg6XM58OUmJDA+ttuoz9XLP02cUkZRJuQIcQAvcCFqVTXiYS/x09N1SnC7X12P6Z5187B4XCgRCbO5SQtIxVFUT6/vfuepLOrk/rGZoJByYXgdNhJTHCxcvkqYt1zLzxHQ0M99Q3NBKUkWtK8Hmw2GzffdAuDob29nft/8xtMiQkJrL/tNvozacW/YXclEW1ChhAD9AIXplJdJxK9/l6qK09i6u7u5tmXnsO0ZN4ilMglp3hITEpAUZTPr8ffwxN7HkdKSV1DMxdCclIiVquFlctXEeuCwSC7dj9Kd4+fltZ2oiXN68FqtXLL0mUMho+PHuWZgwcxeVNSuHXFCvozZdUPsDoTiDYhQ4gBeoELU6muE4lAIEBVRQ2mV954jcamRgxp3jSumjIdJXJZI0dgtVpRFOWLOXb8GG+8eZje3gCNza2cb2leDy5XPIsXLmYo2Lv/STo7O6mrb0ISHWleD5qmsfyWFQyGl15+mT++/z4mb0oKt65YQX/yi7YSC4QMIQboBS5MpbpOJAKBAFUVNZgOPP80gUAAw1VT8knzpqJELjcvB0VRBsdrr79KZVUlXd09tLZ1cL7YrFY8SQlMnTyVSy4Zw1DQ0dnBvv176ezqpq29k2hI83rQNI3lt6xgMDz+5JNU19Rgyhwxgltuuon+5BdtJRYIGUIM0AtcmEp1nUjIoOTE8SpMe5/dj2nx3IUIIVAil5uXg6Iog+epZ56itbWF9o4uOjq7OB9SPG4sFo2Vy1cxlOzbv5eOzg7qGpqRUnKhpXk9WK1Wblm6jMFw7/33093djWnMJZdQOHcu/ckv2nhyCUcAACAASURBVEosEDKEGKAXuDCV6jqRqiivxNDa1sqLrx3CtGTeIpTIORx2MrLSURRlcO3d/ySdnZ10dHbR3tHFYLJYNFI8brIys7h61myGEr/fz+N7duP399LU0saFlub1YLVauWXpMgZDmc9HuEkTJzJ71iz6k1+0lVggZAgxQC9wYSrVdSJVUV6J4fmXf0dHZweGkVk5XDlhIkrkPMlJuD2JKIoy+PbsfYLu7m78vQGamlsZLGleD4aVy1cxFP3uxReoraulsbmV3t4AF1Ka14Pd7mDpjUsZDGU+H+HmXH8948eNoz/5RVuJBUKGEAP0AhemUl0nUhXllRj2HTyAlBLDNVddTZI7CSVyGVnpOBx2FEU5P/bu30tnZweG2vomvih3YjwOu41JV07m0rGXMlTt3LUDQ219ExeKEILUlCRysnOYOWMWX1RnVxe/fuABwq1avpxUr5e+XCnZXL7k74kFQoYQA76yOJ3uzjYMty5fjtfrJRIV5ZVIKdl38ACmxXMXIoRAiVxuXg6KopxfH3z4J957/z0MLW3tdHf7+TzcifE47DY8SR7mzZ3PUFZdXc0rr71Mj7+X5pY2LgSrxUKyJ5H58wpJcifxRR09doynnnmGcKW6Tn+8l8wkb/Z6YoGQIcSAf/3SLCqOvIPh5htvJCszk0hUlFcSDAbZ/9xTmJbMW4QyMLl5OSiKcv75/X4e37Mbg5SSpuY2egMBIuVNdqNpGk6nkxsX38Rw8OKh33H69Gla2zro6u7hfEtMcOF02Fm5fBWD4eALL/DRkSOEK9V1+jMyfyUZl91ALBAyhBhw7w/v4ND++zHkT5tG/rRpRKKivJI/fvAeFVUnMHiSPMzOn4UyMLl5OSiKcuF8cvQT3v7DWxiklPT0+Glp6+BMkpMSsVotGPJG5zFt6nSGk527dmBoaGohEAhyPqV5PVitNm5ZeguD4dHduzldW0u4Ul2nP5ff+E1cyTnEAiFDiAEHtv8nj5R9C0NWZiY333gjkag+UcPjB57ENHPaDLzJKSiRc8Y5SR+RiqIoF5aUkmPHj/HmW28QTkpCJAYhBCa73cG8ufNwxbkYbvx+P4/v2Y2htr6J88VisZDiSeSSvDFMnTKVwfCr+++nq7ubcKW6Tn+uXPZdHAkpxAIhQ4gBh597lLJ/KcLgsNvZVFxMJGpP1rNzzy5M866dg8PhQIlcckoSiUmJKIoSPd3d3dTWnub4iePU19fj9/sRQpCamsYleZcwImMEVquV4aytrY0DT+/HUFvfxPmQkuzGommsXL6KwVLm8xHOYrHwpU2b6M+0tT9Fs1iJBUKGEAM+ef91/v3LBZhKdZ1INNQ38vCunZiWzFuEMjDpmWk4nQ4URVGirbm5mWcOPo2hrqEZKSWDxWqxkOxJJC01jeuvu4HBUubzEc7tdrNu9Wr6k1+0lVghZAgxoPLoH/luyQxMpbpOJJqamtm+4xFMS+YtQhmY7NxMLBYLiqIosaClpZmnn30aQ3NrOz09fgZDmteDYeXyVQwWf28v2371K8JljhjBLTfdRH/yi7YSK4QMIQbUn6rg79dchqlU14nEK6+9xh/efRdDsieZq6fPRBmY3LwcFEVRYkmPv4cn9jyOobu7h5a2Dr6I5KRErFYL+dOvYlTuKAbLJ0eP8vTBg4SbMH48N1x3HX1Z7C6mrv4hsULIEGJAR1szd96UialU14lEmc+H6aop00nzpqEMTG5eDoqiKLHo6WefoqWlBUNTSxt+fy8DlexJxGqxkDtyFFflX8VgOvjCC3x05AjhFsyfzyWjR9NXxoS5jJy+jFghZAgxQi9wYSrVdSJR5vNhmn/dXOx2O8rA5ObloCiKEqsqKio4/ObvkVJiaGpuw9/by7nYrFY8SQkYcrJHMnPGTAbbjl27qKuvJ9ym4mIcdjt9Tbz5Ozjd6cQKIUOIEXqBC9OWkhI0TeNspJTcvW0bpkVzFqBpGkrkHE4HGZlpKIqixLpXX3+F6upqpJQYegMB2js6CfQGkUgMQghccU6cDjsGIQTXXH0tGRkZnA/33ncf3T09hCvVdfozedUPsDkTiBVChhAj9AIXJn3jRqxWK2fT0dHBfQ89hGnJvEUoA+NJScKdlIiiKMpQUVVVxRtvHcbv93MmFs3ChAmXM37ceM6nMp+Pvkp1nf7kF20llggZQozQC1yYNt1+Ow6Hg7Opq6tjx2OPYVoybxHKwKSPSMUZ50RRFGWo6u3tpbGpEUNaahoXUpnPRziXy0XxunX0J79oK7FEyBBihF7gwnTrihV4U1I4m9def5233nkHQ7LHw9XTZ6EMTGbOCGw2K4qiKMrAlfl8hMsdOZIlCxfSn/yircQSIUOIET/++mI+fOsFDPnTppE/bRpn88D27bS1tWGYPmkaGWnpKAOTMyoLTdNQFEVRBuajI0c4+MILhJt51VVMnTyZvrKuXETW5CXEEiFDiBH7f/NTdtz9HQzZWVksXbKEsynz+TAtnFOIRbOgDExuXg6KoijKwB145hnKjx0j3OoVK0hJSaGvKat/iNXuIpYIGUKMKP/gMN8vvR5Tqa5zNmU+H6bFcxcihEAZmNy8HBRFUZSB2/7IIzQ1NxOuVNfpz/R1P0NoFmKJkCHEiIbTJ/jm6vGYSnWdM5FScve2bZiWzFuEMnC5eTkoiqIoA3fvfffR3dNDuFJdpz/5RVuJNUKGECPaWhr4PzfnYCrVdc6krb2dB37zGwxCCBbPXYgycLl5OSiKoigDV+bzEc6bksKtK1bQl2axMW3tT4g1QoYQI3r9PZQWejCV6jpncrq2lkd378agaRqL5ixAGRibzUZmTgaKoijKwJX5fISbMmkSs2bMoK/cmWtIv/QaYo2QIcQQvcCFafPGjdisVvrzydGjPH3wIAan08ncawpQBiY+wYU3LQVFURRl4Mp8PsItX7qUjIwM+sov2kosEjKEGKIXuDAVr1uHy+WiPy+8+CJ/+vBDDJeNG8eY3DFIKVEi50lOwu1JRFEURRmYE1VVPLlvH+FKdZ3PEuQX/ZxYJGQIMUQvcGFas2oVyR4P/Xl4504aGhsx3HLTTfR2BZBSokTOm5ZMfEI8iqIoysAceOYZyo8dI1yprtOXxRbH1DV3EYuEDCGG/PCv5/LxH1/FUHD99Vw2bhz9KfP5MJXqOjVVp/D3+FEiNyIrHbvDjqIoijIw9z34IB2dnZhyR45kycKF9JU5aTHZkxYTi4QMIYY8UvYtDmz/Tww5WVnctGQJ/Snz+TCV6jotza00NTSjRC4zZwQ2mxVFURRlYLb96lf4e3sxzSso4NKxY+krv2grsUrIEGJIU30N31g5BoMA7tB1+lPm82Eq1XWCwSCVx6tRIpc9MhOL1YKiKIoyMGU+H+H0jRuxWq30lV+0lVglZAgxpLO9ha/eOAJTqa7TnzKfD1OprmOoKK9EiVx2biYWiwVFURRlYMp8PsKV6jp9OeJTuHL5d4lVQoYQQ3r9PZQWejCV6jp9BQIBfnnvvRiEENyxeTOGivJKlMiNHJWN0ASKoijKwJT5fJgyR4zglptuoq/Rs4tIvWQGsUrIEGKMXuDCtHnjRmxWK+HaOzq4/6GHMFgtFvRNmzBUlFeiRG7kqGyEJlAURVEid6Kykif378e0eMECRuXm0ld+0VZimZAhxBi9wIVp3erVuN1uwjU0NPDwo49isNvtlBQXY6g8Xk0wGESJTG5eDoqiKMrAPPXssxwtL8f0pU2bsFgshLPY45i6+i5imZAhxJgvzYlHSolh2dKljMjIIFxlVRV79u3DEBcXx4b16zFUnagh0BtAiUxuXg6KoijKwPzy3nsJBAKYSnWdvrx5+eRdU0wsEzKEGPOzv7uZ937/DIYpkyYxa8YMwh35+GOeff55DAkJCRTddhuGxvomWlvaUCKTm5eDoiiKMjC/uOcegsEghslXXsnVM2fS17S1P0Gz2IhlQoYQY37/3E7u/pfbMSS53axdvZpw7773HodeeQVDdnY2SxcvxuDv8VNTdQolMrl5OSiKoigDU+bzYVq7ejVJbjfhhGZh+rqfEeuEDCEG6QUuTKW6TrjXDx/mzbffxjDmkksonDsXU0V5JUpkcvNyUBRFUSLn9/vZ9utfYyrVdfpKzp3MmOs3E+uEDCEG6QUuTKW6TrinnnmGo8eOYZg9axaTJk7EVFFeiRKZ3LwcFEVRlMg98eSTVNXUYEhLTWXlsmX0NWnFv2J3eYh1QoYQg/QCF6YtJSVomobpwNNPU378OIY511/P+HHjMJ04VoWUEuXccvNyUBRFUSJX5vNhWrNyJcnJyXyaIL/o5wwFQoYQg7680EtPdyeGNatWkezxYPrtjh00NjVhWH7zzWSkp2OqPnGS3t5elHPLzctBURRFiUxnZye/fvBBTKW6Tl8po6dzybUbGAqEDCEGfe3mbNpbGjEsnD+fvNGjMf12xw4am5owrFm5kuTkZEy1p+rp7OhEObfcvBwURVGUyOx/6imOVVRgcLlcFK9bR19T19yFxRbHUCBkCDHo/p9+lRce34Zh3NixzC0owFTm82Eq1XXCdXZ0UnuqHuXccvNyUBRFUSJT5vNhWrd6NW63m3BCszJ93U8ZKoQMIQYd++ANvld6HQarxYK+aROmMp8PU6mu01dFeSXKuY0cnY0QAkVRFOXsmlta+M3DD2Mq1XX6ypq0hKxJixgqhAwhRukFLkyluo6pzOfDVKrr9FVRXolybiNHZSM0gaIoinJ2O3btoq6+HkOa18vK5cvpa/q6nyE0C0OFkCHEKL3AhemOzZsRQmAo8/kwleo6fVUeryYYDKKcXc6oLDRNQ1EURTkzKSV3b9uGafOGDdhsNsI53elMvPk7DCVChhCjvnrjCDrbWzCsuOUW0tPSMJT5fJhKdZ2+TtXU0t3VjXJ22bmZWCwWFEVRlDM7XlHBvqeewiCE4I7Nm+lrfOFXScy4lKFEyBBi1LeLJnGq8mMMs2bMYMqkSRjKfD5MpbpOX60tbTTWN6GcXWbOCGw2K4qiKMqZ/fLeewkEAhgmjB/PDdddR1/5RVsZaoQMIUbtffDHPPrLf8aQ6vWyavlyDGU+H6ZSXac/FeWVKGc3IjsDu92GoiiK0r+Ozk7ue/BBTKW6Tl+ZExeSPeVGhhohQ4hheoELU6muYyjz+TCV6jr9qSivRDm79Mw0nE4HiqIoSv+eee45Pv7kEwxOp5ONRUX0NW3tT9AsNoYaIUOIYXqBC9MdmzcjhKDM58NUquv0p/rESXp7e1HOLNnrIdGdgKIoitK/Mp8P063Ll+P1egkX58niipv+gaFIyBBi2J03ZdHR1oThxkWLGJmTQ5nPh6lU1+lPfW0D7W0dKGfmio8jNd2LoiiK8lnvf/ABv3vpJQyaprGlpIS+rlz2TzgSUhmKhAwhhv37V+bwyXuvYZgwfjw3XHcdZT4fplJdpz9+v5+aylMoZ6ZpGjmjslAURVE+q8znwzThssu44dpr6Su/aCtDlZAhxLA/vLyX//rWKgxCCO7YvJkynw9Tqa5zJhXllShnl5uXg6IoivJptbW17Ny9G1OprtPX5Uv+DlfKSIYqIUOIcXqBC1OprlPm82Eq1XXOpOpEDYHeAMqZ5ebloCiKonza9kceoam5GUNGejrLb76ZvvKLtjKUCRlCjCtdkExvTzeGlbfcws7duzGV6jpn0tTYTEtTK8qZ5ebloCiKovxFj9/PPb/+NabNGzZgs9kId+ncvyIpawJDmZAhxLj/+PoiPnjrdxhysrOprKrCVKrrnEkgEKCqogblzLJzM7FYLCiKoih/9viTT1JdU4PBnZjIujVr6Ct//c9BCIYyIUOIcW8f2sN/f3s1/SnVdc6morwS5cxGZKVjd9hRFEVRIBgM8ot77sF064oVeFNSCDf66vWkjpnJUCdkCEOAXuCiP6W6ztmcPllLV2c3Sv9SUpNJSIxHURRFgf1PP82x48cxOJ1ONhYV8SlCkL/+5wwHQoYwBNx5UxYdbU30VXTbbSQkJHAmnR1d1J6qQ+mf0+kgPTMNRVEUBcp8PkxLFi4kd+RIwuXOuJX0cdcxHAgZwhBw30++yu+e2EZfy2++mYz0dM6morwS5cxy83JQFEW52D25fz8nKisxWK1W9I0bCSeExvT1/8lwIWQIQ0BL42n+Zvlo+po3Zw6XjhnD2VSfqKG3N4DSv9y8HBRFUS5mUkru3rYN06LCQkaPGkW4vGuK8eblM1wIGcIQoRe46Gv2rFlMmjiRs2lv66C+tgGlf9m5mVgsFhRFUS5Wjzz6KPUNDRg0TWNLSQnhhGZl+rqfMpwIGcIQ8d/fXs3bh/YQbswll1A4dy7nUlFeidK/tAwvca44FEVRLkZSSu7etg3T0iVLyM7KItylc0tJyrqc4UTIEIaIj999hR9+dR7hvCkp3LpiBedSVVFDIBBA+SxXfByp6V4URVEuRvfefz/d3d2YSnWdcFZnAlNW/YDhRsgQhhC9wEW4hPh4itau5Vw6O7qoPVWH0r/cvBwURVEuRmU+H6ZbV6zAm5JCuMmrvo/NmchwI2QIQ8hPv7GU9w8/iykuLo4N69cTiYrySpT+5ebloCiKcrH55b33EggEMDidTjYWFREu3pvLhMXfYDgSMoQhpPxPh/n+X12PyWazsXnDBiJRU3kKv9+P8lnpmWk4nQ4URVEuFnV1dex47DFMxevX44qLI9z0dT9DaBaGIyFDGGL0AhfhSnWdSPj9fmoqT6F8VnxCPN60ZBRFUS4GUkru3rYNU052NjctXky4jAlzGTl9GcOVkCEMMff8+xZePvAAprFjxjB/zhwiUVFeidK/3LwcFEVRLgavHz7Mm2+/jelLmzZhsVgwCWFh+vqfMZwJGcIQ03DqBN9cMx6TEII7Nm8mEk0NzbQ0t6J81sjR2QghUBRFGc56enq45777MM266iqmTJ5MuMsW/B8S0i9hOBMyhCFoyzw3wUAvpo1FRTidTs5FSsmJY1Uon5Wc4iExKQFFUZTh7IHt22lra8NUquuEc3lzuXzxNxjuhAxhCHr16e34vl+CKS4ujg3r1xOJyuNVBIMS5dMsVgvZIzNRFEUZrqqqq3li715MG4qKiHM6CTdt7U/QLDaGOyFDGIKCgV62zHMTbktJCZqmcS7BYJDK49Uon5Wbl4OiKMpwJKXk7m3bMLkTE1m3Zg3hRs9aR+rYWVwMhAxhiPrXLbOp+OhtTDcuXszI7GwiUVFeifJZnhQP7qQEFEVRhpuDzz/PRx9/jEEIwR2bNxNOs9qZdtt/cLEQMoQhqrGumr9bNZZwpbpOJDraO6g73YDyaZqmkTMqC0VRlOGkpaWFhx5+GNP1117L5ZddRripa36ExebkYiFkCEOYXuAi3Mbbb8fpcBCJivJKlM/KzctBURRlOLl72zaklBjiXS5uX7eOcKNmriXt0qu5mAgZwhB27MM3+d4d12KaMH48N1x3HZGor22kva0d5dPiXHGkZXhRFEUZDg6+8AIfHTmCaUtJCZqmES6/aCsXGyFDGMqkRJ8TT7hSXSdSFeWVKJ+Vm5eDoijKUNfU1MT2HTswTZ08mZlXXUW46et+htAsXGyEDGGIO7jrbh76+dcxrVq+nFSvl0jUnqqjs6ML5dNSUlNISHShKIoylP3y3nsJBAIY4uPjuX3tWsKNm/8V3CPGczESMoQhTkrJlrkJSCkxJLndrF29mkhVlFeifJqmCXJGZaMoijJU7d6zh5qTJzGVFBdjt9sxOT2ZTLzp/3KxEjKEYeB//3kdb77wGKY7Nm9GCEEkTtfU0tXVjfJpmdkZ2Ow2FEVRhpryY8c48MwzmK6bPZsrLr8ck9CsTF/3Uy5mQoYwTHxpTjxSSgxzrr+e8ePGEamK8kqUT9M0jZxRWSiKogwlwWCQX957L1JKDN6UFG5dsYJwk5b/C/b4ZC5mQoYwTPzPd9bw1ktPYCrVdSJVd7qejvZOlE/LGpmJ1WpBURRlqNj261/j9/sxbSkpQdM0TCOuKCRn6lIudkKGMIzoBS5M119zDZdPmECkKsorUT5NCMHI0dkoiqIMBU8/+yyflJdjWrVsGampqZjikrO54sa/RwEhQxhGvrl6PA2nT2Aq1XUi1dTYTEtTK8qnpWem4XQ6UBRFiWW1tbXs3L0b0+Qrr+TqmTMxaRYr09b+FOXPhAxhGPnTG8/xk7+9EdO0KVOYkZ9PpCrKK1E+KzcvB0VRlFjV29uL71e/wmSz2di8YQPhpqz+IVa7C+XPhAxhmNELXIQr1XUi1d7aTn1dI8qnOeOcpI9IRVEUJRaV+XyEu2PzZoQQmC65diMpo6eh/IWQIQwzP/raAj76w0uYRo8axaLCQiJ14lgVUkqUT8vOzcRisaAoihJLHvztb2ltbcW0Yf164uLiMKVdeg2jZq5B+TQhQxhmero7+fJCL+H0jRuxWq1EotffS3XlSZTPys3LQVEUJVYcfvNNDr/5JqbrrrmGKyZMwGRzJTF5xb+hfJaQIQxDf7XQi7+7E1NCQgJFt91GpGpP1dHZ0YXyaa54F6npKSiKokRbZVUVe/btw+RNSeHWFSsIN339fyKEhvJZQoYwDO2+93s88esfEG5RYSGjR40iElJKThyrQvms9Mw0nE4HiqIo0dLW1sYD27djstlsbN6wgXBT1/wIi82J0j8hQxim9AIX4TRNY0tJCZHqaO+k7nQ9ymdl52ZisVhQFEW50ILBIL+8916klBiEENyxeTPhJt78HZzudJQzEzKEYeqfN+VTVf4+4bIzM1l6441EqqqimkAgiPJpQghyRmUhhEBRFOVC+vUDD9DZ1YVp3erVuN1uTOPmfRl35mUoZydkCMPUu68e4Of/sJy+bl+3jniXi0gEg0Eqj1ejfJbFYiE7NxNFUZQL5bc7dtDY1IRpYWEheaNGYcqavISsKxehnJuQIQxjeoGLvjRNY0tJCZFqbW6lsaEZ5bNsdhuZ2RkoiqKcb/sOHOD4iROY8qdOJX/6dEzJuVMZc/0mlMgIGcIwds+/f4mXDzxIX5eOHcu8ggIideJYFVJKlM+y2axk5oxAURTlfPndSy/x/gcfYBo9ahSLCgsxxXtHMWHx36JETsgQhrH6UxX8/ZrL6E/xunW4XC4iVVFeidI/zaKRk5uFoijKYHv3vfc49MormLwpKdy6YgUmpzudiTd/B2VghAxhmNsyN5FgMEB/7ti8GSEEkWhv66C+tgGlf0IIckZlIYRAURRlMFRXV/P43r2Y4pxONhQVYbI5E5m86vsoAydkCMPcszv/H7/5r7/FIDQNGQxiSktNZeWyZUSqqqKGQCCAcmYjR2cjhEBRFOWLOH36NI8+/jgmIQR3bN6MSbPYmLb2Jyifj5AhDHNSBvnSnARMW/7pPn7xr8WYli1dyoiMDCJVUV6JcnbJXg+J7gQURVE+j7a2Nh7Yvp1wd2zejBACg9CsTF/7ExAC5fMRMoSLwLeLJnGq8mMM2WMmUnX0PZASk75pE1aLhUj09gaoPlGDcnYWi4Xs3EwURVEGorGpid/u2EE4feNGrFYrBqFZmbb2PxBCQ/n8hAzhIvDxH1/hh389D4MQgl8+186X5sQjpcTgcDjYdPvtRKqxvonWljaUc8vITMfhtKMoinIudfX17Ni1i3CbN2zAZrNhEJqVabf9GKFZUL4YIUO4SOgFLkz//tB7SBnkW+uvxDRu7FjmFhQQqZqqU/h7/CjnZrPbGJGVjhACRVGU/pw+fZpHH3+ccPrGjVitVgxCszLtth8jNAvKFydkCBeJbT/QeeWphzBYbXbKnm5i2w90XnnqIUyLCgsZPWoUkTpxrAopJUpkEt0JJHs9KIqihKuuqeHxJ58k3Kbbb8fhcGAQmpVpt/0YoVlQBoeQIVwkmhtO8bcr8jCVPd2E1WbnG6vG0FRXg2nD+vXExcURiUBvgKoTNSgDk+z1kOhOQFEU5ejRozx18CAmTdMoXrcOp9OJwepMYMrK74MQKINHyBAuInqBC9Ntf/1j5q/6CobSwmR6/d0YbDYbmzdsIFId7Z3Una5HGbgUr4cEdwJKbPL3+BGawGq1oijnw/sffMDvXnoJk6ZpbN6wAYvFgsHpTmfi0m+DECiDS8gQLiKvPr0d3/dLMPme78BQfexP/NPG6ZiS3G7Wrl5NpBrqGmlrbUf5fJI8ibg9boQQKNHT29tLV2cXLU2t9PYGCCeEID7RhcvlwuG0I4TgfAkGgwQCAWw2G0rkpJQIIRgq3n7nHV59/XVMmqaxecMGLBYLBlfKSC5f8nco54eQIVxEAr1+7pifhOmnj5bjTsnA8MIT27j/J1/FNHrUKBYVFhKpk1Wn6Onxo3x+VquF1HQvdocd5fzz+3vp7OikpamVYDDIQFmtVhKTEnDGObHZrAyWDz88Ql1dPVarlSuvvByXy4VybrW1dXz00cdYLBYuuWQ06elpxKrfvfQS73/wASar1Yq+cSMm94jxjJv/FZTzR8gQLjJ/vSSDro5WDBOmz+Fvf/Ikpl/82wZef/YRTFfPnMnkK68kUpXHqwkGgyhfnCs+juQUDxarBeWLCwaD+P29tDS10tnRyfnijHOS5HFjs1vRNI2B6u7u4fDhNzGNH38pqalelHM7dOhVTOPGjSUtLZVY9Oju3ZyurcVkt9spKS7GlDb+OkZddSvK+SVkCBeZjtYm7lyahemXz7UjhMD0zdXjaDhdiWn50qVkZGQQqYrySpTBZXfYScvwYrFYUM4tGAwSDARpbGims6OTaHMnJZKYlICmaQghOJtXXnmdYDCIwWq1MnNmPsq5dXd3c/jwW5hmz56JEIJYc+9999Hd04MpzulkQ1ERptyrVpE+/nqU80/IEC5CeoEL07f+93kuuXwG4b40Jx4pJaY7Nm9GCEEkpJScOFaFcv4kJbtJSnKD4KInpaSttZ3mxhaCwSBDRWp6Cq54F+E+/PAIdXX1mGbNMZNfQwAAIABJREFUmoHFoqGc29tvv0N7ewcGIQSzZ88klkgp+cU99yClxOROTGTdmjWYrlz2XRwJKSgXhpAhXIR+/n9X8u4r+zDEJSTxX3tqCBcMBNgyL5FwW0pK0DSNSASDQSqPV6Ocf0II7HYbnhQPDqed4aq7q5vWlna6OruQUiKlZLgQQhCQAaqqqzGlp6dx6aVjUM5NSsnLL7+GafbsmQghiBX+3l62/epXhMvOymLpkiWYpqz+IVa7C+XCETKEi5Re4ML0vwfqsTviCNfSeJq/WT6acFtKStA0jUgEAgGqKmpQLjxNE2iahtPpJMEdj91hJ9b1dPfQ2dFFZ0cngWAQGQwSDEouBlJKKmuqMGmaRm7OSFzxLjzJboQQKGf28cefcOpULQZN07j66hnEivr6eh7ZtYtw1159NROvuAKD0KxMXfMjNIsV5cISMoSL1JcXpdLT1YFhuf5dbiz6Jn1Vlb/PP2/KxySEQN+4EYvFQiS6u3s4VX0aJXYIIdAsGpqmoWkCu92OzWbFYrVgtVqx2W18Uf4eP4FgkN7eXvzdfvz+XoLBIDIYJBiUSBkkGJQof1ZZU4WUElNOZjZCCMJpmobVZiXRnUB8ggvlz6SUvPzya5gmTZpIYmICseD1w4d58+23Cbdk4UJyR47EEJ86mgkLvw5CoFx4QoZwkTq0737uvesOTL7nO+jPn958np/8zRJMNpuNkuJihBBEoqO9k7rT9SiK8lmVNVVIKTGNSB+BzWolElarFYfTToI7AYfDzsXo44+PcurUaQyapnH11TOIBbv37KHm5EnCrV+zhsTERAyZExeQPeUmlOgRMoSLmF7gwvRv971FZu54+vPS3vv41Y9KMdltNjYVFyOEIBJtre001DWiKMpfVNZUIaXElJaSitPp5ItwOB3ExTmJT3RhsVgYzoLBIK+88jqmCRPGk5KSTDQFg0Huf+ghOru6MFksFjZv2ICmaRjGF95JYsZYlOgSMoSL2D+svZy6mmMYpl57E1/53sOcyfO7f8kDP/saJrvdzqbbb0cIQSTaWttpqGtEURQ4UV1JuBRPMvGueAabpmnEueJwuZw4XU6EEAwX7777Hi0trRgsFguzZl1FNJ2ureXR3bsJ501J4dYVKzBNWX0XVnscSvQJGcJF7NSJI3z79smYfM93cDbP7vxffvNf38Bkt9vZdPvtCCGIRFtrOw11jSjKxSoYDFJ1sppwSe4k3AmJXCg2mw1Xgos4lxO73cZQ1NXVxRtvvI3pyiuvwO1OJFreeOstfv/GG4SbePnlXDt7NgaXN5fLF38DJXYIGcJF7o75SQR6/Rju+O79XFWwkrPZ/t9/xzM7/geTpmmUFBdjtVqJRGdHJ7Wn6lGU86G2vpau7m4S4xNJiI/HarUSK/x+PydrTxHO404iMSGRCy0YDKJpGqY4l5P4hHgcTjsWi4VY99prh+nt7cXgcDjIz59KtDyyaxf19fWEW7xgAaNyczFkTVpM1qTFKLFFyBAucnf/azG/P7gDQ0rGSH702w85lwO//TmP/L//i0nTNDasX4/D4SASXZ1dnD5Zh6IMthPVlfQV53SSlJiEzWYjWto62mlsaiRcarKXuLg4LrTO7i7q6uuwWqyker3YrDb64/Yk4nLFYbPbEEIQK6qqqjl2rALTrFlXYbFYuNDa29t5YPt2pJSYbDYbxevWYbPZEJqFK5f9M3aXByX2CBmCgl7gwnT3M81YrDbO5amHt/Lw//4D4TYWFeF0OomEv8dPTdUpFGWw+Ht7OXn6JGdjsVhITfZit9u5UGrra+nq7iZc9ogsNE0jGk5UV2Jy2B2kp6YRCYvFQrI3CYfDgcVqIRqklLz88muY0tJSGTduLBfaJ0eP8vTBg4RL9XpZtXw5BmdSBhOXfhsldgkZgsLfrMijpeEUhgWr72T1l39IJN566Qn+5ztrCFe0di0J8fFEIhAIUlVRjaIMpp6eHmob6ggGg5yLN9lLnNOJEILBJqWksqaKcEIIcjKziZb6xgY6OjswjczK4YtwxjlJSU3GYtEQQnC+HT78Ft3d3RiEEMyePZMLSUrJvffdR4/fT7i5N9zAuEsvxZA9+SYyr1yAEtuEDEHh4K67eejnX8fke76DSB1592Xu+up8wq1esYKUlBQiVVFeiaKcLydPn8Lf6+dc3AmJJLmTGAzNrS20tLYQzmKxkJWRSbT4e/2cPH0KU2JCIh53EoPN7XHjSXYz2Kqqajh27DimSZMmkpiYwIXS1tbGA9u305e+cSNWqxUQTFv7H2gWG0rsEzIE5f+nF7gw/ejhj0hJzyFSp6uP8q11Ewk3bcoUZuTnE6mK8koU5XwKSvn/tQcncHaWhaGH/++3nf3MmTlzZksy2VeWJJAQloABFBJR64ICUqW0uN2KtretbV2vrRatWlvt1faK2lpXrLVFucKlUCzKpmAJCkokgMnsc/b9296e6f2Nv+l4ZuZM1lne5yGXz1GulJmNEALTNOlKphBCMF9HhwaQUjJVezxBNBrldDoyeJRJmqaxoqePk00Iga5rtCfbCYWDHI/vf/8hJnV0tLN162ZOlbvvvZdnDh9mqvZEgmuuvpoJ8b6tbLrszYBAWRyEbED5Lx+6+XJ+/sSDTNi842L+4C/vYj5K+TS/82urmKqzo4OrX/lKWjU8MIJtOyjKyeb7PpVqhWw+x1xM0ySZ6MA0TWaTzqSp1KpMJYSgr7sXTdM4nQaGB/F9n0kre1cghOB00HWNQDBAor0NwzRoxYMPPoLv+0y66KLzORVqtRpf+trXcByHqV521VX09fYyYdtVf0S4vQ9lcRGyAeW/DBz+Ce/7zd1MuvW+CvPl1Ku85cokU0UjEa6/9lqEELQiny2QzxVQlFNFSkndrpPJZvF8j9kYhkFbLE44FGZStVZjPDPOdNFwhPZEO6fb8OgIjuswKZXsJBgIslAIITBMg0gkRKwthhCCqQ4e/DHFYolJ5567k2AwwMn2/Qcf5Imf/ISpTNPkhuuvxzAMQoletl31hwihoSw+Qjag/NJN+8JMesO7P8+eF17DfEnf5w+v20pm5AiTNCF43fXXEwoGaUWtVmd0aAxFOR1q9TqFYoG6XWc2uq6DBM/3mEoIQU9XD4auc7qNpseo1+tMikVjJOJtLHS6rmMFTFzP5fCzzzFp9ep+Vq7s42SybZsv33YbtVqNqc7Zvp3zdu9mwqYXvpV4zyaUxUvIBpRf+sonfo97/unTTGhPreAjXz/EsfrcLW/kgbu+yFQHrriC1f39tMLzPAaPDCOlRDn10tkMlWqFaCRKoi2BYHmyHZtSqUS5WqEVbfE24tEYC8FYepxavcakYDBIqqOTxcLzPAZHhphkGAabNm4kGg1jWiYnw0OPPMJ/HDzIVKZp8upXvIJ4PE4k2c/WA7+PsvgJ2YDyS7Vqibce6GLSrfdVOB7f/dZn+YeP3cxUmzdt4tJLLqFVQwMjOLaDcmodGTzKVJZp0p7owDJNlqt6vc5oeoxWhENhYtEolmlxOoylx6nVa0wyDYOerh4WCyklR4cGmGpV30qmC4WDhMIhwpEQmqZxrIqlEl/9+tfxPI+pzty2jb0XXghCY+O+N9C24gyUpUHIBpT/5ndetopSIc2EvS9+Pb/xjr/heIwcOcR7b9yF5zpMikQiXH/NNWiaRiuymTzFfBHl1PB9n4HhQZoRQpCIJ4hGIiwXdbtOOpPB8z2m03Udz/OYTcAKEIvGCAWDnArDYyM4jsMkQzfo7e5hMTk6NICUkkkre1cghGAuuq4TjoQIR0IEggHmIqXku/ffz0+ffpqpLNPk1a96FbFolLa+bWy87M0oS4uQDSj/zcP33MZn/vQ3mGBaQT79/zKcCL/3qnXk08NMdfUrXkFnMkkr7LrN8OAoyqlTrpTJFfL4vk8zoVCIRDyBoessRaVKmWwuSzOmadKVTKFpGhMqlQqFUhHHdZiNruu0tyUIBoIIITiRpJQMjQ7jeR6TTNOkJ9XNYjIwPIjv+0zq6erGNEyOlWVZROMRgsEAhmkwaXBoiNvvuIPptm7ezAsuvhjdCLBl//8klOhFWXqEbED5FTftCzPpr24/SiTewYnwv999DT/63reY6oxt27j4wgtp1cCRITzXQzl1fN9nLD2O7dg0I4QglewkYAVY7FzXJZPLUrfrNGMaBl2pbjQhmIlt22TzOWzHZi7tbQnCoTCapnE8fN9nYHiQqSzTpDvVzWIyOj5G3a4zKR6L0xaLcyK5rsuDjz5EsVRiqmAgwGuvvRbLNOneehmrzn05ytIlZAPKr/jw26/g0OPfY0Ii2ctHv/EMJ8rBh+7kk3/8KqSUTNJ1nRtf9zoMw6AVuUyeQr6IcurlC3mK5RJSSpqJRqIk4m0IIVgsfN+nUCpSLBWZiWVadKe6mC/f9xnPprFtGykls4mGo8RjMXRdZz6qtSrjmTRThUNhku0dLCZj6XFq9RqTgoEgqWQnJ9Khw4c49OwzTLdt81a2n3UW0ViMXdd/DN2wUJY2IRtQfsWRnx/k/Tedz6Rb76twIrmOzdtf2ke9VmGqq668klWrVtEKKSVHnx9ASpTTwPM8hsdG8H2fZoQQ9Hb1oOs6C5GUknKlTDafYyZCCNpibcSiUU6UbD5HuVJGSslsLNMilexE0zRmMzo+Rt2uM1VnRyehYJDFJJPLUq6UmWSaJj2pbk6UXD7HAz98iOlCwSCXXrSPZsKJLnbsfwOd/dswAiGUpUXIBpSmbtoXZtLNH7yN7Re9hBPt1g/+Fg/d/RWmskyT37zhBlo1PDCKbdsop894Nk21WmUmibYEsUiUhSCTy1KulJmNpmn0dfcihOBkqlSrpLNpWtGT6sY0TSZJKTk6NMB0K3r60DSNxSSdTVOpVpmk6zp93b2cKHf92914vsd0l198KQErwHx0bziHi657N8riJ2QDSlPfvPV/cccX/5wJhmHxN/+a42QYH36eP7p2K9NdtX8/q1aupBWe6zFwZAjl9LIdh5GxEWZiGAa9XT2cSrVajXQug+/7zKW7swvLsjgdHMdhND2G7/vMRgiBZVrU7TpT6bpOX3cvi83o+Bh1u84kQzfo7e7hRPjeIw9QKBaYbsuGzaxbvZb5autew2U3fQSh6SiLn5ANKE1Vy0VuvqqbSX9zdw7DtDgZpO/z7ht2MnLkEFO1xeNc95rX0KqRwVHqdRvl9PJ8n/H0OLZj04ymabQn2gkHQ5xolWqFfLGA53lIKZmNEIJkewfBQBAhBAuF67lkslnqdp1WtLe1E41EWGyGx0ZwHIdJhmHQ29XD8Tr45BMcHRpgungszgW7zkfXNOYjEGnjRW/5BFYohrJ0CNmAMqO3XJnEqVeZsPfFN/Ab7/g0J9NPf/RdPvq7B5juogsu4KwzzqAVju0wNDCCcvpJoFwuk81nmUkwGCTV0cmxcF2XQqlI3a7jui6tMAyD9rZ2ApaFEIKFzvU8SqUSxXKR2QghCFgWyfYkmqax0A2ODOF5HpMMw6C3q4fj8dyR53ny6aeYTtd0LrlgL6FgiPnQdIN9N36IRO86lKVHyAaUGf3s8fv5yNuvZNKt91U42TzX4f03nc/gc08xVSQc5pqrr8ayLFqRGc9RKpZQFgbbcchkMziuQzOGYZBMdGBZFtNJKanWqlRqVRzHwXVd5iMWjRIJRzENg8VmPJOmWqsyXwErQFssTiAQYKE5OjSAlJJJgUCArmSKYzWeHueHBx/D932m273jXFLJFPO15+p3sGLr+ShLl5ANKDPyfY83XhZj0se+cZi2ZA+nwlOP/Rsf/4OX4XseU23etIlLL7mEVniux/DgCJ7noywMUkryxQLFUpFmhBAErACO6+B5HvMlhCAajhAOhbEsi8UqX8xTKBaZzjItujpTTKjWquQLBVzPZTamaRKLRImEI5xOvu8zMDzIVJFQmI72Do5FrpDjBz/6IY7rMt3WjVtY27+G+dpx4I2s27UfZekTsgFlVn/yhgv4xaHHmZDqW8ctX/4xp9Kn3/daHv3uPzOVEILL9u1j4/r1tKJULJMZz7KU5At5hKahaxqGbqAbOpqmoQmNhUJKied7eK6H67m4nofnubiuh+u5eJ7H8QoGgoSCQYLBEIaus9gVigXyxQLTCSHo6kxhmRbNVOs1SqUStXqN2eiaTjQaJRaJIoTgVClXKmRyGaZqi7cRj8aYr2w+x6OPP4bt2EzXv2IVZ245g/nacvGr2bbvWkCgLA9CNqDMqpgb53df3s+kv72ngK4bnEqjA4f5wJv2UinlmMrQda65+mpisRitGBtJU61UWQqODB7lWGiahqZpTNCEhq5rzIcvJZ7nMcH3fXzf51QJhUIErSChUAhd01gqpJTkC3mK5RLTCSFItCWIhiO0ynZsiqUilWqV2QghiEaiRMMRDMPgZEln01SqVaZKJTsJBoLMRy6f45H/+CGu6zJdd6qbc8/eybwIwaYLfo0zL389yvIjZAPKnG7aF2bSzbd8g+0XHOB0uOtrf8nXP/1Oplu1ciVXvvCFGIbBXKSUDB0dwXVdFrMjg0dZagxdR9cNbMdGSkkzkXCERLwNTdNY7FzXJZ3LYNs2zbTF4sRjcY6HlJJcIUe5UkFKyWwi4QjRSBTLNDkRfN9naGQYX/pMtaKnD03TaFUml+Hhx36AlJLpOhIdnLdzF5qm0SohBOvPewlnX3EjyvIlZAPKnP7xb9/DnV/5GJNuva/C6fTht72IQwe/z3Rnn3kmF+zZgxCCudTrNqPDY0hfshiNpseQvo8EpO/jS4nv+yw0mqYhhEATGpqmYRgGlmkSsAKYpslMXM9jPDOO4zg0I4SgK5nCsiwWm3K1QiaboRkhBPFojHgszslQKBYoVcp4nsdsTNOkvS1BwApwLGr1GmPpcabSdZ2+7l5alc6kefhHP6CZRDzB+eeeh6ZptEpoOpsveiXb9l2HogjZgDIn3/N44+UxJv3l7UeJxjs4nTzX4fevXk8xN850+y6+mM2bNiGEYC7lUoXMeBYpJcuB4zpIKZngui6+7zNflmUxyTItTrZsPke5XEYiaaYtFicWjSGEYKFyXZfR9Bie59GMpmkk25MEAwFOlWq1SraQw/M8ZqMJjY72doKBIEII5jIyNort2EwVCYXpaO9gLlJKBoYHOfjkEzQTi8TYu+dChBC0Sjcsdrz4TazefimKMknIBpSWvOXKJE69yoTLXvFmXvv2v2AhePapH/Khmy/Hcx2mO3DFFazu76cV2UyeYr6IsnC5nsvI6Ci+9GlG13V6Ut1omsZC4Ps+Y5lxbNtmJpqm0dfdixCC08nzPIbHRvB9n7kk2hJEwxGEEEzluC7Do8NM19fdi67rzMb3fZ546scMDA/STCwa4+I9FzEfumlx8es/QEffBhRlOiEbUFpy5OdP8P6b9jDp1vsqLCT//u3P8YWPvpVmDlxxBav7+2lFeixDuVRBWdhGxkaxHZuZdLYnCYVCnGqe7zM8Oozv+8wm0ZYgFomyUI2mx6jX68wlFAzR2ZFkeHQYx3WZStd1+rp7mcu93/s3avU6zaSSnezesYv5Ebz8nV9D0w0UZSZCNqC07KZ9YSa981P3sW7beSwkUvrc/nd/xrf+/s+YTtM0Lr/0UtavXUsrMuNZSsUyysJWrdUYz4wzE9Mw6Onq4WTKF/KUymV86TObQCBAZ3sSTdNYLKSUFEoFCsUi89HZkSQUDDGTQrHAg48+jOd5NLNl42bWrlqDEIJWJfu3sve170U3AyjKXIRsQGnZe244h6Hnf8qE1Zt28p7/830WItd1+Mbfvpu7v/5JphNCsGf3bnacfTZzkRJymRzFQgllYfM8j9H0GK7r0oymaaQ6OrEsi+NVKBUolct4nsdcApZFR3sHhm6w2EkpqdXrjGfGmYuhG7QnEgQDQaY6+OQTDAwPIqWkmd07ziWVTDEf5770rfSf/QKEpqMorRKyAaVl9VqF397fyc23/CNn7bkSTdNZyFzX5pu3vp+7vvpxmtm0cSOXveAFtKKQK5LL5lEWNiklpUqZXD7HTCLhCB2JdlpRt22KpSK2Y+N5Hq0Ih8PEo3FMw2ApGh0fo27XaZXruhwZPEqpXKKZUDDI7h27iEaitCoU6+DC176Htq7VKMqxELIBZcnzPJd/+sz7uOurH6eZvt5eDlx5JaZhMJdyqUJmPIuUEmVhq9s26Uwaz/doxjRNkokOTNNESkm1VqVSreI4Dq7n0ipd10nE2wgGgmiaxlKVzWcplctMFwoGiUfjFEpFqrUqk4ZGhkln00gpaWZV30q2bNyCaRi0auMFL2frJa/BsIIoyvEQsgFlWfn2P3yYf/ncnyClZLpYLMYL9u5l5YoVzKVWrZMey+B5HsrC5ktJLp+jXClzIhi6QSQSIRwMYRgGS12+WKBQLDCdpmn0pLrRdZ1JY+kxfvKzJ6lUq8xkZe8K2hPtTAiHwrTF4hiGwUwi7T3sOPAGutfvRFFOFCEbUJal++/4PF/5xO9j16tMp2ka5+7cybk7dzIXz/PIjGWpVmssJeVqBUPT0XQNTWjous5CJaXE8zxcz8X1PFzXxXVdHNfBdV2OhxCCUDBIMBAkFAyhaRrLRb5QoFAqMJ0QgmR7B6FgiAmVaoWnnznE4MgQM2mLxenp6sGyLGYSDASIRWMEA0E0TWfjRa/kjH3XoSgng5ANKMvaoYMP8PkPv4nRgWdopruri4svuojOZJK55DJ5CvkiS8GRwaO0Std0hCYQQmDoOhMM3QDBLxm6yVxcz2GS5/lI6SMluJ7LBNd1OVWEECTbOwgFQywnUkpy+TylSolm2tsSRCNRXM/juV88y9OHf85MLNNiw9r1rFm1mkmlcplSuYTjOswm0dXPBS99E5t2vQhFORmEbEBRGuxahU+99zp+/MjdzOT8887jzG3bMAyD2di2TXosi2M7LFZHBo+yFGmahmEYmIZJ0AoQDIUolooUS0WklDQTi8aIx+JoQrBUua5LOpvBdmyaicfiRMMRhkeHefzJJ5hNd2cXO87cjq7rzKZu18kXCtTtOnN54a+/iw3nXE4gFEVRTgQhG1CUae786sf59hc+RK1SpBnLstj/ohfR29ODEILZZNM5SsUyUkoWk+GxEaTv40uJlBIpJQuZpmloQiA0DU1oWJaJZVoEAkF0TaMVjusynhnHdV2a0XWdVEcnpmmyVFRrNcYz4zQjhCASjlCpVnjiqR/j+z4ziYQjnHPWDmLRGK0It6XYvPdVrD3nCiYU0oPc86VbGDj0IzzXZjY7LruWnZddRzzZi6IcKyEbUJQZuK7Ne284h9GBw8ykPZHgxfv3E4tGmY3vS0aHx7DrNkuN7dhMcFwX6ftMqDs2Uzm2zVxM0wLBLwVMiwmmaSKEwDItTpXxdJpqvcpM2tvaiUQiCBYfz/MYz6axbZtmfN+nVqtx+BfPIqVkJpZlsWXDZlb2rqAVgWiCMy9/PavP3sdsfN/j7i/8KYcf/y52rcxsVp9xIZe99o+Id/SgKPMhZAOK0oKH7v4qf//R38apV5lJVyrFSw4cwLIsZuM6LsODo/i+j7Kw1ep1xjPjSClpxjRMulNdCCFYyKSU5Ap5SuUSzfi+z9DIEJlcltnoms6m9RtZ27+GVhiBEOe85LdZue1CjtUT93+T+7/xVzj1CrMxA2F+/T1fJtbRgxAaijIbIRtQlHmQ0ueT73w1Bx/8DrPpaG/nVS9/ObquM5t63WZkcBRl4RsaHcZ1XWbS1ZkiYAVYSLL5HKVyiWZcz+WZ5w5j2zZz2bRuIxvWrqcVumFx6W/9OfGuVYDghJGSgWf+g3/+5O/g2lVmEk+u4MYPfBNFmY2QDSjKMSoXMnzkd1/M0WcOMhMhBNFIhP1XXEGyo4OZSAl23WZ0eAwpJcrCVa6UyeSyzCQYCJJKdnI6+L7PWHoc27FpZmR8lHQmjed5zGX7trPp7e5B0zTm0r3hHHa97GYC4TgIwckmpaScG+Obn3wbmaHDTHXzXz+AphsoymyEbEBRjpOUPoPP/ZS/ftdrGBs8zGzC4TBnbt3KOTt3MhvbthkfyeC6LsrC5Louo+NjeL5HM7quk0qmMA2DkymXz1GpVfE8j+mK5RJDI0PYdRuJZDaGYbBr+7kk4m1omsZsNF1n51X/g95Nu7FCUU63YnaEH3zn8zzxvW/y9k89jKLMRcgGFOUE+8Whx7nt03/MTx+7j9nouk5XKsWe3bvp6e5mJo7tUCyUKRVLKAuPlJJCsUihVKAZIQTRcIREW4Lj5XkehVKRWq2G67lMVyqXGB0fpVqr4fs+c+nt6mHD2vXEojHmsmbHC9mw5yXEu/pRlMVOyAYU5SQ68vOD3P2Pf80Dd36RuYRDIVauWMGOs8+mo6ODZnxfUq1UyWcLuK6LsrDU6jXS2Qy+79NMwArQ2ZFE0zTm4vs+pUqZWr2GbdtIKZkuXyiQyWWoVCv4vs9cAlaATes20p3qwrIsZtO7ZQ/rzr2S1Ooz0XQDRVlKhGxAUU6RSinH9+/8Ind+5S/Ip4eZSygYZHV/P5s3baK3p4dmHMehUqpQLJTwfYmyMHieR66Qo1Kt0owmNBJtCSLhMK7nUa/XqNt1bMfBcRyasR2bfD5PoVSgUq3SqjWr1rCyt494LM7MBH1b9rB6+6X0bDwXITQUZSkTsgFFOU1+9vj9/Pvtn+Phe75GK4QQ9K9axfp161jd30/AspjOth3KxTKVcgXP81kqHNdheHQEwzAwdB1dNzB0HcMwMAwDXTfQNY2FRkpJLp+jVCkzH57nUSwVKZSKFIoFpJS0QghBb1cPK3pXkEp2MhMrHGfFlvNZue0iUmvPQlGWGyEbUJQF4uF7buOBO7/Ik4/ei/R9WmFZFhvWraO/v5++nh4sy2Iq1/UoFUrUanXsus1iVSyXyOVzHAvDMDB0AyHAMEwmGLoOQjBB13Ra4UsfKSUTXNdlgus6THBcMJQpAAAFYUlEQVRcF9d1ORa2bVOpVSkWCxRKRXzfp1WWaZFKdrJqxSo6Eu00o2k6nWvOonv9DtbsuBwzGEFRljshG1CUBeqRe7/Od2//LM8+9UPseoX5WLd2LZs2bCCRSJBoa2OqaqVGuVSmXrfxXI/FYDQ9Rr1eZzFzXZe6XadcKZMvFKjVa8xXPBajs6OTdavXYpkW0xlWiHhXP13rtrNu136CkQSKovwqIRtQlEVi4Nmf8J0v/wVPP34/mdGjHIsN69ezeeNGYtEokUgE0zSZUK/VKeRLOLaD67osVI7jYDs2ddvGcR1838f3faSUSCk53Xzfx3FdHMcmXyyQL+TxPI9jYZkWwWCQzes3kUp2MpUQGqF4kljnClZvv4yVZ+xFUZTWCdmAoixiTzx0F7f/3QcZH3qOUiGNlJJjoWka69auZc3q1XSnUpiWhWkYVCs1SoUSrufhez6Lje/7uJ6LbdtMqDs2E2zbZpKUklZJ38f1PCbki3kKhSKFUoHjoWkalmkSi8ZJxNsIBoM0s/OSV7D3mnegaTqKohwfIRtQlCVmfOg5vvWFW3js3/8Fu17Fcx1OhLa2NlauWMGK3l5SnSmq5SqVShWBQAjBYiWlREqJlBJfSoqlIuOZcbK5LOlshhNFCIGmaQSsAJvWbaSvp5cJmm6g6QbR5ApWnXUJji+498sfwnNtmunfuoeXvvkjGFYQRVGOjZANKMoSJ6VE+j7pkSPc8aUP88CdX8L3XE4GIQRTxaIxLNOko70DwzCIR2IYukE8HudkcVyHYrGI7TiUKiWyuSxSStLZDFNJKTmZert7Wde/hngsjhCC7vU7WXnGXladdQmCBqEhhGAmTr3CZ/7wxTj1Cs0ITef6d32RZN96FEWZHyEbUJRlzLFr2LUK2bFB7v+/f8fBB+9kbPAwytxWrjuT9VvOYetZe0j2raN7zRkYZgDNMNEME03TORE81+Hx+27j/m/8Fc1oms7GXVew/8b3oyhKa4RsQFGUGdWqJWrlIuVihiPP/JhDj3+P55/+Ec/97DGWqkA4yubte9l45oVs3L6XWKKTYDhGOJrAtAKcTtmR5/nKLa/HqVdpJpFaxav/4DOEYx0oijIzIRtQFOWEKBezVIo5quUCvu9RKeYYfO4p6rUKQ8//lEJ2lEJ2lHIhQ3ZsgJPFCoToWrkBXdfpXb2VVO8aguEYqzacjRkIYlpBIrF2wrEEwVAU3TBZbGqlHPf/0yd48sFv04xhBdlz1RvYdcXrUBTlVwnZgKIoyiJ26LF7uPPz78V3HZpZve18DvzWBwmEYyiK8v8J2YCiKMoSkBs7yr1fuoUjP/sBzUQTXex95c1s3n0lirLcCdmAoijKEiKlz8N33MrDd3wWkDRz9guu5uJXvg3DCqIoy5GQDSiKoixRI8/9hLv/4QOkB59hOiE03vaph1CU5UjIBhRFUZaB73z2XRx69B6k9Jmw5bz9XHnjn6Aoy5GQDSiKoiwjTz/6r9z3tY/wxj+/C0VZroRsQFEURVGUZUXIBhRFURRFWVaEbEBRFEVRlGVFyAYURVEURVlWhGxAURRFUZRlRcgGFEVRFEVZVoRsQFEURVGUZUXIBhRFURRFWVaEbEBRFEVRlGVFyAYURVEURVlWhGxAURRFUZRlRcgGFEVRFEVZVoRsQFEURVGUZUXIBhRFURRFWVaEbEBRFEVRlGVFyAYURVEURVlWhGxAURRFUZRlRcgGFEVRFEVZVoRsQFEURVGUZUXIBhRFURRFWVaEbEBRFEVRlGVFyAYURVEURVlWhGxAURRFUZRlRcgGFEVRFEVZVoRsQFEURVGUZUXIBhRFURRFWVb+EwpLwFc5xlQ1AAAAAElFTkSuQmCCICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA="
 
 /***/ },
-/* 208 */
+/* 210 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(209);
+	var content = __webpack_require__(211);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(211)(content, {});
+	var update = __webpack_require__(213)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -20974,10 +25139,10 @@
 	}
 
 /***/ },
-/* 209 */
+/* 211 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(210)();
+	exports = module.exports = __webpack_require__(212)();
 	// imports
 
 
@@ -20988,7 +25153,7 @@
 
 
 /***/ },
-/* 210 */
+/* 212 */
 /***/ function(module, exports) {
 
 	/*
@@ -21044,7 +25209,7 @@
 
 
 /***/ },
-/* 211 */
+/* 213 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -21298,7 +25463,7 @@
 
 
 /***/ },
-/* 212 */
+/* 214 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -21350,7 +25515,7 @@
 	exports.default = LoginController;
 
 /***/ },
-/* 213 */
+/* 215 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -21374,7 +25539,7 @@
 	exports.default = LoginService;
 
 /***/ },
-/* 214 */
+/* 216 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21383,11 +25548,11 @@
 	   value: true
 	});
 
-	var _register = __webpack_require__(215);
+	var _register = __webpack_require__(217);
 
 	var _register2 = _interopRequireDefault(_register);
 
-	var _register3 = __webpack_require__(216);
+	var _register3 = __webpack_require__(218);
 
 	var _register4 = _interopRequireDefault(_register3);
 
@@ -21402,13 +25567,13 @@
 	exports.default = registerComponent;
 
 /***/ },
-/* 215 */
+/* 217 */
 /***/ function(module, exports) {
 
 	module.exports = "<form name=\"registerForm\">\n   <!--<pre>{{registerForm | json }}</pre>-->\n   <div class=\"form-group\">\n      <label for=\"userEmail\">Email address</label>\n      <input type=\"email\"\n             class=\"form-control\"\n             ng-model=\"$ctrl.user.email\"\n             ng-keyup=\"$ctrl.hideErrors()\"\n             name=\"userEmail\"\n             id=\"userEmail\"\n             placeholder=\"Email\">\n   </div>\n   <span class=\"text-danger\"\n         ng-if=\"registerForm.userEmail.$error.email\">\n      Escribe un correo válido\n   </span>\n   <div class=\"form-group\">\n      <label for=\"userPassword\">Password</label>\n      <input type=\"password\"\n             class=\"form-control\"\n             ng-model=\"$ctrl.user.password\"\n             name=\"userPassword\"\n             ng-minlength=\"7\"\n             id=\"userPassword\"\n             placeholder=\"Password\">\n   </div>\n   <span class=\"text-danger\"\n         ng-if=\"registerForm.userPassword.$error.minlength\">\n       La contraseña de tener 7 carácteres mínimo\n   </span>\n   <div class=\"form-group\">\n      <label for=\"userRetypePassword\">Retype Password</label>\n      <input type=\"password\"\n             class=\"form-control\"\n             ng-model=\"$ctrl.user.newPassword\"\n             name=\"userNewPassword\"\n             ng-minlength=\"7\"\n             password-match=\"$ctrl.user.password\"\n             id=\"userRetypePassword\"\n             placeholder=\"Password\">\n   </div>\n   <span class=\"text-danger\"\n         ng-if=\"registerForm.userNewPassword.$error.minlength\">\n      La contraseña de tener 7 carácteres mínimo\n   </span>\n   <span class=\"text-danger\"\n         ng-if=\"registerForm.userNewPassword.$error.unique\">\n       Contraseñas no coinciden\n   </span>\n   <button type=\"button\"\n           ng-disabled=\"registerForm.$invalid\"\n           ng-click=\"$ctrl.createUser()\"\n           class=\"btn btn-default\">\n      Register\n   </button>\n   <button type=\"button\"\n           ng-disabled=\"registerForm.$invalid\"\n           ng-click=\"$ctrl.goBack()\"\n           class=\"btn btn-default\">\n      Back\n   </button>\n   <p class=\"bg-danger\" ng-if=\"$ctrl.error\">\n      <span ng-bind=\"$ctrl.error\"></span>\n   </p>\n</form>";
 
 /***/ },
-/* 216 */
+/* 218 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -21470,7 +25635,7 @@
 	exports.default = LoginRegisterController;
 
 /***/ },
-/* 217 */
+/* 219 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21483,27 +25648,27 @@
 
 	var _angular2 = _interopRequireDefault(_angular);
 
-	var _students = __webpack_require__(218);
+	var _students = __webpack_require__(220);
 
 	var _students2 = _interopRequireDefault(_students);
 
-	var _students3 = __webpack_require__(219);
+	var _students3 = __webpack_require__(221);
 
 	var _students4 = _interopRequireDefault(_students3);
 
-	var _students5 = __webpack_require__(220);
+	var _students5 = __webpack_require__(222);
 
 	var _students6 = _interopRequireDefault(_students5);
 
-	var _students7 = __webpack_require__(224);
+	var _students7 = __webpack_require__(226);
 
 	var _students8 = _interopRequireDefault(_students7);
 
-	var _students9 = __webpack_require__(225);
+	var _students9 = __webpack_require__(227);
 
 	var _students10 = _interopRequireDefault(_students9);
 
-	var _studentsForm = __webpack_require__(226);
+	var _studentsForm = __webpack_require__(228);
 
 	var _studentsForm2 = _interopRequireDefault(_studentsForm);
 
@@ -21516,7 +25681,7 @@
 	exports.default = studentsModule;
 
 /***/ },
-/* 218 */
+/* 220 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -21543,7 +25708,7 @@
 	exports.default = studentsRoutes;
 
 /***/ },
-/* 219 */
+/* 221 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -21578,7 +25743,7 @@
 	};
 
 /***/ },
-/* 220 */
+/* 222 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21587,11 +25752,11 @@
 	  value: true
 	});
 
-	var _students = __webpack_require__(221);
+	var _students = __webpack_require__(223);
 
 	var _students2 = _interopRequireDefault(_students);
 
-	__webpack_require__(222);
+	__webpack_require__(224);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -21604,22 +25769,22 @@
 	exports.default = studentsComponent;
 
 /***/ },
-/* 221 */
+/* 223 */
 /***/ function(module, exports) {
 
-	module.exports = "<ui-view>\n\n   <button type=\"button\" ui-sref=\"students.create\">\n      crear\n   </button>\n\n   <table class=\"table table-hover\">\n      <thead>\n      <tr>\n         <th>First Name</th>\n         <th>Last Name</th>\n         <th>Email</th>\n         <th>Celular</th>\n         <th>Profession</th>\n         <th>Plan</th>\n         <th>&nbsp;</th>\n      </tr>\n      </thead>\n      <tbody>\n      <tr ng-repeat=\"student in $ctrl.students track by $index\"\n          ng-dblclick=\"$ctrl.studentProfile(student)\">\n         <th ng-bind=\"student.name\"></th>\n         <td ng-bind=\"student.lastName\"></td>\n         <td ng-bind=\"student.email\"></td>\n         <td ng-bind=\"student.mobile\"></td>\n         <td ng-bind=\"student.profession\"></td>\n         <td ng-bind=\"student.plan\"></td>\n         <td ng-click=\"$ctrl.deleteStudent(student)\">\n             <span class=\"glyphicon glyphicon-remove\"\n                   tooltip-placement=\"top\"\n                   uib-tooltip=\"Eliminar\">\n             </span>\n         </td>\n      </tr>\n      </tbody>\n   </table>\n\n</ui-view>";
+	module.exports = "<ui-view>\n\n   <button type=\"button\" ui-sref=\"students.create\">\n      crear\n   </button>\n\n   <form class=\"form-inline\">\n      <div class=\"form-group\">\n         <label for=\"exampleInputName2\">Filter</label>\n         <input type=\"text\"\n                class=\"form-control\"\n                id=\"exampleInputName2\"\n                ng-model=\"myFilter\"\n                placeholder=\"Jane Doe\">\n      </div>\n      <button type=\"submit\" class=\"btn btn-default\">Send invitation</button>\n   </form>\n\n   <table class=\"table table-hover\">\n      <thead>\n      <tr>\n         <th>First Name</th>\n         <th>Last Name</th>\n         <th>Email</th>\n         <th>Celular</th>\n         <th>Profession</th>\n         <th>Plan</th>\n         <th>&nbsp;</th>\n      </tr>\n      </thead>\n      <tbody>\n      <tr ng-repeat=\"student in $ctrl.students | filter: myFilter track by $index\"\n          ng-dblclick=\"$ctrl.studentProfile(student)\" >\n         <th ng-bind=\"student.name\"></th>\n         <td ng-bind=\"student.lastName\"></td>\n         <td ng-bind=\"student.email\"></td>\n         <td ng-bind=\"student.mobile\"></td>\n         <td ng-bind=\"student.profession\"></td>\n         <td ng-bind=\"student.plan\"></td>\n         <td ng-click=\"$ctrl.deleteStudent(student)\">\n             <span class=\"glyphicon glyphicon-remove\"\n                   tooltip-placement=\"top\"\n                   uib-tooltip=\"Eliminar\">\n             </span>\n         </td>\n      </tr>\n      </tbody>\n   </table>\n\n</ui-view>";
 
 /***/ },
-/* 222 */
+/* 224 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(223);
+	var content = __webpack_require__(225);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(211)(content, {});
+	var update = __webpack_require__(213)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -21636,21 +25801,21 @@
 	}
 
 /***/ },
-/* 223 */
+/* 225 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(210)();
+	exports = module.exports = __webpack_require__(212)();
 	// imports
 
 
 	// module
-	exports.push([module.id, "", ""]);
+	exports.push([module.id, ".fade {\n  transition: 1s linear all;\n  -webkit-transition: 1s linear all;\n}\n.fade.ng-enter {\n  opacity: 0;\n}\n.fade.ng-enter.ng-enter-active {\n  opacity: 1;\n}\n.fade.ng-leave {\n  opacity: 1;\n}\n.fade.ng-leave.ng-leave-active {\n  opacity: 1;\n}\n", ""]);
 
 	// exports
 
 
 /***/ },
-/* 224 */
+/* 226 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -21672,7 +25837,6 @@
 	      this.StudentsService = StudentsService;
 	      this.$state = $state;
 	      this.setup = studentsSetup;
-	      this.format = studentsSetup.format(0);
 	      this.buttonText = 'Guardar';
 
 	      StudentsService.getStudents().then(function (response) {
@@ -21683,18 +25847,23 @@
 	         this.getStudent($stateParams.id);
 	         this.isUpdate = true;
 	         this.buttonText = 'Actualizar';
+	      } else {
+	         this.student = {};
+	         this.student.documentType = studentsSetup.documentTypes[0];
+	         this.student.occupation = studentsSetup.occupations[0];
+	         this.student.plan = studentsSetup.plans[0];
+	         this.format = studentsSetup.format(0);
+	         this.setup.altInputFormats = studentsSetup.altInputFormats;
+	         this.setup.dateOptions = studentsSetup.dateOptions;
 	      }
-
-	      this.student = {};
-
-	      this.student.documentType = studentsSetup.documentTypes[0];
-	      this.student.occupation = studentsSetup.occupations[0];
-	      this.student.plan = studentsSetup.plans[0];
 	   }
 
 	   _createClass(StudentsController, [{
 	      key: 'successHandler',
-	      value: function successHandler(students) {}
+	      value: function successHandler(success) {
+	         console.log('success');
+	         console.log(success);
+	      }
 	   }, {
 	      key: 'catchHandler',
 	      value: function catchHandler(error) {
@@ -21717,27 +25886,36 @@
 	         var _this2 = this;
 
 	         this.StudentsService.getStudent(id).then(function (response) {
-	            _this2.student = response;
+	            return _this2.student = response;
 	         });
 	      }
 	   }, {
 	      key: 'save',
 	      value: function save() {
-	         if (this.isUpdate) {
+	         var _this3 = this;
 
-	            this.students.$save(this.student).then(function (ref) {});
+	         //this.student.inscriptionDate.toString();
+	         if (this.isUpdate) {
+	            this.students.$save(this.student).then(function (ref) {
+	               return _this3.$state.go('^');
+	            });
 	         } else {
-	            this.students.$add(this.student).then(this.successHandler);
+	            this.students.$add(this.student).then(function (res) {
+	               return _this3.$state.go('^');
+	            });
 	         }
 	      }
 	   }, {
 	      key: 'deleteStudent',
 	      value: function deleteStudent(student) {
+	         var index = this.students.indexOf(student);
 
-	         this.students.$remove(student).then(function (ref) {
-	            console.log('deteleStudent response');
-	            console.log(ref);
-	         });
+	         this.students.splice(index, 1);
+
+	         /*this.students.$remove(student).then((ref) => {
+	           console.log('deteleStudent response');
+	           console.log(ref);
+	         });*/
 	      }
 	   }]);
 
@@ -21749,7 +25927,7 @@
 	exports.default = StudentsController;
 
 /***/ },
-/* 225 */
+/* 227 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -21812,7 +25990,7 @@
 	exports.default = JentooService;
 
 /***/ },
-/* 226 */
+/* 228 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21821,7 +25999,7 @@
 	   value: true
 	});
 
-	var _studentsForm = __webpack_require__(227);
+	var _studentsForm = __webpack_require__(229);
 
 	var _studentsForm2 = _interopRequireDefault(_studentsForm);
 
@@ -21844,19 +26022,19 @@
 	exports.default = StudentsForm;
 
 /***/ },
-/* 227 */
+/* 229 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<section>\n\n   <div class=\"page-header\">\n      <img src=\"" + __webpack_require__(228) + "\" alt=\"\">\n   </div>\n\n   <form name=\"poleForm\">\n\n      <div class=\"row\">\n         <div class=\"col-md-3\">\n            <label class=\"\" for=\"name\">Nombre</label>\n            <input id=\"name\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"name\"\n                   ng-model=\"$ctrl.student.name\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"lastName\">Apellidos</label>\n            <input id=\"lastName\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"lastName\"\n                   ng-model=\"$ctrl.student.lastName\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"inscriptionDate\">Fecha de Matrícula</label>\n            <p class=\"input-group\">\n               <input id=\"inscriptionDate\"\n                      type=\"text\"\n                      name=\"inscriptionDate\"\n                      class=\"form-control\"\n                      uib-datepicker-popup=\"{{$ctrl.format}}\"\n                      ng-model=\"$ctrl.setup.inscriptionDate\"\n                      is-open=\"$ctrl.setup.popup.opened\"\n                      datepicker-options=\"$ctrl.setup.dateOptions\"\n                      clear-text=\"Limpiar\"\n                      today-text=\"Hoy\"\n                      close-text=\"Cerrar\"\n                      alt-input-formats=\"$ctrl.setup.altInputFormats\" />\n            <span class=\"input-group-btn\">\n               <button type=\"button\"\n                       class=\"btn btn-default\"\n                       ng-click=\"$ctrl.openCalendar()\">\n                  <i class=\"glyphicon glyphicon-calendar\"></i>\n               </button>\n            </span>\n            </p>\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"documentType\">Tipo de Documento</label>\n            <select id=\"documentType\"\n                    name=\"documentType\"\n                    ng-model=\"$ctrl.student.documentType\"\n                    class=\"form-control\"\n                    ng-options=\"doc for doc in $ctrl.setup.documentTypes\">\n            </select>\n         </div>\n      </div>\n      <div class=\"row\">\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"email\">Email</label>\n            <input id=\"email\"\n                   type=\"email\"\n                   class=\"form-control\"\n                   name=\"email\"\n                   ng-model=\"$ctrl.student.email\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"phone\">Teléfono</label>\n            <input id=\"phone\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"phone\"\n                   ng-model=\"$ctrl.student.phone\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"mobile\">Celular</label>\n            <input id=\"mobile\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"mobile\"\n                   ng-model=\"$ctrl.student.mobile\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"address\">Dirección</label>\n            <input id=\"address\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"address\"\n                   ng-model=\"$ctrl.student.address\"\n                   placeholder=\"\">\n         </div>\n      </div>\n      <div class=\"row\">\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"height\">Estatura</label>\n            <input id=\"height\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"height\"\n                   ng-model=\"$ctrl.student.height\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"weight\">Peso</label>\n            <input id=\"weight\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"weight\"\n                   ng-model=\"$ctrl.student.weight\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"healthInsurance\">EPS</label>\n            <input id=\"healthInsurance\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"healthInsurance\"\n                   ng-model=\"$ctrl.student.healthInsurance\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"Profession\">Profesión</label>\n            <input id=\"Profession\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"Profession\"\n                   ng-model=\"$ctrl.student.profession\"\n                   placeholder=\"\">\n         </div>\n      </div>\n      <div class=\"row\">\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"children\">Hijos</label>\n            <label class=\"\">\n               <input type=\"checkbox\"\n                      id=\"children\"\n                      name=\"children\"\n                      ng-model=\"$ctrl.student.children\">\n            </label>\n         </div>\n\n      </div>\n      <hr>\n      <div class=\"row\">\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"ocupation\">Ocupación</label>\n            <select id=\"ocupation\"\n                    name=\"ocupation\"\n                    ng-model=\"$ctrl.student.occupation\"\n                    class=\"form-control\"\n                    ng-options=\"doc for doc in $ctrl.setup.occupations\">\n            </select>\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"companyName\">Empresa donde trabaja</label>\n            <input id=\"companyName\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"companyName\"\n                   ng-model=\"$ctrl.student.companyName\"\n                   placeholder=\"\">\n\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"companyPhone\">Teléfono Empresa</label>\n            <input id=\"companyPhone\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"companyPhone\"\n                   ng-model=\"$ctrl.student.companyPhone\"\n                   placeholder=\"\">\n\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"charge\">Cargo</label>\n            <input id=\"charge\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"charge\"\n                   ng-model=\"$ctrl.student.charge\"\n                   placeholder=\"\">\n\n         </div>\n      </div>\n      <div class=\"row\">\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"howYouMeetPoleCenter\">¿Como conoció Pole Center?</label>\n            <input id=\"howYouMeetPoleCenter\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"howYouMeetPoleCenter\"\n                   ng-model=\"$ctrl.student.howYouMeetPoleCenter\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"plan\">Plan</label>\n            <select id=\"plan\"\n                    name=\"plan\"\n                    ng-model=\"$ctrl.student.plan\"\n                    class=\"form-control\"\n                    ng-options=\"plan for plan in $ctrl.setup.plans\">\n            </select>\n         </div>\n         <div class=\"col-md-6\">\n            <div>\n               <label class=\"\"\n                      for=\"inCaseOfEmergencyName\">\n                  En caso de emergencia comunicarse con\n               </label>\n            </div>\n            <div class=\"col-md-6\">\n               <input id=\"inCaseOfEmergencyName\"\n                      type=\"text\"\n                      class=\"form-control\"\n                      name=\"inCaseOfEmergency\"\n                      ng-model=\"$ctrl.student.inCaseOfEmergency.name\"\n                      placeholder=\"Nombre\">\n            </div>\n            <div class=\"col-md-6\">\n               <input id=\"inCaseOfEmergencyPhone\"\n                      type=\"text\"\n                      class=\"form-control\"\n                      name=\"inCaseOfEmergency\"\n                      ng-model=\"$ctrl.student.inCaseOfEmergency.phone\"\n                      placeholder=\"Teléfono\">\n            </div>\n         </div>\n      </div>\n      <hr>\n      <div class=\"row\">\n         <div class=\"col-md-3\">\n            <button class=\"btn btn default\"\n                    ng-click=\"$ctrl.save()\">\n               <span ng-bind=\"$ctrl.buttonText\"></span>\n            </button>\n         </div>\n      </div>\n\n   </form>\n</section>";
+	module.exports = "<section>\n\n   <div class=\"page-header\">\n      <img src=\"" + __webpack_require__(230) + "\" alt=\"\">\n   </div>\n\n   <form name=\"poleForm\">\n\n      <div class=\"row\">\n         <div class=\"col-md-3\">\n            <label class=\"\" for=\"name\">Nombre</label>\n            <input id=\"name\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"name\"\n                   ng-model=\"$ctrl.student.name\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"lastName\">Apellidos</label>\n            <input id=\"lastName\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"lastName\"\n                   ng-model=\"$ctrl.student.lastName\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"inscriptionDate\">Fecha de Matrícula</label>\n            <p class=\"input-group\">\n               <input id=\"inscriptionDate\"\n                      type=\"text\"\n                      name=\"inscriptionDate\"\n                      class=\"form-control\"\n                      uib-datepicker-popup=\"{{$ctrl.format}}\"\n                      ng-model=\"$ctrl.student.inscriptionDate\"\n                      is-open=\"$ctrl.setup.popup.opened\"\n                      datepicker-options=\"$ctrl.setup.dateOptions\"\n                      clear-text=\"Limpiar\"\n                      today-text=\"Hoy\"\n                      close-text=\"Cerrar\"\n                      alt-input-formats=\"$ctrl.setup.altInputFormats\" />\n            <span class=\"input-group-btn\">\n               <button type=\"button\"\n                       class=\"btn btn-default\"\n                       ng-click=\"$ctrl.openCalendar()\">\n                  <i class=\"glyphicon glyphicon-calendar\"></i>\n               </button>\n            </span>\n            </p>\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"documentType\">Tipo de Documento</label>\n            <select id=\"documentType\"\n                    name=\"documentType\"\n                    ng-model=\"$ctrl.student.documentType\"\n                    class=\"form-control\"\n                    ng-options=\"doc for doc in $ctrl.setup.documentTypes\">\n            </select>\n         </div>\n      </div>\n      <div class=\"row\">\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"email\">Email</label>\n            <input id=\"email\"\n                   type=\"email\"\n                   class=\"form-control\"\n                   name=\"email\"\n                   ng-model=\"$ctrl.student.email\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"phone\">Teléfono</label>\n            <input id=\"phone\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"phone\"\n                   ng-model=\"$ctrl.student.phone\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"mobile\">Celular</label>\n            <input id=\"mobile\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"mobile\"\n                   ng-model=\"$ctrl.student.mobile\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"address\">Dirección</label>\n            <input id=\"address\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"address\"\n                   ng-model=\"$ctrl.student.address\"\n                   placeholder=\"\">\n         </div>\n      </div>\n      <div class=\"row\">\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"height\">Estatura</label>\n            <input id=\"height\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"height\"\n                   ng-model=\"$ctrl.student.height\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"weight\">Peso</label>\n            <input id=\"weight\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"weight\"\n                   ng-model=\"$ctrl.student.weight\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"healthInsurance\">EPS</label>\n            <input id=\"healthInsurance\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"healthInsurance\"\n                   ng-model=\"$ctrl.student.healthInsurance\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"Profession\">Profesión</label>\n            <input id=\"Profession\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"Profession\"\n                   ng-model=\"$ctrl.student.profession\"\n                   placeholder=\"\">\n         </div>\n      </div>\n      <div class=\"row\">\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"children\">Hijos</label>\n            <label class=\"\">\n               <input type=\"checkbox\"\n                      id=\"children\"\n                      name=\"children\"\n                      ng-model=\"$ctrl.student.children\">\n            </label>\n         </div>\n\n      </div>\n      <hr>\n      <div class=\"row\">\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"ocupation\">Ocupación</label>\n            <select id=\"ocupation\"\n                    name=\"ocupation\"\n                    ng-model=\"$ctrl.student.occupation\"\n                    class=\"form-control\"\n                    ng-options=\"doc for doc in $ctrl.setup.occupations\">\n            </select>\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"companyName\">Empresa donde trabaja</label>\n            <input id=\"companyName\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"companyName\"\n                   ng-model=\"$ctrl.student.companyName\"\n                   placeholder=\"\">\n\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"companyPhone\">Teléfono Empresa</label>\n            <input id=\"companyPhone\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"companyPhone\"\n                   ng-model=\"$ctrl.student.companyPhone\"\n                   placeholder=\"\">\n\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"charge\">Cargo</label>\n            <input id=\"charge\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"charge\"\n                   ng-model=\"$ctrl.student.charge\"\n                   placeholder=\"\">\n\n         </div>\n      </div>\n      <div class=\"row\">\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"howYouMeetPoleCenter\">¿Como conoció Pole Center?</label>\n            <input id=\"howYouMeetPoleCenter\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"howYouMeetPoleCenter\"\n                   ng-model=\"$ctrl.student.howYouMeetPoleCenter\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"plan\">Plan</label>\n            <select id=\"plan\"\n                    name=\"plan\"\n                    ng-model=\"$ctrl.student.plan\"\n                    class=\"form-control\"\n                    ng-options=\"plan for plan in $ctrl.setup.plans\">\n            </select>\n         </div>\n         <div class=\"col-md-6\">\n            <div class=\"text-center\">\n               <label\n                      for=\"inCaseOfEmergencyName\">\n                  En caso de emergencia comunicarse con\n               </label>\n            </div>\n            <div class=\"col-md-6\">\n               <input id=\"inCaseOfEmergencyName\"\n                      type=\"text\"\n                      class=\"form-control\"\n                      name=\"inCaseOfEmergency\"\n                      ng-model=\"$ctrl.student.inCaseOfEmergency.name\"\n                      placeholder=\"Nombre\">\n            </div>\n            <div class=\"col-md-6\">\n               <input id=\"inCaseOfEmergencyPhone\"\n                      type=\"text\"\n                      class=\"form-control\"\n                      name=\"inCaseOfEmergency\"\n                      ng-model=\"$ctrl.student.inCaseOfEmergency.phone\"\n                      placeholder=\"Teléfono\">\n            </div>\n         </div>\n      </div>\n      <hr>\n      <div class=\"row\">\n         <div class=\"col-md-3\">\n            <button class=\"btn btn default\"\n                    ng-click=\"$ctrl.save()\">\n               <span ng-bind=\"$ctrl.buttonText\"></span>\n            </button>\n         </div>\n      </div>\n\n      <pre>{{$ctrl.student | json}}</pre>\n\n   </form>\n</section>";
 
 /***/ },
-/* 228 */
+/* 230 */
 /***/ function(module, exports) {
 
 	module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAV4AAABRCAYAAACaCs57AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyNpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDE0IDc5LjE1MTQ4MSwgMjAxMy8wMy8xMy0xMjowOToxNSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIChNYWNpbnRvc2gpIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOkFFRTM4MzYwMkJFODExRTU4QTQwOTU3NjA4OEQ5RENFIiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOkFFRTM4MzYxMkJFODExRTU4QTQwOTU3NjA4OEQ5RENFIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6QUVFMzgzNUUyQkU4MTFFNThBNDA5NTc2MDg4RDlEQ0UiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6QUVFMzgzNUYyQkU4MTFFNThBNDA5NTc2MDg4RDlEQ0UiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz5NO5zXAABDqElEQVR42uy9B5wc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"
 
 /***/ },
-/* 229 */
+/* 231 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21865,11 +26043,11 @@
 	   value: true
 	});
 
-	var _app = __webpack_require__(230);
+	var _app = __webpack_require__(232);
 
 	var _app2 = _interopRequireDefault(_app);
 
-	__webpack_require__(231);
+	__webpack_require__(233);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -21880,22 +26058,22 @@
 	exports.default = appComponent;
 
 /***/ },
-/* 230 */
+/* 232 */
 /***/ function(module, exports) {
 
 	module.exports = "<section>\n   <nav class=\"navbar navbar-default\">\n      <div class=\"container-fluid\">\n         <!-- Brand and toggle get grouped for better mobile display -->\n         <div class=\"navbar-header\">\n            <button class=\"btn btn-default navbar-btn\"\n                    type=\"button\"\n                    ui-sref=\"students\">\n               Students\n            </button>\n            <a class=\"navbar-brand\" ui-sref=\"login\">Coco</a>\n         </div>\n      </div><!-- /.container-fluid -->\n   </nav>\n\n   <ui-view></ui-view>\n\n   <footer id=\"olgahFooter\">\n      All rights Reserved, Coco Interactivo 2016\n   </footer>\n\n</section>";
 
 /***/ },
-/* 231 */
+/* 233 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(232);
+	var content = __webpack_require__(234);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(211)(content, {});
+	var update = __webpack_require__(213)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -21912,10 +26090,10 @@
 	}
 
 /***/ },
-/* 232 */
+/* 234 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(210)();
+	exports = module.exports = __webpack_require__(212)();
 	// imports
 
 
@@ -21926,7 +26104,7 @@
 
 
 /***/ },
-/* 233 */
+/* 235 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21939,11 +26117,11 @@
 
 	var _angular2 = _interopRequireDefault(_angular);
 
-	var _directives = __webpack_require__(234);
+	var _directives = __webpack_require__(236);
 
 	var _directives2 = _interopRequireDefault(_directives);
 
-	var _loader = __webpack_require__(236);
+	var _loader = __webpack_require__(238);
 
 	var _loader2 = _interopRequireDefault(_loader);
 
@@ -21954,7 +26132,7 @@
 	exports.default = sharedModule;
 
 /***/ },
-/* 234 */
+/* 236 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21967,7 +26145,7 @@
 
 	var _angular2 = _interopRequireDefault(_angular);
 
-	var _passwordMatch = __webpack_require__(235);
+	var _passwordMatch = __webpack_require__(237);
 
 	var _passwordMatch2 = _interopRequireDefault(_passwordMatch);
 
@@ -21978,7 +26156,7 @@
 	exports.default = sharedModule;
 
 /***/ },
-/* 235 */
+/* 237 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -22021,7 +26199,7 @@
 	exports.default = passwordMatch;
 
 /***/ },
-/* 236 */
+/* 238 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22034,19 +26212,19 @@
 
 	var _angular2 = _interopRequireDefault(_angular);
 
-	var _loaderConfigProvider = __webpack_require__(237);
+	var _loaderConfigProvider = __webpack_require__(239);
 
 	var _loaderConfigProvider2 = _interopRequireDefault(_loaderConfigProvider);
 
-	var _loaderDirective = __webpack_require__(238);
+	var _loaderDirective = __webpack_require__(240);
 
 	var _loaderDirective2 = _interopRequireDefault(_loaderDirective);
 
-	var _loaderInterceptorService = __webpack_require__(241);
+	var _loaderInterceptorService = __webpack_require__(243);
 
 	var _loaderInterceptorService2 = _interopRequireDefault(_loaderInterceptorService);
 
-	var _loaderDisplayService = __webpack_require__(242);
+	var _loaderDisplayService = __webpack_require__(244);
 
 	var _loaderDisplayService2 = _interopRequireDefault(_loaderDisplayService);
 
@@ -22057,7 +26235,7 @@
 	exports.default = loadingModule;
 
 /***/ },
-/* 237 */
+/* 239 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -22108,7 +26286,7 @@
 	exports.default = loadingConfigProvider;
 
 /***/ },
-/* 238 */
+/* 240 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22117,7 +26295,7 @@
 	   value: true
 	});
 
-	__webpack_require__(239);
+	__webpack_require__(241);
 
 	Loader.$inject = ['$q', '$timeout', 'LoadingInterceptor', 'loaderConfig', 'LoadingDisplay'];
 
@@ -22231,16 +26409,16 @@
 	exports.default = Loader;
 
 /***/ },
-/* 239 */
+/* 241 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(240);
+	var content = __webpack_require__(242);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(211)(content, {});
+	var update = __webpack_require__(213)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -22257,10 +26435,10 @@
 	}
 
 /***/ },
-/* 240 */
+/* 242 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(210)();
+	exports = module.exports = __webpack_require__(212)();
 	// imports
 
 
@@ -22271,7 +26449,7 @@
 
 
 /***/ },
-/* 241 */
+/* 243 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -22291,7 +26469,7 @@
 	exports.default = LoadingInterceptorService;
 
 /***/ },
-/* 242 */
+/* 244 */
 /***/ function(module, exports) {
 
 	'use strict';
