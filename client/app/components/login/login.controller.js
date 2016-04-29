@@ -1,7 +1,8 @@
 class LoginController {
 
-   constructor(LoginService) {
+   constructor(LoginService, $state) {
       this.LoginService = LoginService;
+      this.$state = $state;
       this.name = 'login';
 
       LoginService.$onAuth(function (au) {
@@ -23,6 +24,7 @@ class LoginController {
          console.log('authData');
          console.log(authData);
          this.authData = authData;
+         this.$state.go('students');
       }, error => {
          console.log('error');
          console.log(error);
@@ -34,6 +36,6 @@ class LoginController {
 
 }
 
-LoginController.$inject = ['LoginService'];
+LoginController.$inject = ['LoginService', '$state'];
 
 export default LoginController;

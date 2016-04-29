@@ -34,7 +34,7 @@
 /******/ 	__webpack_require__.c = installedModules;
 
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "http://localhost:3000/assets/935706492ff009ba873c";
+/******/ 	__webpack_require__.p = "http://localhost:3000/assets/edc698cf4335f4d9dcb7";
 
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
@@ -25477,10 +25477,11 @@
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	var LoginController = (function () {
-	   function LoginController(LoginService) {
+	   function LoginController(LoginService, $state) {
 	      _classCallCheck(this, LoginController);
 
 	      this.LoginService = LoginService;
+	      this.$state = $state;
 	      this.name = 'login';
 
 	      LoginService.$onAuth(function (au) {
@@ -25504,6 +25505,7 @@
 	            console.log('authData');
 	            console.log(authData);
 	            _this.authData = authData;
+	            _this.$state.go('students');
 	         }, function (error) {
 	            console.log('error');
 	            console.log(error);
@@ -25517,7 +25519,7 @@
 	   return LoginController;
 	})();
 
-	LoginController.$inject = ['LoginService'];
+	LoginController.$inject = ['LoginService', '$state'];
 
 	exports.default = LoginController;
 
