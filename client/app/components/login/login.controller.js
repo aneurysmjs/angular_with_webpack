@@ -17,10 +17,12 @@ class LoginController {
          console.log('authData');
          console.log(authData);
          this.authData = authData;
-      }).catch((error) => {
+      }, error => {
          console.log('error');
          console.log(error);
          this.error = error;
+      }, {
+         remember: "sessionOnly"
       });
    }
 

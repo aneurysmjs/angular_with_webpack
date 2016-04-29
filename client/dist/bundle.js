@@ -34,7 +34,7 @@
 /******/ 	__webpack_require__.c = installedModules;
 
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "http://localhost:3000/assets/9de09e9ac5474bee8e43";
+/******/ 	__webpack_require__.p = "http://localhost:3000/assets/6a4e2fa34fd833314878";
 
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
@@ -25499,10 +25499,12 @@
 	            console.log('authData');
 	            console.log(authData);
 	            _this.authData = authData;
-	         }).catch(function (error) {
+	         }, function (error) {
 	            console.log('error');
 	            console.log(error);
 	            _this.error = error;
+	         }, {
+	            remember: "sessionOnly"
 	         });
 	      }
 	   }]);
