@@ -34,7 +34,7 @@
 /******/ 	__webpack_require__.c = installedModules;
 
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "http://localhost:3000/assets/63ab600c16f8a5f39036";
+/******/ 	__webpack_require__.p = "http://localhost:3000/assets/9de09e9ac5474bee8e43";
 
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
@@ -25786,7 +25786,7 @@
 /* 223 */
 /***/ function(module, exports) {
 
-	module.exports = "<ui-view>\n\n   <button type=\"button\" ui-sref=\"students.create\">\n      crear\n   </button>\n\n   <form class=\"form-inline\">\n      <div class=\"form-group\">\n         <label for=\"exampleInputName2\">Filter</label>\n         <input type=\"text\"\n                class=\"form-control\"\n                id=\"exampleInputName2\"\n                ng-model=\"myFilter\"\n                placeholder=\"Jane Doe\">\n      </div>\n      <button type=\"submit\" class=\"btn btn-default\">Send invitation</button>\n   </form>\n\n   <table class=\"table table-hover\">\n      <thead>\n      <tr>\n         <th>First Name</th>\n         <th>Last Name</th>\n         <th>Email</th>\n         <th>Celular</th>\n         <th>Profession</th>\n         <th>Plan</th>\n         <th>&nbsp;</th>\n      </tr>\n      </thead>\n      <tbody>\n      <tr ng-repeat=\"student in $ctrl.students | filter: myFilter track by $index\"\n          ng-dblclick=\"$ctrl.studentProfile(student)\">\n         <th ng-bind=\"student.name\"></th>\n         <td ng-bind=\"student.lastName\"></td>\n         <td ng-bind=\"student.email\"></td>\n         <td ng-bind=\"student.mobile\"></td>\n         <td ng-bind=\"student.profession\"></td>\n         <td ng-bind=\"student.plan\"></td>\n         <td ng-click=\"$ctrl.deleteStudent(student)\">\n             <span class=\"glyphicon glyphicon-remove\"\n                   tooltip-placement=\"top\"\n                   uib-tooltip=\"Eliminar\">\n             </span>\n         </td>\n      </tr>\n      </tbody>\n   </table>\n\n</ui-view>";
+	module.exports = "<ui-view>\n\n   <button type=\"button\" ui-sref=\"students.create\">\n      crear\n   </button>\n\n   <form class=\"form-inline\">\n      <div class=\"form-group\">\n         <label for=\"exampleInputName2\">Filter</label>\n         <input type=\"text\"\n                class=\"form-control\"\n                id=\"exampleInputName2\"\n                ng-model=\"myFilter\"\n                placeholder=\"Jane Doe\">\n      </div>\n      <button type=\"submit\" class=\"btn btn-default\">Send invitation</button>\n   </form>\n\n   <div class=\"Student-cards\">\n      <div class=\"Student-card\" ng-repeat=\"student in $ctrl.students track by $index\">\n         <span ng-bind=\"student.name\"></span>\n         <span ng-bind=\"student.lastName\"></span>\n         <span ng-bind=\"student.email\"></span>\n         <span ng-bind=\"student.phone\"></span>\n      </div>\n   </div>\n\n   <!--<table class=\"table table-hover\">\n      <thead>\n      <tr>\n         <th>First Name</th>\n         <th>Last Name</th>\n         <th>Email</th>\n         <th>Celular</th>\n         <th>Profession</th>\n         <th>Plan</th>\n         <th>&nbsp;</th>\n      </tr>\n      </thead>\n      <tbody>\n      <tr ng-repeat=\"student in $ctrl.students | filter: myFilter track by $index\"\n          ng-dblclick=\"$ctrl.studentProfile(student)\">\n         <th ng-bind=\"student.name\"></th>\n         <td ng-bind=\"student.lastName\"></td>\n         <td ng-bind=\"student.email\"></td>\n         <td ng-bind=\"student.mobile\"></td>\n         <td ng-bind=\"student.profession\"></td>\n         <td ng-bind=\"student.plan\"></td>\n         <td ng-click=\"$ctrl.deleteStudent(student)\">\n             <span class=\"glyphicon glyphicon-remove\"\n                   tooltip-placement=\"top\"\n                   uib-tooltip=\"Eliminar\">\n             </span>\n         </td>\n      </tr>\n      </tbody>\n   </table>-->\n\n</ui-view>";
 
 /***/ },
 /* 224 */
@@ -25823,7 +25823,7 @@
 
 
 	// module
-	exports.push([module.id, ".fade {\n  transition: 1s linear all;\n  -webkit-transition: 1s linear all;\n}\n.fade.ng-enter,\n.fade.ng-leave {\n  opacity: 0;\n}\n.fade.ng-enter.ng-enter-active {\n  opacity: 1;\n}\n.fade.ng-leave {\n  opacity: 1;\n}\n.fade.ng-leave.ng-leave-active {\n  opacity: 1;\n}\n", ""]);
+	exports.push([module.id, ".fade {\n  transition: 1s linear all;\n  -webkit-transition: 1s linear all;\n}\n.fade.ng-enter,\n.fade.ng-leave {\n  opacity: 0;\n}\n.fade.ng-enter.ng-enter-active {\n  opacity: 1;\n}\n.fade.ng-leave {\n  opacity: 1;\n}\n.fade.ng-leave.ng-leave-active {\n  opacity: 1;\n}\n.Student-cards {\n  display: -webkit-box;\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n}\n.Student-cards .Student-card {\n  width: 200px;\n  height: 150px;\n}\n", ""]);
 
 	// exports
 
@@ -26132,13 +26132,17 @@
 
 	var _directives2 = _interopRequireDefault(_directives);
 
+	var _services = __webpack_require__(245);
+
+	var _services2 = _interopRequireDefault(_services);
+
 	var _loader = __webpack_require__(238);
 
 	var _loader2 = _interopRequireDefault(_loader);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var sharedModule = _angular2.default.module('app.shared', [_directives2.default.name, _loader2.default.name]);
+	var sharedModule = _angular2.default.module('app.shared', [_directives2.default.name, _services2.default.name, _loader2.default.name]);
 
 	exports.default = sharedModule;
 
@@ -26562,6 +26566,133 @@
 	LoaderDisplayService.$inject = ['$window'];
 
 	exports.default = LoaderDisplayService;
+
+/***/ },
+/* 245 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	   value: true
+	});
+
+	var _angular = __webpack_require__(192);
+
+	var _angular2 = _interopRequireDefault(_angular);
+
+	var _authInterceptor = __webpack_require__(246);
+
+	var _authInterceptor2 = _interopRequireDefault(_authInterceptor);
+
+	var _authToken = __webpack_require__(247);
+
+	var _authToken2 = _interopRequireDefault(_authToken);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var servicesModule = _angular2.default.module('app.shared.services', []).service('AuthInterceptor', _authInterceptor2.default).service('AuthToken', _authToken2.default);
+
+	exports.default = servicesModule;
+
+/***/ },
+/* 246 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	Object.defineProperty(exports, "__esModule", {
+	   value: true
+	});
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var authInterceptor = (function () {
+	   function authInterceptor(AuthTokenService) {
+	      _classCallCheck(this, authInterceptor);
+
+	      this.AuthTokenService = AuthTokenService;
+	   }
+
+	   _createClass(authInterceptor, [{
+	      key: 'addToken',
+	      value: function addToken(config) {
+
+	         var token = AuthTokenService.getToken();
+	         //  Now if there is a token, so if the user is authenticated.
+	         if (token) {
+	            // then we're going to add this to a header on this config object,
+	            config.headers = config.headers || {};
+	            //console.log('----authInterceptor----');
+	            //console.log(config);
+	            config.headers.Authorization = 'Bearer ' + token;
+	         }
+
+	         return config;
+	      }
+	   }]);
+
+	   return authInterceptor;
+	})();
+
+	authInterceptor.$inject = ['AuthTokenService'];
+
+	exports.default = authInterceptor;
+
+/***/ },
+/* 247 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	Object.defineProperty(exports, "__esModule", {
+	   value: true
+	});
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var AuthToken = (function () {
+	   function AuthToken($window, $q) {
+	      _classCallCheck(this, AuthToken);
+
+	      this.storage = $window.getitem();
+
+	      this.key = 'auth-token: ';
+	   }
+
+	   _createClass(AuthToken, [{
+	      key: 'getToken',
+	      value: function getToken() {
+	         return this.store.getItem(this.key);
+	      }
+	   }, {
+	      key: 'setToken',
+	      value: function setToken(token) {
+	         var _this = this;
+
+	         return $q(function (resolve, reject) {
+
+	            if (token) {
+	               _this.store.setItem(_this.key, token);
+	               resolve('Token Generated');
+	            } else {
+	               _this.store.removeItem(_this.key);
+	               resolve('Token Removed');
+	            }
+	         });
+	      }
+	   }]);
+
+	   return AuthToken;
+	})();
+
+	AuthToken.$inject = ['$window', '$q'];
+
+	exports.default = AuthToken;
 
 /***/ }
 /******/ ]);
