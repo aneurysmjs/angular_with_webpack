@@ -34,7 +34,7 @@
 /******/ 	__webpack_require__.c = installedModules;
 
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "http://localhost:3000/assets/6a4e2fa34fd833314878";
+/******/ 	__webpack_require__.p = "http://localhost:3000/assets/935706492ff009ba873c";
 
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
@@ -25482,6 +25482,11 @@
 
 	      this.LoginService = LoginService;
 	      this.name = 'login';
+
+	      LoginService.$onAuth(function (au) {
+	         console.log('au');
+	         console.log(au);
+	      });
 	   }
 
 	   _createClass(LoginController, [{
@@ -25708,14 +25713,27 @@
 	            return StudentsService.getStudents().then(function (response) {
 	               return response;
 	            });
+	         }],
+	         currentAuth: ['LoginService', function (LoginService) {
+	            return LoginService.$requireAuth();
 	         }]
 	      }
 	   }).state('students.create', {
 	      url: '/create',
-	      template: '<students-form ctrl="StudentsController"></students-form>'
+	      template: '<students-form ctrl="StudentsController"></students-form>',
+	      resolve: {
+	         currentAuth: ['LoginService', function (LoginService) {
+	            return LoginService.$requireAuth();
+	         }]
+	      }
 	   }).state('students.update', {
 	      url: '/update/:id',
-	      template: '<students-form ctrl="StudentsController"></students-form>'
+	      template: '<students-form ctrl="StudentsController"></students-form>',
+	      resolve: {
+	         currentAuth: ['LoginService', function (LoginService) {
+	            return LoginService.$requireAuth();
+	         }]
+	      }
 	   });
 	}
 
@@ -26134,11 +26152,11 @@
 
 	var _directives2 = _interopRequireDefault(_directives);
 
-	var _services = __webpack_require__(245);
+	var _services = __webpack_require__(238);
 
 	var _services2 = _interopRequireDefault(_services);
 
-	var _loader = __webpack_require__(238);
+	var _loader = __webpack_require__(241);
 
 	var _loader2 = _interopRequireDefault(_loader);
 
@@ -26229,19 +26247,146 @@
 
 	var _angular2 = _interopRequireDefault(_angular);
 
-	var _loaderConfigProvider = __webpack_require__(239);
+	var _authInterceptor = __webpack_require__(239);
+
+	var _authInterceptor2 = _interopRequireDefault(_authInterceptor);
+
+	var _authToken = __webpack_require__(240);
+
+	var _authToken2 = _interopRequireDefault(_authToken);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var servicesModule = _angular2.default.module('app.shared.services', []).service('AuthInterceptor', _authInterceptor2.default).service('AuthToken', _authToken2.default);
+
+	exports.default = servicesModule;
+
+/***/ },
+/* 239 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	Object.defineProperty(exports, "__esModule", {
+	   value: true
+	});
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var authInterceptor = (function () {
+	   function authInterceptor(AuthTokenService) {
+	      _classCallCheck(this, authInterceptor);
+
+	      this.AuthTokenService = AuthTokenService;
+	   }
+
+	   _createClass(authInterceptor, [{
+	      key: 'addToken',
+	      value: function addToken(config) {
+
+	         var token = AuthTokenService.getToken();
+	         //  Now if there is a token, so if the user is authenticated.
+	         if (token) {
+	            // then we're going to add this to a header on this config object,
+	            config.headers = config.headers || {};
+	            //console.log('----authInterceptor----');
+	            //console.log(config);
+	            config.headers.Authorization = 'Bearer ' + token;
+	         }
+
+	         return config;
+	      }
+	   }]);
+
+	   return authInterceptor;
+	})();
+
+	authInterceptor.$inject = ['AuthTokenService'];
+
+	exports.default = authInterceptor;
+
+/***/ },
+/* 240 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	Object.defineProperty(exports, "__esModule", {
+	   value: true
+	});
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var AuthToken = (function () {
+	   function AuthToken($window, $q) {
+	      _classCallCheck(this, AuthToken);
+
+	      this.storage = $window.getitem();
+
+	      this.key = 'auth-token: ';
+	   }
+
+	   _createClass(AuthToken, [{
+	      key: 'getToken',
+	      value: function getToken() {
+	         return this.store.getItem(this.key);
+	      }
+	   }, {
+	      key: 'setToken',
+	      value: function setToken(token) {
+	         var _this = this;
+
+	         return $q(function (resolve, reject) {
+
+	            if (token) {
+	               _this.store.setItem(_this.key, token);
+	               resolve('Token Generated');
+	            } else {
+	               _this.store.removeItem(_this.key);
+	               resolve('Token Removed');
+	            }
+	         });
+	      }
+	   }]);
+
+	   return AuthToken;
+	})();
+
+	AuthToken.$inject = ['$window', '$q'];
+
+	exports.default = AuthToken;
+
+/***/ },
+/* 241 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	   value: true
+	});
+
+	var _angular = __webpack_require__(192);
+
+	var _angular2 = _interopRequireDefault(_angular);
+
+	var _loaderConfigProvider = __webpack_require__(242);
 
 	var _loaderConfigProvider2 = _interopRequireDefault(_loaderConfigProvider);
 
-	var _loaderDirective = __webpack_require__(240);
+	var _loaderDirective = __webpack_require__(243);
 
 	var _loaderDirective2 = _interopRequireDefault(_loaderDirective);
 
-	var _loaderInterceptorService = __webpack_require__(243);
+	var _loaderInterceptorService = __webpack_require__(246);
 
 	var _loaderInterceptorService2 = _interopRequireDefault(_loaderInterceptorService);
 
-	var _loaderDisplayService = __webpack_require__(244);
+	var _loaderDisplayService = __webpack_require__(247);
 
 	var _loaderDisplayService2 = _interopRequireDefault(_loaderDisplayService);
 
@@ -26252,7 +26397,7 @@
 	exports.default = loadingModule;
 
 /***/ },
-/* 239 */
+/* 242 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -26303,7 +26448,7 @@
 	exports.default = loadingConfigProvider;
 
 /***/ },
-/* 240 */
+/* 243 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26312,7 +26457,7 @@
 	   value: true
 	});
 
-	__webpack_require__(241);
+	__webpack_require__(244);
 
 	Loader.$inject = ['$q', '$timeout', 'LoadingInterceptor', 'loaderConfig', 'LoadingDisplay'];
 
@@ -26426,13 +26571,13 @@
 	exports.default = Loader;
 
 /***/ },
-/* 241 */
+/* 244 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(242);
+	var content = __webpack_require__(245);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(213)(content, {});
@@ -26452,7 +26597,7 @@
 	}
 
 /***/ },
-/* 242 */
+/* 245 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(212)();
@@ -26466,7 +26611,7 @@
 
 
 /***/ },
-/* 243 */
+/* 246 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -26486,7 +26631,7 @@
 	exports.default = LoadingInterceptorService;
 
 /***/ },
-/* 244 */
+/* 247 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -26568,133 +26713,6 @@
 	LoaderDisplayService.$inject = ['$window'];
 
 	exports.default = LoaderDisplayService;
-
-/***/ },
-/* 245 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	   value: true
-	});
-
-	var _angular = __webpack_require__(192);
-
-	var _angular2 = _interopRequireDefault(_angular);
-
-	var _authInterceptor = __webpack_require__(246);
-
-	var _authInterceptor2 = _interopRequireDefault(_authInterceptor);
-
-	var _authToken = __webpack_require__(247);
-
-	var _authToken2 = _interopRequireDefault(_authToken);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var servicesModule = _angular2.default.module('app.shared.services', []).service('AuthInterceptor', _authInterceptor2.default).service('AuthToken', _authToken2.default);
-
-	exports.default = servicesModule;
-
-/***/ },
-/* 246 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-	Object.defineProperty(exports, "__esModule", {
-	   value: true
-	});
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	var authInterceptor = (function () {
-	   function authInterceptor(AuthTokenService) {
-	      _classCallCheck(this, authInterceptor);
-
-	      this.AuthTokenService = AuthTokenService;
-	   }
-
-	   _createClass(authInterceptor, [{
-	      key: 'addToken',
-	      value: function addToken(config) {
-
-	         var token = AuthTokenService.getToken();
-	         //  Now if there is a token, so if the user is authenticated.
-	         if (token) {
-	            // then we're going to add this to a header on this config object,
-	            config.headers = config.headers || {};
-	            //console.log('----authInterceptor----');
-	            //console.log(config);
-	            config.headers.Authorization = 'Bearer ' + token;
-	         }
-
-	         return config;
-	      }
-	   }]);
-
-	   return authInterceptor;
-	})();
-
-	authInterceptor.$inject = ['AuthTokenService'];
-
-	exports.default = authInterceptor;
-
-/***/ },
-/* 247 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-	Object.defineProperty(exports, "__esModule", {
-	   value: true
-	});
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	var AuthToken = (function () {
-	   function AuthToken($window, $q) {
-	      _classCallCheck(this, AuthToken);
-
-	      this.storage = $window.getitem();
-
-	      this.key = 'auth-token: ';
-	   }
-
-	   _createClass(AuthToken, [{
-	      key: 'getToken',
-	      value: function getToken() {
-	         return this.store.getItem(this.key);
-	      }
-	   }, {
-	      key: 'setToken',
-	      value: function setToken(token) {
-	         var _this = this;
-
-	         return $q(function (resolve, reject) {
-
-	            if (token) {
-	               _this.store.setItem(_this.key, token);
-	               resolve('Token Generated');
-	            } else {
-	               _this.store.removeItem(_this.key);
-	               resolve('Token Removed');
-	            }
-	         });
-	      }
-	   }]);
-
-	   return AuthToken;
-	})();
-
-	AuthToken.$inject = ['$window', '$q'];
-
-	exports.default = AuthToken;
 
 /***/ }
 /******/ ]);

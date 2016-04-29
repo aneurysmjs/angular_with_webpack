@@ -3,6 +3,12 @@ class LoginController {
    constructor(LoginService) {
       this.LoginService = LoginService;
       this.name = 'login';
+
+      LoginService.$onAuth(function (au) {
+         console.log('au');
+         console.log(au);
+      });
+
    }
 
    login() {

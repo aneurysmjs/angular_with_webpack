@@ -16,16 +16,29 @@ function studentsRoutes($stateProvider) {
                return StudentsService.getStudents().then(response => {
                   return response;
                });
+            }],
+            currentAuth: ['LoginService', function (LoginService) {
+               return LoginService.$requireAuth();
             }]
          }
       })
       .state('students.create', {
          url: '/create',
-         template: '<students-form ctrl="StudentsController"></students-form>'
+         template: '<students-form ctrl="StudentsController"></students-form>',
+         resolve: {
+            currentAuth: ['LoginService', function (LoginService) {
+               return LoginService.$requireAuth();
+            }]
+         }
       })
       .state('students.update', {
          url: '/update/:id',
-         template: '<students-form ctrl="StudentsController"></students-form>'
+         template: '<students-form ctrl="StudentsController"></students-form>',
+         resolve: {
+            currentAuth: ['LoginService', function (LoginService) {
+               return LoginService.$requireAuth();
+            }]
+         }
       });
 
 }
