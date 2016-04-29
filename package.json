@@ -25,7 +25,7 @@
   },
   "homepage": "https://github.com/blackendstudios/angular_with_webpack#readme",
   "devDependencies": {
-    "angular-mocks": "1.5.0",
+    "angular-mocks": "1.5.5",
     "babel-core": "6.2.1",
     "babel-loader": "6.2.0",
     "babel-plugin-syntax-decorators": "6.5.0",
@@ -64,12 +64,13 @@
     "yargs": "3.30.0"
   },
   "dependencies": {
-    "angular": "1.5.0",
+    "angular": "1.5.5",
     "angular-animate": "1.5.5",
     "angular-ui-bootstrap": "1.3.1",
     "angular-ui-router": "0.2.15",
     "angularfire": "1.2.0",
     "dragular": "4.1.0",
+    "firebase": "2.4.2",
     "flat-ui": "2.1.1",
     "font-awesome": "4.6.1"
   }

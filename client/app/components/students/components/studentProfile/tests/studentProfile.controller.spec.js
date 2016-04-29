@@ -1,7 +1,7 @@
 import studentProfileModule from './../studentProfile'
 import uiRouter from 'angular-ui-router';
 
-describe('StudentProfileController', () => {
+xdescribe('StudentProfileController', () => {
 
    beforeEach(window.module(uiRouter));
    beforeEach(window.module(studentProfileModule.name));

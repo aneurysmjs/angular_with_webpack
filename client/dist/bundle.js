@@ -34,7 +34,7 @@
 /******/ 	__webpack_require__.c = installedModules;
 
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "http://localhost:3000/assets/4a04d76b9733be02098a";
+/******/ 	__webpack_require__.p = "http://localhost:3000/assets/5a03b4c8069202430492";
 
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
@@ -25043,7 +25043,7 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	   value: true
+	      value: true
 	});
 
 	var _angular = __webpack_require__(192);
@@ -25066,13 +25066,21 @@
 
 	var _login8 = _interopRequireDefault(_login7);
 
+	var _app = __webpack_require__(195);
+
+	var _app2 = _interopRequireDefault(_app);
+
+	var _app3 = __webpack_require__(204);
+
+	var _app4 = _interopRequireDefault(_app3);
+
 	var _register = __webpack_require__(217);
 
 	var _register2 = _interopRequireDefault(_register);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var loginModule = _angular2.default.module('login', []).config(_login2.default).component('login', _login4.default).component('register', _register2.default).controller('LoginController', _login6.default).service('LoginService', _login8.default);
+	var loginModule = _angular2.default.module('login', [_app2.default.name, _app4.default.name]).config(_login2.default).component('login', _login4.default).component('register', _register2.default).controller('LoginController', _login6.default).service('LoginService', _login8.default);
 
 	exports.default = loginModule;
 

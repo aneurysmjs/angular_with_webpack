@@ -2,7 +2,7 @@
 import StudentModule from '../students';
 import uiRouter from 'angular-ui-router';
 
-describe('StudentController', () => {
+xdescribe('StudentController', () => {
 
    beforeEach(window.module(uiRouter));
    beforeEach(window.module(StudentModule.name));
