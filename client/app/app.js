@@ -1,5 +1,6 @@
 import angular from 'angular';
 import appConfig from './app.config';
+import appRun from './app.run';
 import appLibraries from './app.libraries';
 import appConstants from './app.constants';
 import components from './components/components';
@@ -13,6 +14,7 @@ angular.module('app', [
       appConstants.name
    ])
    .config(appConfig)
+   .run(appRun)
    .component('app', appComponent);
 
 

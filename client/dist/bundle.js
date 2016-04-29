@@ -34,7 +34,7 @@
 /******/ 	__webpack_require__.c = installedModules;
 
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "http://localhost:3000/assets/edc698cf4335f4d9dcb7";
+/******/ 	__webpack_require__.p = "http://localhost:3000/assets/c9457bd0331c58214754";
 
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
@@ -5325,21 +5325,25 @@
 
 	var _app2 = _interopRequireDefault(_app);
 
-	var _app3 = __webpack_require__(194);
+	var _app3 = __webpack_require__(248);
 
 	var _app4 = _interopRequireDefault(_app3);
 
-	var _app5 = __webpack_require__(203);
+	var _app5 = __webpack_require__(194);
 
 	var _app6 = _interopRequireDefault(_app5);
+
+	var _app7 = __webpack_require__(203);
+
+	var _app8 = _interopRequireDefault(_app7);
 
 	var _components = __webpack_require__(204);
 
 	var _components2 = _interopRequireDefault(_components);
 
-	var _app7 = __webpack_require__(231);
+	var _app9 = __webpack_require__(231);
 
-	var _app8 = _interopRequireDefault(_app7);
+	var _app10 = _interopRequireDefault(_app9);
 
 	var _shared = __webpack_require__(235);
 
@@ -5347,7 +5351,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	_angular2.default.module('app', [_app4.default.name, _components2.default.name, _shared2.default.name, _app6.default.name]).config(_app2.default).component('app', _app8.default);
+	_angular2.default.module('app', [_app6.default.name, _components2.default.name, _shared2.default.name, _app8.default.name]).config(_app2.default).run(_app4.default).component('app', _app10.default);
 
 	// manually bootstrap angular
 	_angular2.default.bootstrap(document, ['app'], {
@@ -26715,6 +26719,30 @@
 	LoaderDisplayService.$inject = ['$window'];
 
 	exports.default = LoaderDisplayService;
+
+/***/ },
+/* 248 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	   value: true
+	});
+	function run($rootScope, $state) {
+
+	   $rootScope.$on("$stateChangeError", function (event, toState, toParams, fromState, fromParams, error) {
+	      // We can catch the error thrown when the $requireAuth promise is rejected
+	      // and redirect the user back to the home page
+	      if (error === "AUTH_REQUIRED") {
+	         $state.go("login");
+	      }
+	   });
+	}
+
+	run.$inject = ['$rootScope', '$state'];
+
+	exports.default = run;
 
 /***/ }
 /******/ ]);
