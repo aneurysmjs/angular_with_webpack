@@ -1,0 +1,20 @@
+<aside class="StudentCard" ng-if="$ctrl.cards.length">
+   <div class="StudentCard-content whiteframe-1dp"
+        ng-dblclick="$ctrl.onProfile(student)"
+        ng-repeat="card in $ctrl.cards track by $index">
+      <ul class="StudentCard-info">
+         <li>
+            <span class="fa fa-angle-right"></span>
+            <span ng-bind="::card.name + ' ' +  card.lastName"></span>
+         </li>
+         <li>
+            <span class="fa fa-angle-right"></span>
+            <span ng-bind="::card.profession"></span>
+         </li>
+         <li>
+            <span class="fa fa-angle-right"></span>
+            <span ng-bind="::card.plan"></span>
+         </li>
+      </ul>
+   </div>
+</aside>

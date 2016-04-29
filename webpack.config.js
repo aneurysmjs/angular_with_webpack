@@ -38,7 +38,7 @@ module.exports = {
             }
          },
          {test: /\.html$/, loader: 'html', exclude: /node_modules/},
-         {test: /\.css$/,  loader: 'style!css', exclude: /node_modules/},
+         {test: /\.css$/,  loader: 'style!css?sourceMap', exclude: /node_modules/},
          {test: /\.styl$/, loader: 'style!css!stylus', exclude: /node_modules/},
          {test: /\.(jpe?g|png|gif|svg)$/i, loader:'url'}
       ]

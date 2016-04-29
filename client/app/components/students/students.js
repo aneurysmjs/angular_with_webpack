@@ -6,8 +6,13 @@ import StudentsController from './students.controller';
 import StudentsService from './students.service';
 
 import studentsForm from './components/studentsForm/studentsForm';
+import studentCard from './components/studentCard/studentCard';
+import studentProfile from './components/studentProfile/studentProfile';
 
-let studentsModule = angular.module('students', [])
+let studentsModule = angular.module('students', [
+      studentCard.name,
+      studentProfile.name
+   ])
    .config(studentsRoutes)
    .value('studentsSetup', studentsSetup)
    .component('ciStudents', studentsComponent)

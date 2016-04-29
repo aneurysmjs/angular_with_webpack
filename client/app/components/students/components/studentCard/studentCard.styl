@@ -1,0 +1,30 @@
+.StudentCard
+   display: flex
+   justify-content: flex-start
+   padding: 10px
+
+   .StudentCard-content
+      background-color: #f8f8f8
+      border-color: #e7e7e7
+      box-shadow: 0 1px 3px 0 rgba(0,0,0,.2),0 1px 1px 0 rgba(0,0,0,.14),0 2px 1px -1px rgba(0,0,0,.12)
+      display: inherit
+      flex-direction: column
+      justify-content: center
+      margin: 0 5px
+      padding: 5px
+      width: 200px
+      transition: all ease 0.3s
+      &:hover
+         box-shadow: 0 3px 5px -1px rgba(0,0,0,.2),0 6px 10px 0 rgba(0,0,0,.14),0 1px 18px 0 rgba(0,0,0,.12);
+
+      ul.StudentCard-info
+         padding: 0 0 0 10px
+
+         li
+            list-style: none
+
+            span[class="fa fa-angle-right"]
+               color: #16a085
+               font-size: 1.5em
+               font-weight: 800
+

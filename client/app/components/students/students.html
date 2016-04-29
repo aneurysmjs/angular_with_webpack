@@ -16,14 +16,21 @@
       <button type="submit" class="btn btn-default">Send invitation</button>
    </form>
 
-   <div class="Student-cards">
+
+
+   <student-card cards="$ctrl.students"
+                  on-profile="$ctrl.studentProfile(student)">
+   </student-card>
+
+
+  <!-- <div class="Student-cards">
       <div class="Student-card" ng-repeat="student in $ctrl.students track by $index">
          <span ng-bind="student.name"></span>
          <span ng-bind="student.lastName"></span>
          <span ng-bind="student.email"></span>
          <span ng-bind="student.phone"></span>
       </div>
-   </div>
+   </div>-->
 
    <!--<table class="table table-hover">
       <thead>

@@ -33,7 +33,7 @@ function studentsRoutes($stateProvider) {
       })
       .state('students.update', {
          url: '/update/:id',
-         template: '<students-form ctrl="StudentsController"></students-form>',
+         template: '<student-profile></student-profile>',
          resolve: {
             currentAuth: ['LoginService', function (LoginService) {
                return LoginService.$requireAuth();
