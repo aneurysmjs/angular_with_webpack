@@ -1,3 +1,5 @@
+import Firebase from 'firebase';
+
 class LoginService {
 
    constructor($q, $firebaseAuth, FIRE_URL) {
