@@ -18,5 +18,9 @@ describe('LoginComponent', () => {
       expect(component).toBeDefined();
    });
 
+   it('should have login method define', () => {
+      expect(component.login).toBeDefined();
+   });
+
 });
 
