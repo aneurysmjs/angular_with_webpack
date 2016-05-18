@@ -12,13 +12,11 @@ function studentsRoutes($stateProvider) {
          controllerAs: '$ctrl',
          template: '<ci-students students="$ctrl.students"></ci-students>',
          resolve: {
-            students: ['StudentsService', function (StudentsService) {
-               return StudentsService.getStudents().then(response => {
-                  return response;
+            students: ['StudentsService', 'AuthService', function (StudentsService, AuthService) {
+               return AuthService.$requireAuth().then(auth => {
+                  return StudentsService.getStudents();
                });
-            }],
-            currentAuth: ['LoginService', function (LoginService) {
-               return LoginService.$requireAuth();
+
             }]
          }
       })

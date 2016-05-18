@@ -2,9 +2,9 @@ import Firebase from 'firebase';
 
 class AuthService {
 
-   constructor($firebaseAuth, FIREBASE_URL) {
+   constructor($firebaseAuth, FIRE_URL) {
 
-      let ref = new Firebase(FIREBASE_URL);
+      let ref = new Firebase(FIRE_URL);
 
       return $firebaseAuth(ref);
 
@@ -12,6 +12,6 @@ class AuthService {
 
 }
 
-AuthService.$inject = ['$firebaseAuth', 'FIREBASE_URL'];
+AuthService.$inject = ['$firebaseAuth', 'FIRE_URL'];
 
 export default AuthService;

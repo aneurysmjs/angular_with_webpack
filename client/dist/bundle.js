@@ -34,7 +34,7 @@
 /******/ 	__webpack_require__.c = installedModules;
 
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "http://localhost:3000/assets/47b1a19f1a12adb98caa";
+/******/ 	__webpack_require__.p = "http://localhost:3000/assets/aca34c99d59efe84be80";
 
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
@@ -25744,13 +25744,10 @@
 	      controllerAs: '$ctrl',
 	      template: '<ci-students students="$ctrl.students"></ci-students>',
 	      resolve: {
-	         students: ['StudentsService', function (StudentsService) {
-	            return StudentsService.getStudents().then(function (response) {
-	               return response;
+	         students: ['StudentsService', 'AuthService', function (StudentsService, AuthService) {
+	            return AuthService.$requireAuth().then(function (auth) {
+	               return StudentsService.getStudents();
 	            });
-	         }],
-	         currentAuth: ['LoginService', function (LoginService) {
-	            return LoginService.$requireAuth();
 	         }]
 	      }
 	   }).state('students.create', {
@@ -26012,40 +26009,43 @@
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	var _$q = new WeakMap();
+	var _$q = new WeakMap(),
+	    _$firebaseArray = new WeakMap(),
+	    _studentsRef = new WeakMap();
 
 	var JentooService = (function () {
-	   function JentooService($q, $firebaseArray) {
+	   function JentooService($q, $firebaseArray, FIRE_URL) {
 	      _classCallCheck(this, JentooService);
 
 	      _$q.set(this, $q);
 
-	      var ref = new _firebase2.default('https://olgah.firebaseio.com/users/');
+	      //let ref = new Firebase('https://olgah.firebaseio.com/users/');
 
-	      this.olgah = $firebaseArray(ref);
-	      this.olgah.$loaded().then(this.successHandler).catch(this.catchHandler);
+	      _$firebaseArray.set(this, $firebaseArray);
+	      _studentsRef.set(this, new _firebase2.default(FIRE_URL + 'users'));
+
+	      //this.olgah = $firebaseArray(ref);
+	      //this.olgah.$loaded().then(this.successHandler).catch(this.catchHandler);
 	   }
 
 	   _createClass(JentooService, [{
 	      key: 'getStudents',
 	      value: function getStudents() {
-	         var _this = this;
+	         var $firebaseArray = _$firebaseArray.get(this),
+	             studentsRef = _studentsRef.get(this);
 
-	         var $q = _$q.get(this);
-	         return $q(function (resolve, reject) {
-	            resolve(_this.olgah);
-	         });
+	         return $firebaseArray(studentsRef);
 	      }
 	   }, {
 	      key: 'getStudent',
 	      value: function getStudent(id) {
-	         var _this2 = this;
+	         var _this = this;
 
 	         var student = {},
 	             $q = _$q.get(this);
 
 	         return $q(function (resolve, reject) {
-	            student = _this2.olgah.$getRecord(id);
+	            student = _this.olgah.$getRecord(id);
 	            resolve(student);
 	         });
 	      }
@@ -26063,7 +26063,7 @@
 	   return JentooService;
 	})();
 
-	JentooService.$inject = ['$q', '$firebaseArray'];
+	JentooService.$inject = ['$q', '$firebaseArray', 'FIRE_URL'];
 
 	exports.default = JentooService;
 
@@ -26489,7 +26489,7 @@
 
 	var _services2 = _interopRequireDefault(_services);
 
-	var _loader = __webpack_require__(243);
+	var _loader = __webpack_require__(244);
 
 	var _loader2 = _interopRequireDefault(_loader);
 
@@ -26588,7 +26588,7 @@
 
 	var _authToken2 = _interopRequireDefault(_authToken);
 
-	var _auth = __webpack_require__(250);
+	var _auth = __webpack_require__(243);
 
 	var _auth2 = _interopRequireDefault(_auth);
 
@@ -26707,23 +26707,53 @@
 	   value: true
 	});
 
+	var _firebase = __webpack_require__(229);
+
+	var _firebase2 = _interopRequireDefault(_firebase);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var AuthService = function AuthService($firebaseAuth, FIRE_URL) {
+	   _classCallCheck(this, AuthService);
+
+	   var ref = new _firebase2.default(FIRE_URL);
+
+	   return $firebaseAuth(ref);
+	};
+
+	AuthService.$inject = ['$firebaseAuth', 'FIRE_URL'];
+
+	exports.default = AuthService;
+
+/***/ },
+/* 244 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	   value: true
+	});
+
 	var _angular = __webpack_require__(192);
 
 	var _angular2 = _interopRequireDefault(_angular);
 
-	var _loaderConfigProvider = __webpack_require__(244);
+	var _loaderConfigProvider = __webpack_require__(245);
 
 	var _loaderConfigProvider2 = _interopRequireDefault(_loaderConfigProvider);
 
-	var _loaderDirective = __webpack_require__(245);
+	var _loaderDirective = __webpack_require__(246);
 
 	var _loaderDirective2 = _interopRequireDefault(_loaderDirective);
 
-	var _loaderInterceptorService = __webpack_require__(248);
+	var _loaderInterceptorService = __webpack_require__(249);
 
 	var _loaderInterceptorService2 = _interopRequireDefault(_loaderInterceptorService);
 
-	var _loaderDisplayService = __webpack_require__(249);
+	var _loaderDisplayService = __webpack_require__(250);
 
 	var _loaderDisplayService2 = _interopRequireDefault(_loaderDisplayService);
 
@@ -26734,7 +26764,7 @@
 	exports.default = loadingModule;
 
 /***/ },
-/* 244 */
+/* 245 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -26785,7 +26815,7 @@
 	exports.default = loadingConfigProvider;
 
 /***/ },
-/* 245 */
+/* 246 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26794,7 +26824,7 @@
 	   value: true
 	});
 
-	__webpack_require__(246);
+	__webpack_require__(247);
 
 	Loader.$inject = ['$q', '$timeout', 'LoadingInterceptor', 'loaderConfig', 'LoadingDisplay'];
 
@@ -26908,13 +26938,13 @@
 	exports.default = Loader;
 
 /***/ },
-/* 246 */
+/* 247 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(247);
+	var content = __webpack_require__(248);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(214)(content, {});
@@ -26934,7 +26964,7 @@
 	}
 
 /***/ },
-/* 247 */
+/* 248 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(213)();
@@ -26948,7 +26978,7 @@
 
 
 /***/ },
-/* 248 */
+/* 249 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -26968,7 +26998,7 @@
 	exports.default = LoadingInterceptorService;
 
 /***/ },
-/* 249 */
+/* 250 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -27050,36 +27080,6 @@
 	LoaderDisplayService.$inject = ['$window'];
 
 	exports.default = LoaderDisplayService;
-
-/***/ },
-/* 250 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	   value: true
-	});
-
-	var _firebase = __webpack_require__(229);
-
-	var _firebase2 = _interopRequireDefault(_firebase);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	var AuthService = function AuthService($firebaseAuth, FIREBASE_URL) {
-	   _classCallCheck(this, AuthService);
-
-	   var ref = new _firebase2.default(FIREBASE_URL);
-
-	   return $firebaseAuth(ref);
-	};
-
-	AuthService.$inject = ['$firebaseAuth', 'FIREBASE_URL'];
-
-	exports.default = AuthService;
 
 /***/ }
 /******/ ]);
