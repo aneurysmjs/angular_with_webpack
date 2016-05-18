@@ -1,9 +1,12 @@
+let _LoginService = new WeakMap(),
+    _$state = new WeakMap();
+
 class LoginController {
 
    constructor(LoginService, $state) {
-      this.LoginService = LoginService;
-      this.$state = $state;
-      this.name = 'login';
+      _LoginService.set(this, LoginService);
+      _$state.set(this, $state);
+
 
       LoginService.$onAuth(function (au) {
          console.log('au');
@@ -14,17 +17,20 @@ class LoginController {
 
    login() {
 
+      let LoginService = _LoginService.get(this),
+          $state = _$state.get(this);
+
       this.authData = null;
       this.error = null;
 
-      this.LoginService.$authWithPassword({
+      LoginService.$authWithPassword({
          email: this.user.email,
          password: this.user.password
       }).then(authData =>  {
          console.log('authData');
          console.log(authData);
          this.authData = authData;
-         this.$state.go('students');
+         $state.go('students');
       }, error => {
          console.log('error');
          console.log(error);
