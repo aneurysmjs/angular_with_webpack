@@ -2,16 +2,18 @@ import Firebase from 'firebase';
 
 let _$q = new WeakMap(),
     _$firebaseArray = new WeakMap(),
+    _$firebaseObject = new WeakMap(),
     _studentsRef = new WeakMap();
 
 class JentooService {
 
-   constructor($q, $firebaseArray, FIRE_URL) {
+   constructor($q, $firebaseArray, $firebaseObject, FIRE_URL) {
       _$q.set(this, $q);
 
       //let ref = new Firebase('https://olgah.firebaseio.com/users/');
 
       _$firebaseArray.set(this, $firebaseArray);
+      _$firebaseObject.set(this, $firebaseObject);
       _studentsRef.set(this, new Firebase(FIRE_URL + 'users'));
 
       //this.olgah = $firebaseArray(ref);
@@ -25,16 +27,11 @@ class JentooService {
       return $firebaseArray(studentsRef);
    }
 
-   getStudent(id) {
+   getStudent(uid) {
+      let $firebaseObject = _$firebaseObject.get(this),
+          studentsRef = _studentsRef.get(this);
 
-      let student = {},
-          $q = _$q.get(this);
-
-      return $q((resolve, reject) => {
-         student = this.olgah.$getRecord(id);
-         resolve(student);
-      });
-
+      return $firebaseObject(studentsRef.child(uid));
    }
 
 
@@ -49,6 +46,6 @@ class JentooService {
 
 }
 
-JentooService.$inject = ['$q', '$firebaseArray', 'FIRE_URL'];
+JentooService.$inject = ['$q', '$firebaseArray', '$firebaseObject', 'FIRE_URL'];
 
 export default JentooService;

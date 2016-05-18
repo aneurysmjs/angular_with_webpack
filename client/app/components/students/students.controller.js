@@ -7,7 +7,7 @@ class StudentsController {
       this.buttonText = 'Guardar';
 
       if ($stateParams.id) {
-         this.getStudent($stateParams.id);
+         //this.getStudent($stateParams.id);
          this.isUpdate = true;
          this.buttonText = 'Actualizar';
       } else {
@@ -43,9 +43,9 @@ class StudentsController {
       this.$state.go('students.update', {id: student.$id});
    }
 
-   getStudent(id) {
+   /*getStudent(id) {
       this.StudentsService.getStudent(id).then(response => this.student = response);
-   }
+   }*/
 
    save() {
       //this.student.inscriptionDate.toString();

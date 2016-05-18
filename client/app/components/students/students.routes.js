@@ -31,10 +31,25 @@ function studentsRoutes($stateProvider) {
       })
       .state('students.update', {
          url: '/update/:id',
-         template: '<students-form ctrl="StudentsController"></students-form>',
+         controller: ['auth', 'student', function (auth, student) {
+            let self = this;
+            self.auth = auth;
+            self.student = student;
+         }],
+         controllerAs: '$ctrl',
+         template: `<students-form ctrl="StudentsController"
+                                   auth="$ctrl.auth"
+                                   student="$ctrl.student">
+                   </students-form>`,
          resolve: {
-            currentAuth: ['LoginService', function (LoginService) {
-               return LoginService.$requireAuth();
+            auth: ['AuthService', '$state', (AuthService, $state) => {
+               return AuthService.$requireAuth().catch((error) => $state.go('login')) ;
+            }],
+            student: ['AuthService', 'StudentsService', '$stateParams', (AuthService, StudentsService, $stateParams) => {
+               let uid = $stateParams.id;
+               return AuthService.$requireAuth().then(auth => {
+                  return StudentsService.getStudent(uid).$loaded();
+               }, error => error);
             }]
          }
       });

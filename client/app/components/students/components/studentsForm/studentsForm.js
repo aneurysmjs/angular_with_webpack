@@ -10,6 +10,8 @@ class StudentsForm {
       this.controller = '@';
       this.controllerAs = '$ctrl';
       this.bindToController = {
+         auth: '<',
+         student: '<'
       };
    }
 

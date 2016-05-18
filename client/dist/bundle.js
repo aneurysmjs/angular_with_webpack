@@ -34,7 +34,7 @@
 /******/ 	__webpack_require__.c = installedModules;
 
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "http://localhost:3000/assets/aca34c99d59efe84be80";
+/******/ 	__webpack_require__.p = "http://localhost:3000/assets/4e912837de77af68db82";
 
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
@@ -25760,10 +25760,26 @@
 	      }
 	   }).state('students.update', {
 	      url: '/update/:id',
-	      template: '<students-form ctrl="StudentsController"></students-form>',
+	      controller: ['auth', 'student', function (auth, student) {
+	         var self = this;
+	         self.auth = auth;
+	         self.student = student;
+	      }],
+	      controllerAs: '$ctrl',
+	      template: '<students-form ctrl="StudentsController"\n                                   auth="$ctrl.auth"\n                                   student="$ctrl.student">\n                   </students-form>',
 	      resolve: {
-	         currentAuth: ['LoginService', function (LoginService) {
-	            return LoginService.$requireAuth();
+	         auth: ['AuthService', '$state', function (AuthService, $state) {
+	            return AuthService.$requireAuth().catch(function (error) {
+	               return $state.go('login');
+	            });
+	         }],
+	         student: ['AuthService', 'StudentsService', '$stateParams', function (AuthService, StudentsService, $stateParams) {
+	            var uid = $stateParams.id;
+	            return AuthService.$requireAuth().then(function (auth) {
+	               return StudentsService.getStudent(uid).$loaded();
+	            }, function (error) {
+	               return error;
+	            });
 	         }]
 	      }
 	   });
@@ -25838,7 +25854,7 @@
 /* 224 */
 /***/ function(module, exports) {
 
-	module.exports = "<ui-view>\n\n   <button type=\"button\" ui-sref=\"students.create\">\n      crear\n   </button>\n\n   <form class=\"form-inline\">\n      <div class=\"form-group\">\n         <label for=\"exampleInputName2\">Filter</label>\n         <input type=\"text\"\n                class=\"form-control\"\n                id=\"exampleInputName2\"\n                ng-model=\"myFilter\"\n                placeholder=\"Jane Doe\">\n      </div>\n      <button type=\"submit\" class=\"btn btn-default\">Send invitation</button>\n   </form>\n\n   <div class=\"Student-cards\">\n      <div class=\"Student-card\" ng-repeat=\"student in $ctrl.students track by $index\">\n         <span ng-bind=\"student.name\"></span>\n         <span ng-bind=\"student.lastName\"></span>\n         <span ng-bind=\"student.email\"></span>\n         <span ng-bind=\"student.phone\"></span>\n      </div>\n   </div>\n\n   <!--<table class=\"table table-hover\">\n      <thead>\n      <tr>\n         <th>First Name</th>\n         <th>Last Name</th>\n         <th>Email</th>\n         <th>Celular</th>\n         <th>Profession</th>\n         <th>Plan</th>\n         <th>&nbsp;</th>\n      </tr>\n      </thead>\n      <tbody>\n      <tr ng-repeat=\"student in $ctrl.students | filter: myFilter track by $index\"\n          ng-dblclick=\"$ctrl.studentProfile(student)\">\n         <th ng-bind=\"student.name\"></th>\n         <td ng-bind=\"student.lastName\"></td>\n         <td ng-bind=\"student.email\"></td>\n         <td ng-bind=\"student.mobile\"></td>\n         <td ng-bind=\"student.profession\"></td>\n         <td ng-bind=\"student.plan\"></td>\n         <td ng-click=\"$ctrl.deleteStudent(student)\">\n             <span class=\"glyphicon glyphicon-remove\"\n                   tooltip-placement=\"top\"\n                   uib-tooltip=\"Eliminar\">\n             </span>\n         </td>\n      </tr>\n      </tbody>\n   </table>-->\n\n</ui-view>";
+	module.exports = "<ui-view>\n\n   <button type=\"button\" ui-sref=\"students.create\">\n      crear\n   </button>\n\n   <form class=\"form-inline\">\n      <div class=\"form-group\">\n         <label for=\"exampleInputName2\">Filter</label>\n         <input type=\"text\"\n                class=\"form-control\"\n                id=\"exampleInputName2\"\n                ng-model=\"myFilter\"\n                placeholder=\"Jane Doe\">\n      </div>\n      <button type=\"submit\" class=\"btn btn-default\">Send invitation</button>\n   </form>\n\n  <!-- <div class=\"Student-cards\">\n      <div class=\"Student-card\" ng-repeat=\"student in $ctrl.students track by $index\">\n         <span ng-bind=\"student.name\"></span>\n         <span ng-bind=\"student.lastName\"></span>\n         <span ng-bind=\"student.email\"></span>\n         <span ng-bind=\"student.phone\"></span>\n      </div>\n   </div>-->\n\n   <table class=\"table table-hover\">\n      <thead>\n      <tr>\n         <th>First Name</th>\n         <th>Last Name</th>\n         <th>Email</th>\n         <th>Celular</th>\n         <th>Profession</th>\n         <th>Plan</th>\n         <th>&nbsp;</th>\n      </tr>\n      </thead>\n      <tbody>\n      <tr ng-repeat=\"student in $ctrl.students | filter: myFilter track by $index\"\n          ng-dblclick=\"$ctrl.studentProfile(student)\">\n         <th ng-bind=\"student.name\"></th>\n         <td ng-bind=\"student.lastName\"></td>\n         <td ng-bind=\"student.email\"></td>\n         <td ng-bind=\"student.mobile\"></td>\n         <td ng-bind=\"student.profession\"></td>\n         <td ng-bind=\"student.plan\"></td>\n         <td ng-click=\"$ctrl.deleteStudent(student)\">\n             <span class=\"glyphicon glyphicon-remove\"\n                   tooltip-placement=\"top\"\n                   uib-tooltip=\"Eliminar\">\n             </span>\n         </td>\n      </tr>\n      </tbody>\n   </table>\n\n</ui-view>";
 
 /***/ },
 /* 225 */
@@ -25904,7 +25920,7 @@
 	      this.buttonText = 'Guardar';
 
 	      if ($stateParams.id) {
-	         this.getStudent($stateParams.id);
+	         //this.getStudent($stateParams.id);
 	         this.isUpdate = true;
 	         this.buttonText = 'Actualizar';
 	      } else {
@@ -25943,28 +25959,24 @@
 	      value: function studentProfile(student) {
 	         this.$state.go('students.update', { id: student.$id });
 	      }
-	   }, {
-	      key: 'getStudent',
-	      value: function getStudent(id) {
-	         var _this = this;
 
-	         this.StudentsService.getStudent(id).then(function (response) {
-	            return _this.student = response;
-	         });
-	      }
+	      /*getStudent(id) {
+	         this.StudentsService.getStudent(id).then(response => this.student = response);
+	      }*/
+
 	   }, {
 	      key: 'save',
 	      value: function save() {
-	         var _this2 = this;
+	         var _this = this;
 
 	         //this.student.inscriptionDate.toString();
 	         if (this.isUpdate) {
 	            this.students.$save(this.student).then(function (ref) {
-	               return _this2.$state.go('^');
+	               return _this.$state.go('^');
 	            });
 	         } else {
 	            this.students.$add(this.student).then(function (res) {
-	               return _this2.$state.go('^');
+	               return _this.$state.go('^');
 	            });
 	         }
 	      }
@@ -26011,10 +26023,11 @@
 
 	var _$q = new WeakMap(),
 	    _$firebaseArray = new WeakMap(),
+	    _$firebaseObject = new WeakMap(),
 	    _studentsRef = new WeakMap();
 
 	var JentooService = (function () {
-	   function JentooService($q, $firebaseArray, FIRE_URL) {
+	   function JentooService($q, $firebaseArray, $firebaseObject, FIRE_URL) {
 	      _classCallCheck(this, JentooService);
 
 	      _$q.set(this, $q);
@@ -26022,6 +26035,7 @@
 	      //let ref = new Firebase('https://olgah.firebaseio.com/users/');
 
 	      _$firebaseArray.set(this, $firebaseArray);
+	      _$firebaseObject.set(this, $firebaseObject);
 	      _studentsRef.set(this, new _firebase2.default(FIRE_URL + 'users'));
 
 	      //this.olgah = $firebaseArray(ref);
@@ -26038,16 +26052,11 @@
 	      }
 	   }, {
 	      key: 'getStudent',
-	      value: function getStudent(id) {
-	         var _this = this;
+	      value: function getStudent(uid) {
+	         var $firebaseObject = _$firebaseObject.get(this),
+	             studentsRef = _studentsRef.get(this);
 
-	         var student = {},
-	             $q = _$q.get(this);
-
-	         return $q(function (resolve, reject) {
-	            student = _this.olgah.$getRecord(id);
-	            resolve(student);
-	         });
+	         return $firebaseObject(studentsRef.child(uid));
 	      }
 	   }, {
 	      key: 'successHandler',
@@ -26063,7 +26072,7 @@
 	   return JentooService;
 	})();
 
-	JentooService.$inject = ['$q', '$firebaseArray', 'FIRE_URL'];
+	JentooService.$inject = ['$q', '$firebaseArray', '$firebaseObject', 'FIRE_URL'];
 
 	exports.default = JentooService;
 
@@ -26380,7 +26389,10 @@
 	   this.name = 'ctrl';
 	   this.controller = '@';
 	   this.controllerAs = '$ctrl';
-	   this.bindToController = {};
+	   this.bindToController = {
+	      auth: '<',
+	      student: '<'
+	   };
 	};
 
 	exports.default = StudentsForm;
