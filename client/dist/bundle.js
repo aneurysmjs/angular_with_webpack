@@ -34,7 +34,7 @@
 /******/ 	__webpack_require__.c = installedModules;
 
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "http://localhost:3000/assets/694976eab734470d01c1";
+/******/ 	__webpack_require__.p = "http://localhost:3000/assets/47b1a19f1a12adb98caa";
 
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
@@ -26019,8 +26019,10 @@
 	      _classCallCheck(this, JentooService);
 
 	      _$q.set(this, $q);
-	      this.ref = new _firebase2.default('https://olgah.firebaseio.com/users/');
-	      this.olgah = $firebaseArray(this.ref);
+
+	      var ref = new _firebase2.default('https://olgah.firebaseio.com/users/');
+
+	      this.olgah = $firebaseArray(ref);
 	      this.olgah.$loaded().then(this.successHandler).catch(this.catchHandler);
 	   }
 
@@ -26586,9 +26588,13 @@
 
 	var _authToken2 = _interopRequireDefault(_authToken);
 
+	var _auth = __webpack_require__(250);
+
+	var _auth2 = _interopRequireDefault(_auth);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var servicesModule = _angular2.default.module('app.shared.services', []).service('AuthInterceptor', _authInterceptor2.default).service('AuthToken', _authToken2.default);
+	var servicesModule = _angular2.default.module('app.shared.services', []).service('AuthInterceptor', _authInterceptor2.default).service('AuthToken', _authToken2.default).service('AuthService', _auth2.default);
 
 	exports.default = servicesModule;
 
@@ -27044,6 +27050,36 @@
 	LoaderDisplayService.$inject = ['$window'];
 
 	exports.default = LoaderDisplayService;
+
+/***/ },
+/* 250 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	   value: true
+	});
+
+	var _firebase = __webpack_require__(229);
+
+	var _firebase2 = _interopRequireDefault(_firebase);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var AuthService = function AuthService($firebaseAuth, FIREBASE_URL) {
+	   _classCallCheck(this, AuthService);
+
+	   var ref = new _firebase2.default(FIREBASE_URL);
+
+	   return $firebaseAuth(ref);
+	};
+
+	AuthService.$inject = ['$firebaseAuth', 'FIREBASE_URL'];
+
+	exports.default = AuthService;
 
 /***/ }
 /******/ ]);

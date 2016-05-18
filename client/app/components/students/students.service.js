@@ -6,8 +6,10 @@ class JentooService {
 
    constructor($q, $firebaseArray) {
       _$q.set(this, $q);
-      this.ref = new Firebase('https://olgah.firebaseio.com/users/');
-      this.olgah = $firebaseArray(this.ref);
+
+      let ref = new Firebase('https://olgah.firebaseio.com/users/');
+
+      this.olgah = $firebaseArray(ref);
       this.olgah.$loaded().then(this.successHandler).catch(this.catchHandler);
    }
 
