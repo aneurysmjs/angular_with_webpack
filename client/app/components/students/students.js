@@ -5,7 +5,7 @@ import studentsComponent from './students.component';
 import StudentsController from './students.controller';
 import StudentsService from './students.service';
 
-import studentsForm from './studentsForm';
+import studentsForm from './students.form';
 
 let studentsModule = angular.module('students', [])
    .config(studentsRoutes)
