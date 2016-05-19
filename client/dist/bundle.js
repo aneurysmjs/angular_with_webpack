@@ -34,7 +34,7 @@
 /******/ 	__webpack_require__.c = installedModules;
 
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "http://localhost:3000/assets/72536c9916c8432463e9";
+/******/ 	__webpack_require__.p = "http://localhost:3000/assets/fcb1b639c8c44e183b3a";
 
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
@@ -25066,13 +25066,13 @@
 
 	var _login8 = _interopRequireDefault(_login7);
 
-	var _register = __webpack_require__(217);
+	var _registerComponent = __webpack_require__(256);
 
-	var _register2 = _interopRequireDefault(_register);
+	var _registerComponent2 = _interopRequireDefault(_registerComponent);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var loginModule = _angular2.default.module('login', []).config(_login2.default).component('login', _login4.default).component('register', _register2.default).controller('LoginController', _login6.default).service('LoginService', _login8.default);
+	var loginModule = _angular2.default.module('login', []).config(_login2.default).component('login', _login4.default).component('register', _registerComponent2.default).controller('LoginController', _login6.default).service('LoginService', _login8.default);
 
 	exports.default = loginModule;
 
@@ -25581,102 +25581,9 @@
 	exports.default = LoginService;
 
 /***/ },
-/* 217 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	   value: true
-	});
-
-	var _register = __webpack_require__(218);
-
-	var _register2 = _interopRequireDefault(_register);
-
-	var _register3 = __webpack_require__(219);
-
-	var _register4 = _interopRequireDefault(_register3);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var registerComponent = {
-	   template: _register2.default,
-	   controller: _register4.default,
-	   bindings: {}
-	};
-
-	exports.default = registerComponent;
-
-/***/ },
-/* 218 */
-/***/ function(module, exports) {
-
-	module.exports = "<form name=\"registerForm\">\n   <!--<pre>{{registerForm | json }}</pre>-->\n   <div class=\"form-group\">\n      <label for=\"userEmail\">Email address</label>\n      <input type=\"email\"\n             class=\"form-control\"\n             ng-model=\"$ctrl.user.email\"\n             ng-keyup=\"$ctrl.hideErrors()\"\n             name=\"userEmail\"\n             id=\"userEmail\"\n             placeholder=\"Email\">\n   </div>\n   <span class=\"text-danger\"\n         ng-if=\"registerForm.userEmail.$error.email\">\n      Escribe un correo válido\n   </span>\n   <div class=\"form-group\">\n      <label for=\"userPassword\">Password</label>\n      <input type=\"password\"\n             class=\"form-control\"\n             ng-model=\"$ctrl.user.password\"\n             name=\"userPassword\"\n             ng-minlength=\"7\"\n             id=\"userPassword\"\n             placeholder=\"Password\">\n   </div>\n   <span class=\"text-danger\"\n         ng-if=\"registerForm.userPassword.$error.minlength\">\n       La contraseña de tener 7 carácteres mínimo\n   </span>\n   <div class=\"form-group\">\n      <label for=\"userRetypePassword\">Retype Password</label>\n      <input type=\"password\"\n             class=\"form-control\"\n             ng-model=\"$ctrl.user.newPassword\"\n             name=\"userNewPassword\"\n             ng-minlength=\"7\"\n             password-match=\"$ctrl.user.password\"\n             id=\"userRetypePassword\"\n             placeholder=\"Password\">\n   </div>\n   <span class=\"text-danger\"\n         ng-if=\"registerForm.userNewPassword.$error.minlength\">\n      La contraseña de tener 7 carácteres mínimo\n   </span>\n   <span class=\"text-danger\"\n         ng-if=\"registerForm.userNewPassword.$error.unique\">\n       Contraseñas no coinciden\n   </span>\n   <button type=\"button\"\n           ng-disabled=\"registerForm.$invalid\"\n           ng-click=\"$ctrl.createUser()\"\n           class=\"btn btn-default\">\n      Register\n   </button>\n   <button type=\"button\"\n           ng-disabled=\"registerForm.$invalid\"\n           ng-click=\"$ctrl.goBack()\"\n           class=\"btn btn-default\">\n      Back\n   </button>\n   <p class=\"bg-danger\" ng-if=\"$ctrl.error\">\n      <span ng-bind=\"$ctrl.error\"></span>\n   </p>\n</form>";
-
-/***/ },
-/* 219 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-	Object.defineProperty(exports, "__esModule", {
-	   value: true
-	});
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	var LoginRegisterController = (function () {
-	   function LoginRegisterController(LoginService, $state, $timeout) {
-	      _classCallCheck(this, LoginRegisterController);
-
-	      this.LoginService = LoginService;
-	      this.$state = $state;
-	      this.$timeout = $timeout;
-	      this.name = 'login';
-	   }
-
-	   _createClass(LoginRegisterController, [{
-	      key: 'createUser',
-	      value: function createUser() {
-	         var _this = this;
-
-	         this.message = null;
-	         this.error = null;
-
-	         this.LoginService.$createUser({
-	            email: this.user.email,
-	            password: this.user.password
-	         }).then(function (userData) {
-	            _this.message = "User created with uid: " + userData.uid;
-	         }).catch(function (error) {
-	            _this.error = error;
-	         });
-	      }
-	   }, {
-	      key: 'goBack',
-	      value: function goBack() {
-	         this.$state.go('^');
-	      }
-	   }, {
-	      key: 'hideErrors',
-	      value: function hideErrors() {
-	         if (this.error) {
-	            this.error = '';
-	         }
-	      }
-	   }]);
-
-	   return LoginRegisterController;
-	})();
-
-	LoginRegisterController.$inject = ['LoginService', '$state', '$timeout'];
-
-	exports.default = LoginRegisterController;
-
-/***/ },
+/* 217 */,
+/* 218 */,
+/* 219 */,
 /* 220 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -25710,14 +25617,14 @@
 
 	var _students10 = _interopRequireDefault(_students9);
 
-	var _studentsForm = __webpack_require__(251);
+	var _students11 = __webpack_require__(253);
 
-	var _studentsForm2 = _interopRequireDefault(_studentsForm);
+	var _students12 = _interopRequireDefault(_students11);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var studentsModule = _angular2.default.module('students', []).config(_students2.default).value('studentsSetup', _students4.default).component('ciStudents', _students6.default).directive('studentsForm', function () {
-	   return new _studentsForm2.default();
+	   return new _students12.default();
 	}).controller('StudentsController', _students8.default).service('StudentsService', _students10.default);
 
 	exports.default = studentsModule;
@@ -26560,11 +26467,11 @@
 
 	var _angular2 = _interopRequireDefault(_angular);
 
-	var _authInterceptor = __webpack_require__(241);
+	var _authInterceptor = __webpack_require__(254);
 
 	var _authInterceptor2 = _interopRequireDefault(_authInterceptor);
 
-	var _authToken = __webpack_require__(242);
+	var _authToken = __webpack_require__(255);
 
 	var _authToken2 = _interopRequireDefault(_authToken);
 
@@ -26579,105 +26486,8 @@
 	exports.default = servicesModule;
 
 /***/ },
-/* 241 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-	Object.defineProperty(exports, "__esModule", {
-	   value: true
-	});
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	var authInterceptor = (function () {
-	   function authInterceptor(AuthTokenService) {
-	      _classCallCheck(this, authInterceptor);
-
-	      this.AuthTokenService = AuthTokenService;
-	   }
-
-	   _createClass(authInterceptor, [{
-	      key: 'addToken',
-	      value: function addToken(config) {
-
-	         var token = AuthTokenService.getToken();
-	         //  Now if there is a token, so if the user is authenticated.
-	         if (token) {
-	            // then we're going to add this to a header on this config object,
-	            config.headers = config.headers || {};
-	            //console.log('----authInterceptor----');
-	            //console.log(config);
-	            config.headers.Authorization = 'Bearer ' + token;
-	         }
-
-	         return config;
-	      }
-	   }]);
-
-	   return authInterceptor;
-	})();
-
-	authInterceptor.$inject = ['AuthTokenService'];
-
-	exports.default = authInterceptor;
-
-/***/ },
-/* 242 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-	Object.defineProperty(exports, "__esModule", {
-	   value: true
-	});
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	var AuthToken = (function () {
-	   function AuthToken($window, $q) {
-	      _classCallCheck(this, AuthToken);
-
-	      this.storage = $window.getitem();
-
-	      this.key = 'auth-token: ';
-	   }
-
-	   _createClass(AuthToken, [{
-	      key: 'getToken',
-	      value: function getToken() {
-	         return this.store.getItem(this.key);
-	      }
-	   }, {
-	      key: 'setToken',
-	      value: function setToken(token) {
-	         var _this = this;
-
-	         return $q(function (resolve, reject) {
-
-	            if (token) {
-	               _this.store.setItem(_this.key, token);
-	               resolve('Token Generated');
-	            } else {
-	               _this.store.removeItem(_this.key);
-	               resolve('Token Removed');
-	            }
-	         });
-	      }
-	   }]);
-
-	   return AuthToken;
-	})();
-
-	AuthToken.$inject = ['$window', '$q'];
-
-	exports.default = AuthToken;
-
-/***/ },
+/* 241 */,
+/* 242 */,
 /* 243 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -27062,7 +26872,9 @@
 	exports.default = LoaderDisplayService;
 
 /***/ },
-/* 251 */
+/* 251 */,
+/* 252 */,
+/* 253 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27071,7 +26883,7 @@
 	   value: true
 	});
 
-	var _studentsForm = __webpack_require__(252);
+	var _studentsForm = __webpack_require__(259);
 
 	var _studentsForm2 = _interopRequireDefault(_studentsForm);
 
@@ -27098,7 +26910,202 @@
 	exports.default = StudentsForm;
 
 /***/ },
-/* 252 */
+/* 254 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	Object.defineProperty(exports, "__esModule", {
+	   value: true
+	});
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var authInterceptor = (function () {
+	   function authInterceptor(AuthTokenService) {
+	      _classCallCheck(this, authInterceptor);
+
+	      this.AuthTokenService = AuthTokenService;
+	   }
+
+	   _createClass(authInterceptor, [{
+	      key: 'addToken',
+	      value: function addToken(config) {
+
+	         var token = AuthTokenService.getToken();
+	         //  Now if there is a token, so if the user is authenticated.
+	         if (token) {
+	            // then we're going to add this to a header on this config object,
+	            config.headers = config.headers || {};
+	            //console.log('----authInterceptor----');
+	            //console.log(config);
+	            config.headers.Authorization = 'Bearer ' + token;
+	         }
+
+	         return config;
+	      }
+	   }]);
+
+	   return authInterceptor;
+	})();
+
+	authInterceptor.$inject = ['AuthTokenService'];
+
+	exports.default = authInterceptor;
+
+/***/ },
+/* 255 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	Object.defineProperty(exports, "__esModule", {
+	   value: true
+	});
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var AuthToken = (function () {
+	   function AuthToken($window, $q) {
+	      _classCallCheck(this, AuthToken);
+
+	      this.storage = $window.getitem();
+
+	      this.key = 'auth-token: ';
+	   }
+
+	   _createClass(AuthToken, [{
+	      key: 'getToken',
+	      value: function getToken() {
+	         return this.store.getItem(this.key);
+	      }
+	   }, {
+	      key: 'setToken',
+	      value: function setToken(token) {
+	         var _this = this;
+
+	         return $q(function (resolve, reject) {
+
+	            if (token) {
+	               _this.store.setItem(_this.key, token);
+	               resolve('Token Generated');
+	            } else {
+	               _this.store.removeItem(_this.key);
+	               resolve('Token Removed');
+	            }
+	         });
+	      }
+	   }]);
+
+	   return AuthToken;
+	})();
+
+	AuthToken.$inject = ['$window', '$q'];
+
+	exports.default = AuthToken;
+
+/***/ },
+/* 256 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	   value: true
+	});
+
+	var _register = __webpack_require__(257);
+
+	var _register2 = _interopRequireDefault(_register);
+
+	var _registerController = __webpack_require__(258);
+
+	var _registerController2 = _interopRequireDefault(_registerController);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var registerComponent = {
+	   template: _register2.default,
+	   controller: _registerController2.default,
+	   bindings: {}
+	};
+
+	exports.default = registerComponent;
+
+/***/ },
+/* 257 */
+/***/ function(module, exports) {
+
+	module.exports = "<form name=\"registerForm\">\n   <!--<pre>{{registerForm | json }}</pre>-->\n   <div class=\"form-group\">\n      <label for=\"userEmail\">Email address</label>\n      <input type=\"email\"\n             class=\"form-control\"\n             ng-model=\"$ctrl.user.email\"\n             ng-keyup=\"$ctrl.hideErrors()\"\n             name=\"userEmail\"\n             id=\"userEmail\"\n             placeholder=\"Email\">\n   </div>\n   <span class=\"text-danger\"\n         ng-if=\"registerForm.userEmail.$error.email\">\n      Escribe un correo válido\n   </span>\n   <div class=\"form-group\">\n      <label for=\"userPassword\">Password</label>\n      <input type=\"password\"\n             class=\"form-control\"\n             ng-model=\"$ctrl.user.password\"\n             name=\"userPassword\"\n             ng-minlength=\"7\"\n             id=\"userPassword\"\n             placeholder=\"Password\">\n   </div>\n   <span class=\"text-danger\"\n         ng-if=\"registerForm.userPassword.$error.minlength\">\n       La contraseña de tener 7 carácteres mínimo\n   </span>\n   <div class=\"form-group\">\n      <label for=\"userRetypePassword\">Retype Password</label>\n      <input type=\"password\"\n             class=\"form-control\"\n             ng-model=\"$ctrl.user.newPassword\"\n             name=\"userNewPassword\"\n             ng-minlength=\"7\"\n             password-match=\"$ctrl.user.password\"\n             id=\"userRetypePassword\"\n             placeholder=\"Password\">\n   </div>\n   <span class=\"text-danger\"\n         ng-if=\"registerForm.userNewPassword.$error.minlength\">\n      La contraseña de tener 7 carácteres mínimo\n   </span>\n   <span class=\"text-danger\"\n         ng-if=\"registerForm.userNewPassword.$error.unique\">\n       Contraseñas no coinciden\n   </span>\n   <button type=\"button\"\n           ng-disabled=\"registerForm.$invalid\"\n           ng-click=\"$ctrl.createUser()\"\n           class=\"btn btn-default\">\n      Register\n   </button>\n   <button type=\"button\"\n           ng-disabled=\"registerForm.$invalid\"\n           ng-click=\"$ctrl.goBack()\"\n           class=\"btn btn-default\">\n      Back\n   </button>\n   <p class=\"bg-danger\" ng-if=\"$ctrl.error\">\n      <span ng-bind=\"$ctrl.error\"></span>\n   </p>\n</form>";
+
+/***/ },
+/* 258 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	Object.defineProperty(exports, "__esModule", {
+	   value: true
+	});
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var LoginRegisterController = (function () {
+	   function LoginRegisterController(LoginService, $state, $timeout) {
+	      _classCallCheck(this, LoginRegisterController);
+
+	      this.LoginService = LoginService;
+	      this.$state = $state;
+	      this.$timeout = $timeout;
+	      this.name = 'login';
+	   }
+
+	   _createClass(LoginRegisterController, [{
+	      key: 'createUser',
+	      value: function createUser() {
+	         var _this = this;
+
+	         this.message = null;
+	         this.error = null;
+
+	         this.LoginService.$createUser({
+	            email: this.user.email,
+	            password: this.user.password
+	         }).then(function (userData) {
+	            _this.message = "User created with uid: " + userData.uid;
+	         }).catch(function (error) {
+	            _this.error = error;
+	         });
+	      }
+	   }, {
+	      key: 'goBack',
+	      value: function goBack() {
+	         this.$state.go('^');
+	      }
+	   }, {
+	      key: 'hideErrors',
+	      value: function hideErrors() {
+	         if (this.error) {
+	            this.error = '';
+	         }
+	      }
+	   }]);
+
+	   return LoginRegisterController;
+	})();
+
+	LoginRegisterController.$inject = ['LoginService', '$state', '$timeout'];
+
+	exports.default = LoginRegisterController;
+
+/***/ },
+/* 259 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = "<section>\n\n   <div class=\"page-header\">\n      <img src=\"" + __webpack_require__(232) + "\" alt=\"\">\n   </div>\n\n   <form name=\"poleForm\">\n\n      <div class=\"row\">\n         <div class=\"col-md-3\">\n            <label class=\"\" for=\"name\">Nombre</label>\n            <input id=\"name\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"name\"\n                   ng-model=\"$ctrl.student.name\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"lastName\">Apellidos</label>\n            <input id=\"lastName\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"lastName\"\n                   ng-model=\"$ctrl.student.lastName\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"inscriptionDate\">Fecha de Matrícula</label>\n            <p class=\"input-group\">\n               <input id=\"inscriptionDate\"\n                      type=\"text\"\n                      name=\"inscriptionDate\"\n                      class=\"form-control\"\n                      uib-datepicker-popup=\"{{$ctrl.format}}\"\n                      ng-model=\"$ctrl.student.inscriptionDate\"\n                      is-open=\"$ctrl.setup.popup.opened\"\n                      datepicker-options=\"$ctrl.setup.dateOptions\"\n                      clear-text=\"Limpiar\"\n                      today-text=\"Hoy\"\n                      close-text=\"Cerrar\"\n                      alt-input-formats=\"$ctrl.setup.altInputFormats\" />\n            <span class=\"input-group-btn\">\n               <button type=\"button\"\n                       class=\"btn btn-default\"\n                       ng-click=\"$ctrl.openCalendar()\">\n                  <i class=\"glyphicon glyphicon-calendar\"></i>\n               </button>\n            </span>\n            </p>\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"documentType\">Tipo de Documento</label>\n            <select id=\"documentType\"\n                    name=\"documentType\"\n                    ng-model=\"$ctrl.student.documentType\"\n                    class=\"form-control\"\n                    ng-options=\"doc for doc in $ctrl.setup.documentTypes\">\n            </select>\n         </div>\n      </div>\n      <div class=\"row\">\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"email\">Email</label>\n            <input id=\"email\"\n                   type=\"email\"\n                   class=\"form-control\"\n                   name=\"email\"\n                   ng-model=\"$ctrl.student.email\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"phone\">Teléfono</label>\n            <input id=\"phone\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"phone\"\n                   ng-model=\"$ctrl.student.phone\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"mobile\">Celular</label>\n            <input id=\"mobile\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"mobile\"\n                   ng-model=\"$ctrl.student.mobile\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"address\">Dirección</label>\n            <input id=\"address\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"address\"\n                   ng-model=\"$ctrl.student.address\"\n                   placeholder=\"\">\n         </div>\n      </div>\n      <div class=\"row\">\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"height\">Estatura</label>\n            <input id=\"height\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"height\"\n                   ng-model=\"$ctrl.student.height\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"weight\">Peso</label>\n            <input id=\"weight\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"weight\"\n                   ng-model=\"$ctrl.student.weight\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"healthInsurance\">EPS</label>\n            <input id=\"healthInsurance\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"healthInsurance\"\n                   ng-model=\"$ctrl.student.healthInsurance\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"Profession\">Profesión</label>\n            <input id=\"Profession\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"Profession\"\n                   ng-model=\"$ctrl.student.profession\"\n                   placeholder=\"\">\n         </div>\n      </div>\n      <div class=\"row\">\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"children\">Hijos</label>\n            <label class=\"\">\n               <input type=\"checkbox\"\n                      id=\"children\"\n                      name=\"children\"\n                      ng-model=\"$ctrl.student.children\">\n            </label>\n         </div>\n\n      </div>\n      <hr>\n      <div class=\"row\">\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"ocupation\">Ocupación</label>\n            <select id=\"ocupation\"\n                    name=\"ocupation\"\n                    ng-model=\"$ctrl.student.occupation\"\n                    class=\"form-control\"\n                    ng-options=\"doc for doc in $ctrl.setup.occupations\">\n            </select>\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"companyName\">Empresa donde trabaja</label>\n            <input id=\"companyName\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"companyName\"\n                   ng-model=\"$ctrl.student.companyName\"\n                   placeholder=\"\">\n\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"companyPhone\">Teléfono Empresa</label>\n            <input id=\"companyPhone\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"companyPhone\"\n                   ng-model=\"$ctrl.student.companyPhone\"\n                   placeholder=\"\">\n\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"charge\">Cargo</label>\n            <input id=\"charge\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"charge\"\n                   ng-model=\"$ctrl.student.charge\"\n                   placeholder=\"\">\n\n         </div>\n      </div>\n      <div class=\"row\">\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"howYouMeetPoleCenter\">¿Como conoció Pole Center?</label>\n            <input id=\"howYouMeetPoleCenter\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"howYouMeetPoleCenter\"\n                   ng-model=\"$ctrl.student.howYouMeetPoleCenter\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"plan\">Plan</label>\n            <select id=\"plan\"\n                    name=\"plan\"\n                    ng-model=\"$ctrl.student.plan\"\n                    class=\"form-control\"\n                    ng-options=\"plan for plan in $ctrl.setup.plans\">\n            </select>\n         </div>\n         <div class=\"col-md-6\">\n            <div class=\"text-center\">\n               <label\n                      for=\"inCaseOfEmergencyName\">\n                  En caso de emergencia comunicarse con\n               </label>\n            </div>\n            <div class=\"col-md-6\">\n               <input id=\"inCaseOfEmergencyName\"\n                      type=\"text\"\n                      class=\"form-control\"\n                      name=\"inCaseOfEmergency\"\n                      ng-model=\"$ctrl.student.inCaseOfEmergency.name\"\n                      placeholder=\"Nombre\">\n            </div>\n            <div class=\"col-md-6\">\n               <input id=\"inCaseOfEmergencyPhone\"\n                      type=\"text\"\n                      class=\"form-control\"\n                      name=\"inCaseOfEmergency\"\n                      ng-model=\"$ctrl.student.inCaseOfEmergency.phone\"\n                      placeholder=\"Teléfono\">\n            </div>\n         </div>\n      </div>\n      <hr>\n      <div class=\"row\">\n         <div class=\"col-md-3\">\n            <button class=\"btn btn default\"\n                    ng-click=\"$ctrl.save()\">\n               <span ng-bind=\"$ctrl.buttonText\"></span>\n            </button>\n         </div>\n      </div>\n\n      <pre>{{$ctrl.student | json}}</pre>\n\n   </form>\n</section>";
