@@ -29,7 +29,13 @@
          <div class="col-md-3">
             <label class=""
                    for="inscriptionDate">Fecha de Matrícula</label>
-            <p class="input-group">
+            <input id="inscriptionDate"
+                   type="text"
+                   class="form-control"
+                   name="inscriptionDate"
+                   ng-model="$ctrl.student.inscriptionDate"
+                   placeholder="">
+            <!--<p class="input-group">
                <input id="inscriptionDate"
                       type="text"
                       name="inscriptionDate"
@@ -49,7 +55,7 @@
                   <i class="glyphicon glyphicon-calendar"></i>
                </button>
             </span>
-            </p>
+            </p>-->
          </div>
          <div class="col-md-3">
             <label class=""
