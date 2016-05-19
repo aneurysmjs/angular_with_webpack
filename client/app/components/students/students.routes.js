@@ -16,31 +16,39 @@ function studentsRoutes($stateProvider) {
                return AuthService.$requireAuth().then(auth => {
                   return StudentsService.getStudents();
                });
-
             }]
          }
       })
       .state('students.create', {
          url: '/create',
-         template: '<students-form ctrl="StudentsController"></students-form>',
+         controller: ['students', function (students) {
+            let self = this;
+            self.students = students;
+         }],
+         controllerAs: '$ctrl',
+         template: `<students-form ctrl="StudentsCreateController"
+                                   students="$ctrl.students">
+                    </students-form>`,
          resolve: {
-            currentAuth: ['LoginService', function (LoginService) {
-               return LoginService.$requireAuth();
+            students: ['StudentsService', 'AuthService', function (StudentsService, AuthService) {
+               return AuthService.$requireAuth().then(auth => {
+                  return StudentsService.getStudents();
+               }).catch(() => {
+                  console.log('error route');
+               });
             }]
          }
       })
       .state('students.update', {
          url: '/update/:id',
-         controller: ['auth', 'student', 'students', function (auth, student, students) {
+         controller: ['auth', 'student', function (auth, student) {
             let self = this;
             self.auth = auth;
             self.student = student;
-            self.students = students;
          }],
          controllerAs: '$ctrl',
-         template: `<students-form ctrl="StudentsController"
+         template: `<students-form ctrl="StudentsUpdateController"
                                    auth="$ctrl.auth"
-                                   students="$ctrl.students"
                                    student="$ctrl.student">
                    </students-form>`,
          resolve: {
@@ -52,12 +60,6 @@ function studentsRoutes($stateProvider) {
                return AuthService.$requireAuth().then(auth => {
                   return StudentsService.getStudent(uid).$loaded();
                }, error => error);
-            }],
-            students: ['StudentsService', 'AuthService', function (StudentsService, AuthService) {
-               return AuthService.$requireAuth().then(auth => {
-                  return StudentsService.getStudents();
-               });
-
             }]
          }
       });

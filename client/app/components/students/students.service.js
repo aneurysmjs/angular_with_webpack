@@ -34,7 +34,6 @@ class JentooService {
       return $firebaseObject(studentsRef.child(uid));
    }
 
-
    successHandler(students) {
 
    }

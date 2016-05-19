@@ -1,6 +1,13 @@
+import template from './students.modal.html';
+import controller from './students.modal.controller';
+
+let _$uibModal = new WeakMap();
+
 class StudentsController {
 
-   constructor(StudentsService, $stateParams, $state, studentsSetup) {
+   constructor(StudentsService, $stateParams, $state, studentsSetup, $uibModal) {
+
+      _$uibModal.set(this, $uibModal);
       this.StudentsService = StudentsService;
       this.$state = $state;
       this.setup = studentsSetup;
@@ -19,8 +26,8 @@ class StudentsController {
          this.setup.dateOptions     = studentsSetup.dateOptions;
       }
 
-      console.log('this');
-      console.log(this);
+      /*console.log('this');
+      console.log(this);*/
 
    }
 
@@ -42,39 +49,36 @@ class StudentsController {
       this.$state.go('students.update', {id: student.$id});
    }
 
-   save() {
-      //this.student.inscriptionDate.toString();
-      if (this.isUpdate) {
+   deleteStudent(student) {
+      let index = this.students.indexOf(student),
+          $uibModal = _$uibModal.get(this);
 
-         console.log('this.student');
-         console.log(this.student);
-
-         this.students.$save(this.student).then(ref => {
-            this.$state.go('^');
-         }).catch(rejected => {
-            console.log('rejected');
-            console.log(rejected);
+      $uibModal.open({
+         animation: true,
+         template,
+         controller,
+         controllerAs: '$ctrl',
+         bindToController: true
+      }).result.then(() => {
+         console.log('successHandler');
+         this.students.$remove(student).then((ref) => {
+            console.log('deteleStudent response');
+            console.log(ref);
+         }).catch(reason => {
+            console.log('reason');
+            console.log(reason);
+         }).finally(() => {
+            console.log('finally');
          });
+      }).catch(() => {
+         console.log('rejectHandler');
+      });
 
-      } else {
-         this.students.$add(this.student).then(res => this.$state.go('^'));
-      }
-   }
-
-   deleteStudent(student){
-      let index = this.students.indexOf(student);
-
-      this.students.splice(index, 1);
-
-      /*this.students.$remove(student).then((ref) => {
-        console.log('deteleStudent response');
-        console.log(ref);
-      });*/
 
    }
 
 }
 
-StudentsController.$inject = ['StudentsService', '$stateParams', '$state', 'studentsSetup'];
+StudentsController.$inject = ['StudentsService', '$stateParams', '$state', 'studentsSetup', '$uibModal'];
 
 export default StudentsController;

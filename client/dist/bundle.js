@@ -34,7 +34,7 @@
 /******/ 	__webpack_require__.c = installedModules;
 
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "http://localhost:3000/assets/fcb1b639c8c44e183b3a";
+/******/ 	__webpack_require__.p = "http://localhost:3000/assets/3665859c6fc3fd0a8fd2";
 
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
@@ -5341,11 +5341,11 @@
 
 	var _components2 = _interopRequireDefault(_components);
 
-	var _app9 = __webpack_require__(233);
+	var _app9 = __webpack_require__(237);
 
 	var _app10 = _interopRequireDefault(_app9);
 
-	var _shared = __webpack_require__(237);
+	var _shared = __webpack_require__(241);
 
 	var _shared2 = _interopRequireDefault(_shared);
 
@@ -25066,7 +25066,7 @@
 
 	var _login8 = _interopRequireDefault(_login7);
 
-	var _registerComponent = __webpack_require__(256);
+	var _registerComponent = __webpack_require__(217);
 
 	var _registerComponent2 = _interopRequireDefault(_registerComponent);
 
@@ -25581,9 +25581,102 @@
 	exports.default = LoginService;
 
 /***/ },
-/* 217 */,
-/* 218 */,
-/* 219 */,
+/* 217 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	   value: true
+	});
+
+	var _register = __webpack_require__(218);
+
+	var _register2 = _interopRequireDefault(_register);
+
+	var _registerController = __webpack_require__(219);
+
+	var _registerController2 = _interopRequireDefault(_registerController);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var registerComponent = {
+	   template: _register2.default,
+	   controller: _registerController2.default,
+	   bindings: {}
+	};
+
+	exports.default = registerComponent;
+
+/***/ },
+/* 218 */
+/***/ function(module, exports) {
+
+	module.exports = "<form name=\"registerForm\">\n   <!--<pre>{{registerForm | json }}</pre>-->\n   <div class=\"form-group\">\n      <label for=\"userEmail\">Email address</label>\n      <input type=\"email\"\n             class=\"form-control\"\n             ng-model=\"$ctrl.user.email\"\n             ng-keyup=\"$ctrl.hideErrors()\"\n             name=\"userEmail\"\n             id=\"userEmail\"\n             placeholder=\"Email\">\n   </div>\n   <span class=\"text-danger\"\n         ng-if=\"registerForm.userEmail.$error.email\">\n      Escribe un correo válido\n   </span>\n   <div class=\"form-group\">\n      <label for=\"userPassword\">Password</label>\n      <input type=\"password\"\n             class=\"form-control\"\n             ng-model=\"$ctrl.user.password\"\n             name=\"userPassword\"\n             ng-minlength=\"7\"\n             id=\"userPassword\"\n             placeholder=\"Password\">\n   </div>\n   <span class=\"text-danger\"\n         ng-if=\"registerForm.userPassword.$error.minlength\">\n       La contraseña de tener 7 carácteres mínimo\n   </span>\n   <div class=\"form-group\">\n      <label for=\"userRetypePassword\">Retype Password</label>\n      <input type=\"password\"\n             class=\"form-control\"\n             ng-model=\"$ctrl.user.newPassword\"\n             name=\"userNewPassword\"\n             ng-minlength=\"7\"\n             password-match=\"$ctrl.user.password\"\n             id=\"userRetypePassword\"\n             placeholder=\"Password\">\n   </div>\n   <span class=\"text-danger\"\n         ng-if=\"registerForm.userNewPassword.$error.minlength\">\n      La contraseña de tener 7 carácteres mínimo\n   </span>\n   <span class=\"text-danger\"\n         ng-if=\"registerForm.userNewPassword.$error.unique\">\n       Contraseñas no coinciden\n   </span>\n   <button type=\"button\"\n           ng-disabled=\"registerForm.$invalid\"\n           ng-click=\"$ctrl.createUser()\"\n           class=\"btn btn-default\">\n      Register\n   </button>\n   <button type=\"button\"\n           ng-disabled=\"registerForm.$invalid\"\n           ng-click=\"$ctrl.goBack()\"\n           class=\"btn btn-default\">\n      Back\n   </button>\n   <p class=\"bg-danger\" ng-if=\"$ctrl.error\">\n      <span ng-bind=\"$ctrl.error\"></span>\n   </p>\n</form>";
+
+/***/ },
+/* 219 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	Object.defineProperty(exports, "__esModule", {
+	   value: true
+	});
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var LoginRegisterController = (function () {
+	   function LoginRegisterController(LoginService, $state, $timeout) {
+	      _classCallCheck(this, LoginRegisterController);
+
+	      this.LoginService = LoginService;
+	      this.$state = $state;
+	      this.$timeout = $timeout;
+	      this.name = 'login';
+	   }
+
+	   _createClass(LoginRegisterController, [{
+	      key: 'createUser',
+	      value: function createUser() {
+	         var _this = this;
+
+	         this.message = null;
+	         this.error = null;
+
+	         this.LoginService.$createUser({
+	            email: this.user.email,
+	            password: this.user.password
+	         }).then(function (userData) {
+	            _this.message = "User created with uid: " + userData.uid;
+	         }).catch(function (error) {
+	            _this.error = error;
+	         });
+	      }
+	   }, {
+	      key: 'goBack',
+	      value: function goBack() {
+	         this.$state.go('^');
+	      }
+	   }, {
+	      key: 'hideErrors',
+	      value: function hideErrors() {
+	         if (this.error) {
+	            this.error = '';
+	         }
+	      }
+	   }]);
+
+	   return LoginRegisterController;
+	})();
+
+	LoginRegisterController.$inject = ['LoginService', '$state', '$timeout'];
+
+	exports.default = LoginRegisterController;
+
+/***/ },
 /* 220 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -25613,11 +25706,19 @@
 
 	var _students8 = _interopRequireDefault(_students7);
 
-	var _students9 = __webpack_require__(228);
+	var _studentsCreate = __webpack_require__(230);
+
+	var _studentsCreate2 = _interopRequireDefault(_studentsCreate);
+
+	var _studentsUpdate = __webpack_require__(231);
+
+	var _studentsUpdate2 = _interopRequireDefault(_studentsUpdate);
+
+	var _students9 = __webpack_require__(232);
 
 	var _students10 = _interopRequireDefault(_students9);
 
-	var _students11 = __webpack_require__(253);
+	var _students11 = __webpack_require__(234);
 
 	var _students12 = _interopRequireDefault(_students11);
 
@@ -25625,7 +25726,7 @@
 
 	var studentsModule = _angular2.default.module('students', []).config(_students2.default).value('studentsSetup', _students4.default).component('ciStudents', _students6.default).directive('studentsForm', function () {
 	   return new _students12.default();
-	}).controller('StudentsController', _students8.default).service('StudentsService', _students10.default);
+	}).controller('StudentsController', _students8.default).controller('StudentsUpdateController', _studentsUpdate2.default).controller('StudentsCreateController', _studentsCreate2.default).service('StudentsService', _students10.default);
 
 	exports.default = studentsModule;
 
@@ -25659,22 +25760,30 @@
 	      }
 	   }).state('students.create', {
 	      url: '/create',
-	      template: '<students-form ctrl="StudentsController"></students-form>',
+	      controller: ['students', function (students) {
+	         var self = this;
+	         self.students = students;
+	      }],
+	      controllerAs: '$ctrl',
+	      template: '<students-form ctrl="StudentsCreateController"\n                                   students="$ctrl.students">\n                    </students-form>',
 	      resolve: {
-	         currentAuth: ['LoginService', function (LoginService) {
-	            return LoginService.$requireAuth();
+	         students: ['StudentsService', 'AuthService', function (StudentsService, AuthService) {
+	            return AuthService.$requireAuth().then(function (auth) {
+	               return StudentsService.getStudents();
+	            }).catch(function () {
+	               console.log('error route');
+	            });
 	         }]
 	      }
 	   }).state('students.update', {
 	      url: '/update/:id',
-	      controller: ['auth', 'student', 'students', function (auth, student, students) {
+	      controller: ['auth', 'student', function (auth, student) {
 	         var self = this;
 	         self.auth = auth;
 	         self.student = student;
-	         self.students = students;
 	      }],
 	      controllerAs: '$ctrl',
-	      template: '<students-form ctrl="StudentsController"\n                                   auth="$ctrl.auth"\n                                   students="$ctrl.students"\n                                   student="$ctrl.student">\n                   </students-form>',
+	      template: '<students-form ctrl="StudentsUpdateController"\n                                   auth="$ctrl.auth"\n                                   student="$ctrl.student">\n                   </students-form>',
 	      resolve: {
 	         auth: ['AuthService', '$state', function (AuthService, $state) {
 	            return AuthService.$requireAuth().catch(function (error) {
@@ -25687,11 +25796,6 @@
 	               return StudentsService.getStudent(uid).$loaded();
 	            }, function (error) {
 	               return error;
-	            });
-	         }],
-	         students: ['StudentsService', 'AuthService', function (StudentsService, AuthService) {
-	            return AuthService.$requireAuth().then(function (auth) {
-	               return StudentsService.getStudents();
 	            });
 	         }]
 	      }
@@ -25767,7 +25871,7 @@
 /* 224 */
 /***/ function(module, exports) {
 
-	module.exports = "<ui-view>\n\n   <button type=\"button\" ui-sref=\"students.create\">\n      crear\n   </button>\n\n   <form class=\"form-inline\">\n      <div class=\"form-group\">\n         <label for=\"exampleInputName2\">Filter</label>\n         <input type=\"text\"\n                class=\"form-control\"\n                id=\"exampleInputName2\"\n                ng-model=\"myFilter\"\n                placeholder=\"Jane Doe\">\n      </div>\n      <button type=\"submit\" class=\"btn btn-default\">Send invitation</button>\n   </form>\n\n  <!-- <div class=\"Student-cards\">\n      <div class=\"Student-card\" ng-repeat=\"student in $ctrl.students track by $index\">\n         <span ng-bind=\"student.name\"></span>\n         <span ng-bind=\"student.lastName\"></span>\n         <span ng-bind=\"student.email\"></span>\n         <span ng-bind=\"student.phone\"></span>\n      </div>\n   </div>-->\n\n   <table class=\"table table-hover\">\n      <thead>\n      <tr>\n         <th>First Name</th>\n         <th>Last Name</th>\n         <th>Email</th>\n         <th>Celular</th>\n         <th>Profession</th>\n         <th>Plan</th>\n         <th>&nbsp;</th>\n      </tr>\n      </thead>\n      <tbody>\n      <tr ng-repeat=\"student in $ctrl.students | filter: myFilter track by $index\"\n          ng-dblclick=\"$ctrl.studentProfile(student)\">\n         <th ng-bind=\"student.name\"></th>\n         <td ng-bind=\"student.lastName\"></td>\n         <td ng-bind=\"student.email\"></td>\n         <td ng-bind=\"student.mobile\"></td>\n         <td ng-bind=\"student.profession\"></td>\n         <td ng-bind=\"student.plan\"></td>\n         <td ng-click=\"$ctrl.deleteStudent(student)\">\n             <span class=\"glyphicon glyphicon-remove\"\n                   tooltip-placement=\"top\"\n                   uib-tooltip=\"Eliminar\">\n             </span>\n         </td>\n      </tr>\n      </tbody>\n   </table>\n\n</ui-view>";
+	module.exports = "<ui-view>\n\n   <button type=\"button\"\n           class=\"btn btn-primary\"\n           ui-sref=\"students.create\">\n      crear\n   </button>\n\n   <form class=\"form-inline\">\n      <div class=\"form-group\">\n         <label for=\"exampleInputName2\">Filter</label>\n         <input type=\"text\"\n                class=\"form-control\"\n                id=\"exampleInputName2\"\n                ng-model=\"myFilter\"\n                placeholder=\"Filtrar\">\n      </div>\n   </form>\n\n  <!-- <div class=\"Student-cards\">\n      <div class=\"Student-card\" ng-repeat=\"student in $ctrl.students track by $index\">\n         <span ng-bind=\"student.name\"></span>\n         <span ng-bind=\"student.lastName\"></span>\n         <span ng-bind=\"student.email\"></span>\n         <span ng-bind=\"student.phone\"></span>\n      </div>\n   </div>-->\n\n   <table class=\"table table-hover\">\n      <thead>\n      <tr>\n         <th>First Name</th>\n         <th>Last Name</th>\n         <th>Email</th>\n         <th>Celular</th>\n         <th>Profession</th>\n         <th>Plan</th>\n         <th>&nbsp;</th>\n      </tr>\n      </thead>\n      <tbody>\n      <tr ng-repeat=\"student in $ctrl.students | filter: myFilter track by $index\"\n          ng-dblclick=\"$ctrl.studentProfile(student)\">\n         <th ng-bind=\"student.name\"></th>\n         <td ng-bind=\"student.lastName\"></td>\n         <td ng-bind=\"student.email\"></td>\n         <td ng-bind=\"student.mobile\"></td>\n         <td ng-bind=\"student.profession\"></td>\n         <td ng-bind=\"student.plan\"></td>\n         <td ng-click=\"$ctrl.deleteStudent(student)\">\n             <span class=\"glyphicon glyphicon-remove\"\n                   tooltip-placement=\"top\"\n                   uib-tooltip=\"Eliminar\">\n             </span>\n         </td>\n      </tr>\n      </tbody>\n   </table>\n\n</ui-view>";
 
 /***/ },
 /* 225 */
@@ -25811,7 +25915,7 @@
 
 /***/ },
 /* 227 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -25821,12 +25925,25 @@
 	   value: true
 	});
 
+	var _studentsModal = __webpack_require__(228);
+
+	var _studentsModal2 = _interopRequireDefault(_studentsModal);
+
+	var _studentsModal3 = __webpack_require__(229);
+
+	var _studentsModal4 = _interopRequireDefault(_studentsModal3);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+	var _$uibModal = new WeakMap();
+
 	var StudentsController = (function () {
-	   function StudentsController(StudentsService, $stateParams, $state, studentsSetup) {
+	   function StudentsController(StudentsService, $stateParams, $state, studentsSetup, $uibModal) {
 	      _classCallCheck(this, StudentsController);
 
+	      _$uibModal.set(this, $uibModal);
 	      this.StudentsService = StudentsService;
 	      this.$state = $state;
 	      this.setup = studentsSetup;
@@ -25845,8 +25962,8 @@
 	         this.setup.dateOptions = studentsSetup.dateOptions;
 	      }
 
-	      console.log('this');
-	      console.log(this);
+	      /*console.log('this');
+	      console.log(this);*/
 	   }
 
 	   _createClass(StudentsController, [{
@@ -25872,51 +25989,229 @@
 	         this.$state.go('students.update', { id: student.$id });
 	      }
 	   }, {
-	      key: 'save',
-	      value: function save() {
-	         var _this = this;
-
-	         //this.student.inscriptionDate.toString();
-	         if (this.isUpdate) {
-
-	            console.log('this.student');
-	            console.log(this.student);
-
-	            this.students.$save(this.student).then(function (ref) {
-	               _this.$state.go('^');
-	            }).catch(function (rejected) {
-	               console.log('rejected');
-	               console.log(rejected);
-	            });
-	         } else {
-	            this.students.$add(this.student).then(function (res) {
-	               return _this.$state.go('^');
-	            });
-	         }
-	      }
-	   }, {
 	      key: 'deleteStudent',
 	      value: function deleteStudent(student) {
-	         var index = this.students.indexOf(student);
+	         var _this = this;
 
-	         this.students.splice(index, 1);
+	         var index = this.students.indexOf(student),
+	             $uibModal = _$uibModal.get(this);
 
-	         /*this.students.$remove(student).then((ref) => {
-	           console.log('deteleStudent response');
-	           console.log(ref);
-	         });*/
+	         $uibModal.open({
+	            animation: true,
+	            template: _studentsModal2.default,
+	            controller: _studentsModal4.default,
+	            controllerAs: '$ctrl',
+	            bindToController: true
+	         }).result.then(function () {
+	            console.log('successHandler');
+	            _this.students.$remove(student).then(function (ref) {
+	               console.log('deteleStudent response');
+	               console.log(ref);
+	            }).catch(function (reason) {
+	               console.log('reason');
+	               console.log(reason);
+	            }).finally(function () {
+	               console.log('finally');
+	            });
+	         }).catch(function () {
+	            console.log('rejectHandler');
+	         });
 	      }
 	   }]);
 
 	   return StudentsController;
 	})();
 
-	StudentsController.$inject = ['StudentsService', '$stateParams', '$state', 'studentsSetup'];
+	StudentsController.$inject = ['StudentsService', '$stateParams', '$state', 'studentsSetup', '$uibModal'];
 
 	exports.default = StudentsController;
 
 /***/ },
 /* 228 */
+/***/ function(module, exports) {
+
+	module.exports = "<div class=\"modal-header\">\n   <h3 class=\"modal-title\">Olgah</h3>\n</div>\n<div class=\"modal-body\">\n\n  <h3>¿Desea borrar este elemento?</h3>\n</div>\n<div class=\"modal-footer\">\n   <button class=\"btn btn-primary\" type=\"button\" ng-click=\"$ctrl.ok()\">OK</button>\n   <button class=\"btn btn-warning\" type=\"button\" ng-click=\"$ctrl.cancel()\">Cancel</button>\n</div>";
+
+/***/ },
+/* 229 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	Object.defineProperty(exports, "__esModule", {
+	   value: true
+	});
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var _$uibModalInstance = new WeakMap();
+
+	var StudentsModalModalController = (function () {
+	   function StudentsModalModalController($uibModalInstance) {
+	      _classCallCheck(this, StudentsModalModalController);
+
+	      _$uibModalInstance.set(this, $uibModalInstance);
+	   }
+
+	   _createClass(StudentsModalModalController, [{
+	      key: 'ok',
+	      value: function ok() {
+	         var $uibModalInstance = _$uibModalInstance.get(this);
+	         $uibModalInstance.close();
+	      }
+	   }, {
+	      key: 'cancel',
+	      value: function cancel() {
+	         var $uibModalInstance = _$uibModalInstance.get(this);
+	         $uibModalInstance.dismiss();
+	      }
+	   }]);
+
+	   return StudentsModalModalController;
+	})();
+
+	StudentsModalModalController.$inject = ['$uibModalInstance'];
+
+	exports.default = StudentsModalModalController;
+
+/***/ },
+/* 230 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	Object.defineProperty(exports, "__esModule", {
+	   value: true
+	});
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var _$state = new WeakMap(),
+	    _StudentsService = new WeakMap(),
+	    _$firebaseObject = new WeakMap();
+
+	var StudentsCreateController = (function () {
+	   function StudentsCreateController(StudentsService, $state, studentsSetup, $firebaseObject) {
+	      _classCallCheck(this, StudentsCreateController);
+
+	      _$state.set(this, $state);
+	      _$firebaseObject.set(this, $firebaseObject);
+	      _StudentsService.set(this, StudentsService);
+
+	      this.setup = studentsSetup;
+
+	      this.buttonText = 'Guardar';
+	      this.student = {};
+	      this.student.documentType = studentsSetup.documentTypes[0];
+	      this.student.occupation = studentsSetup.occupations[0];
+	      this.student.plan = studentsSetup.plans[0];
+	      this.format = studentsSetup.format(0);
+	      this.setup.altInputFormats = studentsSetup.altInputFormats;
+	      this.setup.dateOptions = studentsSetup.dateOptions;
+	   }
+
+	   _createClass(StudentsCreateController, [{
+	      key: 'openCalendar',
+	      value: function openCalendar() {
+	         this.setup.popup.opened = true;
+	      }
+	   }, {
+	      key: 'save',
+	      value: function save() {
+	         var $state = _$state.get(this);
+
+	         this.students.$add(this.student).then(function (ref) {
+	            $state.go('^');
+	         }).catch(function (rejected) {
+	            console.log('rejected');
+	            console.log(rejected);
+	         }).finally(function () {
+	            console.log('finally');
+	         });
+	      }
+	   }]);
+
+	   return StudentsCreateController;
+	})();
+
+	StudentsCreateController.$inject = ['StudentsService', '$state', 'studentsSetup', '$firebaseObject'];
+
+	exports.default = StudentsCreateController;
+
+/***/ },
+/* 231 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	Object.defineProperty(exports, "__esModule", {
+	   value: true
+	});
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var _$state = new WeakMap(),
+	    _StudentsService = new WeakMap(),
+	    _$firebaseObject = new WeakMap();
+
+	var StudentsUpdateController = (function () {
+	   function StudentsUpdateController(StudentsService, $state, studentsSetup, $firebaseObject) {
+	      _classCallCheck(this, StudentsUpdateController);
+
+	      _$state.set(this, $state);
+	      _$firebaseObject.set(this, $firebaseObject);
+	      _StudentsService.set(this, StudentsService);
+
+	      this.setup = studentsSetup;
+
+	      this.buttonText = 'Actualizar';
+
+	      this.setup.altInputFormats = studentsSetup.altInputFormats;
+	      this.setup.dateOptions = studentsSetup.dateOptions;
+
+	      console.log('this');
+	      console.log(this);
+	   }
+
+	   _createClass(StudentsUpdateController, [{
+	      key: 'openCalendar',
+	      value: function openCalendar() {
+	         this.setup.popup.opened = true;
+	      }
+	   }, {
+	      key: 'save',
+	      value: function save() {
+	         var $state = _$state.get(this);
+
+	         console.log('this.student.inscriptionDate');
+	         console.log(this.student.inscriptionDate);
+	         console.log(this.student.inscriptionDate.toString());
+	         this.student.$save().then(function (ref) {
+	            $state.go('^');
+	         }).catch(function (rejected) {
+	            console.log('rejected');
+	            console.log(rejected);
+	         }).finally(function () {
+	            console.log('finally');
+	         });
+	      }
+	   }]);
+
+	   return StudentsUpdateController;
+	})();
+
+	StudentsUpdateController.$inject = ['StudentsService', '$state', 'studentsSetup', '$firebaseObject'];
+
+	exports.default = StudentsUpdateController;
+
+/***/ },
+/* 232 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25927,7 +26222,7 @@
 	   value: true
 	});
 
-	var _firebase = __webpack_require__(229);
+	var _firebase = __webpack_require__(233);
 
 	var _firebase2 = _interopRequireDefault(_firebase);
 
@@ -25991,7 +26286,7 @@
 	exports.default = JentooService;
 
 /***/ },
-/* 229 */
+/* 233 */
 /***/ function(module, exports) {
 
 	/*! @license Firebase v2.4.2
@@ -26277,15 +26572,7 @@
 
 
 /***/ },
-/* 230 */,
-/* 231 */,
-/* 232 */
-/***/ function(module, exports) {
-
-	module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAV4AAABRCAYAAACaCs57AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyNpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDE0IDc5LjE1MTQ4MSwgMjAxMy8wMy8xMy0xMjowOToxNSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIChNYWNpbnRvc2gpIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOkFFRTM4MzYwMkJFODExRTU4QTQwOTU3NjA4OEQ5RENFIiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOkFFRTM4MzYxMkJFODExRTU4QTQwOTU3NjA4OEQ5RENFIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6QUVFMzgzNUUyQkU4MTFFNThBNDA5NTc2MDg4RDlEQ0UiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6QUVFMzgzNUYyQkU4MTFFNThBNDA5NTc2MDg4RDlEQ0UiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz5NO5zXAABDqElEQVR42uy9B5wc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"
-
-/***/ },
-/* 233 */
+/* 234 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26294,11 +26581,59 @@
 	   value: true
 	});
 
-	var _app = __webpack_require__(234);
+	var _studentsForm = __webpack_require__(235);
+
+	var _studentsForm2 = _interopRequireDefault(_studentsForm);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var StudentsForm = function StudentsForm() {
+	   _classCallCheck(this, StudentsForm);
+
+	   this.scope = {};
+	   this.template = _studentsForm2.default;
+	   this.transclude = true;
+	   this.name = 'ctrl';
+	   this.controller = '@';
+	   this.controllerAs = '$ctrl';
+	   this.bindToController = {
+	      auth: '<',
+	      student: '<',
+	      students: '<'
+	   };
+	};
+
+	exports.default = StudentsForm;
+
+/***/ },
+/* 235 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = "<section>\n\n   <div class=\"page-header\">\n      <img src=\"" + __webpack_require__(236) + "\" alt=\"\">\n   </div>\n\n   <form name=\"poleForm\">\n\n      <div class=\"row\">\n         <div class=\"col-md-3\">\n            <label class=\"\" for=\"name\">Nombre</label>\n            <input id=\"name\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"name\"\n                   ng-model=\"$ctrl.student.name\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"lastName\">Apellidos</label>\n            <input id=\"lastName\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"lastName\"\n                   ng-model=\"$ctrl.student.lastName\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"inscriptionDate\">Fecha de Matrícula</label>\n            <input id=\"inscriptionDate\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"inscriptionDate\"\n                   ng-model=\"$ctrl.student.inscriptionDate\"\n                   placeholder=\"\">\n            <!--<p class=\"input-group\">\n               <input id=\"inscriptionDate\"\n                      type=\"text\"\n                      name=\"inscriptionDate\"\n                      class=\"form-control\"\n                      uib-datepicker-popup=\"{{$ctrl.format}}\"\n                      ng-model=\"$ctrl.student.inscriptionDate\"\n                      is-open=\"$ctrl.setup.popup.opened\"\n                      datepicker-options=\"$ctrl.setup.dateOptions\"\n                      clear-text=\"Limpiar\"\n                      today-text=\"Hoy\"\n                      close-text=\"Cerrar\"\n                      alt-input-formats=\"$ctrl.setup.altInputFormats\" />\n            <span class=\"input-group-btn\">\n               <button type=\"button\"\n                       class=\"btn btn-default\"\n                       ng-click=\"$ctrl.openCalendar()\">\n                  <i class=\"glyphicon glyphicon-calendar\"></i>\n               </button>\n            </span>\n            </p>-->\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"documentType\">Tipo de Documento</label>\n            <select id=\"documentType\"\n                    name=\"documentType\"\n                    ng-model=\"$ctrl.student.documentType\"\n                    class=\"form-control\"\n                    ng-options=\"doc for doc in $ctrl.setup.documentTypes\">\n            </select>\n         </div>\n      </div>\n      <div class=\"row\">\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"email\">Email</label>\n            <input id=\"email\"\n                   type=\"email\"\n                   class=\"form-control\"\n                   name=\"email\"\n                   ng-model=\"$ctrl.student.email\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"phone\">Teléfono</label>\n            <input id=\"phone\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"phone\"\n                   ng-model=\"$ctrl.student.phone\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"mobile\">Celular</label>\n            <input id=\"mobile\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"mobile\"\n                   ng-model=\"$ctrl.student.mobile\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"address\">Dirección</label>\n            <input id=\"address\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"address\"\n                   ng-model=\"$ctrl.student.address\"\n                   placeholder=\"\">\n         </div>\n      </div>\n      <div class=\"row\">\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"height\">Estatura</label>\n            <input id=\"height\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"height\"\n                   ng-model=\"$ctrl.student.height\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"weight\">Peso</label>\n            <input id=\"weight\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"weight\"\n                   ng-model=\"$ctrl.student.weight\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"healthInsurance\">EPS</label>\n            <input id=\"healthInsurance\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"healthInsurance\"\n                   ng-model=\"$ctrl.student.healthInsurance\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"Profession\">Profesión</label>\n            <input id=\"Profession\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"Profession\"\n                   ng-model=\"$ctrl.student.profession\"\n                   placeholder=\"\">\n         </div>\n      </div>\n      <div class=\"row\">\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"children\">Hijos</label>\n            <label class=\"\">\n               <input type=\"checkbox\"\n                      id=\"children\"\n                      name=\"children\"\n                      ng-model=\"$ctrl.student.children\">\n            </label>\n         </div>\n\n      </div>\n      <hr>\n      <div class=\"row\">\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"ocupation\">Ocupación</label>\n            <select id=\"ocupation\"\n                    name=\"ocupation\"\n                    ng-model=\"$ctrl.student.occupation\"\n                    class=\"form-control\"\n                    ng-options=\"doc for doc in $ctrl.setup.occupations\">\n            </select>\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"companyName\">Empresa donde trabaja</label>\n            <input id=\"companyName\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"companyName\"\n                   ng-model=\"$ctrl.student.companyName\"\n                   placeholder=\"\">\n\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"companyPhone\">Teléfono Empresa</label>\n            <input id=\"companyPhone\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"companyPhone\"\n                   ng-model=\"$ctrl.student.companyPhone\"\n                   placeholder=\"\">\n\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"charge\">Cargo</label>\n            <input id=\"charge\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"charge\"\n                   ng-model=\"$ctrl.student.charge\"\n                   placeholder=\"\">\n\n         </div>\n      </div>\n      <div class=\"row\">\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"howYouMeetPoleCenter\">¿Como conoció Pole Center?</label>\n            <input id=\"howYouMeetPoleCenter\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"howYouMeetPoleCenter\"\n                   ng-model=\"$ctrl.student.howYouMeetPoleCenter\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"plan\">Plan</label>\n            <select id=\"plan\"\n                    name=\"plan\"\n                    ng-model=\"$ctrl.student.plan\"\n                    class=\"form-control\"\n                    ng-options=\"plan for plan in $ctrl.setup.plans\">\n            </select>\n         </div>\n         <div class=\"col-md-6\">\n            <div class=\"text-center\">\n               <label\n                      for=\"inCaseOfEmergencyName\">\n                  En caso de emergencia comunicarse con\n               </label>\n            </div>\n            <div class=\"col-md-6\">\n               <input id=\"inCaseOfEmergencyName\"\n                      type=\"text\"\n                      class=\"form-control\"\n                      name=\"inCaseOfEmergency\"\n                      ng-model=\"$ctrl.student.inCaseOfEmergency.name\"\n                      placeholder=\"Nombre\">\n            </div>\n            <div class=\"col-md-6\">\n               <input id=\"inCaseOfEmergencyPhone\"\n                      type=\"text\"\n                      class=\"form-control\"\n                      name=\"inCaseOfEmergency\"\n                      ng-model=\"$ctrl.student.inCaseOfEmergency.phone\"\n                      placeholder=\"Teléfono\">\n            </div>\n         </div>\n      </div>\n      <hr>\n      <div class=\"row\">\n         <div class=\"col-md-3\">\n            <button class=\"btn btn default\"\n                    ng-click=\"$ctrl.save()\">\n               <span ng-bind=\"$ctrl.buttonText\"></span>\n            </button>\n         </div>\n      </div>\n\n      <pre>{{$ctrl.student | json}}</pre>\n\n   </form>\n</section>";
+
+/***/ },
+/* 236 */
+/***/ function(module, exports) {
+
+	module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAV4AAABRCAYAAACaCs57AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyNpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDE0IDc5LjE1MTQ4MSwgMjAxMy8wMy8xMy0xMjowOToxNSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIChNYWNpbnRvc2gpIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOkFFRTM4MzYwMkJFODExRTU4QTQwOTU3NjA4OEQ5RENFIiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOkFFRTM4MzYxMkJFODExRTU4QTQwOTU3NjA4OEQ5RENFIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6QUVFMzgzNUUyQkU4MTFFNThBNDA5NTc2MDg4RDlEQ0UiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6QUVFMzgzNUYyQkU4MTFFNThBNDA5NTc2MDg4RDlEQ0UiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz5NO5zXAABDqElEQVR42uy9B5wc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"
+
+/***/ },
+/* 237 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	   value: true
+	});
+
+	var _app = __webpack_require__(238);
 
 	var _app2 = _interopRequireDefault(_app);
 
-	__webpack_require__(235);
+	__webpack_require__(239);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -26309,19 +26644,19 @@
 	exports.default = appComponent;
 
 /***/ },
-/* 234 */
+/* 238 */
 /***/ function(module, exports) {
 
 	module.exports = "<section>\n   <nav class=\"navbar navbar-default\">\n      <div class=\"container-fluid\">\n         <!-- Brand and toggle get grouped for better mobile display -->\n         <div class=\"navbar-header\">\n            <button class=\"btn btn-default navbar-btn\"\n                    type=\"button\"\n                    ui-sref=\"students\">\n               Students\n            </button>\n            <a class=\"navbar-brand\" ui-sref=\"login\">Coco</a>\n         </div>\n      </div><!-- /.container-fluid -->\n   </nav>\n\n   <ui-view></ui-view>\n\n   <!--<footer id=\"olgahFooter\">\n      All rights Reserved, Coco Interactivo 2016\n   </footer>-->\n\n</section>";
 
 /***/ },
-/* 235 */
+/* 239 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(236);
+	var content = __webpack_require__(240);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(214)(content, {});
@@ -26341,7 +26676,7 @@
 	}
 
 /***/ },
-/* 236 */
+/* 240 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(213)();
@@ -26355,7 +26690,7 @@
 
 
 /***/ },
-/* 237 */
+/* 241 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26368,15 +26703,15 @@
 
 	var _angular2 = _interopRequireDefault(_angular);
 
-	var _directives = __webpack_require__(238);
+	var _directives = __webpack_require__(242);
 
 	var _directives2 = _interopRequireDefault(_directives);
 
-	var _services = __webpack_require__(240);
+	var _services = __webpack_require__(244);
 
 	var _services2 = _interopRequireDefault(_services);
 
-	var _loader = __webpack_require__(244);
+	var _loader = __webpack_require__(248);
 
 	var _loader2 = _interopRequireDefault(_loader);
 
@@ -26387,7 +26722,7 @@
 	exports.default = sharedModule;
 
 /***/ },
-/* 238 */
+/* 242 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26400,7 +26735,7 @@
 
 	var _angular2 = _interopRequireDefault(_angular);
 
-	var _passwordMatch = __webpack_require__(239);
+	var _passwordMatch = __webpack_require__(243);
 
 	var _passwordMatch2 = _interopRequireDefault(_passwordMatch);
 
@@ -26411,7 +26746,7 @@
 	exports.default = sharedModule;
 
 /***/ },
-/* 239 */
+/* 243 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -26454,7 +26789,7 @@
 	exports.default = passwordMatch;
 
 /***/ },
-/* 240 */
+/* 244 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26467,15 +26802,15 @@
 
 	var _angular2 = _interopRequireDefault(_angular);
 
-	var _authInterceptor = __webpack_require__(254);
+	var _authInterceptor = __webpack_require__(245);
 
 	var _authInterceptor2 = _interopRequireDefault(_authInterceptor);
 
-	var _authToken = __webpack_require__(255);
+	var _authToken = __webpack_require__(246);
 
 	var _authToken2 = _interopRequireDefault(_authToken);
 
-	var _auth = __webpack_require__(243);
+	var _auth = __webpack_require__(247);
 
 	var _auth2 = _interopRequireDefault(_auth);
 
@@ -26486,9 +26821,106 @@
 	exports.default = servicesModule;
 
 /***/ },
-/* 241 */,
-/* 242 */,
-/* 243 */
+/* 245 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	Object.defineProperty(exports, "__esModule", {
+	   value: true
+	});
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var authInterceptor = (function () {
+	   function authInterceptor(AuthTokenService) {
+	      _classCallCheck(this, authInterceptor);
+
+	      this.AuthTokenService = AuthTokenService;
+	   }
+
+	   _createClass(authInterceptor, [{
+	      key: 'addToken',
+	      value: function addToken(config) {
+
+	         var token = AuthTokenService.getToken();
+	         //  Now if there is a token, so if the user is authenticated.
+	         if (token) {
+	            // then we're going to add this to a header on this config object,
+	            config.headers = config.headers || {};
+	            //console.log('----authInterceptor----');
+	            //console.log(config);
+	            config.headers.Authorization = 'Bearer ' + token;
+	         }
+
+	         return config;
+	      }
+	   }]);
+
+	   return authInterceptor;
+	})();
+
+	authInterceptor.$inject = ['AuthTokenService'];
+
+	exports.default = authInterceptor;
+
+/***/ },
+/* 246 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	Object.defineProperty(exports, "__esModule", {
+	   value: true
+	});
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var AuthToken = (function () {
+	   function AuthToken($window, $q) {
+	      _classCallCheck(this, AuthToken);
+
+	      this.storage = $window.getitem();
+
+	      this.key = 'auth-token: ';
+	   }
+
+	   _createClass(AuthToken, [{
+	      key: 'getToken',
+	      value: function getToken() {
+	         return this.store.getItem(this.key);
+	      }
+	   }, {
+	      key: 'setToken',
+	      value: function setToken(token) {
+	         var _this = this;
+
+	         return $q(function (resolve, reject) {
+
+	            if (token) {
+	               _this.store.setItem(_this.key, token);
+	               resolve('Token Generated');
+	            } else {
+	               _this.store.removeItem(_this.key);
+	               resolve('Token Removed');
+	            }
+	         });
+	      }
+	   }]);
+
+	   return AuthToken;
+	})();
+
+	AuthToken.$inject = ['$window', '$q'];
+
+	exports.default = AuthToken;
+
+/***/ },
+/* 247 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26497,7 +26929,7 @@
 	   value: true
 	});
 
-	var _firebase = __webpack_require__(229);
+	var _firebase = __webpack_require__(233);
 
 	var _firebase2 = _interopRequireDefault(_firebase);
 
@@ -26518,7 +26950,7 @@
 	exports.default = AuthService;
 
 /***/ },
-/* 244 */
+/* 248 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26531,19 +26963,19 @@
 
 	var _angular2 = _interopRequireDefault(_angular);
 
-	var _loaderConfigProvider = __webpack_require__(245);
+	var _loaderConfigProvider = __webpack_require__(249);
 
 	var _loaderConfigProvider2 = _interopRequireDefault(_loaderConfigProvider);
 
-	var _loaderDirective = __webpack_require__(246);
+	var _loaderDirective = __webpack_require__(250);
 
 	var _loaderDirective2 = _interopRequireDefault(_loaderDirective);
 
-	var _loaderInterceptorService = __webpack_require__(249);
+	var _loaderInterceptorService = __webpack_require__(253);
 
 	var _loaderInterceptorService2 = _interopRequireDefault(_loaderInterceptorService);
 
-	var _loaderDisplayService = __webpack_require__(250);
+	var _loaderDisplayService = __webpack_require__(254);
 
 	var _loaderDisplayService2 = _interopRequireDefault(_loaderDisplayService);
 
@@ -26554,7 +26986,7 @@
 	exports.default = loadingModule;
 
 /***/ },
-/* 245 */
+/* 249 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -26605,7 +27037,7 @@
 	exports.default = loadingConfigProvider;
 
 /***/ },
-/* 246 */
+/* 250 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26614,7 +27046,7 @@
 	   value: true
 	});
 
-	__webpack_require__(247);
+	__webpack_require__(251);
 
 	Loader.$inject = ['$q', '$timeout', 'LoadingInterceptor', 'loaderConfig', 'LoadingDisplay'];
 
@@ -26728,13 +27160,13 @@
 	exports.default = Loader;
 
 /***/ },
-/* 247 */
+/* 251 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(248);
+	var content = __webpack_require__(252);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(214)(content, {});
@@ -26754,7 +27186,7 @@
 	}
 
 /***/ },
-/* 248 */
+/* 252 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(213)();
@@ -26768,7 +27200,7 @@
 
 
 /***/ },
-/* 249 */
+/* 253 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -26788,7 +27220,7 @@
 	exports.default = LoadingInterceptorService;
 
 /***/ },
-/* 250 */
+/* 254 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -26870,245 +27302,6 @@
 	LoaderDisplayService.$inject = ['$window'];
 
 	exports.default = LoaderDisplayService;
-
-/***/ },
-/* 251 */,
-/* 252 */,
-/* 253 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	   value: true
-	});
-
-	var _studentsForm = __webpack_require__(259);
-
-	var _studentsForm2 = _interopRequireDefault(_studentsForm);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	var StudentsForm = function StudentsForm() {
-	   _classCallCheck(this, StudentsForm);
-
-	   this.scope = {};
-	   this.template = _studentsForm2.default;
-	   this.transclude = true;
-	   this.name = 'ctrl';
-	   this.controller = '@';
-	   this.controllerAs = '$ctrl';
-	   this.bindToController = {
-	      auth: '<',
-	      student: '<',
-	      students: '<'
-	   };
-	};
-
-	exports.default = StudentsForm;
-
-/***/ },
-/* 254 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-	Object.defineProperty(exports, "__esModule", {
-	   value: true
-	});
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	var authInterceptor = (function () {
-	   function authInterceptor(AuthTokenService) {
-	      _classCallCheck(this, authInterceptor);
-
-	      this.AuthTokenService = AuthTokenService;
-	   }
-
-	   _createClass(authInterceptor, [{
-	      key: 'addToken',
-	      value: function addToken(config) {
-
-	         var token = AuthTokenService.getToken();
-	         //  Now if there is a token, so if the user is authenticated.
-	         if (token) {
-	            // then we're going to add this to a header on this config object,
-	            config.headers = config.headers || {};
-	            //console.log('----authInterceptor----');
-	            //console.log(config);
-	            config.headers.Authorization = 'Bearer ' + token;
-	         }
-
-	         return config;
-	      }
-	   }]);
-
-	   return authInterceptor;
-	})();
-
-	authInterceptor.$inject = ['AuthTokenService'];
-
-	exports.default = authInterceptor;
-
-/***/ },
-/* 255 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-	Object.defineProperty(exports, "__esModule", {
-	   value: true
-	});
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	var AuthToken = (function () {
-	   function AuthToken($window, $q) {
-	      _classCallCheck(this, AuthToken);
-
-	      this.storage = $window.getitem();
-
-	      this.key = 'auth-token: ';
-	   }
-
-	   _createClass(AuthToken, [{
-	      key: 'getToken',
-	      value: function getToken() {
-	         return this.store.getItem(this.key);
-	      }
-	   }, {
-	      key: 'setToken',
-	      value: function setToken(token) {
-	         var _this = this;
-
-	         return $q(function (resolve, reject) {
-
-	            if (token) {
-	               _this.store.setItem(_this.key, token);
-	               resolve('Token Generated');
-	            } else {
-	               _this.store.removeItem(_this.key);
-	               resolve('Token Removed');
-	            }
-	         });
-	      }
-	   }]);
-
-	   return AuthToken;
-	})();
-
-	AuthToken.$inject = ['$window', '$q'];
-
-	exports.default = AuthToken;
-
-/***/ },
-/* 256 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	   value: true
-	});
-
-	var _register = __webpack_require__(257);
-
-	var _register2 = _interopRequireDefault(_register);
-
-	var _registerController = __webpack_require__(258);
-
-	var _registerController2 = _interopRequireDefault(_registerController);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var registerComponent = {
-	   template: _register2.default,
-	   controller: _registerController2.default,
-	   bindings: {}
-	};
-
-	exports.default = registerComponent;
-
-/***/ },
-/* 257 */
-/***/ function(module, exports) {
-
-	module.exports = "<form name=\"registerForm\">\n   <!--<pre>{{registerForm | json }}</pre>-->\n   <div class=\"form-group\">\n      <label for=\"userEmail\">Email address</label>\n      <input type=\"email\"\n             class=\"form-control\"\n             ng-model=\"$ctrl.user.email\"\n             ng-keyup=\"$ctrl.hideErrors()\"\n             name=\"userEmail\"\n             id=\"userEmail\"\n             placeholder=\"Email\">\n   </div>\n   <span class=\"text-danger\"\n         ng-if=\"registerForm.userEmail.$error.email\">\n      Escribe un correo válido\n   </span>\n   <div class=\"form-group\">\n      <label for=\"userPassword\">Password</label>\n      <input type=\"password\"\n             class=\"form-control\"\n             ng-model=\"$ctrl.user.password\"\n             name=\"userPassword\"\n             ng-minlength=\"7\"\n             id=\"userPassword\"\n             placeholder=\"Password\">\n   </div>\n   <span class=\"text-danger\"\n         ng-if=\"registerForm.userPassword.$error.minlength\">\n       La contraseña de tener 7 carácteres mínimo\n   </span>\n   <div class=\"form-group\">\n      <label for=\"userRetypePassword\">Retype Password</label>\n      <input type=\"password\"\n             class=\"form-control\"\n             ng-model=\"$ctrl.user.newPassword\"\n             name=\"userNewPassword\"\n             ng-minlength=\"7\"\n             password-match=\"$ctrl.user.password\"\n             id=\"userRetypePassword\"\n             placeholder=\"Password\">\n   </div>\n   <span class=\"text-danger\"\n         ng-if=\"registerForm.userNewPassword.$error.minlength\">\n      La contraseña de tener 7 carácteres mínimo\n   </span>\n   <span class=\"text-danger\"\n         ng-if=\"registerForm.userNewPassword.$error.unique\">\n       Contraseñas no coinciden\n   </span>\n   <button type=\"button\"\n           ng-disabled=\"registerForm.$invalid\"\n           ng-click=\"$ctrl.createUser()\"\n           class=\"btn btn-default\">\n      Register\n   </button>\n   <button type=\"button\"\n           ng-disabled=\"registerForm.$invalid\"\n           ng-click=\"$ctrl.goBack()\"\n           class=\"btn btn-default\">\n      Back\n   </button>\n   <p class=\"bg-danger\" ng-if=\"$ctrl.error\">\n      <span ng-bind=\"$ctrl.error\"></span>\n   </p>\n</form>";
-
-/***/ },
-/* 258 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-	Object.defineProperty(exports, "__esModule", {
-	   value: true
-	});
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	var LoginRegisterController = (function () {
-	   function LoginRegisterController(LoginService, $state, $timeout) {
-	      _classCallCheck(this, LoginRegisterController);
-
-	      this.LoginService = LoginService;
-	      this.$state = $state;
-	      this.$timeout = $timeout;
-	      this.name = 'login';
-	   }
-
-	   _createClass(LoginRegisterController, [{
-	      key: 'createUser',
-	      value: function createUser() {
-	         var _this = this;
-
-	         this.message = null;
-	         this.error = null;
-
-	         this.LoginService.$createUser({
-	            email: this.user.email,
-	            password: this.user.password
-	         }).then(function (userData) {
-	            _this.message = "User created with uid: " + userData.uid;
-	         }).catch(function (error) {
-	            _this.error = error;
-	         });
-	      }
-	   }, {
-	      key: 'goBack',
-	      value: function goBack() {
-	         this.$state.go('^');
-	      }
-	   }, {
-	      key: 'hideErrors',
-	      value: function hideErrors() {
-	         if (this.error) {
-	            this.error = '';
-	         }
-	      }
-	   }]);
-
-	   return LoginRegisterController;
-	})();
-
-	LoginRegisterController.$inject = ['LoginService', '$state', '$timeout'];
-
-	exports.default = LoginRegisterController;
-
-/***/ },
-/* 259 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = "<section>\n\n   <div class=\"page-header\">\n      <img src=\"" + __webpack_require__(232) + "\" alt=\"\">\n   </div>\n\n   <form name=\"poleForm\">\n\n      <div class=\"row\">\n         <div class=\"col-md-3\">\n            <label class=\"\" for=\"name\">Nombre</label>\n            <input id=\"name\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"name\"\n                   ng-model=\"$ctrl.student.name\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"lastName\">Apellidos</label>\n            <input id=\"lastName\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"lastName\"\n                   ng-model=\"$ctrl.student.lastName\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"inscriptionDate\">Fecha de Matrícula</label>\n            <p class=\"input-group\">\n               <input id=\"inscriptionDate\"\n                      type=\"text\"\n                      name=\"inscriptionDate\"\n                      class=\"form-control\"\n                      uib-datepicker-popup=\"{{$ctrl.format}}\"\n                      ng-model=\"$ctrl.student.inscriptionDate\"\n                      is-open=\"$ctrl.setup.popup.opened\"\n                      datepicker-options=\"$ctrl.setup.dateOptions\"\n                      clear-text=\"Limpiar\"\n                      today-text=\"Hoy\"\n                      close-text=\"Cerrar\"\n                      alt-input-formats=\"$ctrl.setup.altInputFormats\" />\n            <span class=\"input-group-btn\">\n               <button type=\"button\"\n                       class=\"btn btn-default\"\n                       ng-click=\"$ctrl.openCalendar()\">\n                  <i class=\"glyphicon glyphicon-calendar\"></i>\n               </button>\n            </span>\n            </p>\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"documentType\">Tipo de Documento</label>\n            <select id=\"documentType\"\n                    name=\"documentType\"\n                    ng-model=\"$ctrl.student.documentType\"\n                    class=\"form-control\"\n                    ng-options=\"doc for doc in $ctrl.setup.documentTypes\">\n            </select>\n         </div>\n      </div>\n      <div class=\"row\">\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"email\">Email</label>\n            <input id=\"email\"\n                   type=\"email\"\n                   class=\"form-control\"\n                   name=\"email\"\n                   ng-model=\"$ctrl.student.email\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"phone\">Teléfono</label>\n            <input id=\"phone\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"phone\"\n                   ng-model=\"$ctrl.student.phone\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"mobile\">Celular</label>\n            <input id=\"mobile\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"mobile\"\n                   ng-model=\"$ctrl.student.mobile\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"address\">Dirección</label>\n            <input id=\"address\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"address\"\n                   ng-model=\"$ctrl.student.address\"\n                   placeholder=\"\">\n         </div>\n      </div>\n      <div class=\"row\">\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"height\">Estatura</label>\n            <input id=\"height\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"height\"\n                   ng-model=\"$ctrl.student.height\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"weight\">Peso</label>\n            <input id=\"weight\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"weight\"\n                   ng-model=\"$ctrl.student.weight\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"healthInsurance\">EPS</label>\n            <input id=\"healthInsurance\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"healthInsurance\"\n                   ng-model=\"$ctrl.student.healthInsurance\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"Profession\">Profesión</label>\n            <input id=\"Profession\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"Profession\"\n                   ng-model=\"$ctrl.student.profession\"\n                   placeholder=\"\">\n         </div>\n      </div>\n      <div class=\"row\">\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"children\">Hijos</label>\n            <label class=\"\">\n               <input type=\"checkbox\"\n                      id=\"children\"\n                      name=\"children\"\n                      ng-model=\"$ctrl.student.children\">\n            </label>\n         </div>\n\n      </div>\n      <hr>\n      <div class=\"row\">\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"ocupation\">Ocupación</label>\n            <select id=\"ocupation\"\n                    name=\"ocupation\"\n                    ng-model=\"$ctrl.student.occupation\"\n                    class=\"form-control\"\n                    ng-options=\"doc for doc in $ctrl.setup.occupations\">\n            </select>\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"companyName\">Empresa donde trabaja</label>\n            <input id=\"companyName\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"companyName\"\n                   ng-model=\"$ctrl.student.companyName\"\n                   placeholder=\"\">\n\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"companyPhone\">Teléfono Empresa</label>\n            <input id=\"companyPhone\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"companyPhone\"\n                   ng-model=\"$ctrl.student.companyPhone\"\n                   placeholder=\"\">\n\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"charge\">Cargo</label>\n            <input id=\"charge\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"charge\"\n                   ng-model=\"$ctrl.student.charge\"\n                   placeholder=\"\">\n\n         </div>\n      </div>\n      <div class=\"row\">\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"howYouMeetPoleCenter\">¿Como conoció Pole Center?</label>\n            <input id=\"howYouMeetPoleCenter\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"howYouMeetPoleCenter\"\n                   ng-model=\"$ctrl.student.howYouMeetPoleCenter\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"plan\">Plan</label>\n            <select id=\"plan\"\n                    name=\"plan\"\n                    ng-model=\"$ctrl.student.plan\"\n                    class=\"form-control\"\n                    ng-options=\"plan for plan in $ctrl.setup.plans\">\n            </select>\n         </div>\n         <div class=\"col-md-6\">\n            <div class=\"text-center\">\n               <label\n                      for=\"inCaseOfEmergencyName\">\n                  En caso de emergencia comunicarse con\n               </label>\n            </div>\n            <div class=\"col-md-6\">\n               <input id=\"inCaseOfEmergencyName\"\n                      type=\"text\"\n                      class=\"form-control\"\n                      name=\"inCaseOfEmergency\"\n                      ng-model=\"$ctrl.student.inCaseOfEmergency.name\"\n                      placeholder=\"Nombre\">\n            </div>\n            <div class=\"col-md-6\">\n               <input id=\"inCaseOfEmergencyPhone\"\n                      type=\"text\"\n                      class=\"form-control\"\n                      name=\"inCaseOfEmergency\"\n                      ng-model=\"$ctrl.student.inCaseOfEmergency.phone\"\n                      placeholder=\"Teléfono\">\n            </div>\n         </div>\n      </div>\n      <hr>\n      <div class=\"row\">\n         <div class=\"col-md-3\">\n            <button class=\"btn btn default\"\n                    ng-click=\"$ctrl.save()\">\n               <span ng-bind=\"$ctrl.buttonText\"></span>\n            </button>\n         </div>\n      </div>\n\n      <pre>{{$ctrl.student | json}}</pre>\n\n   </form>\n</section>";
 
 /***/ }
 /******/ ]);
