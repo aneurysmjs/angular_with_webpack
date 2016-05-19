@@ -34,7 +34,7 @@
 /******/ 	__webpack_require__.c = installedModules;
 
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "http://localhost:3000/assets/a02d4d7661b15e2cb2f6";
+/******/ 	__webpack_require__.p = "http://localhost:3000/assets/4e4d6c9b8784b9270d00";
 
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
@@ -25706,6 +25706,10 @@
 
 	var _students8 = _interopRequireDefault(_students7);
 
+	var _studentsCreate = __webpack_require__(254);
+
+	var _studentsCreate2 = _interopRequireDefault(_studentsCreate);
+
 	var _studentsUpdate = __webpack_require__(228);
 
 	var _studentsUpdate2 = _interopRequireDefault(_studentsUpdate);
@@ -25722,7 +25726,7 @@
 
 	var studentsModule = _angular2.default.module('students', []).config(_students2.default).value('studentsSetup', _students4.default).component('ciStudents', _students6.default).directive('studentsForm', function () {
 	   return new _students12.default();
-	}).controller('StudentsController', _students8.default).controller('StudentsUpdateController', _studentsUpdate2.default).service('StudentsService', _students10.default);
+	}).controller('StudentsController', _students8.default).controller('StudentsUpdateController', _studentsUpdate2.default).controller('StudentsCreateController', _studentsCreate2.default).service('StudentsService', _students10.default);
 
 	exports.default = studentsModule;
 
@@ -25756,10 +25760,19 @@
 	      }
 	   }).state('students.create', {
 	      url: '/create',
-	      template: '<students-form ctrl="StudentsController"></students-form>',
+	      controller: ['students', function (students) {
+	         var self = this;
+	         self.students = students;
+	      }],
+	      controllerAs: '$ctrl',
+	      template: '<students-form ctrl="StudentsCreateController"\n                                   students="$ctrl.students">\n                    </students-form>',
 	      resolve: {
-	         currentAuth: ['LoginService', function (LoginService) {
-	            return LoginService.$requireAuth();
+	         students: ['StudentsService', 'AuthService', function (StudentsService, AuthService) {
+	            return AuthService.$requireAuth().then(function (auth) {
+	               return StudentsService.getStudents();
+	            }).catch(function () {
+	               console.log('error route');
+	            });
 	         }]
 	      }
 	   }).state('students.update', {
@@ -25858,7 +25871,7 @@
 /* 224 */
 /***/ function(module, exports) {
 
-	module.exports = "<ui-view>\n\n   <button type=\"button\" ui-sref=\"students.create\">\n      crear\n   </button>\n\n   <form class=\"form-inline\">\n      <div class=\"form-group\">\n         <label for=\"exampleInputName2\">Filter</label>\n         <input type=\"text\"\n                class=\"form-control\"\n                id=\"exampleInputName2\"\n                ng-model=\"myFilter\"\n                placeholder=\"Jane Doe\">\n      </div>\n      <button type=\"submit\" class=\"btn btn-default\">Send invitation</button>\n   </form>\n\n  <!-- <div class=\"Student-cards\">\n      <div class=\"Student-card\" ng-repeat=\"student in $ctrl.students track by $index\">\n         <span ng-bind=\"student.name\"></span>\n         <span ng-bind=\"student.lastName\"></span>\n         <span ng-bind=\"student.email\"></span>\n         <span ng-bind=\"student.phone\"></span>\n      </div>\n   </div>-->\n\n   <table class=\"table table-hover\">\n      <thead>\n      <tr>\n         <th>First Name</th>\n         <th>Last Name</th>\n         <th>Email</th>\n         <th>Celular</th>\n         <th>Profession</th>\n         <th>Plan</th>\n         <th>&nbsp;</th>\n      </tr>\n      </thead>\n      <tbody>\n      <tr ng-repeat=\"student in $ctrl.students | filter: myFilter track by $index\"\n          ng-dblclick=\"$ctrl.studentProfile(student)\">\n         <th ng-bind=\"student.name\"></th>\n         <td ng-bind=\"student.lastName\"></td>\n         <td ng-bind=\"student.email\"></td>\n         <td ng-bind=\"student.mobile\"></td>\n         <td ng-bind=\"student.profession\"></td>\n         <td ng-bind=\"student.plan\"></td>\n         <td ng-click=\"$ctrl.deleteStudent(student)\">\n             <span class=\"glyphicon glyphicon-remove\"\n                   tooltip-placement=\"top\"\n                   uib-tooltip=\"Eliminar\">\n             </span>\n         </td>\n      </tr>\n      </tbody>\n   </table>\n\n</ui-view>";
+	module.exports = "<ui-view>\n\n   <button type=\"button\"\n           class=\"btn btn-primary\"\n           ui-sref=\"students.create\">\n      crear\n   </button>\n\n   <form class=\"form-inline\">\n      <div class=\"form-group\">\n         <label for=\"exampleInputName2\">Filter</label>\n         <input type=\"text\"\n                class=\"form-control\"\n                id=\"exampleInputName2\"\n                ng-model=\"myFilter\"\n                placeholder=\"Filtrar\">\n      </div>\n   </form>\n\n  <!-- <div class=\"Student-cards\">\n      <div class=\"Student-card\" ng-repeat=\"student in $ctrl.students track by $index\">\n         <span ng-bind=\"student.name\"></span>\n         <span ng-bind=\"student.lastName\"></span>\n         <span ng-bind=\"student.email\"></span>\n         <span ng-bind=\"student.phone\"></span>\n      </div>\n   </div>-->\n\n   <table class=\"table table-hover\">\n      <thead>\n      <tr>\n         <th>First Name</th>\n         <th>Last Name</th>\n         <th>Email</th>\n         <th>Celular</th>\n         <th>Profession</th>\n         <th>Plan</th>\n         <th>&nbsp;</th>\n      </tr>\n      </thead>\n      <tbody>\n      <tr ng-repeat=\"student in $ctrl.students | filter: myFilter track by $index\"\n          ng-dblclick=\"$ctrl.studentProfile(student)\">\n         <th ng-bind=\"student.name\"></th>\n         <td ng-bind=\"student.lastName\"></td>\n         <td ng-bind=\"student.email\"></td>\n         <td ng-bind=\"student.mobile\"></td>\n         <td ng-bind=\"student.profession\"></td>\n         <td ng-bind=\"student.plan\"></td>\n         <td ng-click=\"$ctrl.deleteStudent(student)\">\n             <span class=\"glyphicon glyphicon-remove\"\n                   tooltip-placement=\"top\"\n                   uib-tooltip=\"Eliminar\">\n             </span>\n         </td>\n      </tr>\n      </tbody>\n   </table>\n\n</ui-view>";
 
 /***/ },
 /* 225 */
@@ -25902,7 +25915,7 @@
 
 /***/ },
 /* 227 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -25912,12 +25925,25 @@
 	   value: true
 	});
 
+	var _studentsModal = __webpack_require__(252);
+
+	var _studentsModal2 = _interopRequireDefault(_studentsModal);
+
+	var _studentsModal3 = __webpack_require__(253);
+
+	var _studentsModal4 = _interopRequireDefault(_studentsModal3);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+	var _$uibModal = new WeakMap();
+
 	var StudentsController = (function () {
-	   function StudentsController(StudentsService, $stateParams, $state, studentsSetup) {
+	   function StudentsController(StudentsService, $stateParams, $state, studentsSetup, $uibModal) {
 	      _classCallCheck(this, StudentsController);
 
+	      _$uibModal.set(this, $uibModal);
 	      this.StudentsService = StudentsService;
 	      this.$state = $state;
 	      this.setup = studentsSetup;
@@ -25988,21 +26014,38 @@
 	   }, {
 	      key: 'deleteStudent',
 	      value: function deleteStudent(student) {
-	         var index = this.students.indexOf(student);
+	         var _this2 = this;
 
-	         this.students.splice(index, 1);
+	         var index = this.students.indexOf(student),
+	             $uibModal = _$uibModal.get(this);
 
-	         /*this.students.$remove(student).then((ref) => {
-	           console.log('deteleStudent response');
-	           console.log(ref);
-	         });*/
+	         $uibModal.open({
+	            animation: true,
+	            template: _studentsModal2.default,
+	            controller: _studentsModal4.default,
+	            controllerAs: '$ctrl',
+	            bindToController: true
+	         }).result.then(function () {
+	            console.log('successHandler');
+	            _this2.students.$remove(student).then(function (ref) {
+	               console.log('deteleStudent response');
+	               console.log(ref);
+	            }).catch(function (reason) {
+	               console.log('reason');
+	               console.log(reason);
+	            }).finally(function () {
+	               console.log('finally');
+	            });
+	         }).catch(function () {
+	            console.log('rejectHandler');
+	         });
 	      }
 	   }]);
 
 	   return StudentsController;
 	})();
 
-	StudentsController.$inject = ['StudentsService', '$stateParams', '$state', 'studentsSetup'];
+	StudentsController.$inject = ['StudentsService', '$stateParams', '$state', 'studentsSetup', '$uibModal'];
 
 	exports.default = StudentsController;
 
@@ -27166,6 +27209,122 @@
 	LoaderDisplayService.$inject = ['$window'];
 
 	exports.default = LoaderDisplayService;
+
+/***/ },
+/* 252 */
+/***/ function(module, exports) {
+
+	module.exports = "<div class=\"modal-header\">\n   <h3 class=\"modal-title\">Olgah</h3>\n</div>\n<div class=\"modal-body\">\n\n  <h3>¿Desea borrar este elemento?</h3>\n</div>\n<div class=\"modal-footer\">\n   <button class=\"btn btn-primary\" type=\"button\" ng-click=\"$ctrl.ok()\">OK</button>\n   <button class=\"btn btn-warning\" type=\"button\" ng-click=\"$ctrl.cancel()\">Cancel</button>\n</div>";
+
+/***/ },
+/* 253 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	Object.defineProperty(exports, "__esModule", {
+	   value: true
+	});
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var _$uibModalInstance = new WeakMap();
+
+	var StudentsModalModalController = (function () {
+	   function StudentsModalModalController($uibModalInstance) {
+	      _classCallCheck(this, StudentsModalModalController);
+
+	      _$uibModalInstance.set(this, $uibModalInstance);
+	   }
+
+	   _createClass(StudentsModalModalController, [{
+	      key: 'ok',
+	      value: function ok() {
+	         var $uibModalInstance = _$uibModalInstance.get(this);
+	         $uibModalInstance.close();
+	      }
+	   }, {
+	      key: 'cancel',
+	      value: function cancel() {
+	         var $uibModalInstance = _$uibModalInstance.get(this);
+	         $uibModalInstance.dismiss();
+	      }
+	   }]);
+
+	   return StudentsModalModalController;
+	})();
+
+	StudentsModalModalController.$inject = ['$uibModalInstance'];
+
+	exports.default = StudentsModalModalController;
+
+/***/ },
+/* 254 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	Object.defineProperty(exports, "__esModule", {
+	   value: true
+	});
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var _$state = new WeakMap(),
+	    _StudentsService = new WeakMap(),
+	    _$firebaseObject = new WeakMap();
+
+	var StudentsCreateController = (function () {
+	   function StudentsCreateController(StudentsService, $state, studentsSetup, $firebaseObject) {
+	      _classCallCheck(this, StudentsCreateController);
+
+	      _$state.set(this, $state);
+	      _$firebaseObject.set(this, $firebaseObject);
+	      _StudentsService.set(this, StudentsService);
+
+	      this.setup = studentsSetup;
+
+	      this.buttonText = 'Guardar';
+	      this.student = {};
+	      this.student.documentType = studentsSetup.documentTypes[0];
+	      this.student.occupation = studentsSetup.occupations[0];
+	      this.student.plan = studentsSetup.plans[0];
+	      this.format = studentsSetup.format(0);
+	      this.setup.altInputFormats = studentsSetup.altInputFormats;
+	      this.setup.dateOptions = studentsSetup.dateOptions;
+	   }
+
+	   _createClass(StudentsCreateController, [{
+	      key: 'openCalendar',
+	      value: function openCalendar() {
+	         this.setup.popup.opened = true;
+	      }
+	   }, {
+	      key: 'save',
+	      value: function save() {
+	         var $state = _$state.get(this);
+
+	         this.students.$add(this.student).then(function (ref) {
+	            $state.go('^');
+	         }).catch(function (rejected) {
+	            console.log('rejected');
+	            console.log(rejected);
+	         }).finally(function () {
+	            console.log('finally');
+	         });
+	      }
+	   }]);
+
+	   return StudentsCreateController;
+	})();
+
+	StudentsCreateController.$inject = ['StudentsService', '$state', 'studentsSetup', '$firebaseObject'];
+
+	exports.default = StudentsCreateController;
 
 /***/ }
 /******/ ]);

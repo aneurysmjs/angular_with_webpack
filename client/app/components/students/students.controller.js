@@ -1,6 +1,13 @@
+import template from './students.modal.html';
+import controller from './students.modal.controller';
+
+let _$uibModal = new WeakMap();
+
 class StudentsController {
 
-   constructor(StudentsService, $stateParams, $state, studentsSetup) {
+   constructor(StudentsService, $stateParams, $state, studentsSetup, $uibModal) {
+
+      _$uibModal.set(this, $uibModal);
       this.StudentsService = StudentsService;
       this.$state = $state;
       this.setup = studentsSetup;
@@ -61,20 +68,36 @@ class StudentsController {
       }
    }
 
-   deleteStudent(student){
-      let index = this.students.indexOf(student);
+   deleteStudent(student) {
+      let index = this.students.indexOf(student),
+          $uibModal = _$uibModal.get(this);
 
-      this.students.splice(index, 1);
+      $uibModal.open({
+         animation: true,
+         template,
+         controller,
+         controllerAs: '$ctrl',
+         bindToController: true
+      }).result.then(() => {
+         console.log('successHandler');
+         this.students.$remove(student).then((ref) => {
+            console.log('deteleStudent response');
+            console.log(ref);
+         }).catch(reason => {
+            console.log('reason');
+            console.log(reason);
+         }).finally(() => {
+            console.log('finally');
+         });
+      }).catch(() => {
+         console.log('rejectHandler');
+      });
 
-      /*this.students.$remove(student).then((ref) => {
-        console.log('deteleStudent response');
-        console.log(ref);
-      });*/
 
    }
 
 }
 
-StudentsController.$inject = ['StudentsService', '$stateParams', '$state', 'studentsSetup'];
+StudentsController.$inject = ['StudentsService', '$stateParams', '$state', 'studentsSetup', '$uibModal'];
 
 export default StudentsController;
