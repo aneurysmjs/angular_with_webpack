@@ -49,25 +49,6 @@ class StudentsController {
       this.$state.go('students.update', {id: student.$id});
    }
 
-   save() {
-      //this.student.inscriptionDate.toString();
-      if (this.isUpdate) {
-
-         console.log('this.student');
-         console.log(this.student);
-
-         this.students.$save(this.student).then(ref => {
-            this.$state.go('^');
-         }).catch(rejected => {
-            console.log('rejected');
-            console.log(rejected);
-         });
-
-      } else {
-         this.students.$add(this.student).then(res => this.$state.go('^'));
-      }
-   }
-
    deleteStudent(student) {
       let index = this.students.indexOf(student),
           $uibModal = _$uibModal.get(this);

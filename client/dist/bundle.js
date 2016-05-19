@@ -34,7 +34,7 @@
 /******/ 	__webpack_require__.c = installedModules;
 
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "http://localhost:3000/assets/4e4d6c9b8784b9270d00";
+/******/ 	__webpack_require__.p = "http://localhost:3000/assets/a53093875fd321ca085c";
 
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
@@ -25989,32 +25989,9 @@
 	         this.$state.go('students.update', { id: student.$id });
 	      }
 	   }, {
-	      key: 'save',
-	      value: function save() {
-	         var _this = this;
-
-	         //this.student.inscriptionDate.toString();
-	         if (this.isUpdate) {
-
-	            console.log('this.student');
-	            console.log(this.student);
-
-	            this.students.$save(this.student).then(function (ref) {
-	               _this.$state.go('^');
-	            }).catch(function (rejected) {
-	               console.log('rejected');
-	               console.log(rejected);
-	            });
-	         } else {
-	            this.students.$add(this.student).then(function (res) {
-	               return _this.$state.go('^');
-	            });
-	         }
-	      }
-	   }, {
 	      key: 'deleteStudent',
 	      value: function deleteStudent(student) {
-	         var _this2 = this;
+	         var _this = this;
 
 	         var index = this.students.indexOf(student),
 	             $uibModal = _$uibModal.get(this);
@@ -26027,7 +26004,7 @@
 	            bindToController: true
 	         }).result.then(function () {
 	            console.log('successHandler');
-	            _this2.students.$remove(student).then(function (ref) {
+	            _this.students.$remove(student).then(function (ref) {
 	               console.log('deteleStudent response');
 	               console.log(ref);
 	            }).catch(function (reason) {
