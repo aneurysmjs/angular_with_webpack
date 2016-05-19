@@ -1,0 +1,54 @@
+<section>
+   <div class="row">
+      <div class="col-md-3"></div>
+      <div class="col-md-6">
+         <figure>
+            <img class="img-responsive center-block"
+                 width="150px"
+                 src="../../assets/img/logo-cocointeractivo.png"
+                 alt="logo coco interactivo">
+         </figure>
+         <ui-view>
+            <form name="loginForm">
+               <div class="form-group">
+                  <label for="userEmail">Email address</label>
+                  <input type="email"
+                         class="form-control"
+                         ng-model="$ctrl.user.email"
+                         name="userEmail"
+                         id="userEmail"
+                         placeholder="Email">
+
+               </div>
+               <span class="text-danger"
+                     ng-if="loginForm.userEmail.$error.email">
+                  Correo Inválido
+               </span>
+               <div class="form-group">
+                  <label for="userPassword">Password</label>
+                  <input type="password"
+                         class="form-control"
+                         ng-model="$ctrl.user.password"
+                         id="userPassword"
+                         placeholder="Password">
+               </div>
+               <button type="button"
+                       ui-sref="login.register"
+                       class="btn btn-default">
+                  Need account?
+               </button>
+               <button type="submit"
+                       ng-click="$ctrl.login()"
+                       ng-disabled="loginForm.$invalid"
+                       class="btn btn-default">Login</button>
+            </form>
+            <div class="bg-danger"
+                  ng-if="$ctrl.error">
+               <span ng-bind="$ctrl.error"></span>
+            </div>
+         </ui-view>
+      </div>
+      <div class="col-md-3"></div>
+   </div>
+   <!--<p ng-if="$ctrl.message">Message: <strong>{{ $ctrl.message }}</strong></p>-->
+</section>

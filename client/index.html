@@ -1,19 +1,23 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="app">
+<html lang="en">
 <head>
    <meta charset="UTF-8">
    <title>Angular with Webpack</title>
-   <link rel="stylesheet"
-         href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
-         integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
-         crossorigin="anonymous">
-   <link rel="stylesheet" href="app/assets/css/app.css">
+   <link rel="stylesheet" href="../node_modules/flat-ui/bootstrap/css/bootstrap.css">
+   <link rel="stylesheet" href="../node_modules/font-awesome/css/font-awesome.min.css">
 </head>
-<body>
+<body class="container">
 
 <app></app>
 
-<script src="build/bundle.js"></script>
+<!--<loading >
+   <span class="sr-only">Loading...</span>
+   <i class="fa fa-refresh fa-spin fa-3x fa-fw margin-bottom"></i>
+</loading>-->
+
+<script src="https://cdn.firebase.com/js/client/2.2.4/firebase.js"></script>
+<script src="../node_modules/angular/angular.js"></script>
+<script src="dist/bundle.js"></script>
 
 </body>
 </html>

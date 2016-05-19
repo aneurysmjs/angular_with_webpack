@@ -1,27 +1,22 @@
-<div class="site-wrapper">
-
-   <div class="site-wrapper-inner">
-
-      <div class="cover-container">
-
-         <div class="masthead clearfix">
-            <div class="inner">
-               <nav>
-                  <ul class="nav masthead-nav">
-                     <li class="active"><a href="#">Home</a></li>
-                     <li><a ui-sref="jentoo">Jentoo</a></li>
-                     <li><a href="#">Contact</a></li>
-                  </ul>
-               </nav>
-            </div>
+<section>
+   <nav class="navbar navbar-default">
+      <div class="container-fluid">
+         <!-- Brand and toggle get grouped for better mobile display -->
+         <div class="navbar-header">
+            <button class="btn btn-default navbar-btn"
+                    type="button"
+                    ui-sref="students">
+               Students
+            </button>
+            <a class="navbar-brand" ui-sref="login">Coco</a>
          </div>
+      </div><!-- /.container-fluid -->
+   </nav>
 
-         <div class="inner cover">
-            <ui-view></ui-view>
-         </div>
+   <ui-view></ui-view>
 
-      </div>
+   <!--<footer id="olgahFooter">
+      All rights Reserved, Coco Interactivo 2016
+   </footer>-->
 
-   </div>
-
-</div>
+</section>

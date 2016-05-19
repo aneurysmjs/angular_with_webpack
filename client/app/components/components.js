@@ -1,8 +1,10 @@
-var angular = require('angular');
-var Jentoo = require('./jentoo/jentoo');
+import angular from 'angular';
+import login from './login/login';
+import students from './students/students';
 
-var componentModule = angular.module('app.components', [
-   Jentoo.name
-]);
+let componentModule = angular.module('app.components', [
+      login.name,
+      students.name
+   ]);
 
-module.exports = componentModule;
+export default componentModule;

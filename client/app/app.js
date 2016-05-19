@@ -1,11 +1,24 @@
-var angular = require('angular');
-var uiRouter = require('angular-ui-router');
-var Components = require('./components/components');
-var AppComponent = require('./app.component');
+import angular from 'angular';
+import appConfig from './app.config';
+import appRun from './app.run';
+import appLibraries from './app.libraries';
+import appConstants from './app.constants';
+import components from './components/components';
+import appComponent from './app.component';
+import sharedModule from './shared/shared';
 
 angular.module('app', [
-   uiRouter,
-   Components.name
-])
+      appLibraries.name,
+      components.name,
+      sharedModule.name,
+      appConstants.name
+   ])
+   .config(appConfig)
+   .run(appRun)
+   .component('app', appComponent);
 
-.directive('app', AppComponent);
+
+// manually bootstrap angular
+angular.bootstrap(document, ['app'], {
+   strictDi: true
+});

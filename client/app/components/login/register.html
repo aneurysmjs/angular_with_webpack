@@ -1,0 +1,65 @@
+<form name="registerForm">
+   <!--<pre>{{registerForm | json }}</pre>-->
+   <div class="form-group">
+      <label for="userEmail">Email address</label>
+      <input type="email"
+             class="form-control"
+             ng-model="$ctrl.user.email"
+             ng-keyup="$ctrl.hideErrors()"
+             name="userEmail"
+             id="userEmail"
+             placeholder="Email">
+   </div>
+   <span class="text-danger"
+         ng-if="registerForm.userEmail.$error.email">
+      Escribe un correo válido
+   </span>
+   <div class="form-group">
+      <label for="userPassword">Password</label>
+      <input type="password"
+             class="form-control"
+             ng-model="$ctrl.user.password"
+             name="userPassword"
+             ng-minlength="7"
+             id="userPassword"
+             placeholder="Password">
+   </div>
+   <span class="text-danger"
+         ng-if="registerForm.userPassword.$error.minlength">
+       La contraseña de tener 7 carácteres mínimo
+   </span>
+   <div class="form-group">
+      <label for="userRetypePassword">Retype Password</label>
+      <input type="password"
+             class="form-control"
+             ng-model="$ctrl.user.newPassword"
+             name="userNewPassword"
+             ng-minlength="7"
+             password-match="$ctrl.user.password"
+             id="userRetypePassword"
+             placeholder="Password">
+   </div>
+   <span class="text-danger"
+         ng-if="registerForm.userNewPassword.$error.minlength">
+      La contraseña de tener 7 carácteres mínimo
+   </span>
+   <span class="text-danger"
+         ng-if="registerForm.userNewPassword.$error.unique">
+       Contraseñas no coinciden
+   </span>
+   <button type="button"
+           ng-disabled="registerForm.$invalid"
+           ng-click="$ctrl.createUser()"
+           class="btn btn-default">
+      Register
+   </button>
+   <button type="button"
+           ng-disabled="registerForm.$invalid"
+           ng-click="$ctrl.goBack()"
+           class="btn btn-default">
+      Back
+   </button>
+   <p class="bg-danger" ng-if="$ctrl.error">
+      <span ng-bind="$ctrl.error"></span>
+   </p>
+</form>
