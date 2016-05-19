@@ -4,7 +4,7 @@ import loginComponent from './login.component';
 import LoginController from './login.controller';
 import LoginService from './login.service';
 
-import registerComponent from './components/register/register.component';
+import registerComponent from './register.component.js';
 
 let loginModule = angular.module('login', [])
    .config(loginRoutes)

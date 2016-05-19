@@ -1,5 +1,5 @@
 import template   from './register.html';
-import controller from './register.controller';
+import controller from './register.controller.js';
 
 let registerComponent =  {
    template,
