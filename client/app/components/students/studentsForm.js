@@ -11,7 +11,8 @@ class StudentsForm {
       this.controllerAs = '$ctrl';
       this.bindToController = {
          auth: '<',
-         student: '<'
+         student: '<',
+         students: '<'
       };
    }
 

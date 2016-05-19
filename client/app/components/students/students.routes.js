@@ -31,14 +31,16 @@ function studentsRoutes($stateProvider) {
       })
       .state('students.update', {
          url: '/update/:id',
-         controller: ['auth', 'student', function (auth, student) {
+         controller: ['auth', 'student', 'students', function (auth, student, students) {
             let self = this;
             self.auth = auth;
             self.student = student;
+            self.students = students;
          }],
          controllerAs: '$ctrl',
          template: `<students-form ctrl="StudentsController"
                                    auth="$ctrl.auth"
+                                   students="$ctrl.students"
                                    student="$ctrl.student">
                    </students-form>`,
          resolve: {
@@ -50,6 +52,12 @@ function studentsRoutes($stateProvider) {
                return AuthService.$requireAuth().then(auth => {
                   return StudentsService.getStudent(uid).$loaded();
                }, error => error);
+            }],
+            students: ['StudentsService', 'AuthService', function (StudentsService, AuthService) {
+               return AuthService.$requireAuth().then(auth => {
+                  return StudentsService.getStudents();
+               });
+
             }]
          }
       });

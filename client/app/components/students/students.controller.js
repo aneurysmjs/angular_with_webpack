@@ -7,7 +7,6 @@ class StudentsController {
       this.buttonText = 'Guardar';
 
       if ($stateParams.id) {
-         //this.getStudent($stateParams.id);
          this.isUpdate = true;
          this.buttonText = 'Actualizar';
       } else {
@@ -43,14 +42,20 @@ class StudentsController {
       this.$state.go('students.update', {id: student.$id});
    }
 
-   /*getStudent(id) {
-      this.StudentsService.getStudent(id).then(response => this.student = response);
-   }*/
-
    save() {
       //this.student.inscriptionDate.toString();
       if (this.isUpdate) {
-         this.students.$save(this.student).then(ref => this.$state.go('^'));
+
+         console.log('this.student');
+         console.log(this.student);
+
+         this.students.$save(this.student).then(ref => {
+            this.$state.go('^');
+         }).catch(rejected => {
+            console.log('rejected');
+            console.log(rejected);
+         });
+
       } else {
          this.students.$add(this.student).then(res => this.$state.go('^'));
       }

@@ -5,7 +5,7 @@ let studentsComponent = {
   template,
   controller: 'StudentsController',
   bindings: {
-    students: '='
+    students: '<'
   }
 };
 
