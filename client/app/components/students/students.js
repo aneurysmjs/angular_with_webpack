@@ -3,6 +3,7 @@ import studentsRoutes from './students.routes';
 import studentsSetup from './students.value';
 import studentsComponent from './students.component';
 import StudentsController from './students.controller';
+import StudentsUpdateController from './students.update.controller';
 import StudentsService from './students.service';
 
 import studentsForm from './students.form';
@@ -13,6 +14,7 @@ let studentsModule = angular.module('students', [])
    .component('ciStudents', studentsComponent)
    .directive('studentsForm', () => new studentsForm())
    .controller('StudentsController', StudentsController)
+   .controller('StudentsUpdateController', StudentsUpdateController)
    .service('StudentsService', StudentsService);
 
 export default studentsModule;

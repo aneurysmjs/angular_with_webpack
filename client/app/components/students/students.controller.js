@@ -19,8 +19,8 @@ class StudentsController {
          this.setup.dateOptions     = studentsSetup.dateOptions;
       }
 
-      console.log('this');
-      console.log(this);
+      /*console.log('this');
+      console.log(this);*/
 
    }
 
