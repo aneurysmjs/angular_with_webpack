@@ -1,6 +1,6 @@
 import angular from 'angular';
 
-import AuthInterceptor from './auth/authInterceptor.service';
+import AuthInterceptor from './auth/auth.interceptor.service';
 import AuthToken from './auth/authToken.service';
 import AuthService from './auth/auth.service';
 
