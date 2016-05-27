@@ -34,7 +34,7 @@
 /******/ 	__webpack_require__.c = installedModules;
 
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "http://localhost:3000/assets/795aac166be5b2701911";
+/******/ 	__webpack_require__.p = "http://localhost:3000/assets/b6d82a6b78eb09594368";
 
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
@@ -5227,6 +5227,9 @@
 	var queueIndex = -1;
 
 	function cleanUpNextTick() {
+	    if (!draining || !currentQueue) {
+	        return;
+	    }
 	    draining = false;
 	    if (currentQueue.length) {
 	        queue = currentQueue.concat(queue);
@@ -25496,18 +25499,18 @@
 
 	'use strict';
 
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
 	Object.defineProperty(exports, "__esModule", {
 	   value: true
 	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	var _LoginService = new WeakMap(),
 	    _$state = new WeakMap();
 
-	var LoginController = (function () {
+	var LoginController = function () {
 	   function LoginController(LoginService, $state) {
 	      _classCallCheck(this, LoginController);
 
@@ -25550,7 +25553,7 @@
 	   }]);
 
 	   return LoginController;
-	})();
+	}();
 
 	LoginController.$inject = ['LoginService', '$state'];
 
@@ -25620,15 +25623,15 @@
 
 	'use strict';
 
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
 	Object.defineProperty(exports, "__esModule", {
 	   value: true
 	});
 
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	var LoginRegisterController = (function () {
+	var LoginRegisterController = function () {
 	   function LoginRegisterController(LoginService, $state, $timeout) {
 	      _classCallCheck(this, LoginRegisterController);
 
@@ -25670,7 +25673,7 @@
 	   }]);
 
 	   return LoginRegisterController;
-	})();
+	}();
 
 	LoginRegisterController.$inject = ['LoginService', '$state', '$timeout'];
 
@@ -25908,7 +25911,7 @@
 
 
 	// module
-	exports.push([module.id, ".fade {\n  transition: 1s linear all;\n  -webkit-transition: 1s linear all;\n}\n.fade.ng-enter,\n.fade.ng-leave {\n  opacity: 0;\n}\n.fade.ng-enter.ng-enter-active {\n  opacity: 1;\n}\n.fade.ng-leave {\n  opacity: 1;\n}\n.fade.ng-leave.ng-leave-active {\n  opacity: 1;\n}\n.Student-cards {\n  display: -webkit-box;\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n}\n.Student-cards .Student-card {\n  width: 200px;\n  height: 150px;\n}\n", ""]);
+	exports.push([module.id, ".fade {\n  transition: 1s linear all;\n  -webkit-transition: 1s linear all;\n}\n.fade.ng-enter,\n.fade.ng-leave {\n  opacity: 0;\n}\n.fade.ng-enter.ng-enter-active {\n  opacity: 1;\n}\n.fade.ng-leave {\n  opacity: 1;\n}\n.fade.ng-leave.ng-leave-active {\n  opacity: 1;\n}\n.Student-cards {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n}\n.Student-cards .Student-card {\n  width: 200px;\n  height: 150px;\n}\n", ""]);
 
 	// exports
 
@@ -25919,11 +25922,11 @@
 
 	'use strict';
 
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
 	Object.defineProperty(exports, "__esModule", {
 	   value: true
 	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _studentsModal = __webpack_require__(228);
 
@@ -25939,7 +25942,7 @@
 
 	var _$uibModal = new WeakMap();
 
-	var StudentsController = (function () {
+	var StudentsController = function () {
 	   function StudentsController(StudentsService, $stateParams, $state, studentsSetup, $uibModal) {
 	      _classCallCheck(this, StudentsController);
 
@@ -26020,7 +26023,7 @@
 	   }]);
 
 	   return StudentsController;
-	})();
+	}();
 
 	StudentsController.$inject = ['StudentsService', '$stateParams', '$state', 'studentsSetup', '$uibModal'];
 
@@ -26038,17 +26041,17 @@
 
 	'use strict';
 
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
 	Object.defineProperty(exports, "__esModule", {
 	   value: true
 	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	var _$uibModalInstance = new WeakMap();
 
-	var StudentsModalModalController = (function () {
+	var StudentsModalModalController = function () {
 	   function StudentsModalModalController($uibModalInstance) {
 	      _classCallCheck(this, StudentsModalModalController);
 
@@ -26070,7 +26073,7 @@
 	   }]);
 
 	   return StudentsModalModalController;
-	})();
+	}();
 
 	StudentsModalModalController.$inject = ['$uibModalInstance'];
 
@@ -26082,11 +26085,11 @@
 
 	'use strict';
 
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
 	Object.defineProperty(exports, "__esModule", {
 	   value: true
 	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -26094,7 +26097,7 @@
 	    _StudentsService = new WeakMap(),
 	    _$firebaseObject = new WeakMap();
 
-	var StudentsCreateController = (function () {
+	var StudentsCreateController = function () {
 	   function StudentsCreateController(StudentsService, $state, studentsSetup, $firebaseObject) {
 	      _classCallCheck(this, StudentsCreateController);
 
@@ -26136,7 +26139,7 @@
 	   }]);
 
 	   return StudentsCreateController;
-	})();
+	}();
 
 	StudentsCreateController.$inject = ['StudentsService', '$state', 'studentsSetup', '$firebaseObject'];
 
@@ -26148,11 +26151,11 @@
 
 	'use strict';
 
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
 	Object.defineProperty(exports, "__esModule", {
 	   value: true
 	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -26160,7 +26163,7 @@
 	    _StudentsService = new WeakMap(),
 	    _$firebaseObject = new WeakMap();
 
-	var StudentsUpdateController = (function () {
+	var StudentsUpdateController = function () {
 	   function StudentsUpdateController(StudentsService, $state, studentsSetup, $firebaseObject) {
 	      _classCallCheck(this, StudentsUpdateController);
 
@@ -26204,7 +26207,7 @@
 	   }]);
 
 	   return StudentsUpdateController;
-	})();
+	}();
 
 	StudentsUpdateController.$inject = ['StudentsService', '$state', 'studentsSetup', '$firebaseObject'];
 
@@ -26216,11 +26219,11 @@
 
 	'use strict';
 
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
 	Object.defineProperty(exports, "__esModule", {
 	   value: true
 	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _firebase = __webpack_require__(233);
 
@@ -26235,7 +26238,7 @@
 	    _$firebaseObject = new WeakMap(),
 	    _studentsRef = new WeakMap();
 
-	var JentooService = (function () {
+	var JentooService = function () {
 	   function JentooService($q, $firebaseArray, $firebaseObject, FIRE_URL) {
 	      _classCallCheck(this, JentooService);
 
@@ -26279,7 +26282,7 @@
 	   }]);
 
 	   return JentooService;
-	})();
+	}();
 
 	JentooService.$inject = ['$q', '$firebaseArray', '$firebaseObject', 'FIRE_URL'];
 
@@ -26611,7 +26614,7 @@
 /* 235 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = "<section>\n\n   <div class=\"page-header\">\n      <img src=\"" + __webpack_require__(236) + "\" alt=\"\">\n   </div>\n\n   <form name=\"poleForm\">\n\n      <div class=\"row\">\n         <div class=\"col-md-3\">\n            <label class=\"\" for=\"name\">Nombre</label>\n            <input id=\"name\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"name\"\n                   ng-model=\"$ctrl.student.name\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"lastName\">Apellidos</label>\n            <input id=\"lastName\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"lastName\"\n                   ng-model=\"$ctrl.student.lastName\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"inscriptionDate\">Fecha de Matrícula</label>\n            <input id=\"inscriptionDate\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"inscriptionDate\"\n                   ng-model=\"$ctrl.student.inscriptionDate\"\n                   placeholder=\"\">\n            <!--<p class=\"input-group\">\n               <input id=\"inscriptionDate\"\n                      type=\"text\"\n                      name=\"inscriptionDate\"\n                      class=\"form-control\"\n                      uib-datepicker-popup=\"{{$ctrl.format}}\"\n                      ng-model=\"$ctrl.student.inscriptionDate\"\n                      is-open=\"$ctrl.setup.popup.opened\"\n                      datepicker-options=\"$ctrl.setup.dateOptions\"\n                      clear-text=\"Limpiar\"\n                      today-text=\"Hoy\"\n                      close-text=\"Cerrar\"\n                      alt-input-formats=\"$ctrl.setup.altInputFormats\" />\n            <span class=\"input-group-btn\">\n               <button type=\"button\"\n                       class=\"btn btn-default\"\n                       ng-click=\"$ctrl.openCalendar()\">\n                  <i class=\"glyphicon glyphicon-calendar\"></i>\n               </button>\n            </span>\n            </p>-->\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"documentType\">Tipo de Documento</label>\n            <select id=\"documentType\"\n                    name=\"documentType\"\n                    ng-model=\"$ctrl.student.documentType\"\n                    class=\"form-control\"\n                    ng-options=\"doc for doc in $ctrl.setup.documentTypes\">\n            </select>\n         </div>\n      </div>\n      <div class=\"row\">\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"identification\">Número Documento</label>\n            <input id=\"identification\"\n                   type=\"number\"\n                   class=\"form-control\"\n                   name=\"identification\"\n                   ng-model=\"$ctrl.student.identification\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"phone\">Teléfono</label>\n            <input id=\"phone\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"phone\"\n                   ng-model=\"$ctrl.student.phone\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"mobile\">Celular</label>\n            <input id=\"mobile\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"mobile\"\n                   ng-model=\"$ctrl.student.mobile\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"address\">Dirección</label>\n            <input id=\"address\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"address\"\n                   ng-model=\"$ctrl.student.address\"\n                   placeholder=\"\">\n         </div>\n      </div>\n      <div class=\"row\">\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"height\">Estatura</label>\n            <input id=\"height\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"height\"\n                   ng-model=\"$ctrl.student.height\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"weight\">Peso</label>\n            <input id=\"weight\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"weight\"\n                   ng-model=\"$ctrl.student.weight\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"healthInsurance\">EPS</label>\n            <input id=\"healthInsurance\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"healthInsurance\"\n                   ng-model=\"$ctrl.student.healthInsurance\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"Profession\">Profesión</label>\n            <input id=\"Profession\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"Profession\"\n                   ng-model=\"$ctrl.student.profession\"\n                   placeholder=\"\">\n         </div>\n      </div>\n      <div class=\"row\">\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"email\">Email</label>\n            <input id=\"email\"\n                   type=\"email\"\n                   class=\"form-control\"\n                   name=\"email\"\n                   ng-model=\"$ctrl.student.email\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"children\">Hijos</label>\n            <label class=\"\">\n               <input type=\"checkbox\"\n                      id=\"children\"\n                      name=\"children\"\n                      ng-model=\"$ctrl.student.children\">\n            </label>\n         </div>\n\n      </div>\n      <hr>\n      <div class=\"row\">\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"ocupation\">Ocupación</label>\n            <select id=\"ocupation\"\n                    name=\"ocupation\"\n                    ng-model=\"$ctrl.student.occupation\"\n                    class=\"form-control\"\n                    ng-options=\"doc for doc in $ctrl.setup.occupations\">\n            </select>\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"companyName\">Empresa donde trabaja</label>\n            <input id=\"companyName\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"companyName\"\n                   ng-model=\"$ctrl.student.companyName\"\n                   placeholder=\"\">\n\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"companyPhone\">Teléfono Empresa</label>\n            <input id=\"companyPhone\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"companyPhone\"\n                   ng-model=\"$ctrl.student.companyPhone\"\n                   placeholder=\"\">\n\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"charge\">Cargo</label>\n            <input id=\"charge\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"charge\"\n                   ng-model=\"$ctrl.student.charge\"\n                   placeholder=\"\">\n\n         </div>\n      </div>\n      <div class=\"row\">\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"howYouMeetPoleCenter\">¿Como conoció Pole Center?</label>\n            <input id=\"howYouMeetPoleCenter\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"howYouMeetPoleCenter\"\n                   ng-model=\"$ctrl.student.howYouMeetPoleCenter\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"plan\">Plan</label>\n            <select id=\"plan\"\n                    name=\"plan\"\n                    ng-model=\"$ctrl.student.plan\"\n                    class=\"form-control\"\n                    ng-options=\"plan for plan in $ctrl.setup.plans\">\n            </select>\n         </div>\n         <div class=\"col-md-6\">\n            <div class=\"text-center\">\n               <label\n                      for=\"inCaseOfEmergencyName\">\n                  En caso de emergencia comunicarse con\n               </label>\n            </div>\n            <div class=\"col-md-6\">\n               <input id=\"inCaseOfEmergencyName\"\n                      type=\"text\"\n                      class=\"form-control\"\n                      name=\"inCaseOfEmergency\"\n                      ng-model=\"$ctrl.student.inCaseOfEmergency.name\"\n                      placeholder=\"Nombre\">\n            </div>\n            <div class=\"col-md-6\">\n               <input id=\"inCaseOfEmergencyPhone\"\n                      type=\"text\"\n                      class=\"form-control\"\n                      name=\"inCaseOfEmergency\"\n                      ng-model=\"$ctrl.student.inCaseOfEmergency.phone\"\n                      placeholder=\"Teléfono\">\n            </div>\n         </div>\n      </div>\n      <hr>\n      <div class=\"row\">\n         <div class=\"col-md-3\">\n            <button class=\"btn btn default\"\n                    ng-click=\"$ctrl.save()\">\n               <span ng-bind=\"$ctrl.buttonText\"></span>\n            </button>\n         </div>\n      </div>\n\n      <pre>{{$ctrl.student | json}}</pre>\n\n   </form>\n</section>";
+	module.exports = "<section>\n\n   <div class=\"page-header\">\n      <img src=\"" + __webpack_require__(236) + "\" alt=\"\">\n   </div>\n\n   <form name=\"poleForm\">\n\n      <div class=\"row\">\n         <div class=\"col-md-3\">\n            <label class=\"\" for=\"name\">Nombre</label>\n            <input id=\"name\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"name\"\n                   ng-model=\"$ctrl.student.name\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"lastName\">Apellidos</label>\n            <input id=\"lastName\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"lastName\"\n                   ng-model=\"$ctrl.student.lastName\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"inscriptionDate\">Fecha de Matrícula</label>\n            <input id=\"inscriptionDate\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"inscriptionDate\"\n                   ng-model=\"$ctrl.student.inscriptionDate\"\n                   placeholder=\"\">\n            <!--<p class=\"input-group\">\n               <input id=\"inscriptionDate\"\n                      type=\"text\"\n                      name=\"inscriptionDate\"\n                      class=\"form-control\"\n                      uib-datepicker-popup=\"{{$ctrl.format}}\"\n                      ng-model=\"$ctrl.student.inscriptionDate\"\n                      is-open=\"$ctrl.setup.popup.opened\"\n                      datepicker-options=\"$ctrl.setup.dateOptions\"\n                      clear-text=\"Limpiar\"\n                      today-text=\"Hoy\"\n                      close-text=\"Cerrar\"\n                      alt-input-formats=\"$ctrl.setup.altInputFormats\" />\n            <span class=\"input-group-btn\">\n               <button type=\"button\"\n                       class=\"btn btn-default\"\n                       ng-click=\"$ctrl.openCalendar()\">\n                  <i class=\"glyphicon glyphicon-calendar\"></i>\n               </button>\n            </span>\n            </p>-->\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"documentType\">Tipo de Documento</label>\n            <select id=\"documentType\"\n                    name=\"documentType\"\n                    ng-model=\"$ctrl.student.documentType\"\n                    class=\"form-control\"\n                    ng-options=\"doc for doc in $ctrl.setup.documentTypes\">\n            </select>\n         </div>\n      </div>\n      <div class=\"row\">\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"identification\">Número Documento</label>\n            <input id=\"identification\"\n                   type=\"number\"\n                   class=\"form-control\"\n                   name=\"identification\"\n                   ng-model=\"$ctrl.student.identification\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"phone\">Teléfono</label>\n            <input id=\"phone\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"phone\"\n                   ng-model=\"$ctrl.student.phone\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"mobile\">Celular</label>\n            <input id=\"mobile\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"mobile\"\n                   ng-model=\"$ctrl.student.mobile\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"address\">Dirección</label>\n            <input id=\"address\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"address\"\n                   ng-model=\"$ctrl.student.address\"\n                   placeholder=\"\">\n         </div>\n      </div>\n      <div class=\"row\">\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"height\">Estatura</label>\n            <input id=\"height\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"height\"\n                   ng-model=\"$ctrl.student.height\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"weight\">Peso</label>\n            <input id=\"weight\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"weight\"\n                   ng-model=\"$ctrl.student.weight\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"healthInsurance\">EPS</label>\n            <input id=\"healthInsurance\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"healthInsurance\"\n                   ng-model=\"$ctrl.student.healthInsurance\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"Profession\">Profesión</label>\n            <input id=\"Profession\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"Profession\"\n                   ng-model=\"$ctrl.student.profession\"\n                   placeholder=\"\">\n         </div>\n      </div>\n      <div class=\"row\">\n\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"school\">Institución Educativa</label>\n            <input id=\"school\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"school\"\n                   ng-model=\"$ctrl.student.school\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"birthDate\">Fecha de Nacimiento</label>\n            <input id=\"birthDate\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"birthDate\"\n                   ng-model=\"$ctrl.student.birthDate\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"email\">Email</label>\n            <input id=\"email\"\n                   type=\"email\"\n                   class=\"form-control\"\n                   name=\"email\"\n                   ng-model=\"$ctrl.student.email\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"children\">Hijos</label>\n            <label class=\"\">\n               <input type=\"checkbox\"\n                      id=\"children\"\n                      name=\"children\"\n                      ng-model=\"$ctrl.student.children\">\n            </label>\n         </div>\n\n      </div>\n      <hr>\n      <div class=\"row\">\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"ocupation\">Ocupación</label>\n            <select id=\"ocupation\"\n                    name=\"ocupation\"\n                    ng-model=\"$ctrl.student.occupation\"\n                    class=\"form-control\"\n                    ng-options=\"doc for doc in $ctrl.setup.occupations\">\n            </select>\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"companyName\">Empresa donde trabaja</label>\n            <input id=\"companyName\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"companyName\"\n                   ng-model=\"$ctrl.student.companyName\"\n                   placeholder=\"\">\n\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"companyPhone\">Teléfono Empresa</label>\n            <input id=\"companyPhone\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"companyPhone\"\n                   ng-model=\"$ctrl.student.companyPhone\"\n                   placeholder=\"\">\n\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"charge\">Cargo</label>\n            <input id=\"charge\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"charge\"\n                   ng-model=\"$ctrl.student.charge\"\n                   placeholder=\"\">\n\n         </div>\n      </div>\n      <div class=\"row\">\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"howYouMeetPoleCenter\">¿Como conoció Pole Center?</label>\n            <input id=\"howYouMeetPoleCenter\"\n                   type=\"text\"\n                   class=\"form-control\"\n                   name=\"howYouMeetPoleCenter\"\n                   ng-model=\"$ctrl.student.howYouMeetPoleCenter\"\n                   placeholder=\"\">\n         </div>\n         <div class=\"col-md-3\">\n            <label class=\"\"\n                   for=\"plan\">Plan</label>\n            <select id=\"plan\"\n                    name=\"plan\"\n                    ng-model=\"$ctrl.student.plan\"\n                    class=\"form-control\"\n                    ng-options=\"plan for plan in $ctrl.setup.plans\">\n            </select>\n         </div>\n         <div class=\"col-md-6\">\n            <div class=\"text-center\">\n               <label\n                      for=\"inCaseOfEmergencyName\">\n                  En caso de emergencia comunicarse con\n               </label>\n            </div>\n            <div class=\"col-md-6\">\n               <input id=\"inCaseOfEmergencyName\"\n                      type=\"text\"\n                      class=\"form-control\"\n                      name=\"inCaseOfEmergency\"\n                      ng-model=\"$ctrl.student.inCaseOfEmergency.name\"\n                      placeholder=\"Nombre\">\n            </div>\n            <div class=\"col-md-6\">\n               <input id=\"inCaseOfEmergencyPhone\"\n                      type=\"text\"\n                      class=\"form-control\"\n                      name=\"inCaseOfEmergency\"\n                      ng-model=\"$ctrl.student.inCaseOfEmergency.phone\"\n                      placeholder=\"Teléfono\">\n            </div>\n         </div>\n      </div>\n      <hr>\n      <div class=\"row\">\n         <div class=\"col-md-12\">\n            <div class=\"text-center\">\n               <label for=\"socialNetworks\">\n                  Redes Sociales\n               </label>\n            </div>\n            <div class=\"col-md-3\">\n               <i class=\"fa fa-twitter\" aria-hidden=\"true\"></i>\n               <input id=\"socialNetworksTwitter\"\n                      type=\"text\"\n                      class=\"form-control\"\n                      name=\"socialNetworksTwitter\"\n                      ng-model=\"$ctrl.student.socialNetworks.twitter\"\n                      placeholder=\"Twitter\">\n            </div>\n            <div class=\"col-md-3\">\n               <i class=\"fa fa-facebook\" aria-hidden=\"true\"></i>\n               <input id=\"socialNetworksFacebook\"\n                      type=\"text\"\n                      class=\"form-control\"\n                      name=\"socialNetworksFacebook\"\n                      ng-model=\"$ctrl.student.socialNetworks.facebook\"\n                      placeholder=\"Facebook\">\n            </div>\n            <div class=\"col-md-3\">\n               <i class=\"fa fa-instagram\" aria-hidden=\"true\"></i>\n               <input id=\"socialNetworksInstagram\"\n                      type=\"text\"\n                      class=\"form-control\"\n                      name=\"socialNetworksInstagram\"\n                      ng-model=\"$ctrl.student.socialNetworks.instagram\"\n                      placeholder=\"Instagram\">\n            </div>\n            <div class=\"col-md-3\">\n               <i class=\"fa fa-rss aria-hidden=\"true\"></i>\n               <input id=\"socialNetworksOther\"\n                      type=\"text\"\n                      class=\"form-control\"\n                      name=\"socialNetworksOther\"\n                      ng-model=\"$ctrl.student.socialNetworks.other\"\n                      placeholder=\"Otra\">\n            </div>\n         </div>\n      </div>\n\n      <div class=\"row\">\n         <div class=\"col-md-3\">\n            <button class=\"btn btn default\"\n                    ng-click=\"$ctrl.save()\">\n               <span ng-bind=\"$ctrl.buttonText\"></span>\n            </button>\n         </div>\n      </div>\n\n      <pre>{{$ctrl.student | json}}</pre>\n\n   </form>\n</section>";
 
 /***/ },
 /* 236 */
@@ -26826,15 +26829,15 @@
 
 	'use strict';
 
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
 	Object.defineProperty(exports, "__esModule", {
 	   value: true
 	});
 
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	var authInterceptor = (function () {
+	var authInterceptor = function () {
 	   function authInterceptor(AuthTokenService) {
 	      _classCallCheck(this, authInterceptor);
 
@@ -26860,7 +26863,7 @@
 	   }]);
 
 	   return authInterceptor;
-	})();
+	}();
 
 	authInterceptor.$inject = ['AuthTokenService'];
 
@@ -26872,15 +26875,15 @@
 
 	'use strict';
 
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
 	Object.defineProperty(exports, "__esModule", {
 	   value: true
 	});
 
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	var AuthToken = (function () {
+	var AuthToken = function () {
 	   function AuthToken($window, $q) {
 	      _classCallCheck(this, AuthToken);
 
@@ -26913,7 +26916,7 @@
 	   }]);
 
 	   return AuthToken;
-	})();
+	}();
 
 	AuthToken.$inject = ['$window', '$q'];
 
@@ -27225,27 +27228,27 @@
 
 	'use strict';
 
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
 	Object.defineProperty(exports, "__esModule", {
 	   value: true
 	});
 
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	var LoaderDisplayService = (function () {
+	var LoaderDisplayService = function () {
 	   function LoaderDisplayService($window) {
 	      _classCallCheck(this, LoaderDisplayService);
 
 	      this.$window = $window;
 
-	      this.getComputedStyle = (function () {
+	      this.getComputedStyle = function () {
 	         var func = null;
 
 	         if (document.defaultView && document.defaultView.getComputedStyle) {
 	            func = document.defaultView.getComputedStyle;
 	         } else if (typeof document.body.curentStyle !== "undefined") {
-	            func = function (element, anything) {
+	            func = function func(element, anything) {
 	               return element.currentStyle;
 	            };
 	         }
@@ -27253,7 +27256,7 @@
 	         return function (element, style) {
 	            return func(element, null)[style];
 	         };
-	      })();
+	      }();
 	   }
 
 	   _createClass(LoaderDisplayService, [{
@@ -27297,7 +27300,7 @@
 	   }]);
 
 	   return LoaderDisplayService;
-	})();
+	}();
 
 	LoaderDisplayService.$inject = ['$window'];
 
