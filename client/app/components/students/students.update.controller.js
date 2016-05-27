@@ -30,9 +30,9 @@ class StudentsUpdateController {
    save() {
       let $state = _$state.get(this);
     
-      console.log('this.student.inscriptionDate');
+    /*  console.log('this.student.inscriptionDate');
       console.log(this.student.inscriptionDate);
-      console.log(this.student.inscriptionDate.toString());
+      console.log(this.student.inscriptionDate.toString());*/
       this.student.$save().then(ref => {
          $state.go('^');
       }).catch(rejected => {
