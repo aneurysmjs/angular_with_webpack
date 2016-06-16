@@ -8,12 +8,19 @@
 
    <form class="form-inline">
       <div class="form-group">
-         <label for="exampleInputName2"></label>
+         <label for="searchFilter"></label>
          <input type="text"
                 class="form-control"
-                id="exampleInputName2"
+                id="searchFilter"
                 ng-model="myFilter"
                 placeholder="Filtrar">
+      </div>
+      <div class="form-group">
+         <label for="pageSize">Mostrar Todos</label>
+         <input type="checkbox"
+                id="pageSize"
+                ng-change="$ctrl.displayAll()"
+                ng-model="$ctrl.isAll" />
       </div>
    </form>
 

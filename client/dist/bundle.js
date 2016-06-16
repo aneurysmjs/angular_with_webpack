@@ -34,7 +34,7 @@
 /******/ 	__webpack_require__.c = installedModules;
 
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "http://localhost:3000/assets/64d1ef28231a1d92fe31";
+/******/ 	__webpack_require__.p = "http://localhost:3000/assets/6c096cea7c5693b146b3";
 
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
@@ -25871,7 +25871,7 @@
 /* 224 */
 /***/ function(module, exports) {
 
-	module.exports = "<ui-view>\n\n   <button type=\"button\"\n           class=\"btn btn-primary\"\n           ui-sref=\"students.create\">\n      crear\n   </button>\n\n   <form class=\"form-inline\">\n      <div class=\"form-group\">\n         <label for=\"exampleInputName2\"></label>\n         <input type=\"text\"\n                class=\"form-control\"\n                id=\"exampleInputName2\"\n                ng-model=\"myFilter\"\n                placeholder=\"Filtrar\">\n      </div>\n   </form>\n\n   <table class=\"table table-hover\">\n      <thead>\n      <tr>\n         <th>Nombre</th>\n         <th>Apellido</th>\n         <th>Email</th>\n         <th>Celular</th>\n         <th>Profesión</th>\n         <th>Plan</th>\n         <th>&nbsp;</th>\n      </tr>\n      </thead>\n      <tbody>\n      <tr ng-repeat=\"student in $ctrl.students\n                     | orderBy: 'name'\n                     | pagination: $ctrl.curPage * $ctrl.pageSize\n                     | limitTo: $ctrl.pageSize\n                     | filter: myFilter track by $index\"\n          ng-dblclick=\"$ctrl.studentProfile(student)\">\n         <th ng-bind=\"student.name\"></th>\n         <td ng-bind=\"student.lastName\"></td>\n         <td ng-bind=\"student.email\"></td>\n         <td ng-bind=\"student.mobile\"></td>\n         <td ng-bind=\"student.profession\"></td>\n         <td ng-bind=\"student.plan\"></td>\n         <td ng-click=\"$ctrl.deleteStudent(student)\">\n             <span class=\"glyphicon glyphicon-remove\"\n                   tooltip-placement=\"top\"\n                   uib-tooltip=\"Eliminar\">\n             </span>\n         </td>\n      </tr>\n      </tbody>\n   </table>\n   <div class=\"pagination pagination-centered\" ng-show=\"$ctrl.students.length\">\n      <ul class=\"pagination-controle pagination\">\n         <li>\n            <button type=\"button\"\n                    class=\"btn btn-primary\"\n                    ng-disabled=\"$ctrl.curPage === 0\"\n                    ng-click=\"$ctrl.curPage = $ctrl.curPage-1\">\n               &lt; Anterior\n            </button>\n         </li>\n         <li>\n            <span>Página {{$ctrl.curPage + 1}} of {{ $ctrl.numberOfPages() }}</span>\n         </li>\n         <li>\n            <button type=\"button\"\n                    class=\"btn btn-primary\"\n                    ng-disabled=\"$ctrl.curPage >= $ctrl.students.length / $ctrl.pageSize - 1\"\n                    ng-click=\"$ctrl.curPage = $ctrl.curPage + 1\">\n               Siguiente &gt;\n            </button>\n         </li>\n      </ul>\n   </div>\n\n</ui-view>";
+	module.exports = "<ui-view>\n\n   <button type=\"button\"\n           class=\"btn btn-primary\"\n           ui-sref=\"students.create\">\n      crear\n   </button>\n\n   <form class=\"form-inline\">\n      <div class=\"form-group\">\n         <label for=\"searchFilter\"></label>\n         <input type=\"text\"\n                class=\"form-control\"\n                id=\"searchFilter\"\n                ng-model=\"myFilter\"\n                placeholder=\"Filtrar\">\n      </div>\n      <div class=\"form-group\">\n         <label for=\"pageSize\">Mostrar Todos</label>\n         <input type=\"checkbox\"\n                id=\"pageSize\"\n                ng-change=\"$ctrl.displayAll()\"\n                ng-model=\"$ctrl.isAll\" />\n      </div>\n   </form>\n\n   <table class=\"table table-hover\">\n      <thead>\n      <tr>\n         <th>Nombre</th>\n         <th>Apellido</th>\n         <th>Email</th>\n         <th>Celular</th>\n         <th>Profesión</th>\n         <th>Plan</th>\n         <th>&nbsp;</th>\n      </tr>\n      </thead>\n      <tbody>\n      <tr ng-repeat=\"student in $ctrl.students\n                     | orderBy: 'name'\n                     | pagination: $ctrl.curPage * $ctrl.pageSize\n                     | limitTo: $ctrl.pageSize\n                     | filter: myFilter track by $index\"\n          ng-dblclick=\"$ctrl.studentProfile(student)\">\n         <th ng-bind=\"student.name\"></th>\n         <td ng-bind=\"student.lastName\"></td>\n         <td ng-bind=\"student.email\"></td>\n         <td ng-bind=\"student.mobile\"></td>\n         <td ng-bind=\"student.profession\"></td>\n         <td ng-bind=\"student.plan\"></td>\n         <td ng-click=\"$ctrl.deleteStudent(student)\">\n             <span class=\"glyphicon glyphicon-remove\"\n                   tooltip-placement=\"top\"\n                   uib-tooltip=\"Eliminar\">\n             </span>\n         </td>\n      </tr>\n      </tbody>\n   </table>\n   <div class=\"pagination pagination-centered\" ng-show=\"$ctrl.students.length\">\n      <ul class=\"pagination-controle pagination\">\n         <li>\n            <button type=\"button\"\n                    class=\"btn btn-primary\"\n                    ng-disabled=\"$ctrl.curPage === 0\"\n                    ng-click=\"$ctrl.curPage = $ctrl.curPage-1\">\n               &lt; Anterior\n            </button>\n         </li>\n         <li>\n            <span>Página {{$ctrl.curPage + 1}} of {{ $ctrl.numberOfPages() }}</span>\n         </li>\n         <li>\n            <button type=\"button\"\n                    class=\"btn btn-primary\"\n                    ng-disabled=\"$ctrl.curPage >= $ctrl.students.length / $ctrl.pageSize - 1\"\n                    ng-click=\"$ctrl.curPage = $ctrl.curPage + 1\">\n               Siguiente &gt;\n            </button>\n         </li>\n      </ul>\n   </div>\n\n</ui-view>";
 
 /***/ },
 /* 225 */
@@ -25963,7 +25963,7 @@
 	      }
 
 	      /*console.log('this');
-	      console.log(this);*/
+	       console.log(this);*/
 	   }
 
 	   _createClass(StudentsController, [{
@@ -25972,6 +25972,7 @@
 	         this.curPage = 0;
 	         this.pageSize = 5;
 	         this.searchFor = '';
+	         this.isAll = false;
 	      }
 	   }, {
 	      key: 'successHandler',
@@ -26028,6 +26029,15 @@
 	      key: 'numberOfPages',
 	      value: function numberOfPages() {
 	         return Math.ceil(this.students.length / this.pageSize);
+	      }
+	   }, {
+	      key: 'displayAll',
+	      value: function displayAll() {
+	         if (this.isAll) {
+	            this.pageSize = this.students.length;
+	         } else {
+	            this.pageSize = 5;
+	         }
 	      }
 	   }]);
 
