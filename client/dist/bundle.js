@@ -34,7 +34,7 @@
 /******/ 	__webpack_require__.c = installedModules;
 
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "http://localhost:3000/assets/b6d82a6b78eb09594368";
+/******/ 	__webpack_require__.p = "http://localhost:3000/assets/34942b3c2260658dbf09";
 
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
@@ -5227,9 +5227,6 @@
 	var queueIndex = -1;
 
 	function cleanUpNextTick() {
-	    if (!draining || !currentQueue) {
-	        return;
-	    }
 	    draining = false;
 	    if (currentQueue.length) {
 	        queue = currentQueue.concat(queue);
@@ -5332,21 +5329,21 @@
 
 	var _app4 = _interopRequireDefault(_app3);
 
-	var _app5 = __webpack_require__(195);
+	var _appLibraries = __webpack_require__(195);
+
+	var _appLibraries2 = _interopRequireDefault(_appLibraries);
+
+	var _app5 = __webpack_require__(204);
 
 	var _app6 = _interopRequireDefault(_app5);
-
-	var _app7 = __webpack_require__(204);
-
-	var _app8 = _interopRequireDefault(_app7);
 
 	var _components = __webpack_require__(205);
 
 	var _components2 = _interopRequireDefault(_components);
 
-	var _app9 = __webpack_require__(237);
+	var _app7 = __webpack_require__(237);
 
-	var _app10 = _interopRequireDefault(_app9);
+	var _app8 = _interopRequireDefault(_app7);
 
 	var _shared = __webpack_require__(241);
 
@@ -5354,7 +5351,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	_angular2.default.module('app', [_app6.default.name, _components2.default.name, _shared2.default.name, _app8.default.name]).config(_app2.default).run(_app4.default).component('app', _app10.default);
+	_angular2.default.module('app', [_appLibraries2.default.name, _components2.default.name, _shared2.default.name, _app6.default.name]).config(_app2.default).run(_app4.default).component('app', _app8.default);
 
 	// manually bootstrap angular
 	_angular2.default.bootstrap(document, ['app'], {
@@ -25709,13 +25706,13 @@
 
 	var _students8 = _interopRequireDefault(_students7);
 
-	var _studentsCreate = __webpack_require__(230);
+	var _studentsCreateController = __webpack_require__(230);
 
-	var _studentsCreate2 = _interopRequireDefault(_studentsCreate);
+	var _studentsCreateController2 = _interopRequireDefault(_studentsCreateController);
 
-	var _studentsUpdate = __webpack_require__(231);
+	var _studentsUpdateController = __webpack_require__(231);
 
-	var _studentsUpdate2 = _interopRequireDefault(_studentsUpdate);
+	var _studentsUpdateController2 = _interopRequireDefault(_studentsUpdateController);
 
 	var _students9 = __webpack_require__(232);
 
@@ -25729,7 +25726,7 @@
 
 	var studentsModule = _angular2.default.module('students', []).config(_students2.default).value('studentsSetup', _students4.default).component('ciStudents', _students6.default).directive('studentsForm', function () {
 	   return new _students12.default();
-	}).controller('StudentsController', _students8.default).controller('StudentsUpdateController', _studentsUpdate2.default).controller('StudentsCreateController', _studentsCreate2.default).service('StudentsService', _students10.default);
+	}).controller('StudentsController', _students8.default).controller('StudentsUpdateController', _studentsUpdateController2.default).controller('StudentsCreateController', _studentsCreateController2.default).service('StudentsService', _students10.default);
 
 	exports.default = studentsModule;
 
@@ -25911,7 +25908,7 @@
 
 
 	// module
-	exports.push([module.id, ".fade {\n  transition: 1s linear all;\n  -webkit-transition: 1s linear all;\n}\n.fade.ng-enter,\n.fade.ng-leave {\n  opacity: 0;\n}\n.fade.ng-enter.ng-enter-active {\n  opacity: 1;\n}\n.fade.ng-leave {\n  opacity: 1;\n}\n.fade.ng-leave.ng-leave-active {\n  opacity: 1;\n}\n.Student-cards {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n}\n.Student-cards .Student-card {\n  width: 200px;\n  height: 150px;\n}\n", ""]);
+	exports.push([module.id, ".fade {\n  transition: 1s linear all;\n  -webkit-transition: 1s linear all;\n}\n.fade.ng-enter,\n.fade.ng-leave {\n  opacity: 0;\n}\n.fade.ng-enter.ng-enter-active {\n  opacity: 1;\n}\n.fade.ng-leave {\n  opacity: 1;\n}\n.fade.ng-leave.ng-leave-active {\n  opacity: 1;\n}\n.Student-cards {\n  display: -webkit-box;\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n}\n.Student-cards .Student-card {\n  width: 200px;\n  height: 150px;\n}\n", ""]);
 
 	// exports
 
@@ -25932,9 +25929,9 @@
 
 	var _studentsModal2 = _interopRequireDefault(_studentsModal);
 
-	var _studentsModal3 = __webpack_require__(229);
+	var _studentsModalController = __webpack_require__(229);
 
-	var _studentsModal4 = _interopRequireDefault(_studentsModal3);
+	var _studentsModalController2 = _interopRequireDefault(_studentsModalController);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -26002,7 +25999,7 @@
 	         $uibModal.open({
 	            animation: true,
 	            template: _studentsModal2.default,
-	            controller: _studentsModal4.default,
+	            controller: _studentsModalController2.default,
 	            controllerAs: '$ctrl',
 	            bindToController: true
 	         }).result.then(function () {
@@ -26710,11 +26707,11 @@
 
 	var _directives2 = _interopRequireDefault(_directives);
 
-	var _services = __webpack_require__(244);
+	var _services = __webpack_require__(243);
 
 	var _services2 = _interopRequireDefault(_services);
 
-	var _loader = __webpack_require__(248);
+	var _loader = __webpack_require__(247);
 
 	var _loader2 = _interopRequireDefault(_loader);
 
@@ -26738,61 +26735,18 @@
 
 	var _angular2 = _interopRequireDefault(_angular);
 
-	var _passwordMatch = __webpack_require__(243);
+	var _passwordMatchDirective = __webpack_require__(254);
 
-	var _passwordMatch2 = _interopRequireDefault(_passwordMatch);
+	var _passwordMatchDirective2 = _interopRequireDefault(_passwordMatchDirective);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var sharedModule = _angular2.default.module('app.shared.directives', []).directive('passwordMatch', _passwordMatch2.default);
+	var sharedModule = _angular2.default.module('app.shared.directives', []).directive('passwordMatch', _passwordMatchDirective2.default);
 
 	exports.default = sharedModule;
 
 /***/ },
 /* 243 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	   value: true
-	});
-	function passwordMatch() {
-	   'use strict';
-
-	   return {
-	      restrict: 'A',
-	      scope: true,
-	      require: 'ngModel',
-	      link: link
-	   };
-
-	   function link(scope, elem, attrs, ngModelController) {
-
-	      function checker() {
-	         //get the value of the first password
-	         var e1 = scope.$eval(attrs.ngModel),
-
-	         //get the value of the other password
-	         e2 = scope.$eval(attrs.passwordMatch);
-	         console.log('--- passmatch ---');
-	         console.log(e1 === e2);
-	         return e1 == e2;
-	      }
-
-	      scope.$watch(checker, function (n) {
-	         console.log('--- match!!! ---');
-	         //set the form ngModelController to valid if both
-	         //passwords are the same, else invalid
-	         ngModelController.$setValidity("unique", n);
-	      });
-	   }
-	}
-
-	exports.default = passwordMatch;
-
-/***/ },
-/* 244 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26805,26 +26759,26 @@
 
 	var _angular2 = _interopRequireDefault(_angular);
 
-	var _authInterceptor = __webpack_require__(245);
+	var _authInterceptorService = __webpack_require__(244);
 
-	var _authInterceptor2 = _interopRequireDefault(_authInterceptor);
+	var _authInterceptorService2 = _interopRequireDefault(_authInterceptorService);
 
-	var _authToken = __webpack_require__(246);
+	var _authTokenService = __webpack_require__(245);
 
-	var _authToken2 = _interopRequireDefault(_authToken);
+	var _authTokenService2 = _interopRequireDefault(_authTokenService);
 
-	var _auth = __webpack_require__(247);
+	var _auth = __webpack_require__(246);
 
 	var _auth2 = _interopRequireDefault(_auth);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var servicesModule = _angular2.default.module('app.shared.services', []).service('AuthInterceptor', _authInterceptor2.default).service('AuthToken', _authToken2.default).service('AuthService', _auth2.default);
+	var servicesModule = _angular2.default.module('app.shared.services', []).service('AuthInterceptor', _authInterceptorService2.default).service('AuthToken', _authTokenService2.default).service('AuthService', _auth2.default);
 
 	exports.default = servicesModule;
 
 /***/ },
-/* 245 */
+/* 244 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -26870,7 +26824,7 @@
 	exports.default = authInterceptor;
 
 /***/ },
-/* 246 */
+/* 245 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -26923,7 +26877,7 @@
 	exports.default = AuthToken;
 
 /***/ },
-/* 247 */
+/* 246 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26953,7 +26907,7 @@
 	exports.default = AuthService;
 
 /***/ },
-/* 248 */
+/* 247 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26966,19 +26920,19 @@
 
 	var _angular2 = _interopRequireDefault(_angular);
 
-	var _loaderConfigProvider = __webpack_require__(249);
+	var _loaderConfigProvider = __webpack_require__(248);
 
 	var _loaderConfigProvider2 = _interopRequireDefault(_loaderConfigProvider);
 
-	var _loaderDirective = __webpack_require__(250);
+	var _loaderDirective = __webpack_require__(249);
 
 	var _loaderDirective2 = _interopRequireDefault(_loaderDirective);
 
-	var _loaderInterceptorService = __webpack_require__(253);
+	var _loaderInterceptorService = __webpack_require__(252);
 
 	var _loaderInterceptorService2 = _interopRequireDefault(_loaderInterceptorService);
 
-	var _loaderDisplayService = __webpack_require__(254);
+	var _loaderDisplayService = __webpack_require__(253);
 
 	var _loaderDisplayService2 = _interopRequireDefault(_loaderDisplayService);
 
@@ -26989,7 +26943,7 @@
 	exports.default = loadingModule;
 
 /***/ },
-/* 249 */
+/* 248 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -27040,7 +26994,7 @@
 	exports.default = loadingConfigProvider;
 
 /***/ },
-/* 250 */
+/* 249 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27049,7 +27003,7 @@
 	   value: true
 	});
 
-	__webpack_require__(251);
+	__webpack_require__(250);
 
 	Loader.$inject = ['$q', '$timeout', 'LoadingInterceptor', 'loaderConfig', 'LoadingDisplay'];
 
@@ -27163,13 +27117,13 @@
 	exports.default = Loader;
 
 /***/ },
-/* 251 */
+/* 250 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(252);
+	var content = __webpack_require__(251);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(214)(content, {});
@@ -27189,7 +27143,7 @@
 	}
 
 /***/ },
-/* 252 */
+/* 251 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(213)();
@@ -27203,7 +27157,7 @@
 
 
 /***/ },
-/* 253 */
+/* 252 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -27223,7 +27177,7 @@
 	exports.default = LoadingInterceptorService;
 
 /***/ },
-/* 254 */
+/* 253 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -27305,6 +27259,49 @@
 	LoaderDisplayService.$inject = ['$window'];
 
 	exports.default = LoaderDisplayService;
+
+/***/ },
+/* 254 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	   value: true
+	});
+	function passwordMatch() {
+	   'use strict';
+
+	   return {
+	      restrict: 'A',
+	      scope: true,
+	      require: 'ngModel',
+	      link: link
+	   };
+
+	   function link(scope, elem, attrs, ngModelController) {
+
+	      function checker() {
+	         //get the value of the first password
+	         var e1 = scope.$eval(attrs.ngModel),
+
+	         //get the value of the other password
+	         e2 = scope.$eval(attrs.passwordMatch);
+	         console.log('--- passmatch ---');
+	         console.log(e1 === e2);
+	         return e1 == e2;
+	      }
+
+	      scope.$watch(checker, function (n) {
+	         console.log('--- match!!! ---');
+	         //set the form ngModelController to valid if both
+	         //passwords are the same, else invalid
+	         ngModelController.$setValidity("unique", n);
+	      });
+	   }
+	}
+
+	exports.default = passwordMatch;
 
 /***/ }
 /******/ ]);

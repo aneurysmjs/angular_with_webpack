@@ -1,4 +1,4 @@
-import template from './students.form.html';
+import template from './students-form.html';
 
 class StudentsForm {
 

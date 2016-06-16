@@ -1,5 +1,5 @@
-import template from './students.modal.html';
-import controller from './students.modal.controller';
+import template from './students-modal.html';
+import controller from './students-modal.controller.js';
 
 let _$uibModal = new WeakMap();
 
