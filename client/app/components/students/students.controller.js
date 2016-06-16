@@ -31,6 +31,12 @@ class StudentsController {
 
    }
 
+   $onInit() {
+      this.curPage = 0;
+      this.pageSize = 5;
+      this.searchFor = '';
+   }
+
    successHandler(success) {
       console.log('success');
       console.log(success);
@@ -74,7 +80,10 @@ class StudentsController {
          console.log('rejectHandler');
       });
 
+   }
 
+   numberOfPages() {
+      return Math.ceil(this.students.length / this.pageSize);
    }
 
 }

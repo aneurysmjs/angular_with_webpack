@@ -17,14 +17,14 @@
       </div>
    </form>
 
-  <!-- <div class="Student-cards">
-      <div class="Student-card" ng-repeat="student in $ctrl.students track by $index">
-         <span ng-bind="student.name"></span>
-         <span ng-bind="student.lastName"></span>
-         <span ng-bind="student.email"></span>
-         <span ng-bind="student.phone"></span>
-      </div>
-   </div>-->
+   <!-- <div class="Student-cards">
+       <div class="Student-card" ng-repeat="student in $ctrl.students track by $index">
+          <span ng-bind="student.name"></span>
+          <span ng-bind="student.lastName"></span>
+          <span ng-bind="student.email"></span>
+          <span ng-bind="student.phone"></span>
+       </div>
+    </div>-->
 
    <table class="table table-hover">
       <thead>
@@ -39,7 +39,11 @@
       </tr>
       </thead>
       <tbody>
-      <tr ng-repeat="student in $ctrl.students | filter: myFilter track by $index"
+      <tr ng-repeat="student in $ctrl.students
+                     | orderBy: 'name'
+                     | pagination: $ctrl.curPage * $ctrl.pageSize
+                     | limitTo: $ctrl.pageSize
+                     | filter: myFilter track by $index"
           ng-dblclick="$ctrl.studentProfile(student)">
          <th ng-bind="student.name"></th>
          <td ng-bind="student.lastName"></td>
@@ -56,5 +60,28 @@
       </tr>
       </tbody>
    </table>
+   <div class="pagination pagination-centered" ng-show="$ctrl.students.length">
+      <ul class="pagination-controle pagination">
+         <li>
+            <button type="button"
+                    class="btn btn-primary"
+                    ng-disabled="$ctrl.curPage == 0"
+                    ng-click="$ctrl.curPage = $ctrl.curPage-1">
+               &lt; Anterior
+            </button>
+         </li>
+         <li>
+            <span>Página {{$ctrl.curPage + 1}} of {{ $ctrl.numberOfPages() }}</span>
+         </li>
+         <li>
+            <button type="button"
+                    class="btn btn-primary"
+                    ng-disabled="$ctrl.curPage >= $ctrl.students.length / $ctrl.pageSize - 1"
+                    ng-click="$ctrl.curPage = $ctrl.curPage+1">
+               Siguiente &gt;
+            </button>
+         </li>
+      </ul>
+   </div>
 
 </ui-view>
