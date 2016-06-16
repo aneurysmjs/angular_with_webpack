@@ -153,6 +153,27 @@
          </div>
       </div>
       <div class="row">
+
+         <div class="col-md-3">
+            <label class=""
+                   for="school">Institución Educativa</label>
+            <input id="school"
+                   type="text"
+                   class="form-control"
+                   name="school"
+                   ng-model="$ctrl.student.school"
+                   placeholder="">
+         </div>
+         <div class="col-md-3">
+            <label class=""
+                   for="birthDate">Fecha de Nacimiento</label>
+            <input id="birthDate"
+                   type="text"
+                   class="form-control"
+                   name="birthDate"
+                   ng-model="$ctrl.student.birthDate"
+                   placeholder="">
+         </div>
          <div class="col-md-3">
             <label class=""
                    for="email">Email</label>
@@ -268,6 +289,52 @@
          </div>
       </div>
       <hr>
+      <div class="row">
+         <div class="col-md-12">
+            <div class="text-center">
+               <label for="socialNetworks">
+                  Redes Sociales
+               </label>
+            </div>
+            <div class="col-md-3">
+               <i class="fa fa-twitter" aria-hidden="true"></i>
+               <input id="socialNetworksTwitter"
+                      type="text"
+                      class="form-control"
+                      name="socialNetworksTwitter"
+                      ng-model="$ctrl.student.socialNetworks.twitter"
+                      placeholder="Twitter">
+            </div>
+            <div class="col-md-3">
+               <i class="fa fa-facebook" aria-hidden="true"></i>
+               <input id="socialNetworksFacebook"
+                      type="text"
+                      class="form-control"
+                      name="socialNetworksFacebook"
+                      ng-model="$ctrl.student.socialNetworks.facebook"
+                      placeholder="Facebook">
+            </div>
+            <div class="col-md-3">
+               <i class="fa fa-instagram" aria-hidden="true"></i>
+               <input id="socialNetworksInstagram"
+                      type="text"
+                      class="form-control"
+                      name="socialNetworksInstagram"
+                      ng-model="$ctrl.student.socialNetworks.instagram"
+                      placeholder="Instagram">
+            </div>
+            <div class="col-md-3">
+               <i class="fa fa-rss aria-hidden="true"></i>
+               <input id="socialNetworksOther"
+                      type="text"
+                      class="form-control"
+                      name="socialNetworksOther"
+                      ng-model="$ctrl.student.socialNetworks.other"
+                      placeholder="Otra">
+            </div>
+         </div>
+      </div>
+
       <div class="row">
          <div class="col-md-3">
             <button class="btn btn default"
