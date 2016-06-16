@@ -7,27 +7,22 @@ class StudentsController {
 
    constructor(StudentsService, $stateParams, $state, studentsSetup, $uibModal) {
 
-      _$uibModal.set(this, $uibModal);
       this.StudentsService = StudentsService;
-      this.$state = $state;
+      this.$uibModal = $uibModal;
       this.setup = studentsSetup;
+      this.$state = $state;
       this.buttonText = 'Guardar';
 
       if ($stateParams.id) {
          this.isUpdate = true;
          this.buttonText = 'Actualizar';
       } else {
-         this.student = {};
-         this.student.documentType = studentsSetup.documentTypes[0];
-         this.student.occupation = studentsSetup.occupations[0];
-         this.student.plan = studentsSetup.plans[0];
+         this.student = StudentsService.student();
+
          this.format = studentsSetup.format(0);
          this.setup.altInputFormats = studentsSetup.altInputFormats;
          this.setup.dateOptions = studentsSetup.dateOptions;
       }
-
-      /*console.log('this');
-       console.log(this);*/
 
    }
 
@@ -57,10 +52,9 @@ class StudentsController {
    }
 
    deleteStudent(student) {
-      let index = this.students.indexOf(student),
-         $uibModal = _$uibModal.get(this);
+      let index = this.students.indexOf(student);
 
-      $uibModal.open({
+      this.$uibModal.open({
          animation: true,
          template,
          controller,

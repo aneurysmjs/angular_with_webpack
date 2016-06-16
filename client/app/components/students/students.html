@@ -15,12 +15,14 @@
                 ng-model="myFilter"
                 placeholder="Filtrar">
       </div>
-      <div class="form-group">
-         <label for="pageSize">Mostrar Todos</label>
+      <div class="checkbox">
+         <label for="pageSize">
          <input type="checkbox"
                 id="pageSize"
                 ng-change="$ctrl.displayAll()"
                 ng-model="$ctrl.isAll" />
+            Mostrar Todos
+         </label>
       </div>
    </form>
 

@@ -1,50 +1,35 @@
 import Firebase from 'firebase';
 
-let _$q = new WeakMap(),
-    _$firebaseArray = new WeakMap(),
-    _$firebaseObject = new WeakMap(),
-    _studentsRef = new WeakMap();
-
 class JentooService {
 
-   constructor($q, $firebaseArray, $firebaseObject, FIRE_URL) {
-      _$q.set(this, $q);
+   constructor($q, $firebaseArray, $firebaseObject, FIRE_URL, studentsSetup) {
+      this.studentsSetup = studentsSetup;
+      this.$q = $q;
+      this.$firebaseArray = $firebaseArray;
+      this.$firebaseObject = $firebaseObject;
+      this.studentsRef = new Firebase(FIRE_URL + 'users');
+   }
 
-      //let ref = new Firebase('https://olgah.firebaseio.com/users/');
-
-      _$firebaseArray.set(this, $firebaseArray);
-      _$firebaseObject.set(this, $firebaseObject);
-      _studentsRef.set(this, new Firebase(FIRE_URL + 'users'));
-
-      //this.olgah = $firebaseArray(ref);
-      //this.olgah.$loaded().then(this.successHandler).catch(this.catchHandler);
+   student() {
+      let student = {};
+      return (() => {
+         student.documentType = this.studentsSetup.documentTypes[0];
+         student.occupation = this.studentsSetup.occupations[0];
+         student.plan = this.studentsSetup.plans[0];
+         return student;
+      })();
    }
 
    getStudents() {
-      let $firebaseArray = _$firebaseArray.get(this),
-          studentsRef = _studentsRef.get(this);
-
-      return $firebaseArray(studentsRef);
+      return this.$firebaseArray(this.studentsRef);
    }
 
    getStudent(uid) {
-      let $firebaseObject = _$firebaseObject.get(this),
-          studentsRef = _studentsRef.get(this);
-
-      return $firebaseObject(studentsRef.child(uid));
-   }
-
-   successHandler(students) {
-
-   }
-
-   catchHandler(error) {
-      console.log('error');
-      console.log(error);
+      return this.$firebaseObject(this.studentsRef.child(uid));
    }
 
 }
 
-JentooService.$inject = ['$q', '$firebaseArray', '$firebaseObject', 'FIRE_URL'];
+JentooService.$inject = ['$q', '$firebaseArray', '$firebaseObject', 'FIRE_URL', 'studentsSetup'];
 
 export default JentooService;
