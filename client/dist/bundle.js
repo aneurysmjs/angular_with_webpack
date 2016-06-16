@@ -34,7 +34,7 @@
 /******/ 	__webpack_require__.c = installedModules;
 
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "http://localhost:3000/assets/a8dcfaec374a4b717532";
+/******/ 	__webpack_require__.p = "http://localhost:3000/assets/85ef9b271c1987de001b";
 
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
@@ -26029,6 +26029,7 @@
 	      value: function displayAll() {
 	         if (this.isAll) {
 	            this.pageSize = this.students.length;
+	            this.curPage = 0;
 	         } else {
 	            this.pageSize = 5;
 	         }
