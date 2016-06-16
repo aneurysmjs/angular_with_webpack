@@ -34,7 +34,7 @@
 /******/ 	__webpack_require__.c = installedModules;
 
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "http://localhost:3000/assets/795aac166be5b2701911";
+/******/ 	__webpack_require__.p = "http://localhost:3000/assets/8654660fdf4f1ec7a129";
 
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
@@ -25496,18 +25496,18 @@
 
 	'use strict';
 
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
 	Object.defineProperty(exports, "__esModule", {
 	   value: true
 	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	var _LoginService = new WeakMap(),
 	    _$state = new WeakMap();
 
-	var LoginController = (function () {
+	var LoginController = function () {
 	   function LoginController(LoginService, $state) {
 	      _classCallCheck(this, LoginController);
 
@@ -25550,7 +25550,7 @@
 	   }]);
 
 	   return LoginController;
-	})();
+	}();
 
 	LoginController.$inject = ['LoginService', '$state'];
 
@@ -25620,15 +25620,15 @@
 
 	'use strict';
 
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
 	Object.defineProperty(exports, "__esModule", {
 	   value: true
 	});
 
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	var LoginRegisterController = (function () {
+	var LoginRegisterController = function () {
 	   function LoginRegisterController(LoginService, $state, $timeout) {
 	      _classCallCheck(this, LoginRegisterController);
 
@@ -25670,7 +25670,7 @@
 	   }]);
 
 	   return LoginRegisterController;
-	})();
+	}();
 
 	LoginRegisterController.$inject = ['LoginService', '$state', '$timeout'];
 
@@ -25919,11 +25919,11 @@
 
 	'use strict';
 
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
 	Object.defineProperty(exports, "__esModule", {
 	   value: true
 	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _studentsModal = __webpack_require__(228);
 
@@ -25939,7 +25939,7 @@
 
 	var _$uibModal = new WeakMap();
 
-	var StudentsController = (function () {
+	var StudentsController = function () {
 	   function StudentsController(StudentsService, $stateParams, $state, studentsSetup, $uibModal) {
 	      _classCallCheck(this, StudentsController);
 
@@ -26020,7 +26020,7 @@
 	   }]);
 
 	   return StudentsController;
-	})();
+	}();
 
 	StudentsController.$inject = ['StudentsService', '$stateParams', '$state', 'studentsSetup', '$uibModal'];
 
@@ -26038,17 +26038,17 @@
 
 	'use strict';
 
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
 	Object.defineProperty(exports, "__esModule", {
 	   value: true
 	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	var _$uibModalInstance = new WeakMap();
 
-	var StudentsModalModalController = (function () {
+	var StudentsModalModalController = function () {
 	   function StudentsModalModalController($uibModalInstance) {
 	      _classCallCheck(this, StudentsModalModalController);
 
@@ -26070,7 +26070,7 @@
 	   }]);
 
 	   return StudentsModalModalController;
-	})();
+	}();
 
 	StudentsModalModalController.$inject = ['$uibModalInstance'];
 
@@ -26082,11 +26082,11 @@
 
 	'use strict';
 
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
 	Object.defineProperty(exports, "__esModule", {
 	   value: true
 	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -26094,7 +26094,7 @@
 	    _StudentsService = new WeakMap(),
 	    _$firebaseObject = new WeakMap();
 
-	var StudentsCreateController = (function () {
+	var StudentsCreateController = function () {
 	   function StudentsCreateController(StudentsService, $state, studentsSetup, $firebaseObject) {
 	      _classCallCheck(this, StudentsCreateController);
 
@@ -26136,7 +26136,7 @@
 	   }]);
 
 	   return StudentsCreateController;
-	})();
+	}();
 
 	StudentsCreateController.$inject = ['StudentsService', '$state', 'studentsSetup', '$firebaseObject'];
 
@@ -26148,11 +26148,11 @@
 
 	'use strict';
 
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
 	Object.defineProperty(exports, "__esModule", {
 	   value: true
 	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -26160,7 +26160,7 @@
 	    _StudentsService = new WeakMap(),
 	    _$firebaseObject = new WeakMap();
 
-	var StudentsUpdateController = (function () {
+	var StudentsUpdateController = function () {
 	   function StudentsUpdateController(StudentsService, $state, studentsSetup, $firebaseObject) {
 	      _classCallCheck(this, StudentsUpdateController);
 
@@ -26204,7 +26204,7 @@
 	   }]);
 
 	   return StudentsUpdateController;
-	})();
+	}();
 
 	StudentsUpdateController.$inject = ['StudentsService', '$state', 'studentsSetup', '$firebaseObject'];
 
@@ -26216,11 +26216,11 @@
 
 	'use strict';
 
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
 	Object.defineProperty(exports, "__esModule", {
 	   value: true
 	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _firebase = __webpack_require__(233);
 
@@ -26235,7 +26235,7 @@
 	    _$firebaseObject = new WeakMap(),
 	    _studentsRef = new WeakMap();
 
-	var JentooService = (function () {
+	var JentooService = function () {
 	   function JentooService($q, $firebaseArray, $firebaseObject, FIRE_URL) {
 	      _classCallCheck(this, JentooService);
 
@@ -26279,7 +26279,7 @@
 	   }]);
 
 	   return JentooService;
-	})();
+	}();
 
 	JentooService.$inject = ['$q', '$firebaseArray', '$firebaseObject', 'FIRE_URL'];
 
@@ -26826,15 +26826,15 @@
 
 	'use strict';
 
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
 	Object.defineProperty(exports, "__esModule", {
 	   value: true
 	});
 
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	var authInterceptor = (function () {
+	var authInterceptor = function () {
 	   function authInterceptor(AuthTokenService) {
 	      _classCallCheck(this, authInterceptor);
 
@@ -26860,7 +26860,7 @@
 	   }]);
 
 	   return authInterceptor;
-	})();
+	}();
 
 	authInterceptor.$inject = ['AuthTokenService'];
 
@@ -26872,15 +26872,15 @@
 
 	'use strict';
 
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
 	Object.defineProperty(exports, "__esModule", {
 	   value: true
 	});
 
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	var AuthToken = (function () {
+	var AuthToken = function () {
 	   function AuthToken($window, $q) {
 	      _classCallCheck(this, AuthToken);
 
@@ -26913,7 +26913,7 @@
 	   }]);
 
 	   return AuthToken;
-	})();
+	}();
 
 	AuthToken.$inject = ['$window', '$q'];
 
@@ -27225,27 +27225,27 @@
 
 	'use strict';
 
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
 	Object.defineProperty(exports, "__esModule", {
 	   value: true
 	});
 
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	var LoaderDisplayService = (function () {
+	var LoaderDisplayService = function () {
 	   function LoaderDisplayService($window) {
 	      _classCallCheck(this, LoaderDisplayService);
 
 	      this.$window = $window;
 
-	      this.getComputedStyle = (function () {
+	      this.getComputedStyle = function () {
 	         var func = null;
 
 	         if (document.defaultView && document.defaultView.getComputedStyle) {
 	            func = document.defaultView.getComputedStyle;
 	         } else if (typeof document.body.curentStyle !== "undefined") {
-	            func = function (element, anything) {
+	            func = function func(element, anything) {
 	               return element.currentStyle;
 	            };
 	         }
@@ -27253,7 +27253,7 @@
 	         return function (element, style) {
 	            return func(element, null)[style];
 	         };
-	      })();
+	      }();
 	   }
 
 	   _createClass(LoaderDisplayService, [{
@@ -27297,7 +27297,7 @@
 	   }]);
 
 	   return LoaderDisplayService;
-	})();
+	}();
 
 	LoaderDisplayService.$inject = ['$window'];
 
