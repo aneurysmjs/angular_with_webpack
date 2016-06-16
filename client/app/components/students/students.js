@@ -3,8 +3,8 @@ import studentsRoutes from './students.routes';
 import studentsSetup from './students.value';
 import studentsComponent from './students.component';
 import StudentsController from './students.controller';
-import StudentsCreateController from './students.create.controller';
-import StudentsUpdateController from './students.update.controller';
+import StudentsCreateController from './students-create.controller.js';
+import StudentsUpdateController from './students-update.controller.js';
 import StudentsService from './students.service';
 
 import studentsForm from './students.form';

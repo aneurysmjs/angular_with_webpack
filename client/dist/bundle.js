@@ -34,7 +34,7 @@
 /******/ 	__webpack_require__.c = installedModules;
 
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "http://localhost:3000/assets/b6d82a6b78eb09594368";
+/******/ 	__webpack_require__.p = "http://localhost:3000/assets/a8dcfaec374a4b717532";
 
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
@@ -5227,9 +5227,6 @@
 	var queueIndex = -1;
 
 	function cleanUpNextTick() {
-	    if (!draining || !currentQueue) {
-	        return;
-	    }
 	    draining = false;
 	    if (currentQueue.length) {
 	        queue = currentQueue.concat(queue);
@@ -5332,21 +5329,21 @@
 
 	var _app4 = _interopRequireDefault(_app3);
 
-	var _app5 = __webpack_require__(195);
+	var _appLibraries = __webpack_require__(195);
+
+	var _appLibraries2 = _interopRequireDefault(_appLibraries);
+
+	var _app5 = __webpack_require__(204);
 
 	var _app6 = _interopRequireDefault(_app5);
-
-	var _app7 = __webpack_require__(204);
-
-	var _app8 = _interopRequireDefault(_app7);
 
 	var _components = __webpack_require__(205);
 
 	var _components2 = _interopRequireDefault(_components);
 
-	var _app9 = __webpack_require__(237);
+	var _app7 = __webpack_require__(237);
 
-	var _app10 = _interopRequireDefault(_app9);
+	var _app8 = _interopRequireDefault(_app7);
 
 	var _shared = __webpack_require__(241);
 
@@ -5354,7 +5351,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	_angular2.default.module('app', [_app6.default.name, _components2.default.name, _shared2.default.name, _app8.default.name]).config(_app2.default).run(_app4.default).component('app', _app10.default);
+	_angular2.default.module('app', [_appLibraries2.default.name, _components2.default.name, _shared2.default.name, _app6.default.name]).config(_app2.default).run(_app4.default).component('app', _app8.default);
 
 	// manually bootstrap angular
 	_angular2.default.bootstrap(document, ['app'], {
@@ -25709,13 +25706,13 @@
 
 	var _students8 = _interopRequireDefault(_students7);
 
-	var _studentsCreate = __webpack_require__(230);
+	var _studentsCreateController = __webpack_require__(230);
 
-	var _studentsCreate2 = _interopRequireDefault(_studentsCreate);
+	var _studentsCreateController2 = _interopRequireDefault(_studentsCreateController);
 
-	var _studentsUpdate = __webpack_require__(231);
+	var _studentsUpdateController = __webpack_require__(231);
 
-	var _studentsUpdate2 = _interopRequireDefault(_studentsUpdate);
+	var _studentsUpdateController2 = _interopRequireDefault(_studentsUpdateController);
 
 	var _students9 = __webpack_require__(232);
 
@@ -25729,7 +25726,7 @@
 
 	var studentsModule = _angular2.default.module('students', []).config(_students2.default).value('studentsSetup', _students4.default).component('ciStudents', _students6.default).directive('studentsForm', function () {
 	   return new _students12.default();
-	}).controller('StudentsController', _students8.default).controller('StudentsUpdateController', _studentsUpdate2.default).controller('StudentsCreateController', _studentsCreate2.default).service('StudentsService', _students10.default);
+	}).controller('StudentsController', _students8.default).controller('StudentsUpdateController', _studentsUpdateController2.default).controller('StudentsCreateController', _studentsCreateController2.default).service('StudentsService', _students10.default);
 
 	exports.default = studentsModule;
 
@@ -25874,7 +25871,7 @@
 /* 224 */
 /***/ function(module, exports) {
 
-	module.exports = "<ui-view>\n\n   <button type=\"button\"\n           class=\"btn btn-primary\"\n           ui-sref=\"students.create\">\n      crear\n   </button>\n\n   <form class=\"form-inline\">\n      <div class=\"form-group\">\n         <label for=\"exampleInputName2\">Filter</label>\n         <input type=\"text\"\n                class=\"form-control\"\n                id=\"exampleInputName2\"\n                ng-model=\"myFilter\"\n                placeholder=\"Filtrar\">\n      </div>\n   </form>\n\n  <!-- <div class=\"Student-cards\">\n      <div class=\"Student-card\" ng-repeat=\"student in $ctrl.students track by $index\">\n         <span ng-bind=\"student.name\"></span>\n         <span ng-bind=\"student.lastName\"></span>\n         <span ng-bind=\"student.email\"></span>\n         <span ng-bind=\"student.phone\"></span>\n      </div>\n   </div>-->\n\n   <table class=\"table table-hover\">\n      <thead>\n      <tr>\n         <th>First Name</th>\n         <th>Last Name</th>\n         <th>Email</th>\n         <th>Celular</th>\n         <th>Profession</th>\n         <th>Plan</th>\n         <th>&nbsp;</th>\n      </tr>\n      </thead>\n      <tbody>\n      <tr ng-repeat=\"student in $ctrl.students | filter: myFilter track by $index\"\n          ng-dblclick=\"$ctrl.studentProfile(student)\">\n         <th ng-bind=\"student.name\"></th>\n         <td ng-bind=\"student.lastName\"></td>\n         <td ng-bind=\"student.email\"></td>\n         <td ng-bind=\"student.mobile\"></td>\n         <td ng-bind=\"student.profession\"></td>\n         <td ng-bind=\"student.plan\"></td>\n         <td ng-click=\"$ctrl.deleteStudent(student)\">\n             <span class=\"glyphicon glyphicon-remove\"\n                   tooltip-placement=\"top\"\n                   uib-tooltip=\"Eliminar\">\n             </span>\n         </td>\n      </tr>\n      </tbody>\n   </table>\n\n</ui-view>";
+	module.exports = "<ui-view>\n\n   <button type=\"button\"\n           class=\"btn btn-primary\"\n           ui-sref=\"students.create\">\n      crear\n   </button>\n\n   <form class=\"form-inline\">\n      <div class=\"form-group\">\n         <label for=\"searchFilter\"></label>\n         <input type=\"text\"\n                class=\"form-control\"\n                id=\"searchFilter\"\n                ng-model=\"myFilter\"\n                placeholder=\"Filtrar\">\n      </div>\n      <div class=\"checkbox\">\n         <label for=\"pageSize\">\n         <input type=\"checkbox\"\n                id=\"pageSize\"\n                ng-change=\"$ctrl.displayAll()\"\n                ng-model=\"$ctrl.isAll\" />\n            Mostrar Todos\n         </label>\n      </div>\n   </form>\n\n   <table class=\"table table-hover\">\n      <thead>\n      <tr>\n         <th>Nombre</th>\n         <th>Apellido</th>\n         <th>Email</th>\n         <th>Celular</th>\n         <th>Profesión</th>\n         <th>Plan</th>\n         <th>&nbsp;</th>\n      </tr>\n      </thead>\n      <tbody>\n      <tr ng-repeat=\"student in $ctrl.students\n                     | orderBy: 'name'\n                     | pagination: $ctrl.curPage * $ctrl.pageSize\n                     | limitTo: $ctrl.pageSize\n                     | filter: myFilter track by $index\"\n          ng-dblclick=\"$ctrl.studentProfile(student)\">\n         <th ng-bind=\"student.name\"></th>\n         <td ng-bind=\"student.lastName\"></td>\n         <td ng-bind=\"student.email\"></td>\n         <td ng-bind=\"student.mobile\"></td>\n         <td ng-bind=\"student.profession\"></td>\n         <td ng-bind=\"student.plan\"></td>\n         <td ng-click=\"$ctrl.deleteStudent(student)\">\n             <span class=\"glyphicon glyphicon-remove\"\n                   tooltip-placement=\"top\"\n                   uib-tooltip=\"Eliminar\">\n             </span>\n         </td>\n      </tr>\n      </tbody>\n   </table>\n   <div class=\"pagination pagination-centered\" ng-show=\"$ctrl.students.length\">\n      <ul class=\"pagination-controle pagination\">\n         <li>\n            <button type=\"button\"\n                    class=\"btn btn-primary\"\n                    ng-disabled=\"$ctrl.curPage === 0\"\n                    ng-click=\"$ctrl.curPage = $ctrl.curPage-1\">\n               &lt; Anterior\n            </button>\n         </li>\n         <li>\n            <span>Página {{$ctrl.curPage + 1}} of {{ $ctrl.numberOfPages() }}</span>\n         </li>\n         <li>\n            <button type=\"button\"\n                    class=\"btn btn-primary\"\n                    ng-disabled=\"$ctrl.curPage >= $ctrl.students.length / $ctrl.pageSize - 1\"\n                    ng-click=\"$ctrl.curPage = $ctrl.curPage + 1\">\n               Siguiente &gt;\n            </button>\n         </li>\n      </ul>\n   </div>\n\n</ui-view>";
 
 /***/ },
 /* 225 */
@@ -25911,7 +25908,7 @@
 
 
 	// module
-	exports.push([module.id, ".fade {\n  transition: 1s linear all;\n  -webkit-transition: 1s linear all;\n}\n.fade.ng-enter,\n.fade.ng-leave {\n  opacity: 0;\n}\n.fade.ng-enter.ng-enter-active {\n  opacity: 1;\n}\n.fade.ng-leave {\n  opacity: 1;\n}\n.fade.ng-leave.ng-leave-active {\n  opacity: 1;\n}\n.Student-cards {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n}\n.Student-cards .Student-card {\n  width: 200px;\n  height: 150px;\n}\n", ""]);
+	exports.push([module.id, ".fade {\n  transition: 1s linear all;\n  -webkit-transition: 1s linear all;\n}\n.fade.ng-enter,\n.fade.ng-leave {\n  opacity: 0;\n}\n.fade.ng-enter.ng-enter-active {\n  opacity: 1;\n}\n.fade.ng-leave {\n  opacity: 1;\n}\n.fade.ng-leave.ng-leave-active {\n  opacity: 1;\n}\n.Student-cards {\n  display: -webkit-box;\n  display: -webkit-flex;\n  display: -ms-flexbox;\n  display: flex;\n}\n.Student-cards .Student-card {\n  width: 200px;\n  height: 150px;\n}\n", ""]);
 
 	// exports
 
@@ -25932,9 +25929,9 @@
 
 	var _studentsModal2 = _interopRequireDefault(_studentsModal);
 
-	var _studentsModal3 = __webpack_require__(229);
+	var _studentsModalController = __webpack_require__(229);
 
-	var _studentsModal4 = _interopRequireDefault(_studentsModal3);
+	var _studentsModalController2 = _interopRequireDefault(_studentsModalController);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -25946,30 +25943,33 @@
 	   function StudentsController(StudentsService, $stateParams, $state, studentsSetup, $uibModal) {
 	      _classCallCheck(this, StudentsController);
 
-	      _$uibModal.set(this, $uibModal);
 	      this.StudentsService = StudentsService;
-	      this.$state = $state;
+	      this.$uibModal = $uibModal;
 	      this.setup = studentsSetup;
+	      this.$state = $state;
 	      this.buttonText = 'Guardar';
 
 	      if ($stateParams.id) {
 	         this.isUpdate = true;
 	         this.buttonText = 'Actualizar';
 	      } else {
-	         this.student = {};
-	         this.student.documentType = studentsSetup.documentTypes[0];
-	         this.student.occupation = studentsSetup.occupations[0];
-	         this.student.plan = studentsSetup.plans[0];
+	         this.student = StudentsService.student();
+
 	         this.format = studentsSetup.format(0);
 	         this.setup.altInputFormats = studentsSetup.altInputFormats;
 	         this.setup.dateOptions = studentsSetup.dateOptions;
 	      }
-
-	      /*console.log('this');
-	      console.log(this);*/
 	   }
 
 	   _createClass(StudentsController, [{
+	      key: '$onInit',
+	      value: function $onInit() {
+	         this.curPage = 0;
+	         this.pageSize = 5;
+	         this.searchFor = '';
+	         this.isAll = false;
+	      }
+	   }, {
 	      key: 'successHandler',
 	      value: function successHandler(success) {
 	         console.log('success');
@@ -25996,13 +25996,12 @@
 	      value: function deleteStudent(student) {
 	         var _this = this;
 
-	         var index = this.students.indexOf(student),
-	             $uibModal = _$uibModal.get(this);
+	         var index = this.students.indexOf(student);
 
-	         $uibModal.open({
+	         this.$uibModal.open({
 	            animation: true,
 	            template: _studentsModal2.default,
-	            controller: _studentsModal4.default,
+	            controller: _studentsModalController2.default,
 	            controllerAs: '$ctrl',
 	            bindToController: true
 	         }).result.then(function () {
@@ -26019,6 +26018,20 @@
 	         }).catch(function () {
 	            console.log('rejectHandler');
 	         });
+	      }
+	   }, {
+	      key: 'numberOfPages',
+	      value: function numberOfPages() {
+	         return Math.ceil(this.students.length / this.pageSize);
+	      }
+	   }, {
+	      key: 'displayAll',
+	      value: function displayAll() {
+	         if (this.isAll) {
+	            this.pageSize = this.students.length;
+	         } else {
+	            this.pageSize = 5;
+	         }
 	      }
 	   }]);
 
@@ -26233,58 +26246,46 @@
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	var _$q = new WeakMap(),
-	    _$firebaseArray = new WeakMap(),
-	    _$firebaseObject = new WeakMap(),
-	    _studentsRef = new WeakMap();
-
 	var JentooService = function () {
-	   function JentooService($q, $firebaseArray, $firebaseObject, FIRE_URL) {
+	   function JentooService($q, $firebaseArray, $firebaseObject, FIRE_URL, studentsSetup) {
 	      _classCallCheck(this, JentooService);
 
-	      _$q.set(this, $q);
-
-	      //let ref = new Firebase('https://olgah.firebaseio.com/users/');
-
-	      _$firebaseArray.set(this, $firebaseArray);
-	      _$firebaseObject.set(this, $firebaseObject);
-	      _studentsRef.set(this, new _firebase2.default(FIRE_URL + 'users'));
-
-	      //this.olgah = $firebaseArray(ref);
-	      //this.olgah.$loaded().then(this.successHandler).catch(this.catchHandler);
+	      this.studentsSetup = studentsSetup;
+	      this.$q = $q;
+	      this.$firebaseArray = $firebaseArray;
+	      this.$firebaseObject = $firebaseObject;
+	      this.studentsRef = new _firebase2.default(FIRE_URL + 'users');
 	   }
 
 	   _createClass(JentooService, [{
+	      key: 'student',
+	      value: function student() {
+	         var _this = this;
+
+	         var student = {};
+	         return function () {
+	            student.documentType = _this.studentsSetup.documentTypes[0];
+	            student.occupation = _this.studentsSetup.occupations[0];
+	            student.plan = _this.studentsSetup.plans[0];
+	            return student;
+	         }();
+	      }
+	   }, {
 	      key: 'getStudents',
 	      value: function getStudents() {
-	         var $firebaseArray = _$firebaseArray.get(this),
-	             studentsRef = _studentsRef.get(this);
-
-	         return $firebaseArray(studentsRef);
+	         return this.$firebaseArray(this.studentsRef);
 	      }
 	   }, {
 	      key: 'getStudent',
 	      value: function getStudent(uid) {
-	         var $firebaseObject = _$firebaseObject.get(this),
-	             studentsRef = _studentsRef.get(this);
-
-	         return $firebaseObject(studentsRef.child(uid));
-	      }
-	   }, {
-	      key: 'successHandler',
-	      value: function successHandler(students) {}
-	   }, {
-	      key: 'catchHandler',
-	      value: function catchHandler(error) {
-	         console.log('error');
-	         console.log(error);
+	         return this.$firebaseObject(this.studentsRef.child(uid));
 	      }
 	   }]);
 
 	   return JentooService;
 	}();
 
-	JentooService.$inject = ['$q', '$firebaseArray', '$firebaseObject', 'FIRE_URL'];
+	JentooService.$inject = ['$q', '$firebaseArray', '$firebaseObject', 'FIRE_URL', 'studentsSetup'];
 
 	exports.default = JentooService;
 
@@ -26710,17 +26711,21 @@
 
 	var _directives2 = _interopRequireDefault(_directives);
 
-	var _services = __webpack_require__(244);
+	var _services = __webpack_require__(243);
 
 	var _services2 = _interopRequireDefault(_services);
 
-	var _loader = __webpack_require__(248);
+	var _filters = __webpack_require__(255);
+
+	var _filters2 = _interopRequireDefault(_filters);
+
+	var _loader = __webpack_require__(247);
 
 	var _loader2 = _interopRequireDefault(_loader);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var sharedModule = _angular2.default.module('app.shared', [_directives2.default.name, _services2.default.name, _loader2.default.name]);
+	var sharedModule = _angular2.default.module('app.shared', [_directives2.default.name, _services2.default.name, _filters2.default.name, _loader2.default.name]);
 
 	exports.default = sharedModule;
 
@@ -26738,61 +26743,18 @@
 
 	var _angular2 = _interopRequireDefault(_angular);
 
-	var _passwordMatch = __webpack_require__(243);
+	var _passwordMatchDirective = __webpack_require__(254);
 
-	var _passwordMatch2 = _interopRequireDefault(_passwordMatch);
+	var _passwordMatchDirective2 = _interopRequireDefault(_passwordMatchDirective);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var sharedModule = _angular2.default.module('app.shared.directives', []).directive('passwordMatch', _passwordMatch2.default);
+	var sharedModule = _angular2.default.module('app.shared.directives', []).directive('passwordMatch', _passwordMatchDirective2.default);
 
 	exports.default = sharedModule;
 
 /***/ },
 /* 243 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	   value: true
-	});
-	function passwordMatch() {
-	   'use strict';
-
-	   return {
-	      restrict: 'A',
-	      scope: true,
-	      require: 'ngModel',
-	      link: link
-	   };
-
-	   function link(scope, elem, attrs, ngModelController) {
-
-	      function checker() {
-	         //get the value of the first password
-	         var e1 = scope.$eval(attrs.ngModel),
-
-	         //get the value of the other password
-	         e2 = scope.$eval(attrs.passwordMatch);
-	         console.log('--- passmatch ---');
-	         console.log(e1 === e2);
-	         return e1 == e2;
-	      }
-
-	      scope.$watch(checker, function (n) {
-	         console.log('--- match!!! ---');
-	         //set the form ngModelController to valid if both
-	         //passwords are the same, else invalid
-	         ngModelController.$setValidity("unique", n);
-	      });
-	   }
-	}
-
-	exports.default = passwordMatch;
-
-/***/ },
-/* 244 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26805,26 +26767,26 @@
 
 	var _angular2 = _interopRequireDefault(_angular);
 
-	var _authInterceptor = __webpack_require__(245);
+	var _authInterceptorService = __webpack_require__(244);
 
-	var _authInterceptor2 = _interopRequireDefault(_authInterceptor);
+	var _authInterceptorService2 = _interopRequireDefault(_authInterceptorService);
 
-	var _authToken = __webpack_require__(246);
+	var _authTokenService = __webpack_require__(245);
 
-	var _authToken2 = _interopRequireDefault(_authToken);
+	var _authTokenService2 = _interopRequireDefault(_authTokenService);
 
-	var _auth = __webpack_require__(247);
+	var _auth = __webpack_require__(246);
 
 	var _auth2 = _interopRequireDefault(_auth);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var servicesModule = _angular2.default.module('app.shared.services', []).service('AuthInterceptor', _authInterceptor2.default).service('AuthToken', _authToken2.default).service('AuthService', _auth2.default);
+	var servicesModule = _angular2.default.module('app.shared.services', []).service('AuthInterceptor', _authInterceptorService2.default).service('AuthToken', _authTokenService2.default).service('AuthService', _auth2.default);
 
 	exports.default = servicesModule;
 
 /***/ },
-/* 245 */
+/* 244 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -26870,7 +26832,7 @@
 	exports.default = authInterceptor;
 
 /***/ },
-/* 246 */
+/* 245 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -26923,7 +26885,7 @@
 	exports.default = AuthToken;
 
 /***/ },
-/* 247 */
+/* 246 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26953,7 +26915,7 @@
 	exports.default = AuthService;
 
 /***/ },
-/* 248 */
+/* 247 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26966,19 +26928,19 @@
 
 	var _angular2 = _interopRequireDefault(_angular);
 
-	var _loaderConfigProvider = __webpack_require__(249);
+	var _loaderConfigProvider = __webpack_require__(248);
 
 	var _loaderConfigProvider2 = _interopRequireDefault(_loaderConfigProvider);
 
-	var _loaderDirective = __webpack_require__(250);
+	var _loaderDirective = __webpack_require__(249);
 
 	var _loaderDirective2 = _interopRequireDefault(_loaderDirective);
 
-	var _loaderInterceptorService = __webpack_require__(253);
+	var _loaderInterceptorService = __webpack_require__(252);
 
 	var _loaderInterceptorService2 = _interopRequireDefault(_loaderInterceptorService);
 
-	var _loaderDisplayService = __webpack_require__(254);
+	var _loaderDisplayService = __webpack_require__(253);
 
 	var _loaderDisplayService2 = _interopRequireDefault(_loaderDisplayService);
 
@@ -26989,7 +26951,7 @@
 	exports.default = loadingModule;
 
 /***/ },
-/* 249 */
+/* 248 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -27040,7 +27002,7 @@
 	exports.default = loadingConfigProvider;
 
 /***/ },
-/* 250 */
+/* 249 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27049,7 +27011,7 @@
 	   value: true
 	});
 
-	__webpack_require__(251);
+	__webpack_require__(250);
 
 	Loader.$inject = ['$q', '$timeout', 'LoadingInterceptor', 'loaderConfig', 'LoadingDisplay'];
 
@@ -27163,13 +27125,13 @@
 	exports.default = Loader;
 
 /***/ },
-/* 251 */
+/* 250 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(252);
+	var content = __webpack_require__(251);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(214)(content, {});
@@ -27189,7 +27151,7 @@
 	}
 
 /***/ },
-/* 252 */
+/* 251 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(213)();
@@ -27203,7 +27165,7 @@
 
 
 /***/ },
-/* 253 */
+/* 252 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -27223,7 +27185,7 @@
 	exports.default = LoadingInterceptorService;
 
 /***/ },
-/* 254 */
+/* 253 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -27305,6 +27267,93 @@
 	LoaderDisplayService.$inject = ['$window'];
 
 	exports.default = LoaderDisplayService;
+
+/***/ },
+/* 254 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	   value: true
+	});
+	function passwordMatch() {
+	   'use strict';
+
+	   return {
+	      restrict: 'A',
+	      scope: true,
+	      require: 'ngModel',
+	      link: link
+	   };
+
+	   function link(scope, elem, attrs, ngModelController) {
+
+	      function checker() {
+	         //get the value of the first password
+	         var e1 = scope.$eval(attrs.ngModel),
+
+	         //get the value of the other password
+	         e2 = scope.$eval(attrs.passwordMatch);
+	         console.log('--- passmatch ---');
+	         console.log(e1 === e2);
+	         return e1 == e2;
+	      }
+
+	      scope.$watch(checker, function (n) {
+	         console.log('--- match!!! ---');
+	         //set the form ngModelController to valid if both
+	         //passwords are the same, else invalid
+	         ngModelController.$setValidity("unique", n);
+	      });
+	   }
+	}
+
+	exports.default = passwordMatch;
+
+/***/ },
+/* 255 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	   value: true
+	});
+
+	var _angular = __webpack_require__(192);
+
+	var _angular2 = _interopRequireDefault(_angular);
+
+	var _pagination = __webpack_require__(256);
+
+	var _pagination2 = _interopRequireDefault(_pagination);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var servicesModule = _angular2.default.module('app.shared.filters', []).filter('pagination', _pagination2.default);
+
+	exports.default = servicesModule;
+
+/***/ },
+/* 256 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	   value: true
+	});
+	pagination.$inject = [];
+
+	function pagination() {
+	   return function (input, start) {
+	      start = +start;
+	      return input.slice(start);
+	   };
+	}
+
+	exports.default = pagination;
 
 /***/ }
 /******/ ]);

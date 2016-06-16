@@ -8,38 +8,42 @@
 
    <form class="form-inline">
       <div class="form-group">
-         <label for="exampleInputName2">Filter</label>
+         <label for="searchFilter"></label>
          <input type="text"
                 class="form-control"
-                id="exampleInputName2"
+                id="searchFilter"
                 ng-model="myFilter"
                 placeholder="Filtrar">
       </div>
-   </form>
-
-  <!-- <div class="Student-cards">
-      <div class="Student-card" ng-repeat="student in $ctrl.students track by $index">
-         <span ng-bind="student.name"></span>
-         <span ng-bind="student.lastName"></span>
-         <span ng-bind="student.email"></span>
-         <span ng-bind="student.phone"></span>
+      <div class="checkbox">
+         <label for="pageSize">
+         <input type="checkbox"
+                id="pageSize"
+                ng-change="$ctrl.displayAll()"
+                ng-model="$ctrl.isAll" />
+            Mostrar Todos
+         </label>
       </div>
-   </div>-->
+   </form>
 
    <table class="table table-hover">
       <thead>
       <tr>
-         <th>First Name</th>
-         <th>Last Name</th>
+         <th>Nombre</th>
+         <th>Apellido</th>
          <th>Email</th>
          <th>Celular</th>
-         <th>Profession</th>
+         <th>Profesión</th>
          <th>Plan</th>
          <th>&nbsp;</th>
       </tr>
       </thead>
       <tbody>
-      <tr ng-repeat="student in $ctrl.students | filter: myFilter track by $index"
+      <tr ng-repeat="student in $ctrl.students
+                     | orderBy: 'name'
+                     | pagination: $ctrl.curPage * $ctrl.pageSize
+                     | limitTo: $ctrl.pageSize
+                     | filter: myFilter track by $index"
           ng-dblclick="$ctrl.studentProfile(student)">
          <th ng-bind="student.name"></th>
          <td ng-bind="student.lastName"></td>
@@ -56,5 +60,28 @@
       </tr>
       </tbody>
    </table>
+   <div class="pagination pagination-centered" ng-show="$ctrl.students.length">
+      <ul class="pagination-controle pagination">
+         <li>
+            <button type="button"
+                    class="btn btn-primary"
+                    ng-disabled="$ctrl.curPage === 0"
+                    ng-click="$ctrl.curPage = $ctrl.curPage-1">
+               &lt; Anterior
+            </button>
+         </li>
+         <li>
+            <span>Página {{$ctrl.curPage + 1}} of {{ $ctrl.numberOfPages() }}</span>
+         </li>
+         <li>
+            <button type="button"
+                    class="btn btn-primary"
+                    ng-disabled="$ctrl.curPage >= $ctrl.students.length / $ctrl.pageSize - 1"
+                    ng-click="$ctrl.curPage = $ctrl.curPage + 1">
+               Siguiente &gt;
+            </button>
+         </li>
+      </ul>
+   </div>
 
 </ui-view>
