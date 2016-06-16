@@ -84,6 +84,7 @@ class StudentsController {
    displayAll() {
       if (this.isAll) {
          this.pageSize = this.students.length;
+         this.curPage = 0;
       } else {
          this.pageSize = 5;
       }
